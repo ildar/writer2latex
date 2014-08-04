@@ -1,7 +1,7 @@
-Writer2LaTeX version 1.2
-========================
+Writer2LaTeX version 1.2.1
+==========================
 
-This is the distribution of Writer2LaTeX version 1.2
+This is the distribution of Writer2LaTeX version 1.2.1
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net
@@ -11,8 +11,8 @@ in the user guide, which is included in the
 directory doc.
   
 Bugs and feature requests should be reported to
-  henrikjust (at) openoffice.org
+  writer2latex (at) gmail.com
   
 
-March 2012
+August 2014
 Henrik Just
