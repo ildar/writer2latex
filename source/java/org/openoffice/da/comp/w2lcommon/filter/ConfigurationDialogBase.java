@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2012 by Henrik Just
+*  Copyright: 2002-2014 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.2 (2012-03-11)
+*  Version 1.4 (2014-08-05)
 *
 */ 
 
@@ -687,13 +687,15 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		private void newStyleClick(DialogAccess dlg) {
 			if (nCurrentFamily>-1) {
 				updateStyleMaps(dlg);
+				// Invalidate current style name in any case (appendItem returns null if the user
+				// selects an existing style, but it still changes the current item)
+				sCurrentStyleName = null;
 				String sNewName = appendItem(dlg, "StyleName",styleNameProvider.getInternalNames(sOOoFamilyNames[nCurrentFamily]).keySet());
 				if (sNewName!=null) {
 					styleMap[nCurrentFamily].put(sNewName, new HashMap<String,String>());
 					clearControls(dlg);
-					sCurrentStyleName=null;
-					styleNameChange(dlg);
 				}
+				styleNameChange(dlg);
 				updateStyleControls(dlg);
 			}
 		}
