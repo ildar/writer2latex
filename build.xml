@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.2.1 (2014-08-04)
+  # version 1.2.1 (2014-08-05)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -34,7 +34,7 @@
 
     <!-- configure the directories -->
     <property name="jarfile" value="writer2latex"/>
-    <property name="basename" value="writer2latex121"/>
+    <property name="basename" value="writer2latex121beta"/>
     <property name="distrofile" value="${basename}.zip" />
     <!--<property name="sourcedistrofile" value="${basename}source.zip" />-->
     <property name="src" location="source/java"/>
