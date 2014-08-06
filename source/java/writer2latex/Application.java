@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-30) 
+ *  Version 1.4 (2014-08-05) 
  *
  */
  
@@ -286,6 +286,7 @@ public final class Application {
             catch (IOException e) {
                 System.out.println("--> Failed to convert the file "+source.getPath()+"!");
                 System.out.println("    "+e.getMessage());
+                System.out.println("    Please make sure the file is in OpenDocument format");
                 System.exit(1);
             }
 

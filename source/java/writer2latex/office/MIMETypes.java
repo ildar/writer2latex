@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-01)
+ *  Version 1.4 (2014-08-05)
  *
  */
 
@@ -92,9 +92,9 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
     
     private static final boolean isSVG(byte[] blob) {
         // Look for <svg within the first 250 bytes
-    	int m = Math.max(blob.length, 250);
+    	int m = Math.min(blob.length, 250);
         int n = SVG_SIG.length;
-        for (int j=0; j<m; j++) {
+        for (int j=0; j<m-n; j++) {
             boolean bFound = true;
         	for (int i=0; i<n; i++) {
         		if (blob[j+i]!=SVG_SIG[i]) {
