@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- This is a datafile used by Writer2LaTeX
-     Version 1.2 (2011-09-13)
+     Version 1.4 (2014-08-05)
 
 	 The definitions for greek characters are contributed by interzone, info@interzone.gr
      and extended by Johannis Likos. Additional bugfixes by Alexej Kryukov
@@ -286,7 +286,7 @@ PART I: Common symbols, ascii only
 <symbol char="0132" text="{\IJ}" />
 <symbol char="0133" text="{\ij}" />
 <symbol char="0134" text="\^J" />
-<symbol char="0135" text="\^\j" />
+<symbol char="0135" text="\^{\j}" />
 <symbol char="0136" text="\c{K}" />
 <symbol char="0137" text="\c{k}" />
 <!-- missing: 138 LATIN SMALL LETTER KRA (greenlandic) -->
@@ -3599,7 +3599,7 @@ definitions to the range 00-FF.
    <symbol char="F048" text="H" />
    <symbol char="F049" text="I" />
    <symbol char="F04a" text="J" />
-   <symbol char="F04b" text="\j" />
+   <symbol char="F04b" text="\j " />
    <symbol char="F04c" text="\textlyoghlig " />
    <symbol char="F04d" text="M" />
    <symbol char="F04e" text="N" />

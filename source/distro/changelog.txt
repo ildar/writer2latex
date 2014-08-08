@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.1 alpha ----------
 
+[w2l] Added support for TexMaths equations
+
 [all] The command line application now gives an explanation if the source file is not in ODF format
 
 [all] Bugfix: Fixed typo that caused writer2latex.office.MIMETypes.getMagicMIMEType() to fail in some cases 

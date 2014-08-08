@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-06)
  *
  */
 
@@ -167,83 +167,28 @@ public abstract class ConverterBase implements Converter {
 		return theSequence;
 	}
 	
-	/** Determine whether or not a paragraph contains a display equation.
-	 *  A paragraph is a display equation if it contains a single formula and no text content except whitespace
-	 *  and an optional sequence number which may be in brackets.
-	 *  As a side effect, this method keeps a reference to the equation and the sequence number
-	 * 
-	 * @param node the paragraph
-	 * @return true if this is a display equation
-	 */
-	public boolean parseDisplayEquation(Node node) {
-		theEquation = null;
-		theSequence = null;
-		return doParseDisplayEquation(node);
-	}
-	
-    private boolean doParseDisplayEquation(Node node) {
-        Node child = node.getFirstChild();
-        while (child!=null) {
-            Node equation = getFormula(child);
-            if (equation!=null) {
-                if (theEquation==null) {
-                    theEquation = (Element) equation;
-                }
-                else { // two or more equations -> not a display
-                    return false;
-                }
-            }
-            else if (Misc.isElement(child)) {
-                String sName = child.getNodeName();
-                if (XMLString.TEXT_SEQUENCE.equals(sName)) {
-                    if (theSequence==null) {
-                        theSequence = (Element) child;
-                    }
-                    else { // two sequence numbers -> not a display
-                        return false;
-                    }
-                }
-                else if (XMLString.TEXT_SPAN.equals(sName)) {
-                    if (!doParseDisplayEquation(child)) {
-                        return false;
-                    }
-                }
-                else if (XMLString.TEXT_S.equals(sName)) {
-                    // Spaces are allowed
-                }
-                else if (XMLString.TEXT_TAB.equals(sName)) {
-                    // Tab stops are allowed
-                }
-                else if (XMLString.TEXT_TAB_STOP.equals(sName)) { // old
-                    // Tab stops are allowed
-                }
-                else if (XMLString.TEXT_SOFT_PAGE_BREAK.equals(sName)) { // since ODF 1.1
-                	// Soft page breaks are allowed
-                }
-                else {
-                    // Other elements -> not a display
-                    return false;
-                }
-            }
-            else if (Misc.isText(child)) {
-                String s = child.getNodeValue();
-                int nLen = s.length();
-                for (int i=0; i<nLen; i++) {
-                    char c = s.charAt(i);
-                    if (c!='(' && c!=')' && c!='[' && c!=']' && c!='{' && c!='}' && c!=' ' && c!='\u00A0') {
-                        // Characters except brackets and whitespace -> not a display
-                        return false;
-                    }
-                }
-            }
-            child = child.getNextSibling();
-        }
-        return true;
+    /** Get a TexMaths equation from a draw:frame (PNG formula) or draw:g element (SVG)
+     *  Such an element is a TexMaths equation if it contains an svg:title element with content "TexMaths"
+     *  The actual formula is the content of an svg:desc element
+     * 
+     * @param node the draw:frame or draw:g element to check
+     * @return the TexMaths equation, or null if this is not a TexMaths equation
+     */
+    public Element getTexMathsEquation(Element node) {
+    	Element svgTitle = Misc.getChildByTagName(node, XMLString.SVG_TITLE);
+    	if (svgTitle!=null && "TexMaths".equals(Misc.getPCDATA(svgTitle))) {
+    		return Misc.getChildByTagName(node, XMLString.SVG_DESC);
+    	}
+    	return null;
     }
     
-    // TODO: Extend OfficeReader to handle frames
-    private Node getFormula(Node node) {
-        if (Misc.isElement(node,XMLString.DRAW_FRAME)) {
+    /** Get a MathML formula from a draw:frame
+     * 
+     * @param node the draw:frame
+     * @return the MathML element, or null if this is not a MathML formula
+     */
+    public Element getMathmlEquation(Element node) {
+        if (node.getTagName().equals(XMLString.DRAW_FRAME)) {
             node=Misc.getFirstChildElement(node);
         }
         
@@ -283,7 +228,86 @@ public abstract class ConverterBase implements Converter {
         }
         return null;
     }
-
+	
+	/** Determine whether or not a paragraph contains a display equation.
+	 *  A paragraph is a display equation if it contains a single formula and no text content except whitespace
+	 *  and an optional sequence number which may be in brackets.
+	 *  As a side effect, this method keeps a reference to the equation and the sequence number
+	 * 
+	 * @param node the paragraph
+	 * @return true if this is a display equation
+	 */
+	public boolean parseDisplayEquation(Node node) {
+		theEquation = null;
+		theSequence = null;
+		return doParseDisplayEquation(node);
+	}
+	
+    private boolean doParseDisplayEquation(Node node) {
+        Node child = node.getFirstChild();
+        while (child!=null) {
+        	if (Misc.isElement(child)) {
+        		Element elm = (Element) child;
+        		String sName = elm.getTagName();
+        		// First check for MathML or TexMaths equation
+        		Element equation = getMathmlEquation(elm);
+        		if (equation==null) {
+        			equation = getTexMathsEquation(elm);            		
+        		}
+        	
+        		if (equation!=null) {
+        			if (theEquation==null) {
+        				theEquation = equation;
+        			}
+        			else { // two or more equations -> not a display
+        				return false;
+        			}
+        		}
+        		else if (XMLString.TEXT_SEQUENCE.equals(sName)) {
+        			if (theSequence==null) {
+        				theSequence = elm;
+        			}
+        			else { // two sequence numbers -> not a display
+        				return false;
+        			}
+        		}
+        		else if (XMLString.TEXT_SPAN.equals(sName)) {
+        			if (!doParseDisplayEquation(child)) {
+        				return false;
+        			}
+        		}
+        		else if (XMLString.TEXT_S.equals(sName)) {
+        			// Spaces are allowed
+        		}
+        		else if (XMLString.TEXT_TAB.equals(sName)) {
+        			// Tab stops are allowed
+        		}
+        		else if (XMLString.TEXT_TAB_STOP.equals(sName)) { // old
+        			// Tab stops are allowed
+        		}
+        		else if (XMLString.TEXT_SOFT_PAGE_BREAK.equals(sName)) { // since ODF 1.1
+        			// Soft page breaks are allowed
+        		}
+        		else {
+        			// Other elements -> not a display
+        			return false;
+        		}
+        	}
+            else if (Misc.isText(child)) {
+                String s = child.getNodeValue();
+                int nLen = s.length();
+                for (int i=0; i<nLen; i++) {
+                    char c = s.charAt(i);
+                    if (c!='(' && c!=')' && c!='[' && c!=']' && c!='{' && c!='}' && c!=' ' && c!='\u00A0') {
+                        // Characters except brackets and whitespace -> not a display
+                        return false;
+                    }
+                }
+            }
+            child = child.getNextSibling();
+        }
+        return true;
+    }
 
 
 }

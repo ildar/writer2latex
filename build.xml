@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.4 (2012-03-16)
+  # version 1.4 (2014-08-08)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -69,7 +69,7 @@
         <javac srcdir="${src}" 
                destdir="${classes}"
                encoding="us-ascii"
-        	   source="1.5"
+        	   source="1.6"
                debug="on">
             <classpath refid="main.class.path"/>
         </javac>

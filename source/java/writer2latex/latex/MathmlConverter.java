@@ -16,39 +16,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-23)
+ *  Version 1.4 (2014-08-08)
  *
  */
 
 package writer2latex.latex;
 
-// TODO: Use parseDisplayEquation of ConverterBase
 
-//import java.util.Hashtable;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-//import writer2latex.latex.i18n.I18n;
-import writer2latex.office.EmbeddedObject;
-import writer2latex.office.EmbeddedXMLObject;
-import writer2latex.office.MIMETypes;
+import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.TableReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
 /**
- *  This class converts mathml nodes to LaTeX.
- *  (Actually it only converts the starmath annotation currently, if available).
+ *  This class converts MathML nodes to LaTeX.
+ *  The class name is slightly misleading:
+ *  It only converts the StarMath annotation, if available
+ *  and it also converts TexMaths formulas
  */
 public final class MathmlConverter extends ConverterHelper {
+	
+	private enum TexMathsStyle {inline, display, latex};
     
     private StarMathConverter smc;
 	
@@ -113,11 +110,52 @@ public final class MathmlConverter extends ConverterHelper {
 		}
 			
     }
-	
-    // Data for display equations
-    private Element theEquation = null;
-    private Element theSequence = null;
+
+    /** Handle an (inline) TexMaths equation
+     * 
+     * @param node the equation (an svg:desc element containing the formula)
+     * @param ldp the LaTeXDocumentPortion to contain the converted equation
+     * @param oc the current context
+     */
+    public void handleTexMathsEquation(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    	// LaTeX code is contained in svg:desc
+    	// Format is <point size>X<mode>X<TeX code>X<format>X<resolution>X<transparency>
+    	// where X is a paragraph sign
+    	switch (getTexMathsStyle(node)) {
+    	case inline:
+       		ldp.append("$").append(getTexMathsEquation(node)).append("$");
+       		break;
+    	case display:
+       		ldp.append("$\\displaystyle ").append(getTexMathsEquation(node)).append("$");
+       		break;
+    	case latex:    		
+       		ldp.append(getTexMathsEquation(node));
+    	}
+    }
     
+    private TexMathsStyle getTexMathsStyle(Element node) {
+   		String[] sContent = Misc.getPCDATA(node).split("\u00a7");
+   		if (sContent.length>=3) { // we only need 3 items of 6
+   			if ("display".equals(sContent[1])) {
+   				return TexMathsStyle.display;
+   			}
+   			else if ("latex".equals(sContent[1])) {
+   				return TexMathsStyle.latex;
+   			}
+   		}
+   		return TexMathsStyle.inline;
+    }
+    
+    private String getTexMathsEquation(Element node) {
+   		String[] sContent = Misc.getPCDATA(node).split("\u00a7");
+   		if (sContent.length>=3) { // we only need 3 items of 6
+   			return sContent[2];
+   		}
+   		else {
+   			return "";
+   		}
+    }
+	
     /** Try to convert a table as a display equation:
      *  A 1 row by 2 columns table in which each cell contains exactly one paragraph,
      *  the left cell contains exactly one formula and the right cell contains exactly
@@ -132,16 +170,12 @@ public final class MathmlConverter extends ConverterHelper {
     	if (table.getRowCount()==1 && table.getColCount()==2 &&
     		OfficeReader.isSingleParagraph(table.getCell(0, 0)) && OfficeReader.isSingleParagraph(table.getCell(0, 1)) ) {
     		// Table of the desired form
-    		theEquation = null;
-    		theSequence = null;
-    		if (parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 0))) && theEquation!=null && theSequence==null) {
+    		if (palette.parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 0))) && palette.getEquation()!=null && palette.getSequence()==null) {
     			// Found equation in first cell
-    			Element myEquation = theEquation;
-        		theEquation = null;
-        		theSequence = null;
-    			if (parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 1))) && theEquation==null && theSequence!=null) {
+    			Element myEquation = palette.getEquation();
+    			if (palette.parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 1))) && palette.getEquation()==null && palette.getSequence()!=null) {
     				// Found sequence in second cell
-    				handleDisplayEquation(myEquation, theSequence, ldp);
+    				handleDisplayEquation(myEquation, palette.getSequence(), ldp);
     				return true;
     			}
     		}
@@ -159,10 +193,8 @@ public final class MathmlConverter extends ConverterHelper {
      * did not contain a display equation
      */
     public boolean handleDisplayEquation(Element node, LaTeXDocumentPortion ldp) {
-        theEquation = null;
-        theSequence = null;
-        if (parseDisplayEquation(node) && theEquation!=null) {
-        	handleDisplayEquation(theEquation, theSequence, ldp);
+        if (palette.parseDisplayEquation(node) && palette.getEquation()!=null) {
+        	handleDisplayEquation(palette.getEquation(), palette.getSequence(), ldp);
         	return true;
         }
         else {
@@ -171,130 +203,47 @@ public final class MathmlConverter extends ConverterHelper {
     }
     
     private void handleDisplayEquation(Element equation, Element sequence, LaTeXDocumentPortion ldp) {
-    	String sLaTeX = convert(null,equation);
+    	boolean bTexMaths = equation.getTagName().equals(XMLString.SVG_DESC);
+    	TexMathsStyle style = TexMathsStyle.inline;
+    	String sLaTeX;
+    	if (bTexMaths) {
+    		// TeXMaths equation
+    		sLaTeX = getTexMathsEquation(equation);
+    		style = getTexMathsStyle(equation);
+    	}
+    	else {
+    		// MathML equation
+    		sLaTeX = convert(null,equation);
+    	}
     	if (!" ".equals(sLaTeX)) { // ignore empty formulas
-    		if (sequence!=null) {
-    			// Numbered equation
-    			ldp.append("\\begin{equation}");
-    			palette.getFieldCv().handleSequenceLabel(sequence,ldp);
-    			ldp.nl()
-    			.append(sLaTeX).nl()
-    			.append("\\end{equation}").nl();
-    			if (bAddParAfterDisplay) { ldp.nl(); }
+    		if (!bTexMaths || style!=TexMathsStyle.latex) {
+    			if (sequence!=null) {
+    				// Numbered equation
+    				ldp.append("\\begin{equation}");
+    				palette.getFieldCv().handleSequenceLabel(sequence,ldp);
+    				if (bTexMaths && style==TexMathsStyle.inline) {
+    					ldp.append("\\textstyle ");
+    				}
+    				ldp.nl()
+    				.append(sLaTeX).nl()
+    				.append("\\end{equation}").nl();
+    			}
+    			else {
+    				// Unnumbered equation
+    				ldp.append("\\begin{equation*}");
+    				if (bTexMaths && style==TexMathsStyle.inline) {
+    					ldp.append("\\textstyle ");
+    				}
+    				ldp.nl()
+    				.append(sLaTeX).nl()
+    				.append("\\end{equation*}").nl();
+    			}    	
     		}
     		else {
-    			// Unnumbered equation
-    			ldp.append("\\begin{equation*}").nl()
-    			.append(sLaTeX).nl()
-    			.append("\\end{equation*}").nl();
-    			if (bAddParAfterDisplay) { ldp.nl(); }
-    		}    	
+    			ldp.append(sLaTeX).nl();
+    		}
+			if (bAddParAfterDisplay) { ldp.nl(); }
     	}
     }
-	
-    private boolean parseDisplayEquation(Node node) {
-        Node child = node.getFirstChild();
-        while (child!=null) {
-            Node equation = getFormula(child);
-            if (equation!=null) {
-                if (theEquation==null) {
-                    theEquation = (Element) equation;
-                }
-                else { // two or more equations -> not a display
-                    return false;
-                }
-            }
-            else if (Misc.isElement(child)) {
-                String sName = child.getNodeName();
-                if (XMLString.TEXT_SEQUENCE.equals(sName)) {
-                    if (theSequence==null) {
-                        theSequence = (Element) child;
-                    }
-                    else { // two sequence numbers -> not a display
-                        return false;
-                    }
-                }
-                else if (XMLString.TEXT_SPAN.equals(sName)) {
-                    if (!parseDisplayEquation(child)) {
-                        return false;
-                    }
-                }
-                else if (XMLString.TEXT_S.equals(sName)) {
-                    // Spaces are allowed
-                }
-                else if (XMLString.TEXT_TAB.equals(sName)) {
-                    // Tab stops are allowed
-                }
-                else if (XMLString.TEXT_TAB_STOP.equals(sName)) { // old
-                    // Tab stops are allowed
-                }
-                else if (XMLString.TEXT_SOFT_PAGE_BREAK.equals(sName)) { // since ODF 1.1
-                	// Soft page breaks are allowed
-                }
-                else {
-                    // Other elements -> not a display
-                    return false;
-                }
-            }
-            else if (Misc.isText(child)) {
-                String s = child.getNodeValue();
-                int nLen = s.length();
-                for (int i=0; i<nLen; i++) {
-                    char c = s.charAt(i);
-                    if (c!='(' && c!=')' && c!='[' && c!=']' && c!='{' && c!='}' && c!=' ' && c!='\u00A0') {
-                        // Characters except brackets and whitespace -> not a display
-                        return false;
-                    }
-                }
-            }
-            child = child.getNextSibling();
-        }
-        return true;
-    }
-	
-    // TODO: Extend OfficeReader to handle frames
-    private Node getFormula(Node node) {
-        if (Misc.isElement(node,XMLString.DRAW_FRAME)) {
-            node=Misc.getFirstChildElement(node);
-        }
-        
-        String sHref = Misc.getAttribute(node,XMLString.XLINK_HREF);
-		
-        if (sHref!=null) { // Embedded object in package or linked object
-            if (ofr.isInPackage(sHref)) { // Embedded object in package
-                if (sHref.startsWith("#")) { sHref=sHref.substring(1); }
-                if (sHref.startsWith("./")) { sHref=sHref.substring(2); }
-                EmbeddedObject object = palette.getEmbeddedObject(sHref); 
-                if (object!=null) {
-                    if (MIMETypes.MATH.equals(object.getType()) || MIMETypes.ODF.equals(object.getType())) { // Formula!
-                        try {
-                            Document formuladoc = ((EmbeddedXMLObject) object).getContentDOM();
-                            Element formula = Misc.getChildByTagName(formuladoc,XMLString.MATH); // Since OOo 3.2
-                            if (formula==null) {
-                            	formula = Misc.getChildByTagName(formuladoc,XMLString.MATH_MATH);
-                            }
-                            return formula;
-                        }
-                        catch (org.xml.sax.SAXException e) {
-                            e.printStackTrace();
-                        }
-                        catch (java.io.IOException e) {
-                            e.printStackTrace();
-                        }
-	                }
-                }
-            }
-        }
-        else { // flat xml, object is contained in node
-            Element formula = Misc.getChildByTagName(node,XMLString.MATH); // Since OOo 3.2
-            if (formula==null) {
-            	formula = Misc.getChildByTagName(node,XMLString.MATH_MATH);
-            }
-            return formula;
-        }
-        return null;
-    }
-	
-
 
 }

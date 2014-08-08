@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-23)
+ *  Version 1.4 (2014-08-06)
  *
  */
  
@@ -88,7 +88,7 @@ public class DrawConverter extends ConverterHelper {
             // TODO: Otherwise try the user settings...
         }
     }
-	
+    	
     public void handleCaption(Element node, LaTeXDocumentPortion ldp, Context oc) {
         // Floating frames should be positioned *above* the label, hence
         // we use a separate ldp for the paragraphs and add this later
@@ -108,8 +108,9 @@ public class DrawConverter extends ConverterHelper {
         ldp.append(capLdp);
     }
 	
+    // Process the first child of a draw:frame
     public void handleDrawElement(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        // node must be an elment in the draw namespace
+        // node must be an element in the draw namespace
         String sName = node.getTagName();
         if (sName.equals(XMLString.DRAW_OBJECT)) {
             handleDrawObject(node,ldp,oc);
@@ -128,11 +129,28 @@ public class DrawConverter extends ConverterHelper {
             palette.getFieldCv().handleAnchor(node,ldp,oc);
         }
         else if (sName.equals(XMLString.DRAW_FRAME)) {
-            // OpenDocument: Get the actual draw element in the frame
-            handleDrawElement(Misc.getFirstChildElement(node),ldp,oc);
+        	Element equation = palette.getTexMathsEquation(node);
+        	if (equation!=null) {
+        		palette.getMathmlCv().handleTexMathsEquation(equation,ldp,oc);
+        	}
+        	else {
+        		// OpenDocument: Get the actual draw element in the frame
+        		handleDrawElement(Misc.getFirstChildElement(node),ldp,oc);
+        	}
+        }
+        else if (sName.equals(XMLString.DRAW_G)) {
+        	Element equation = palette.getTexMathsEquation(node);
+        	if (equation!=null) {
+        		palette.getMathmlCv().handleTexMathsEquation(equation,ldp,oc);
+        	}
+        	else {
+                // Shapes are currently not supported
+                ldp.append("[Warning: Draw object ignored]");        		
+        	}
+        	
         }
         else {
-            // Other drawing objects (eg. shapes) are currently not supported
+            // Other drawing objects are currently not supported
             ldp.append("[Warning: Draw object ignored]");
         }
     }
@@ -478,12 +496,12 @@ public class DrawConverter extends ConverterHelper {
         flushFloatingFrames(ldp,ic);
         floatingFramesStack.pop();
         if (!bIsCaption) {
-            ldp.append("\\end{minipage}");
+        	ldp.append("\\end{minipage}");
         }
         if (!oc.isNoFootnotes()) { palette.getNoteCv().flushFootnotes(ldp,oc); }
 
     }
-
+    
     //-------------------------------------------------------------------------
     //handle any pending floating frames
     
