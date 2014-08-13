@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-06)
+ *  Version 1.4 (2014-08-11)
  *
  */
  
@@ -31,17 +31,13 @@ import java.util.Stack;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-//import org.w3c.dom.Node;
-
 
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
-//import writer2latex.office.ImageLoader;
 import writer2latex.office.EmbeddedObject;
 import writer2latex.office.EmbeddedXMLObject;
 import writer2latex.office.MIMETypes;
 import writer2latex.office.OfficeReader;
-import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
@@ -53,9 +49,8 @@ import writer2latex.xmerge.BinaryGraphicsDocument;
 public class DrawConverter extends ConverterHelper {
 
     private boolean bNeedGraphicx = false;
-    private boolean bNeedOOoLaTeXPreamble = false;
 
-    // Keep track of floating frames (images, textboxes...)
+    // Keep track of floating frames (images, text boxes...)
     private Stack<LinkedList<Element>> floatingFramesStack = new Stack<LinkedList<Element>>();
 	
     private Element getFrame(Element onode) {
@@ -75,17 +70,6 @@ public class DrawConverter extends ConverterHelper {
             //else if (config.getBackend()==LaTeXConfig.XETEX) pack.append("[xetex]");
             else if (config.getBackend()==LaTeXConfig.DVIPS) pack.append("[dvips]");
             pack.append("{graphicx}").nl();
-        }
-        if (bNeedOOoLaTeXPreamble) {
-            // The preamble may be stored in the description
-            String sDescription = palette.getMetaData().getDescription();
-            int nStart = sDescription.indexOf("%%% OOoLatex Preamble %%%%%%%%%%%%%%");
-            int nEnd = sDescription.indexOf("%%% End OOoLatex Preamble %%%%%%%%%%%%");
-            if (nStart>-1 && nEnd>nStart) {
-                decl.append("% OOoLaTeX preamble").nl()
-                    .append(sDescription.substring(nStart+37,nEnd));
-            }
-            // TODO: Otherwise try the user settings...
         }
     }
     	
@@ -129,25 +113,16 @@ public class DrawConverter extends ConverterHelper {
             palette.getFieldCv().handleAnchor(node,ldp,oc);
         }
         else if (sName.equals(XMLString.DRAW_FRAME)) {
-        	Element equation = palette.getTexMathsEquation(node);
-        	if (equation!=null) {
-        		palette.getMathmlCv().handleTexMathsEquation(equation,ldp,oc);
-        	}
-        	else {
+        	if (!palette.getMathCv().handleTexMathsEquation(node,ldp)) {
         		// OpenDocument: Get the actual draw element in the frame
         		handleDrawElement(Misc.getFirstChildElement(node),ldp,oc);
         	}
         }
         else if (sName.equals(XMLString.DRAW_G)) {
-        	Element equation = palette.getTexMathsEquation(node);
-        	if (equation!=null) {
-        		palette.getMathmlCv().handleTexMathsEquation(equation,ldp,oc);
-        	}
-        	else {
+        	if (!palette.getMathCv().handleTexMathsEquation(node,ldp)) {
                 // Shapes are currently not supported
                 ldp.append("[Warning: Draw object ignored]");        		
         	}
-        	
         }
         else {
             // Other drawing objects are currently not supported
@@ -159,6 +134,7 @@ public class DrawConverter extends ConverterHelper {
     // handle draw:object elements (OOo objects such as Chart, Math,...)
 		
     private void handleDrawObject(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    	
         String sHref = Misc.getAttribute(node,XMLString.XLINK_HREF);
 		
         if (sHref!=null) { // Embedded object in package or linked object
@@ -169,13 +145,13 @@ public class DrawConverter extends ConverterHelper {
                 if (object!=null) {
                     if (MIMETypes.MATH.equals(object.getType()) || MIMETypes.ODF.equals(object.getType())) { // Formula!
                         try {
-                            Document settings = ((EmbeddedXMLObject) object).getSettingsDOM();
+                            Element settings = ((EmbeddedXMLObject) object).getSettingsDOM().getDocumentElement();
                             Document formuladoc = ((EmbeddedXMLObject) object).getContentDOM();
                             Element formula = Misc.getChildByTagName(formuladoc,XMLString.MATH); // Since OOo3.2
                             if (formula==null) {
                             	formula = Misc.getChildByTagName(formuladoc,XMLString.MATH_MATH);
                             }
-                            String sLaTeX = palette.getMathmlCv().convert(settings,formula);
+                            String sLaTeX = palette.getMathCv().convert(settings,formula);
                             if (!" ".equals(sLaTeX)) { // ignore empty formulas
                             	ldp.append(" $")
                             	   .append(sLaTeX)
@@ -214,7 +190,7 @@ public class DrawConverter extends ConverterHelper {
             }
             if (formula!=null) {
                 ldp.append(" $")
-                   .append(palette.getMathmlCv().convert(null,formula))
+                   .append(palette.getMathCv().convert(null,formula))
                    .append("$");
                 if (Character.isLetterOrDigit(OfficeReader.getNextChar(node))) { ldp.append(" "); }
             }
@@ -233,7 +209,6 @@ public class DrawConverter extends ConverterHelper {
             }
 
         }
-
     }
 	
     //--------------------------------------------------------------------------
@@ -288,47 +263,6 @@ public class DrawConverter extends ConverterHelper {
         String sName = frame.getAttribute(XMLString.DRAW_NAME);
         palette.getFieldCv().addTarget(sName,"|graphic",ldp);
         String sAnchor = frame.getAttribute(XMLString.TEXT_ANCHOR_TYPE);
-
-        // TODO: Recognize Jex equations (needs further testing of Jex)
-        /*Element desc = Misc.getChildByTagName(frame,XMLString.SVG_DESC);
-        if (desc!=null) {
-            String sDesc = Misc.getPCDATA(desc);
-            if (sDesc.startsWith("jex149$tex={") && sDesc.endsWith("}")) {
-                String sTeX = sDesc.substring(12,sDesc.length()-1);
-                if (sTeX.length()>0) {
-                    // Succesfully extracted Jex equation!
-                    ldp.append("$"+sTeX+"$"); 
-                    return;
-                }
-            }
-        }*/
-		
-        // Recognize OOoLaTeX equation
-        // The LaTeX code is embedded in a custom style attribute:
-        StyleWithProperties style = ofr.getFrameStyle(
-            Misc.getAttribute(frame, XMLString.DRAW_STYLE_NAME));
-        if (style!=null) {
-            String sOOoLaTeX = style.getProperty("OOoLatexArgs");
-            // The content of the attribute is <point size><paragraph sign><mode><paragraph sign><TeX code>
-            int n=0;
-            if (sOOoLaTeX!=null) {
-                if ((n=sOOoLaTeX.indexOf("\u00A7display\u00A7"))>-1) {
-                    ldp.append("\\[").append(sOOoLaTeX.substring(n+9)).append("\\]");
-                    bNeedOOoLaTeXPreamble = true;
-                    return;
-                }
-                else if ((n=sOOoLaTeX.indexOf("\u00A7inline\u00A7"))>-1) {
-                    ldp.append("$").append(sOOoLaTeX.substring(n+8)).append("$");
-                    bNeedOOoLaTeXPreamble = true;
-                    return;
-                }
-                else if ((n=sOOoLaTeX.indexOf("\u00A7text\u00A7"))>-1) {
-                    ldp.append(sOOoLaTeX.substring(n+6));
-                    bNeedOOoLaTeXPreamble = true;
-                    return;
-                }
-            }
-        } 
         
         //if (oc.isInFrame() || "as-char".equals(sAnchor)) {
         if ("as-char".equals(sAnchor)) {

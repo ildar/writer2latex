@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-12)
  *
  */
  
@@ -331,16 +331,22 @@ public class DrawConverter extends ConverterHelper {
             }
         }
         else if (sName.equals(XMLString.DRAW_FRAME)) {
-            // OpenDocument embeds the draw element in a frame element
-            handleDrawElement(Misc.getFirstChildElement(onode),hnodeBlock,hnodeInline,nMode);
+        	// First check for TexMaths equation
+        	if (!getMathCv().convertTexMathsEquation(onode, hnodeBlock, hnodeInline, nMode)) {
+        		// OpenDocument embeds the draw element in a frame element
+        		handleDrawElement(Misc.getFirstChildElement(onode),hnodeBlock,hnodeInline,nMode);
+        	}
         }
         else if (sName.equals(XMLString.DRAW_G)) {
-            handleDrawGroup(onode,hnodeBlock,hnodeInline,nMode);
+        	// First check for TexMaths equation
+        	if (!getMathCv().convertTexMathsEquation(onode, hnodeBlock, hnodeInline, nMode)) {
+        		handleDrawGroup(onode,hnodeBlock,hnodeInline,nMode);
+        	}
         }		
         else if (sName.equals(XMLString.DRAW_CONTROL)) {
             handleDrawControl(onode,hnodeBlock,hnodeInline,nMode);
         }		
-    }
+    }    
 
     private void handleDrawObject(Element onode, Element hnodeBlock, Element hnodeInline, int nMode) {
         // TODO: Placement if not inline

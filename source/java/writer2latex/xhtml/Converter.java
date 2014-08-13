@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -351,7 +351,7 @@ public class Converter extends ConverterBase {
         
         // Load MathJax
         // TODO: Should we support different configurations of MathJax?
-        if (nType==XhtmlDocument.HTML5 && config.useMathJax()) {
+        if ((nType==XhtmlDocument.HTML5 || nType==XhtmlDocument.XHTML_MATHML) && config.useMathJax()) {
         	for (int i=0; i<=nOutFileIndex; i++) {
         		if (outFiles.get(i).hasMath()) {
         			XhtmlDocument doc = outFiles.get(i);
@@ -360,7 +360,7 @@ public class Converter extends ConverterBase {
         				Element script = doc.getContentDOM().createElement("script");
         				head.appendChild(script);
         				script.setAttribute("type", "text/javascript");
-        				script.setAttribute("src", "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML");
+        				script.setAttribute("src", "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
         			}
         		}
         	}

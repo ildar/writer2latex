@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -141,9 +141,6 @@ public class TextConverter extends ConverterHelper {
     // We put it here and insert it in the first paragraph/heading to come:
     private Node asapNode = null;
     
-    // Are we within a display equation?
-    private boolean bDisplayEquation = false;
-
     // When generating toc, a few things should be done differently
     private boolean bInToc = false;
     
@@ -361,10 +358,6 @@ public class TextConverter extends ConverterHelper {
         return inline;
     }
     
-    public boolean isDisplayEquation() {
-    	return bDisplayEquation;
-    }
-	
     ////////////////////////////////////////////////////////////////////////
     // BLOCK TEXT (returns current html node at end of block)
     ////////////////////////////////////////////////////////////////////////
@@ -820,9 +813,7 @@ public class TextConverter extends ConverterHelper {
             	insertListLabel(currentListStyle, nCurrentListLevel, "ItemNumber", null, sCurrentListLabel, par);
             }
             sCurrentListLabel = null;
-            bDisplayEquation=converter.parseDisplayEquation(onode);
             traverseInlineText(onode,par);
-            bDisplayEquation=false;
         }
         else {
             // An empty paragraph (this includes paragraphs that only contains

@@ -2,7 +2,7 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.1 alpha ----------
 
-[w2l] Added support for TexMaths equations
+[w2l] Added support for TexMaths equations in LaTeX, XHTML+MathML and HTML5 (the last two only if use_mathjax=true)
 
 [all] The command line application now gives an explanation if the source file is not in ODF format
 
@@ -12,12 +12,9 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
   dimensions), relative (always use relative width) and auto (use the formatting of the source document):
   If set to true, all tables are exported with relative width, even if they have an absolute width in the source document
 
-[w2x] Display equations are now recognized by the same means as in the LaTeX export: A single equation in a paragraph with no
-  text content except whitespace and an optional sequence number in brackets is considered a display equation. In that case
-  it is exported with display="block"
-
-[w2x] New boolean option use_mathjax (default false): If set to true and export format is HTML5, documents will load the MathJax
-  JavaScript library for rendering of formulas (otherwise the document will rely on native MathML support in the browser)
+[w2x] New boolean option use_mathjax (default false): If set to true and export format is XHTML+MATHML or HTML5,
+  documents will load the MathJax JavaScript library for rendering of formulas (otherwise the document will rely
+  on native MathML support in the browser)
 
 [w2x] New boolean option use_svg (default false): If set to true and export format is HTML5, vector graphics are exported as
   inline SVG, if possible

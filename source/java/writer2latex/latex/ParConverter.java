@@ -98,7 +98,7 @@ public class ParConverter extends StyleConverter {
      *  \end{enumerate}).
      */
     public void handleParagraph(Element node, LaTeXDocumentPortion ldp, Context oc, boolean bLastInBlock) {
-        if (palette.getMathmlCv().handleDisplayEquation(node,ldp)) { return; }
+        if (palette.getMathCv().handleDisplayEquation(node,ldp)) { return; }
 		
         // Get the style name for this paragraph
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);

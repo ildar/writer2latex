@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -72,15 +72,63 @@ public class MathConverter extends ConverterHelper {
      */
     public void convert(Node image, Element onode, Node hnode) {
         if (bSupportMathML) {
-            if (converter.getTextCv().isDisplayEquation()) {
-            	onode.setAttribute("display", "block");
-            }
             convertAsMathML(onode,hnode);
         }
         else {
         	convertAsImageOrText(image,onode,hnode);
         }
     }
+    
+    public boolean convertTexMathsEquation(Element onode, Element hnodeBlock, Element hnodeInline, int nMode) {
+        // If possible, add the object inline. In pure block context, add a div.
+        Element hnode;
+        if (hnodeInline!=null) {
+            hnode = hnodeInline;
+        }
+        else {
+            Element div = converter.createElement("div");
+            hnodeBlock.appendChild(div);
+            hnode = div;
+        }
+
+    	String sLaTeX = null;
+    	Element equation = converter.getTexMathsEquation(onode);
+    	if (equation!=null) {
+    		sLaTeX = Misc.getPCDATA(equation);
+    	}
+    	else { // Try OOoLaTeX
+    		// The LaTeX code is embedded in a custom style attribute:
+    		StyleWithProperties style = ofr.getFrameStyle(Misc.getAttribute(onode, XMLString.DRAW_STYLE_NAME));
+    		if (style!=null) {
+    			sLaTeX = style.getProperty("OOoLatexArgs");    		
+    		}
+    	}
+    	if (sLaTeX!=null) {
+    		// Format is <point size>X<mode>X<TeX code>X<format>X<resolution>X<transparency>
+    		// where X is a paragraph sign
+    		String sMathJax;
+    		if (config.useMathJax() && bSupportMathML) {
+    			switch (converter.getTexMathsStyle(sLaTeX)) {
+    			case inline:
+    				sMathJax = "\\("+converter.getTexMathsEquation(sLaTeX)+"\\)";
+    				break;
+    			case display:
+    				sMathJax = "\\["+converter.getTexMathsEquation(sLaTeX)+"\\]";
+    				break;
+    			case latex:
+    			default: // Arbitrary LaTeX; this is the tricky bit	
+    				sMathJax = "\\("+converter.getTexMathsEquation(sLaTeX)+"\\)";
+    			}
+    		}
+    		else {
+    			sMathJax = " "+converter.getTexMathsEquation(sLaTeX)+" ";
+    		}
+    		hnode.appendChild(converter.createTextNode(sMathJax));
+    		return true;
+    	}
+    	return false;
+    }
+
     
     // For plain xhtml: Convert the formula as an image or as plain text
     private void convertAsImageOrText(Node image, Node onode, Node hnode) {

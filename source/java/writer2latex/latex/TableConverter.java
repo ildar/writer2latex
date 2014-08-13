@@ -166,7 +166,7 @@ public class TableConverter extends ConverterHelper {
             // Read the table
             table = ofr.getTableReader(node);
             
-            if (palette.getMathmlCv().handleDisplayEquation(table,ldp)) { return; }
+            if (palette.getMathCv().handleDisplayEquation(table,ldp)) { return; }
 			
             // Get formatter and update flags according to formatter
             formatter = new TableFormatter(ofr,config,palette,table,!oc.isInMulticols(),oc.isInTable());

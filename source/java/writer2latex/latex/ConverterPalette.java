@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-26) 
+ *  Version 1.4 (2014-08-10) 
  *
  */
 
@@ -80,7 +80,7 @@ public final class ConverterPalette extends ConverterBase {
     private InlineConverter inlineCv;
     private FieldConverter fieldCv;
     private DrawConverter drawCv;
-    private MathmlConverter mathmlCv;
+    private MathConverter mathCv;
     private Info info;
 	
     // Constructor
@@ -117,7 +117,7 @@ public final class ConverterPalette extends ConverterBase {
     public InlineConverter getInlineCv() { return inlineCv; }
     public FieldConverter getFieldCv() { return fieldCv; }
     public DrawConverter getDrawCv() { return drawCv; }
-    public MathmlConverter getMathmlCv() { return mathmlCv; }
+    public MathConverter getMathCv() { return mathCv; }
     public Info getInfo() { return info; }
 	
 	
@@ -172,7 +172,7 @@ public final class ConverterPalette extends ConverterBase {
         inlineCv = new InlineConverter(ofr,config,this);
         fieldCv = new FieldConverter(ofr,config,this);
         drawCv = new DrawConverter(ofr,config,this);
-        mathmlCv = new MathmlConverter(ofr,config,this);
+        mathCv = new MathConverter(ofr,config,this);
         info = new Info(ofr,config,this);
 
         // Create master document and add this
@@ -223,7 +223,7 @@ public final class ConverterPalette extends ConverterBase {
         inlineCv.appendDeclarations(packages,declarations);
         fieldCv.appendDeclarations(packages,declarations);
         drawCv.appendDeclarations(packages,declarations);
-        mathmlCv.appendDeclarations(packages,declarations);
+        mathCv.appendDeclarations(packages,declarations);
 
         // Add custom preamble
         String sCustomPreamble = config.getCustomPreamble();

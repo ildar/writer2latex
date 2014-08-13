@@ -16,18 +16,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-02-17)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
 package writer2latex.xhtml;
 
-//import java.util.Enumeration;
-//import java.util.Hashtable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -64,7 +62,7 @@ class StyleConverter extends ConverterHelper {
 	
     // Helper for page styles
     private PageStyleConverter pageSc;
-
+    
     /** <p>Create a new <code>StyleConverter</code></p>
      */
     public StyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
