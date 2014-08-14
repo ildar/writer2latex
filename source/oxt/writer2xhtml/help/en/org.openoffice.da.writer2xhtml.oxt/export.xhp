@@ -14,7 +14,6 @@
         	Choose <emph>File - Export - XHTML 1.0 strict</emph><br/>
         	or <emph>File - Export - XHTML 1.1</emph><br/>
         	or <emph>File - Export - XHTML 1.1 + MathML 2.0</emph><br/>
-        	or <emph>File - Export - XHTML 1.1 + MathML 2.0 (xsl)</emph>
         	or <emph>File - Export - HTML5</emph>
         </section>
         
@@ -195,12 +194,14 @@
         	store the images.</paragraph>
         </section>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsXsltPath" id="bm_options_xsltpath"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">XSLT path</paragraph>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsXsltPath" visibility="hidden">Enter the path to pmathml.xsl and pmathmlcss.xsl</ahelp></paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">If you choose the export filter
-        <emph>XHTML 1.1 + MathML 2.0 (xsl)</emph>, two XSLT style sheets provided by the World Wide Web Consortium are required.
-        If they are not available in the same directory as the exported document, you can give the path here.</paragraph>
-
+   		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsUseMathjax" id="bm_options_usemathjax"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsUseMathjax" visibility="hidden">Check this to load the JavaScript library MathJax for viewing mathematical content</ahelp></paragraph>
+		<section id="usemathjax">
+        	<paragraph role="heading" level="3" xml-lang="en-US">Use MathJax</paragraph>
+        	<paragraph role="paragraph" xml-lang="en-US">MathJax is a JavaScript library for displaying mathematical content in web pages.
+        	Using MathJax ensures that your mathematical content will display correctly in most browsers.
+        	This includes formulas created with the extension TexMaths.
+        	This option is only available if you export to XHTML 1.1+MathML 2.0 or HTML5.</paragraph>
+        </section>
 	</body>
 </helpdocument>

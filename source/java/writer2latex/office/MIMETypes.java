@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-05)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -69,7 +69,6 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
     public static final String BIBTEX_EXT = ".bib";
     public static final String XHTML_EXT = ".html";
     public static final String XHTML_MATHML_EXT = ".xhtml";
-    public static final String XHTML_MATHML_XSL_EXT = ".xml";
     public static final String PNG_EXT = ".png";
     public static final String JPEG_EXT = ".jpg"; // this is the default in graphicx.sty
     public static final String GIF_EXT = ".gif";
@@ -142,7 +141,6 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
         if (BIBTEX.equals(sMIME)) { return BIBTEX_EXT; }
         if (XHTML.equals(sMIME)) { return XHTML_EXT; }
         if (XHTML_MATHML.equals(sMIME)) { return XHTML_MATHML_EXT; }
-        if (XHTML_MATHML_XSL.equals(sMIME)) { return XHTML_MATHML_XSL_EXT; }
         return "";
     }		
 	

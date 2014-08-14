@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-05) 
+ *  Version 1.4 (2014-08-13) 
  *
  */
  
@@ -54,7 +54,7 @@ import writer2latex.util.Misc;
  * <p>Where the available options are
  * <ul>
  * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>, <code>-xhtml</code>,
-       <code>-xhtml+mathml</code>, <code>-xhtml+mathml+xsl</code>, <code>-epub</code>
+       <code>-xhtml+mathml</code>, <code>-epub</code>
  * <li><code>-recurse</code>
  * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-pdfscreen</code>,
  * <code>-pdfprint</code>, <code>-cleanxhtml</code>
@@ -328,7 +328,6 @@ public final class Application {
         System.out.println("   -xhtml");
         System.out.println("   -xhtml11");
         System.out.println("   -xhtml+mathml");
-        System.out.println("   -xhtml+mathml+xsl");
         System.out.println("   -html5");
         System.out.println("   -epub");
         System.out.println("   -recurse");
@@ -366,7 +365,6 @@ public final class Application {
                 else if ("-xhtml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML; }
                 else if ("-xhtml11".equals(sArg)) { sTargetMIME = MIMETypes.XHTML11; }
                 else if ("-xhtml+mathml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML; }
-                else if ("-xhtml+mathml+xsl".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML_XSL; }
                 else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
                 else if ("-recurse".equals(sArg)) { bRecurse = true; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-21)
+ *  Version 1.4 (2014-08-14)
  *
  */ 
  
@@ -87,7 +87,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         loadListBoxOption(xProps, "SplitLevel");
         loadListBoxOption(xProps, "RepeatLevels");
         loadCheckBoxOption(xProps, "SaveImagesInSubdir");
-        loadTextFieldOption(xProps, "XsltPath");
+        loadCheckBoxOption(xProps, "UseMathjax");
 
         updateLockedOptions();
         enableControls();
@@ -148,7 +148,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         }
     		
         saveCheckBoxOption(xProps, helper, "SaveImagesInSubdir", "save_images_in_subdir");
-        saveTextFieldOption(xProps, helper, "XsltPath", "xslt_path");
+        saveCheckBoxOption(xProps, helper, "UseMathjax", "use_mathjax");
 
     }
 	
@@ -196,8 +196,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         setControlEnabled("RepeatLevelsLabel",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("RepeatLevels",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("SaveImagesInSubdir",!isLocked("save_images_in_subdir"));
-        setControlEnabled("XsltPathLabel",(this instanceof XhtmlOptionsDialogXsl) && !isLocked("xslt_path"));
-        setControlEnabled("XsltPath",(this instanceof XhtmlOptionsDialogXsl) && !isLocked("xslt_path"));
+        setControlEnabled("UseMathjax",!isLocked("use_mathjax"));
     }
 	
     private void enableSplitLevel() {
@@ -214,6 +213,3 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
 
 	
 }
-
-
-

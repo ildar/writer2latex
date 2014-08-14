@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-07)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -69,16 +69,11 @@ public class XhtmlDocument extends DOMDocument {
     /** Constant to identify XHTML + MathML documents */
     public static final int XHTML_MATHML = 2;
 
-    /** Constant to identify XHTML + MathML documents using the XSL transformations
-     *  from w3c's math working group (http://www.w3.org/Math/XSL/)
-     */
-    public static final int XHTML_MATHML_XSL = 3;
-    
     /** Constant to identify HTML5 documents */
-    public static final int HTML5 = 4;
+    public static final int HTML5 = 3;
     
     // Some static data
-    private static final String[] sExtension = { ".html", ".xhtml", ".xhtml", ".xml", ".html" };
+    private static final String[] sExtension = { ".html", ".xhtml", ".xhtml", ".html" };
 
     private static Set<String> blockPrettyPrint;
     private static Set<String> conditionalBlockPrettyPrint;
@@ -97,7 +92,6 @@ public class XhtmlDocument extends DOMDocument {
     private boolean bNoDoctype = false;
     private boolean bAddBOM = false;
     private boolean bPrettyPrint = true;
-    private String sXsltPath = "";
     private String sContentId = "content";
     private String sHeaderId = "header";
     private String sFooterId = "footer";
@@ -309,7 +303,6 @@ public class XhtmlDocument extends DOMDocument {
     	case XHTML10: return MIMETypes.XHTML;
     	case XHTML11: return MIMETypes.XHTML_MATHML; // TODO: Change the constant names in MIMETypes, this is a bit confusing...
     	case XHTML_MATHML: return MIMETypes.XHTML_MATHML;
-    	case XHTML_MATHML_XSL: return MIMETypes.XHTML_MATHML_XSL;
     	case HTML5: return MIMETypes.HTML5;
     	}
     	return "";
@@ -436,7 +429,6 @@ public class XhtmlDocument extends DOMDocument {
                 sSystemId = "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd";
                 break; 
             case XHTML_MATHML :
-            case XHTML_MATHML_XSL : 
                 sPublicId = "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN";
                 sSystemId = "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd";
                 //sSystemId = "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd"; (old version)
@@ -514,7 +506,6 @@ public class XhtmlDocument extends DOMDocument {
         bPrettyPrint = config.prettyPrint();
         bUseNamedEntities = config.useNamedEntities();
         bHexadecimalEntities = config.hexadecimalEntities();
-        sXsltPath = config.getXsltPath();
         
         String[] sTemplateIds = config.templateIds().split(",");
         int nIdCount = sTemplateIds.length;
@@ -575,15 +566,9 @@ public class XhtmlDocument extends DOMDocument {
         if (nType!=XHTML10 && nType!=HTML5) {
             osw.write("<?xml version=\"1.0\" encoding=\""+sEncoding+"\" ?>\n");
         }
-        // Either specify doctype or xsl transformation (the user may require
-        // that no doctype is used; this may be desirable for further transformations)
-        if (nType==XHTML_MATHML_XSL) {
-            // Original url: http://www.w3.org/Math/XSL/pmathml.xsl
-            // Add trailing slash if needed
-            String sSlash = sXsltPath.length()>0 && !sXsltPath.endsWith("/") ? "/" : "";
-            osw.write("<?xml-stylesheet type=\"text/xsl\" href=\""+sXsltPath+sSlash+"pmathml.xsl\"?>\n");
-        }
-        else if (!bNoDoctype) {
+        // Specify DOCTYPE (the user may require that no DOCTYPE is used;
+        // this may be desirable for further transformations)
+        if (!bNoDoctype) {
         	if (nType==HTML5) {
         		osw.write("<!DOCTYPE html>\n");
         	}
@@ -763,7 +748,7 @@ public class XhtmlDocument extends DOMDocument {
     			return;
     		}
     		String s=getMathMLEntity(c);
-    		if (s!=null && (nType==XHTML_MATHML || nType==XHTML_MATHML_XSL)) {
+    		if (s!=null && (nType==XHTML_MATHML)) {
     			// There's a MathML entity to use
     			osw.write(s);
     			return;

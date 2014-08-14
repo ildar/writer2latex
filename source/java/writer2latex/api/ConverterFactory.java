@@ -89,9 +89,6 @@ public class ConverterFactory {
         else if (MIMETypes.XHTML_MATHML.equals(sMIME)) {
             converter = createInstance("writer2latex.xhtml.XhtmlMathMLConverter");
         }
-        else if (MIMETypes.XHTML_MATHML_XSL.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.XhtmlMathMLXSLConverter");
-        }
         else if (MIMETypes.HTML5.equals(sMIME)) {
             converter = createInstance("writer2latex.xhtml.Html5Converter");
         }

@@ -269,7 +269,7 @@ public final class MathConverter extends ConverterHelper {
 	 * @param node the paragraph
 	 * @return true if this is a display equation
 	 */
-	public boolean parseDisplayEquation(Node node) {
+	private boolean parseDisplayEquation(Node node) {
 		theEquation = null;
 		theSequence = null;
 		return doParseDisplayEquation(node);
@@ -346,7 +346,7 @@ public final class MathConverter extends ConverterHelper {
      * @param node the draw:frame
      * @return the MathML element, or null if this is not a MathML formula
      */
-    public Element getMathmlEquation(Element node) {
+    private Element getMathmlEquation(Element node) {
         if (node.getTagName().equals(XMLString.DRAW_FRAME)) {
             node=Misc.getFirstChildElement(node);
         }

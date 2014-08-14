@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.1 alpha ----------
 
+[w2x] Support for the obsolete output format XHTML+MahtML+XSL has been removed (replaced by MathJax). As a consequence
+  the option xslt_path has been removed. Also the vacant spot in the export dialog is now used for the option use_mathjax
+  (only active for XHTML+MathML and HTML5) 
+
 [w2l] Added support for TexMaths equations in LaTeX, XHTML+MathML and HTML5 (the last two only if use_mathjax=true)
 
 [all] The command line application now gives an explanation if the source file is not in ODF format

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-12)
+ *  Version 1.4 (2014-08-13)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 58; }
+    protected int getOptionCount() { return 57; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -152,12 +152,11 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int APPLY_PRINT_RANGES = 49;
     private static final int USE_TITLE_AS_HEADING = 50;
     private static final int USE_SHEET_NAMES_AS_HEADINGS = 51;
-    private static final int XSLT_PATH = 52;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 53;
-    private static final int UPLINK = 54;
-    private static final int DIRECTORY_ICON = 55;
-    private static final int DOCUMENT_ICON = 56;
-    private static final int ZEN_HACK = 57; // temporary hack for ePub Zen Garden styles
+    private static final int SAVE_IMAGES_IN_SUBDIR = 52;
+    private static final int UPLINK = 53;
+    private static final int DIRECTORY_ICON = 54;
+    private static final int DOCUMENT_ICON = 55;
+    private static final int ZEN_HACK = 56; // temporary hack for ePub Zen Garden styles
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -284,7 +283,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[APPLY_PRINT_RANGES] = new BooleanOption("apply_print_ranges","false");
         options[USE_TITLE_AS_HEADING] = new BooleanOption("use_title_as_heading","true");
         options[USE_SHEET_NAMES_AS_HEADINGS] = new BooleanOption("use_sheet_names_as_headings","true");
-        options[XSLT_PATH] = new Option("xslt_path","");
         options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
         options[UPLINK] = new Option("uplink","");
         options[DIRECTORY_ICON] = new Option("directory_icon","");
@@ -412,7 +410,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public boolean applyPrintRanges() { return ((BooleanOption) options[APPLY_PRINT_RANGES]).getValue(); }
     public boolean xhtmlUseTitleAsHeading() { return ((BooleanOption) options[USE_TITLE_AS_HEADING]).getValue(); }
     public boolean xhtmlUseSheetNamesAsHeadings() { return ((BooleanOption) options[USE_SHEET_NAMES_AS_HEADINGS]).getValue(); }
-    public String getXsltPath() { return options[XSLT_PATH].getString(); }
     public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
     public String getXhtmlUplink() { return options[UPLINK].getString(); }
     public String getXhtmlDirectoryIcon() { return options[DIRECTORY_ICON].getString(); }
