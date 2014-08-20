@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13) 
+ *  Version 1.4 (2014-08-18) 
  *
  */ 
  
@@ -78,6 +78,12 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(XhtmlOptionsDialogMath.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialogMath.class,
+            XhtmlOptionsDialogMath.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         else if (implName.equals(XhtmlOptionsDialogCalc.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialogCalc.class,
             XhtmlOptionsDialogCalc.__serviceName,
@@ -122,6 +128,8 @@ public class W2XRegistration {
                 W2XExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
                 XhtmlOptionsDialog.__serviceName, regKey) &
+                FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogMath.__implementationName,
+                        XhtmlOptionsDialogMath.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogCalc.__implementationName,
                 XhtmlOptionsDialogCalc.__serviceName, regKey) & 
             FactoryHelper.writeRegistryServiceInfo(EpubOptionsDialog.__implementationName,

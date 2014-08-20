@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-12)
+ *  Version 1.4 (2014-08-20)
  *
  */
  
@@ -360,6 +360,8 @@ public class DrawConverter extends ConverterHelper {
             hnodeBlock.appendChild(div);
             hnode = div;
         }
+        
+        boolean bNoTextPar = OfficeReader.isNoTextPar(OfficeReader.getParagraph(onode));
 
         String sHref = Misc.getAttribute(onode, XMLString.XLINK_HREF);
         if (sHref!=null) { // Embedded object in package or linked object
@@ -376,7 +378,7 @@ public class DrawConverter extends ConverterHelper {
                     }
                     try {
                         hnode.appendChild(converter.createTextNode(" "));
-                        getMathCv().convert(replacementImage,xmlObject.getContentDOM().getDocumentElement(),hnode);
+                        getMathCv().convert(replacementImage,xmlObject.getContentDOM().getDocumentElement(),hnode,bNoTextPar);
                         hnode.appendChild(converter.createTextNode(" "));
                     }
                     catch (SAXException e) {
@@ -415,7 +417,7 @@ public class DrawConverter extends ConverterHelper {
                     replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
                 }
                 hnode.appendChild(converter.createTextNode(" "));
-                getMathCv().convert(replacementImage,formula,hnode);
+                getMathCv().convert(replacementImage,formula,hnode,bNoTextPar);
                 hnode.appendChild(converter.createTextNode(" "));
             }
             else { // unsupported object

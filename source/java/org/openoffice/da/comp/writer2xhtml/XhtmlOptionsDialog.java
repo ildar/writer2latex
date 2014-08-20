@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-14)
+ *  Version 1.4 (2014-08-18)
  *
  */ 
  
@@ -196,7 +196,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         setControlEnabled("RepeatLevelsLabel",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("RepeatLevels",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("SaveImagesInSubdir",!isLocked("save_images_in_subdir"));
-        setControlEnabled("UseMathjax",!isLocked("use_mathjax"));
+        setControlEnabled("UseMathjax",(this instanceof XhtmlOptionsDialogMath) && !isLocked("use_mathjax"));
     }
 	
     private void enableSplitLevel() {

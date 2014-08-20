@@ -20,12 +20,14 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-18)
  *
  */
 
 package writer2latex.latex;
 
+
+import java.util.Map;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,6 +59,7 @@ public final class MathConverter extends ConverterHelper {
     private boolean bContainsFormulas = false;
     private boolean bAddParAfterDisplay = false;
     
+    private boolean bNeedTexMathsPreamble = false;
     private boolean bNeedOOoLaTeXPreamble = false;
     
     private Element theEquation = null;
@@ -76,6 +79,14 @@ public final class MathConverter extends ConverterHelper {
             else {
                 smc.appendDeclarations(pack,decl);
             }
+        }
+        if (bNeedTexMathsPreamble) {
+        	// The preamble may be stored as a user defined property (newline is represented as paragraph sign)
+        	Map<String,String> props = palette.getMetaData().getUserDefinedMetaData();
+        	if (props.containsKey("TexMathsPreamble")) {
+        		decl.append("% TexMaths preamble\n")
+        		    .append(props.get("TexMathsPreamble").replace('\u00a7', '\n'));
+        	}
         }
         if (bNeedOOoLaTeXPreamble) {
             // The preamble may be stored in the description
@@ -145,12 +156,14 @@ public final class MathConverter extends ConverterHelper {
     	Element equation = palette.getTexMathsEquation(node);
     	if (equation!=null) {
     		sLaTeX = Misc.getPCDATA(equation);
+    		if (sLaTeX!=null) { bNeedTexMathsPreamble = true; }
     	}
     	else { // Try OOoLaTeX
     		// The LaTeX code is embedded in a custom style attribute:
     		StyleWithProperties style = ofr.getFrameStyle(Misc.getAttribute(node, XMLString.DRAW_STYLE_NAME));
     		if (style!=null) {
-    			sLaTeX = style.getProperty("OOoLatexArgs");    		
+    			sLaTeX = style.getProperty("OOoLatexArgs");
+    			if (sLaTeX!=null) { bNeedOOoLaTeXPreamble = true; }
     		}
     	}
     	if (sLaTeX!=null) {
@@ -225,13 +238,15 @@ public final class MathConverter extends ConverterHelper {
     		// TeXMaths equation
     		sLaTeX = palette.getTexMathsEquation(Misc.getPCDATA(equation));
     		style = palette.getTexMathsStyle(Misc.getPCDATA(equation));
+    		if (sLaTeX!=null) { bNeedTexMathsPreamble = true; }
     	}
     	else {
     		// MathML equation
     		sLaTeX = convert(null,equation);
     	}
-    	if (!" ".equals(sLaTeX)) { // ignore empty formulas
+    	if (sLaTeX!=null && !" ".equals(sLaTeX)) { // ignore empty formulas
     		if (!bTexMaths || style!=TexMathsStyle.latex) {
+    			// Unfortunately we can't do numbered equations for TexMaths equations with latex style
     			if (sequence!=null) {
     				// Numbered equation
     				ldp.append("\\begin{equation}");

@@ -37,8 +37,7 @@
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Chocolate, Midnight, Modern, Oldstyle, Steely, Swiss, Traditional
 				and Ultramarine</emph> formats the document with one of the
-				<link href="http://www.w3.org/StyleSheets/Core/" name="Link to the W3C's page on core style sheets">8 core styles</link></paragraph>
-			 provided by the World Wide Web Consortium.
+				<link href="http://www.w3.org/StyleSheets/Core/" name="Link to the W3C's page on core style sheets">8 core styles</link> provided by the World Wide Web Consortium.</paragraph>
 			</listitem>
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Custom</emph> is a user defined format. You can define your own
@@ -198,9 +197,9 @@
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsUseMathjax" visibility="hidden">Check this to load the JavaScript library MathJax for viewing mathematical content</ahelp></paragraph>
 		<section id="usemathjax">
         	<paragraph role="heading" level="3" xml-lang="en-US">Use MathJax</paragraph>
-        	<paragraph role="paragraph" xml-lang="en-US">MathJax is a JavaScript library for displaying mathematical content in web pages.
+        	<paragraph role="paragraph" xml-lang="en-US"><link href="http://www.mathjax.org/" name="MathJax web site">MathJax</link> is a JavaScript library for displaying mathematical content in web pages.
         	Using MathJax ensures that your mathematical content will display correctly in most browsers.
-        	This includes formulas created with the extension TexMaths.
+        	This includes formulas created with the extension <link href="http://roland65.free.fr/texmaths/" name="TexMaths web site">TexMaths</link>.
         	This option is only available if you export to XHTML 1.1+MathML 2.0 or HTML5.</paragraph>
         </section>
 	</body>

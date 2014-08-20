@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-05)
+ *  Version 1.4 (2014-08-20)
  *
  */
 
@@ -85,7 +85,21 @@ public class OfficeReader {
                  node.getNodeName().equals(XMLString.TEXT_FOOTNOTE) ||
                  node.getNodeName().equals(XMLString.TEXT_ENDNOTE)  );
     }
-	
+
+    /** Get the paragraph or heading containing a node
+     * 
+     * @param node the node in question
+     * @return the paragraph or heading
+     */
+    public static Element getParagraph(Element node) {
+        Element parent = (Element) node.getParentNode();
+        if (parent.getTagName().equals(XMLString.TEXT_P) || parent.getTagName().equals(XMLString.TEXT_H)) {
+            return parent;
+        } 
+        return getParagraph(parent);
+    }
+
+    
     /** Checks, if this node contains at most one element, and that this is a
      *  paragraph.
      *  @param node the node to check
@@ -109,6 +123,28 @@ public class OfficeReader {
         return bFoundPar;
     }
 	
+    /** Checks, if the only text content of this node is whitespace.
+     *  Other (draw) content is allowed.
+     *  @param node the node to check (should be a paragraph node or a child
+     *  of a paragraph node)
+     *  @return true if the node contains whitespace only
+     */
+    public static boolean isNoTextPar(Node node) {
+	    Node child = node.getFirstChild();
+        while (child!=null) {
+            if (child.getNodeType()==Node.ELEMENT_NODE) {
+                if (isTextElement(child)) {
+                    if (!isWhitespaceContent(child)) { return false; }
+                }
+            }
+            else if (child.getNodeType()==Node.TEXT_NODE) {
+                if (!isWhitespace(child.getNodeValue())) { return false; }
+            }
+            child = child.getNextSibling();
+        }
+        return true; // found nothing!
+    }
+
     /** <p>Checks, if the only text content of this node is whitespace</p>
      *  @param node the node to check (should be a paragraph node or a child
      *  of a paragraph node)
@@ -1071,14 +1107,6 @@ public class OfficeReader {
         /*if (firstMasterPage==null) {
             firstMasterPage = getMasterPage(sFirstMasterPageName);
         }*/
-    }
-	
-    private Element getParagraph(Element node) {
-        Element parent = (Element) node.getParentNode();
-        if (parent.getTagName().equals(XMLString.TEXT_P) || parent.getTagName().equals(XMLString.TEXT_H)) {
-            return parent;
-        } 
-        return getParagraph(parent);
     }
 	
     private void traverseContent(Element node, String sListStyleName, int nListLevel, int nParLevel) {

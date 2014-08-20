@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-20)
  *
  */
 
@@ -70,9 +70,9 @@ public class MathConverter extends ConverterHelper {
      * @param onode the math node
      * @param hnode the xhtml node to which content should be added
      */
-    public void convert(Node image, Element onode, Node hnode) {
+    public void convert(Node image, Element onode, Node hnode, boolean bAllowDisplayStyle) {
         if (bSupportMathML) {
-            convertAsMathML(onode,hnode);
+            convertAsMathML(onode,hnode,bAllowDisplayStyle);
         }
         else {
         	convertAsImageOrText(image,onode,hnode);
@@ -182,15 +182,33 @@ public class MathConverter extends ConverterHelper {
     }
     
     // For xhtml+mathml: Insert the mathml, removing the namespace (if any) and the annotation
-    public void convertAsMathML(Node onode, Node hnode) {
+    private void convertAsMathML(Element onode, Node hnode, boolean bAllowDisplay) {
+    	Element math = converter.createElement("math");
+    	if (onode.hasAttribute("xmlns:math")) {
+    		math.setAttribute("xmlns", onode.getAttribute("xmlns:math"));
+    	}
+    	else if (onode.hasAttribute("xmlns")) {
+    		math.setAttribute("xmlns", onode.getAttribute("xmlns"));
+    	} 
+    	if (bAllowDisplay && onode.hasAttribute("display")) {
+    		// Starting with version 4.2, LO exports display="block" for display equations
+    		// This is a good thing, but in XHTML we can unfortunately only allow this for
+    		// paragraphs with no other text content
+    		math.setAttribute("display", onode.getAttribute("display"));
+    	}
+    	hnode.appendChild(math);
+    	convertMathMLNodeList(onode.getChildNodes(), math);
+    }
+    
+    private void convertElementAsMathML(Node onode, Node hnode) {
         if (onode.getNodeType()==Node.ELEMENT_NODE) {
             if (onode.getNodeName().equals(XMLString.SEMANTICS)) { // Since OOo 3.2
                 // ignore this construction
-                convertNodeList(onode.getChildNodes(),hnode);
+                convertMathMLNodeList(onode.getChildNodes(),hnode);
             }
             else if (onode.getNodeName().equals(XMLString.MATH_SEMANTICS)) {
                 // ignore this construction
-                convertNodeList(onode.getChildNodes(),hnode);
+                convertMathMLNodeList(onode.getChildNodes(),hnode);
             }
             else if (onode.getNodeName().equals(XMLString.ANNOTATION)) { // Since OOo 3.2
                 // ignore the annotation (StarMath) completely
@@ -202,20 +220,18 @@ public class MathConverter extends ConverterHelper {
             }
             else {
                 String sElementName = stripNamespace(onode.getNodeName());
-                Element newNode = hnode.getOwnerDocument().createElement(sElementName);
+                Element newNode = converter.createElement(sElementName);
                 hnode.appendChild(newNode);
                 if (onode.hasAttributes()) {
                     NamedNodeMap attr = onode.getAttributes();
                     int nLen = attr.getLength();
                     for (int i=0; i<nLen; i++) {
-                        String sName = attr.item(i).getNodeName();
-                        if (sName.equals("xmlns:math")) { sName="xmlns"; }
-                        else { sName = stripNamespace(sName); }
+                        String sName = stripNamespace(attr.item(i).getNodeName());
                         String sValue = attr.item(i).getNodeValue();
                         newNode.setAttribute(sName,replacePrivateChars(sValue));
                     }
                 }            
-                convertNodeList(onode.getChildNodes(),newNode);
+                convertMathMLNodeList(onode.getChildNodes(),newNode);
             }
         }
         else if (onode.getNodeType()==Node.TEXT_NODE) {
@@ -224,11 +240,11 @@ public class MathConverter extends ConverterHelper {
         }
     }
 	
-    private void convertNodeList(NodeList list, Node hnode) {
+    private void convertMathMLNodeList(NodeList list, Node hnode) {
         if (list==null) { return; }
         int nLen = list.getLength();
         for (int i=0; i<nLen; i++) {
-            convertAsMathML(list.item(i),hnode);
+            convertElementAsMathML(list.item(i),hnode);
         }
     }
 	
