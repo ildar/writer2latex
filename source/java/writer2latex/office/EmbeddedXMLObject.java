@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-27)
+ *  Version 1.4 (2014-08-25)
  *
  */
 
@@ -37,17 +37,16 @@ import writer2latex.util.SimpleZipReader;
 /** This class represents those embedded objects in an ODF document that have an XML representation:
  *  Formulas, charts, spreadsheets, text, drawings and presentations.              
  * These object types are stored using a combination of content, settings and styles XML files.
+ * The settings are application specific and ignored.
  */
 public class EmbeddedXMLObject extends EmbeddedObject {
     
 	// Byte entries for the XML streams of this object
 	private byte[] contentBytes = null;
-	private byte[] settingsBytes = null;
 	private byte[] stylesBytes = null;
 	
     // DOM trees representing the XML parts of this object
     protected Document contentDOM  = null;
-    protected Document settingsDOM = null;
     protected Document stylesDOM   = null;
     
     /** Read an object from an ODF package document
@@ -60,7 +59,6 @@ public class EmbeddedXMLObject extends EmbeddedObject {
         super(sName, sType);
         // Read the bytes, but defer parsing until required (at that point, the bytes are nullified)
         contentBytes = source.getEntry(sName+"/"+OfficeDocument.CONTENTXML);
-        settingsBytes = source.getEntry(sName+"/"+OfficeDocument.SETTINGSXML);
         stylesBytes = source.getEntry(sName+"/"+OfficeDocument.STYLESXML);
     }  
     
@@ -78,22 +76,6 @@ public class EmbeddedXMLObject extends EmbeddedObject {
             contentBytes=null;
         }
         return contentDOM;
-    }
-    
-    /**
-     * Returns the settings data for this embedded object.
-     *
-     * @return DOM representation of "settings.xml"
-     *
-     * @throws  SAXException    If any parser error occurs
-     * @throws  IOException     If any IO error occurs
-     */   
-    public Document getSettingsDOM() throws SAXException, IOException {  
-        if (settingsDOM==null) {
-            settingsDOM=getDOM(settingsBytes);
-            settingsBytes=null;
-        }
-        return settingsDOM;
     }
     
     /**

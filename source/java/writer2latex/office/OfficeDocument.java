@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-01)
+ *  Version 1.4 (2014-08-25)
  *
  */
 
@@ -30,7 +30,6 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -50,10 +49,9 @@ import writer2latex.util.SimpleZipReader;
  *  This class implements reading of ODF files from various sources
  */
 public class OfficeDocument {
-    // File names for the XML streams in a package document
+    // File names for the XML streams in a package document (settings.xml is ignored)
     protected final static String CONTENTXML = "content.xml";
     protected final static String STYLESXML = "styles.xml";
-    protected final static String SETTINGSXML = "settings.xml";
     private final static String METAXML = "meta.xml";
     private final static String MANIFESTXML = "META-INF/manifest.xml";
 
@@ -61,6 +59,9 @@ public class OfficeDocument {
     private final static String MANIFEST_FILE_ENTRY = "manifest:file-entry";
     private final static String MANIFEST_MEDIA_TYPE = "manifest:media-type";
     private final static String MANIFEST_FULL_PATH = "manifest:full-path";
+    
+    // Identify package format
+    private boolean bIsPackageFormat = false;
 
 	/** DOM <code>Document</code> of content.xml. */
 	private Document contentDoc = null;
@@ -68,19 +69,11 @@ public class OfficeDocument {
 	/** DOM <code>Document</code> of meta.xml. */
 	private Document metaDoc = null;
 
-	/** DOM <code>Document</code> of settings.xml. */
-	private Document settingsDoc = null;
-
 	/** DOM <code>Document</code> of content.xml. */
 	private Document styleDoc = null;
 
 	/** DOM <code>Document</code> of META-INF/manifest.xml. */
 	private Document manifestDoc = null;
-
-	/** <code>SimpleZipReader</code> to store the contents from the <code>InputStream</code>
-	 *  if the document is in package format (otherwise this will remain null)
-	 */
-	private SimpleZipReader zip = null;
 
 	/** Collection to keep track of the embedded objects in the document. */
 	private Map<String, EmbeddedObject> embeddedObjects = null;
@@ -89,7 +82,7 @@ public class OfficeDocument {
 	 *  @return true if the document is in package format, false if it's flat XML
 	 */
 	public boolean isPackageFormat() {
-		return zip!=null;
+		return bIsPackageFormat;
 	}
 
 	/**
@@ -115,17 +108,6 @@ public class OfficeDocument {
 	}
 
 	/**
-	 *  Return a DOM <code>Document</code> object of the settings.xml
-	 *  file. Note that a settings DOM is not created when the constructor
-	 *  is called, but only after the <code>read</code> method has been invoked
-	 *
-	 *  @return  DOM <code>Document</code> object.
-	 */
-	public Document getSettingsDOM() {
-		return settingsDoc;
-	}
-
-	/**
 	 *  Return a DOM <code>Document</code> object of the style.xml file.
 	 *  Note that a style DOM is not created when the constructor
 	 *  is called, but only after the <code>read</code> method has been invoked
@@ -137,47 +119,42 @@ public class OfficeDocument {
 	}
 
 	/**
-	 * Returns all the embedded objects (graphics, formulae, etc.) present in
+	 * Collect all the embedded objects (graphics, formulae, etc.) present in
 	 * this document. If the document is read from flat XML there will be no embedded objects.
-	 *
-	 * @return An <code>Iterator</code> of <code>EmbeddedObject</code> objects.
 	 */
-	public Iterator<EmbeddedObject> getEmbeddedObjects() {
-		if (embeddedObjects == null) {            
-			embeddedObjects = new HashMap<String, EmbeddedObject>();
-			if (manifestDoc != null) {
-				// Need to read the manifest file and construct a list of objects                       
-				NodeList nl = manifestDoc.getElementsByTagName(MANIFEST_FILE_ENTRY);
-				int nLen = nl.getLength();
-				for (int i = 0; i < nLen; i++) {
-					Element elm = (Element) nl.item(i);
-					String sType = elm.getAttribute(MANIFEST_MEDIA_TYPE);
-					String sPath = elm.getAttribute(MANIFEST_FULL_PATH);
+	private void getEmbeddedObjects(SimpleZipReader zip) {
+		embeddedObjects = new HashMap<String, EmbeddedObject>();
+		if (manifestDoc != null) {
+			// Need to read the manifest file and construct a list of objects                       
+			NodeList nl = manifestDoc.getElementsByTagName(MANIFEST_FILE_ENTRY);
+			int nLen = nl.getLength();
+			for (int i = 0; i < nLen; i++) {
+				Element elm = (Element) nl.item(i);
+				String sType = elm.getAttribute(MANIFEST_MEDIA_TYPE);
+				String sPath = elm.getAttribute(MANIFEST_FULL_PATH);
 
-					/* According to the ODF spec there are only two types of embedded object:
-					 *      Objects with an XML representation.
-					 *      Objects without an XML representation.
-					 * The former are represented by one or more XML files.
-					 * The latter are in binary form.
-					 */
-					if (sType.startsWith("application/vnd.oasis.opendocument") || sType.startsWith("application/vnd.sun.xml")) {
-						// Allow either ODF or old OOo 1.x embedded objects
-						if (!sPath.equals("/")) { // Exclude the main document entries
-							if (sPath.endsWith("/")) { // Remove trailing slash
-								sPath=sPath.substring(0, sPath.length()-1);
-							}
-							embeddedObjects.put(sPath, new EmbeddedXMLObject(sPath, sType, zip));
+				/* According to the ODF spec there are only two types of embedded object:
+				 *      Objects with an XML representation.
+				 *      Objects without an XML representation.
+				 * The former are represented by one or more XML files.
+				 * The latter are in binary form.
+				 */
+				if (sType.startsWith("application/vnd.oasis.opendocument") || sType.startsWith("application/vnd.sun.xml")) {
+					// Allow either ODF or old OOo 1.x embedded objects
+					if (!sPath.equals("/")) { // Exclude the main document entries
+						if (sPath.endsWith("/")) { // Remove trailing slash
+							sPath=sPath.substring(0, sPath.length()-1);
 						}
+						embeddedObjects.put(sPath, new EmbeddedXMLObject(sPath, sType, zip));
 					}
-					else if (!sType.equals("text/xml")) {
-						// XML entries are either embedded ODF doc entries or main document entries, all other
-						// entries are included as binary objects
-						embeddedObjects.put(sPath, new EmbeddedBinaryObject(sPath, sType, zip));
-					}
+				}
+				else if (!sType.equals("text/xml")) {
+					// XML entries are either embedded ODF doc entries or main document entries, all other
+					// entries are included as binary objects
+					embeddedObjects.put(sPath, new EmbeddedBinaryObject(sPath, sType, zip));
 				}
 			}
 		}
-		return embeddedObjects.values().iterator();
 	}
 
 	/**
@@ -191,11 +168,7 @@ public class OfficeDocument {
 	 *          object.
 	 */
 	public EmbeddedObject getEmbeddedObject(String sName) {
-		if (sName == null) {
-			return null;
-		}
-		getEmbeddedObjects();
-		if (embeddedObjects.containsKey(sName)) {
+		if (sName!=null && embeddedObjects!=null && embeddedObjects.containsKey(sName)) {
 			return embeddedObjects.get(sName);
 		}
 		return null;
@@ -209,10 +182,9 @@ public class OfficeDocument {
 	public void read(org.w3c.dom.Document dom) {
 		contentDoc = dom;
 		styleDoc = null;
-		settingsDoc = null;
 		metaDoc = null;
 		manifestDoc = null;
-		zip=null;
+		bIsPackageFormat = false;
 		embeddedObjects = null;
 	}
 
@@ -244,7 +216,7 @@ public class OfficeDocument {
 	}
 
 	private void readZip(InputStream is) throws IOException {
-		zip = new SimpleZipReader();
+		SimpleZipReader zip = new SimpleZipReader();
 		zip.read(is);
 
 		byte contentBytes[] = zip.getEntry(CONTENTXML);
@@ -275,15 +247,6 @@ public class OfficeDocument {
 			}
 		}
 
-		byte settingsBytes[] = zip.getEntry(SETTINGSXML);
-		if (settingsBytes != null) {
-			try {
-				settingsDoc = parse(settingsBytes);
-			} catch (SAXException ex) {
-				throw new IOException(ex);
-			}
-		}
-
 		byte manifestBytes[] = zip.getEntry(MANIFESTXML);
 		if (manifestBytes != null) {
 			try {
@@ -292,6 +255,9 @@ public class OfficeDocument {
 				throw new IOException(ex);
 			}
 		}
+		
+		bIsPackageFormat = true;
+		getEmbeddedObjects(zip);
 	}
 
 
@@ -302,10 +268,9 @@ public class OfficeDocument {
 			throw new IOException(e);
 		}
 		styleDoc = null;
-		settingsDoc = null;
 		metaDoc = null;
 		manifestDoc = null;
-		zip=null;
+		bIsPackageFormat = false;
 		embeddedObjects = null;
 	}
 
@@ -337,4 +302,3 @@ public class OfficeDocument {
 	}
 
 }
-

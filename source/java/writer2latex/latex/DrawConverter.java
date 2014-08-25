@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-11)
+ *  Version 1.4 (2014-08-25)
  *
  */
  
@@ -145,13 +145,12 @@ public class DrawConverter extends ConverterHelper {
                 if (object!=null) {
                     if (MIMETypes.MATH.equals(object.getType()) || MIMETypes.ODF.equals(object.getType())) { // Formula!
                         try {
-                            Element settings = ((EmbeddedXMLObject) object).getSettingsDOM().getDocumentElement();
                             Document formuladoc = ((EmbeddedXMLObject) object).getContentDOM();
                             Element formula = Misc.getChildByTagName(formuladoc,XMLString.MATH); // Since OOo3.2
                             if (formula==null) {
                             	formula = Misc.getChildByTagName(formuladoc,XMLString.MATH_MATH);
                             }
-                            String sLaTeX = palette.getMathCv().convert(settings,formula);
+                            String sLaTeX = palette.getMathCv().convert(formula);
                             if (!" ".equals(sLaTeX)) { // ignore empty formulas
                             	ldp.append(" $")
                             	   .append(sLaTeX)
@@ -190,7 +189,7 @@ public class DrawConverter extends ConverterHelper {
             }
             if (formula!=null) {
                 ldp.append(" $")
-                   .append(palette.getMathCv().convert(null,formula))
+                   .append(palette.getMathCv().convert(formula))
                    .append("$");
                 if (Character.isLetterOrDigit(OfficeReader.getNextChar(node))) { ldp.append(" "); }
             }

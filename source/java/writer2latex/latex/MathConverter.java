@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-18)
+ *  Version 1.4 (2014-08-25)
  *
  */
 
@@ -102,7 +102,7 @@ public final class MathConverter extends ConverterHelper {
 	
     
     // TODO: Replace with a method "handleEquation"
-    public String convert(Element settings, Element formula) {
+    public String convert(Element formula) {
         // TODO: Use settings to determine display mode/text mode
         // formula must be a math:math node
         // First try to find a StarMath annotation
@@ -242,7 +242,7 @@ public final class MathConverter extends ConverterHelper {
     	}
     	else {
     		// MathML equation
-    		sLaTeX = convert(null,equation);
+    		sLaTeX = convert(equation);
     	}
     	if (sLaTeX!=null && !" ".equals(sLaTeX)) { // ignore empty formulas
     		if (!bTexMaths || style!=TexMathsStyle.latex) {
