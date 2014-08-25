@@ -1,7 +1,7 @@
-Writer2LaTeX version 1.3.1 (alpha test release)
+Writer2LaTeX version 1.3.2 (alpha test release)
 ===============================================
 
-This is the distribution of Writer2LaTeX version 1.3.1 alpha
+This is the distribution of Writer2LaTeX version 1.3.2 alpha
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net
