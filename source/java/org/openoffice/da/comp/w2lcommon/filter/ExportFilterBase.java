@@ -45,7 +45,6 @@ import com.sun.star.xml.XExportFilter;
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
 import writer2latex.api.Converter;
 import writer2latex.api.ConverterFactory;
-import writer2latex.api.ConverterResult;
 import writer2latex.api.OutputFile;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleDOMBuilder;
@@ -226,105 +225,97 @@ XTypeProvider {
 
 	public void convert (org.w3c.dom.Document dom,com.sun.star.io.XOutputStream exportStream)
 	throws com.sun.star.uno.RuntimeException, IOException {
-		// Initialize the file access
-		sfa2 = null;
-		try {
-			Object sfaObject = xComponentContext.getServiceManager().createInstanceWithContext(
-					"com.sun.star.ucb.SimpleFileAccess", xComponentContext);
-			sfa2 = (XSimpleFileAccess2) UnoRuntime.queryInterface(XSimpleFileAccess2.class, sfaObject);
-		}
-		catch (com.sun.star.uno.Exception e) {
-			// failed to get SimpleFileAccess service (should not happen)
-		}
-
-		// Get base name from the URL provided by OOo
-		String sName= getFileName(sURL);
-
-		// Create converter
+		// Create converter and supply it with filter data and a suitable graphic converter
 		Converter converter = ConverterFactory.createConverter(sdMime);
 		if (converter==null) {
 			throw new com.sun.star.uno.RuntimeException("Failed to create converter to "+sdMime);
 		}
-
-		// Adapter for output stream (Main output file)
-		XOutputStreamToOutputStreamAdapter newxos =new XOutputStreamToOutputStreamAdapter(exportStream);
-
-		// Apply the FilterData to the converter
 		if (filterData!=null) {
 			FilterDataParser fdp = new FilterDataParser(xComponentContext);
 			fdp.applyFilterData(filterData,converter);
 		}
-
-		// Do conversion 
 		converter.setGraphicConverter(new GraphicConverterImpl(xComponentContext));
+		
+		// Do conversion. The base name is take from the URL provided by the office
+		Iterator<OutputFile> docEnum = converter.convert(dom,Misc.makeFileName(getFileName(sURL))).iterator();
 
-		ConverterResult dataOut = converter.convert(dom,Misc.makeFileName(sName));
-
-		// Write out files
-		Iterator<OutputFile> docEnum = dataOut.iterator();
-
-		// Remove the file name part of the URL
-		String sNewURL = null;
-		if (sURL.lastIndexOf("/")>-1) {
-			// Take the URL up to and including the last slash
-			sNewURL = sURL.substring(0,sURL.lastIndexOf("/")+1);
+		if (docEnum.hasNext()) {
+			// The master document is written to the XOutStream supplied by the XMLFilterAdaptor
+			XOutputStreamToOutputStreamAdapter newxos =new XOutputStreamToOutputStreamAdapter(exportStream);
+			docEnum.next().write(newxos);
+			newxos.flush();
+			newxos.close();
+			
+			if (docEnum.hasNext() && sURL.startsWith("file:")) {
+				// Additional files are written directly using UCB
+				// Initialize the file access (used to write all additional output files)
+				sfa2 = null;
+				try {
+					Object sfaObject = xComponentContext.getServiceManager().createInstanceWithContext(
+							"com.sun.star.ucb.SimpleFileAccess", xComponentContext);
+					sfa2 = (XSimpleFileAccess2) UnoRuntime.queryInterface(XSimpleFileAccess2.class, sfaObject);
+				}
+				catch (com.sun.star.uno.Exception e) {
+					// failed to get SimpleFileAccess service (should not happen)
+				}
+				
+				if (sfa2!=null) {
+					// Remove the file name part of the URL
+					String sNewURL = null;
+					if (sURL.lastIndexOf("/")>-1) {
+						// Take the URL up to and including the last slash
+						sNewURL = sURL.substring(0,sURL.lastIndexOf("/")+1);
+					}
+					else {
+						// The URL does not include a path; this should not really happen,
+						// but in this case we will write to the current default directory
+						sNewURL = "";
+					}
+				
+					while (docEnum.hasNext()) {
+						OutputFile docOut = docEnum.next();
+						// Get the file name and the (optional) directory name
+						String sFullFileName = Misc.makeHref(docOut.getFileName());
+						String sDirName = "";
+						String sFileName = sFullFileName;
+						int nSlash = sFileName.indexOf("/");
+						if (nSlash>-1) {
+							sDirName = sFileName.substring(0,nSlash);
+							sFileName = sFileName.substring(nSlash+1);
+						}
+		
+						try{
+							// Create subdirectory if required
+							if (sDirName.length()>0 && !sfa2.exists(sNewURL+sDirName)) {
+								sfa2.createFolder(sNewURL+sDirName);
+							}
+		
+							// writeFile demands an InputStream, so we need a pipe
+							Object xPipeObj=xMSF.createInstance("com.sun.star.io.Pipe");
+							XInputStream xInStream	= (XInputStream) UnoRuntime.queryInterface(XInputStream.class, xPipeObj );
+							XOutputStream xOutStream = (XOutputStream) UnoRuntime.queryInterface(XOutputStream.class, xPipeObj );
+							OutputStream outStream = new XOutputStreamToOutputStreamAdapter(xOutStream);
+							// Feed the pipe with content...
+							docOut.write(outStream);
+							outStream.flush();
+							outStream.close();
+							xOutStream.closeOutput();
+							// ...and then write the content to the URL
+							sfa2.writeFile(sNewURL+sFullFileName,xInStream);
+						}
+						catch (Throwable e){
+							MessageBox msgBox = new MessageBox(xComponentContext);
+							msgBox.showMessage(__displayName+": Error writing files",
+									e.toString()+" at "+e.getStackTrace()[0].toString());
+						}
+					}
+				}
+			}
 		}
 		else {
-			// The URL does not include a path; this should not really happen,
-			// but in this case we will write to the current default directory
-			sNewURL = "";
-		}
-
-		while (docEnum.hasNext() && sURL.startsWith("file:")) {
-			OutputFile docOut      = docEnum.next();
-
-			if (dataOut.getMasterDocument()==docOut) {
-				// The master document is written to the XOutStream supplied
-				// by the XMLFilterAdaptor
-				docOut.write(newxos);
-				newxos.flush();
-				newxos.close();
-			}
-			else {				
-				// Additional files are written directly using UCB
-
-				// Get the file name and the (optional) directory name
-				String sFullFileName = Misc.makeHref(docOut.getFileName());
-				String sDirName = "";
-				String sFileName = sFullFileName;
-				int nSlash = sFileName.indexOf("/");
-				if (nSlash>-1) {
-					sDirName = sFileName.substring(0,nSlash);
-					sFileName = sFileName.substring(nSlash+1);
-				}
-
-				try{
-					// Create subdirectory if required
-					if (sDirName.length()>0 && !sfa2.exists(sNewURL+sDirName)) {
-						sfa2.createFolder(sNewURL+sDirName);
-					}
-
-					// writeFile demands an InputStream, so we need a pipe
-					Object xPipeObj=xMSF.createInstance("com.sun.star.io.Pipe");
-					XInputStream xInStream
-					= (XInputStream) UnoRuntime.queryInterface(XInputStream.class, xPipeObj );
-					XOutputStream xOutStream
-					= (XOutputStream) UnoRuntime.queryInterface(XOutputStream.class, xPipeObj );
-					OutputStream outStream = new XOutputStreamToOutputStreamAdapter(xOutStream);
-					// Feed the pipe with content...
-					docOut.write(outStream);
-					outStream.flush();
-					outStream.close();
-					xOutStream.closeOutput();
-					// ...and then write the content to the URL
-					sfa2.writeFile(sNewURL+sFullFileName,xInStream);
-				}
-				catch (Throwable e){
-					MessageBox msgBox = new MessageBox(xComponentContext);
-					msgBox.showMessage(__displayName+": Error writing files",
-							e.toString()+" at "+e.getStackTrace()[0].toString());
-				}
-			}
+			// The converter did not produce any files (should not happen)
+			MessageBox msgBox = new MessageBox(xComponentContext);
+			msgBox.showMessage(__displayName+": Conversion failed","Internal error");
 		}
 	}
 

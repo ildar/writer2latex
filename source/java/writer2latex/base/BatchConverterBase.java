@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-10-15)
+ *  Version 1.4 (2014-08-27)
  *
  */
  
@@ -175,7 +175,7 @@ public abstract class BatchConverterBase implements BatchConverter {
         
         handler.endFile(infile.getPath(),true);
 
-        return dataOut.getMasterDocument().getFileName();
+        return dataOut.iterator().next().getFileName();
     }
 	
 

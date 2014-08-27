@@ -519,7 +519,7 @@ public class OfficeReader {
      * @return the iso language
      */ 
     public String getMajorityLanguage() {
-        Hashtable<Object, Integer> langs = new Hashtable<Object, Integer>();
+        Hashtable<String, Integer> langs = new Hashtable<String, Integer>();
 
         // Read the default language from the default paragraph style
         String sDefaultLang = null;
@@ -529,7 +529,7 @@ public class OfficeReader {
         }
 
         // Collect languages from paragraph styles
-        Enumeration<Object> enumeration = getParStyles().getStylesEnumeration();
+        Enumeration<OfficeStyle> enumeration = getParStyles().getStylesEnumeration();
         while (enumeration.hasMoreElements()) {
             style = (StyleWithProperties) enumeration.nextElement();
             String sLang = style.getProperty(XMLString.FO_LANGUAGE);
@@ -546,9 +546,9 @@ public class OfficeReader {
         // Find the most common language
         int nMaxCount = 0;
         String sMajorityLanguage = null;
-        enumeration = langs.keys();
-        while (enumeration.hasMoreElements()) {
-            String sLang = (String) enumeration.nextElement();
+        Enumeration<String> langenum = langs.keys();
+        while (langenum.hasMoreElements()) {
+            String sLang = langenum.nextElement();
             int nCount = langs.get(sLang).intValue();
             if (nCount>nMaxCount) {
                 nMaxCount = nCount;

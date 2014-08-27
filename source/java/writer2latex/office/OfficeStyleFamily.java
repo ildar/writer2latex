@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-11-23)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -33,8 +33,8 @@ import writer2latex.util.Misc;
 
 /** Container class representing a style family in OOo */
 public class OfficeStyleFamily {
-    private Hashtable<String, Object> styles = new Hashtable<String, Object>();
-    private Class styleClass;
+    private Hashtable<String, OfficeStyle> styles = new Hashtable<String, OfficeStyle>();
+    private Class<? extends OfficeStyle> styleClass;
 	
     private Hashtable<String, String> displayNames = new Hashtable<String, String>();
 	
@@ -44,7 +44,7 @@ public class OfficeStyleFamily {
      *  @param styleClass the subclass of OfficeStyle used to represent styles
      *  in this family
      */
-    public OfficeStyleFamily(Class styleClass) {
+    public OfficeStyleFamily(Class<? extends OfficeStyle> styleClass) {
         this.styleClass = styleClass;
     }
 	
@@ -70,7 +70,7 @@ public class OfficeStyleFamily {
      */
     public OfficeStyle getStyle(String sName) {
         if (sName==null) { return null; }
-        else { return (OfficeStyle) styles.get(sName); }
+        else { return styles.get(sName); }
     }
 	
     /** Get a style by display name. Automatic styles does not have a display
@@ -101,7 +101,7 @@ public class OfficeStyleFamily {
     /** Get all named styles in the family (ie. excluding the default style)
      *  @return an enumeration of all styles represented by OfficeStyle objects
      */
-    public Enumeration<Object> getStylesEnumeration(){
+    public Enumeration<OfficeStyle> getStylesEnumeration(){
         return styles.elements();
     }
 	
@@ -113,7 +113,7 @@ public class OfficeStyleFamily {
         String sName = Misc.getAttribute(node,XMLString.STYLE_NAME);
         if (sName!=null) {
             try {
-                OfficeStyle style = (OfficeStyle) styleClass.newInstance();
+                OfficeStyle style = styleClass.newInstance();
                 style.sName=sName;
                 style.family=this;
                 style.bAutomatic=bAutomatic;

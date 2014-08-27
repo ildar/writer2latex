@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -100,8 +100,8 @@ public class Converter extends ConverterBase {
     private XhtmlDocument htmlDoc; // current outfile
     private Document htmlDOM; // current DOM, usually within htmlDoc
     private boolean bNeedHeaderFooter = false;
-    private int nTocFileIndex = -1;
-    private int nAlphabeticalIndex = -1;
+    //private int nTocFileIndex = -1;
+    //private int nAlphabeticalIndex = -1;
 
     // Hyperlinks
     Hashtable<String, Integer> targets = new Hashtable<String, Integer>();
@@ -201,7 +201,7 @@ public class Converter extends ConverterBase {
     
     protected void setTocFile(String sTarget) {
     	converterResult.setTocFile(new ContentEntryImpl(l10n.get(L10n.CONTENTS),1,htmlDoc,sTarget));
-    	nTocFileIndex = nOutFileIndex;
+    	//nTocFileIndex = nOutFileIndex;
     }
 	
     protected void setLofFile(String sTarget) {
@@ -214,7 +214,7 @@ public class Converter extends ConverterBase {
 	
     protected void setIndexFile(String sTarget) {
     	converterResult.setIndexFile(new ContentEntryImpl(l10n.get(L10n.INDEX),1,htmlDoc,sTarget));
-    	nAlphabeticalIndex = nOutFileIndex;
+    	//nAlphabeticalIndex = nOutFileIndex;
     }
     
     protected void setCoverFile(String sTarget) {

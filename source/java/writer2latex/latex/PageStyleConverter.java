@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-09-17)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -157,7 +157,7 @@ public class PageStyleConverter extends StyleConverter {
         context.setInHeaderFooter(true);
 		
 
-        Enumeration<Object> styles = ofr.getMasterPages().getStylesEnumeration();
+        Enumeration<OfficeStyle> styles = ofr.getMasterPages().getStylesEnumeration();
         ldp.append("% Pages styles").nl();
         if (!config.useFancyhdr()) {
             ldp.append("\\makeatletter").nl();
@@ -385,7 +385,7 @@ public class PageStyleConverter extends StyleConverter {
         boolean bIncludeHead = false;
         boolean bIncludeFoot = false;
         // Look through all applied page layouts and use largest heights
-        Enumeration<Object> masters = ofr.getMasterPages().getStylesEnumeration();
+        Enumeration<OfficeStyle> masters = ofr.getMasterPages().getStylesEnumeration();
         while (masters.hasMoreElements()) {
             MasterPage master = (MasterPage) masters.nextElement();
             if (styleNames.containsName(getDisplayName(master.getName()))) {
