@@ -16,21 +16,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-04-01)
+ *  Version 1.4 (2014-08-25)
  *
  */
 
-package writer2latex.xmerge;
+package writer2latex.base;
 
 import java.io.OutputStream;
 import java.io.InputStream;
 //import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import writer2latex.api.OutputFile;
 import writer2latex.util.Misc;
 
 
@@ -43,7 +44,7 @@ import writer2latex.util.Misc;
  * <p><code>GraphicsDocument</code> is used to create new graphics documents.</p>
  *
  */
-public class BinaryGraphicsDocument implements Document {
+public class BinaryGraphicsDocument implements OutputFile {
 
     //private final static int BUFFERSIZE = 1024;
 

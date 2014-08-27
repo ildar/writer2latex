@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.openoffice.da.comp.w2lcommon.filter.ConfigurationDialogBase;
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
-import org.openoffice.da.comp.w2lcommon.helper.FilePicker;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.lang.XServiceInfo;

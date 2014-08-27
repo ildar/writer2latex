@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25)
+ *  Version 1.4 (2014-08-26)
  *
  */
  
@@ -32,6 +32,7 @@ import java.util.Stack;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import writer2latex.base.BinaryGraphicsDocument;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.office.EmbeddedObject;
@@ -41,7 +42,6 @@ import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
-import writer2latex.xmerge.BinaryGraphicsDocument;
 
 /**
  *  <p>This class handles draw elements.</p>
@@ -312,7 +312,7 @@ public class DrawConverter extends ConverterHelper {
                 (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS_EXT.equals(sExt)));
         }
         else { // embedded or base64 encoded image
-            BinaryGraphicsDocument bgd = palette.getImageLoader().getImage(node);
+            BinaryGraphicsDocument bgd = palette.getImageCv().getImage(node);
             if (bgd!=null) {
                 palette.addDocument(bgd);
                 sFileName = bgd.getFileName();

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -38,7 +38,6 @@ import writer2latex.api.Converter;
 import writer2latex.api.ConverterResult;
 import writer2latex.api.OutputFile;
 import writer2latex.office.EmbeddedObject;
-import writer2latex.office.ImageLoader;
 import writer2latex.office.MetaData;
 import writer2latex.office.OfficeDocument;
 import writer2latex.office.OfficeReader;
@@ -58,7 +57,7 @@ public abstract class ConverterBase implements Converter {
     protected OfficeDocument odDoc;
     protected OfficeReader ofr;
     protected MetaData metaData;
-    protected ImageLoader imageLoader;
+    protected ImageConverter imageConverter;
 
     // The output file(s)
     protected String sTargetFileName;
@@ -114,8 +113,8 @@ public abstract class ConverterBase implements Converter {
     private ConverterResult convert(String sTargetFileName) throws IOException {
         ofr = new OfficeReader(odDoc,false);
         metaData = new MetaData(odDoc);
-        imageLoader = new ImageLoader(odDoc,true);
-        imageLoader.setGraphicConverter(graphicConverter);
+        imageConverter = new ImageConverter(odDoc,true);
+        imageConverter.setGraphicConverter(graphicConverter);
 
         // Prepare output
         this.sTargetFileName = sTargetFileName;
@@ -136,7 +135,7 @@ public abstract class ConverterBase implements Converter {
 
     public MetaData getMetaData() { return metaData; }
     
-    public ImageLoader getImageLoader() { return imageLoader; }
+    public ImageConverter getImageCv() { return imageConverter; }
 	
     public void addDocument(OutputFile doc) { converterResult.addDocument(doc); }
 	

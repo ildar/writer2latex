@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2012-03-22)
+ *  Version 1.4 (2014-08-27)
  *  
  */
 
@@ -240,14 +240,14 @@ XTypeProvider {
 		// Get base name from the URL provided by OOo
 		String sName= getFileName(sURL);
 
-		// Adapter for output stream (Main output file)
-		XOutputStreamToOutputStreamAdapter newxos =new XOutputStreamToOutputStreamAdapter(exportStream);
-
 		// Create converter
 		Converter converter = ConverterFactory.createConverter(sdMime);
 		if (converter==null) {
 			throw new com.sun.star.uno.RuntimeException("Failed to create converter to "+sdMime);
 		}
+
+		// Adapter for output stream (Main output file)
+		XOutputStreamToOutputStreamAdapter newxos =new XOutputStreamToOutputStreamAdapter(exportStream);
 
 		// Apply the FilterData to the converter
 		if (filterData!=null) {

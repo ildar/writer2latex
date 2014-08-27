@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-20)
+ *  Version 1.4 (2014-08-26)
  *
  */
  
@@ -59,7 +59,7 @@ import org.w3c.dom.Element;
 import writer2latex.util.Misc;
 import writer2latex.util.CSVList;
 import writer2latex.util.SimpleXMLParser;
-import writer2latex.xmerge.BinaryGraphicsDocument;
+import writer2latex.base.BinaryGraphicsDocument;
 import writer2latex.office.EmbeddedObject;
 import writer2latex.office.EmbeddedXMLObject;
 import writer2latex.office.XMLString;
@@ -480,7 +480,7 @@ public class DrawConverter extends ConverterHelper {
         	}
         }
         else { // embedded or base64 encoded image
-            bgd = converter.getImageLoader().getImage(onode);
+            bgd = converter.getImageCv().getImage(onode);
             if (bgd!=null) {
                 sFileName = bgd.getFileName();
                 // If this is the cover image, add it to the converter result

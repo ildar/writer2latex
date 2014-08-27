@@ -146,7 +146,7 @@ public final class MathConverter extends ConverterHelper {
 
     /** Try to convert a draw:frame or draw:g element as an (inline) TexMaths or OOoLaTeX equation
      * 
-     * @param the element containing the equation (draw:frame or draw:g)
+     * @param node the element containing the equation (draw:frame or draw:g)
      * @param ldp the LaTeXDocumentPortion to contain the converted equation
      * 
      * @return true if this elements happen to be a TexMaths equation, otherwise false

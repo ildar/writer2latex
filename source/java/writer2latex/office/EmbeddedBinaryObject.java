@@ -40,8 +40,8 @@ public class EmbeddedBinaryObject extends EmbeddedObject {
      * Package private constructor for use when reading an object from a 
      * package ODF file
      *
-     * @param   name    The name of the object.
-     * @param   type    The MIME-type of the object.
+     * @param   sName    The name of the object.
+     * @param   sType    The MIME-type of the object.
      * @param   source  A <code>SimpleZipReader</code> containing the object
      */    
     protected EmbeddedBinaryObject(String sName, String sType, SimpleZipReader source) {

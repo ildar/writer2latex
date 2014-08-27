@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-19)
+ *  Version 1.4 (2014-08-26)
  *
  */
 
@@ -40,13 +40,14 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.DOMImplementation;
 
 import writer2latex.api.ComplexOption;
-import writer2latex.xmerge.DOMDocument;
 
 public abstract class ConfigBase implements writer2latex.api.Config {
 	
@@ -127,7 +128,7 @@ public abstract class ConfigBase implements writer2latex.api.Config {
                 if (elm.getTagName().equals("option")) {
                     String sName = elm.getAttribute("name");
                     String sValue = elm.getAttribute("value");
-                    if (sName!="") { setOption(sName,sValue); }
+                    if (sName.length()>0) { setOption(sName,sValue); }
                 }
                 else {
                     readInner(elm);
@@ -154,9 +155,10 @@ public abstract class ConfigBase implements writer2latex.api.Config {
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             DOMImplementation domImpl = builder.getDOMImplementation();
             dom = domImpl.createDocument("","config",null);
-        }
-        catch (Throwable t) {
-            t.printStackTrace();
+    	} catch (ParserConfigurationException e) {
+    		// This will not happen
+            e.printStackTrace();
+            return;
         }
         Element rootElement = dom.getDocumentElement();
 

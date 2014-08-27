@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-11-22)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -40,7 +40,7 @@ import writer2latex.util.Misc;
 public class TocReader {
 
     Element tocSource = null;
-    Element indexBody = null;
+    //Element indexBody = null;
 	 
     String sName=null;                       // (section) name for this toc
     String sStyleName=null;                  // section style name
@@ -181,7 +181,7 @@ public class TocReader {
     /** <p>Return the generated content of this toc, if available</p>
      *  @return the <code>text:index-body</code> element
      */
-    public Element getIndexBody() { return indexBody; }
+    /* public Element getIndexBody() { return indexBody; } */
 
 	
 }

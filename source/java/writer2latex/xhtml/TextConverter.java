@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -966,15 +966,15 @@ public class TextConverter extends ConverterHelper {
         ListCounter counter = getListCounter(ofr.getListStyle(styleName));
 
         // Restart numbering, if required
-        if (counter!=null) {
-            boolean bContinueNumbering = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_CONTINUE_NUMBERING));
-            if (!bContinueNumbering && counter!=null) {
-                counter.restart(nLevel);
-            }
-            if (config.listFormatting()==XhtmlConfig.CSS1_HACK && counter.getValue(nLevel)>0) {
-                hnode.setAttribute("start",Integer.toString(counter.getValue(nLevel)+1));                	
-            }
+        //if (counter!=null) {
+        boolean bContinueNumbering = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_CONTINUE_NUMBERING));
+        if (!bContinueNumbering && counter!=null) {
+            counter.restart(nLevel);
         }
+        if (config.listFormatting()==XhtmlConfig.CSS1_HACK && counter.getValue(nLevel)>0) {
+            hnode.setAttribute("start",Integer.toString(counter.getValue(nLevel)+1));                	
+        }
+        //}
 
         if (onode.hasChildNodes()) {
             NodeList nList = onode.getChildNodes();
@@ -1001,7 +1001,9 @@ public class TextConverter extends ConverterHelper {
                         }
                         else {
                             // add an li element
-                            sCurrentListLabel = counter.step(nLevel).getLabel();
+                        	//if (counter!=null) {
+                        	sCurrentListLabel = counter.step(nLevel).getLabel();
+                        	//}
                             currentListStyle = ofr.getListStyle(styleName);
                             nCurrentListLevel = nLevel;
                             Element item = converter.createElement("li");
@@ -1016,9 +1018,9 @@ public class TextConverter extends ConverterHelper {
                                     XMLString.TEXT_START_VALUE),1);
                                 if (bRestart) {
                                     item.setAttribute("value",Integer.toString(nStartValue));
-                                    if (counter!=null) {
-                                        sCurrentListLabel = counter.restart(nLevel,nStartValue).getLabel();
-                                    }
+                                    //if (counter!=null) {
+                                    sCurrentListLabel = counter.restart(nLevel,nStartValue).getLabel();
+                                    //}
                                 }
                             }
                             traverseListItem(child,nLevel,styleName,item);

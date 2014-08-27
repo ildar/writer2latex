@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-10) 
+ *  Version 1.4 (2014-08-27) 
  *
  */
 
@@ -125,19 +125,19 @@ public final class ConverterPalette extends ConverterBase {
     public void convertInner() throws IOException {
         sTargetFileName = Misc.trimDocumentName(sTargetFileName,".tex");
         String sSafeTargetFileName = new ExportNameCollection(true).getExportName(sTargetFileName);
-        imageLoader.setBaseFileName(sSafeTargetFileName+"-img");
+        imageConverter.setBaseFileName(sSafeTargetFileName+"-img");
         if (config.saveImagesInSubdir()) {
-        	imageLoader.setUseSubdir(sSafeTargetFileName+"-img");
+        	imageConverter.setUseSubdir(sSafeTargetFileName+"-img");
         }
 		
         // Set graphics formats depending on backend
         if (config.getBackend()==LaTeXConfig.PDFTEX || config.getBackend()==LaTeXConfig.XETEX) {
-            imageLoader.setDefaultFormat(MIMETypes.PNG);
-            imageLoader.setDefaultVectorFormat(MIMETypes.PDF);
-            imageLoader.addAcceptedFormat(MIMETypes.JPEG);
+            imageConverter.setDefaultFormat(MIMETypes.PNG);
+            imageConverter.setDefaultVectorFormat(MIMETypes.PDF);
+            imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         }
         else if (config.getBackend()==LaTeXConfig.DVIPS) {
-            imageLoader.setDefaultFormat(MIMETypes.EPS);
+            imageConverter.setDefaultFormat(MIMETypes.EPS);
         }
         // Other values: keep original format
 		

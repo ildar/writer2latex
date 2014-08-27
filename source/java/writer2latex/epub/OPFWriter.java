@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2012 by Henrik Just
+ *  Copyright: 2001-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2012-03-19)
+ *  version 1.4 (2014-08-26)
  *
  */
 
@@ -43,8 +43,8 @@ import org.w3c.dom.Element;
 import writer2latex.api.ContentEntry;
 import writer2latex.api.ConverterResult;
 import writer2latex.api.OutputFile;
+import writer2latex.base.DOMDocument;
 import writer2latex.util.Misc;
-import writer2latex.xmerge.DOMDocument;
 
 /** This class writes an OPF-file for an EPUB document (see http://www.idpf.org/2007/opf/OPF_2.0_final_spec.html).
  */

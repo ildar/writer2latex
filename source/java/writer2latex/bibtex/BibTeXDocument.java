@@ -16,27 +16,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-03-28)
+ *  Version 1.4 (2014-08-26)
  *
  */
 
 package writer2latex.bibtex;
 
-import writer2latex.xmerge.Document;
-
 import java.util.Hashtable;
 import java.util.Enumeration;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import writer2latex.api.ConverterFactory;
 import writer2latex.api.MIMETypes;
+import writer2latex.api.OutputFile;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.I18n;
@@ -48,7 +46,7 @@ import writer2latex.office.BibMark;
  * <p>Class representing a BibTeX document.</p>
  *
  */
-public class BibTeXDocument implements Document {
+public class BibTeXDocument implements OutputFile {
     private static final String FILE_EXTENSION = ".bib";
 	
     private String sName;
@@ -72,19 +70,6 @@ public class BibTeXDocument implements Document {
         // Use default config (only ascii, no extra font packages)
         i18n = new ClassicI18n(new LaTeXConfig());
     }
-    
-    /**
-     * <p>This method is supposed to read <code>byte</code> data from the InputStream.
-     * Currently it does nothing, since we don't need it.</p>
-     * 
-     * @param   is      InputStream containing a BibTeX data file.
-     *
-     * @throws  IOException     In case of any I/O errors.
-     */
-    public void read(InputStream is) throws IOException {
-        // Do nothing.
-    }
-  
     
     /**
      * <p>Returns the <code>Document</code> name with no file extension.</p>
@@ -247,4 +232,3 @@ public class BibTeXDocument implements Document {
     }
 
 }
-    

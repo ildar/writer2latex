@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-26)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -63,9 +63,8 @@ public class Misc{
     // Truncate a date+time to the date only
     public static final String dateOnly(String sDate) {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-   		Date date = null;
     	try {
-			date = sdf.parse(sDate);
+			sdf.parse(sDate);
 		} catch (ParseException e) {
 			// If the date cannot be parsed according to the given pattern, return the original string
 			return sDate;

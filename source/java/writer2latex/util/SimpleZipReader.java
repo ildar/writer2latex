@@ -67,7 +67,7 @@ public class SimpleZipReader {
      *  You can only get an entry once: The <code>SimpleZipReader</code> removes the entry from the
      *  collection when this method is called (memory optimization).
      *
-     * @param   name    the name (path) of the ZIP entry
+     * @param   sName    the name (path) of the ZIP entry
      *
      * @return  a byte array with the contents of the entry, or null if the entry does not exist
      */

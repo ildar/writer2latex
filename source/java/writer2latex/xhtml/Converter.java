@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-26)
  *
  */
 
@@ -248,22 +248,22 @@ public class Converter extends ConverterBase {
         l10n = new L10n();
         
         if (isOPS()) {
-        	imageLoader.setBaseFileName("image");
-        	imageLoader.setUseSubdir("images");
+        	imageConverter.setBaseFileName("image");
+        	imageConverter.setUseSubdir("images");
         }
         else { 
-        	imageLoader.setBaseFileName(sTargetFileName+"-img");
+        	imageConverter.setBaseFileName(sTargetFileName+"-img");
         	if (config.saveImagesInSubdir()) {
-        		imageLoader.setUseSubdir(sTargetFileName+"-img");        	
+        		imageConverter.setUseSubdir(sTargetFileName+"-img");        	
         	}
         }
 
-        imageLoader.setDefaultFormat(MIMETypes.PNG);
-        imageLoader.addAcceptedFormat(MIMETypes.JPEG);
-        imageLoader.addAcceptedFormat(MIMETypes.GIF);
+        imageConverter.setDefaultFormat(MIMETypes.PNG);
+        imageConverter.addAcceptedFormat(MIMETypes.JPEG);
+        imageConverter.addAcceptedFormat(MIMETypes.GIF);
         
         if (nType==XhtmlDocument.HTML5 && config.useSVG()) { // HTML supports (inline) SVG as well
-        	imageLoader.setDefaultVectorFormat(MIMETypes.SVG);
+        	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
         }
 
         styleCv = new StyleConverter(ofr,config,this,nType);

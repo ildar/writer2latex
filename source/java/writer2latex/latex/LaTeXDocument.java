@@ -16,21 +16,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-03-28)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
 package writer2latex.latex;
 
 import writer2latex.api.MIMETypes;
-import writer2latex.xmerge.Document;
-
+import writer2latex.api.OutputFile;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
@@ -38,7 +36,7 @@ import java.io.OutputStreamWriter;
  * <p>Class representing a LaTeX document.</p>
  *
  */
-public class LaTeXDocument implements Document {
+public class LaTeXDocument implements OutputFile {
     private static final String FILE_EXTENSION = ".tex";
 	
     private String sName;
@@ -67,19 +65,6 @@ public class LaTeXDocument implements Document {
         this.bIsMaster = bIsMaster;
         contents = new LaTeXDocumentPortion(true);
     }
-    
-    /**
-     * <p>This method is supposed to read <code>byte</code> data from the InputStream.
-     * Currently it does nothing, since we don't need it.</p>
-     * 
-     * @param   is      InputStream containing a LaTeX data file.
-     *
-     * @throws  IOException     In case of any I/O errors.
-     */
-    public void read(InputStream is) throws IOException {
-        // Do nothing.
-    }
-  
     
     /**
      * <p>Returns the <code>Document</code> name with no file extension.</p>

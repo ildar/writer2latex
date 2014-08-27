@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-20)
+ *  Version 1.4 (2014-08-26)
  *
  */
 
@@ -33,7 +33,7 @@ import org.w3c.dom.NamedNodeMap;
 
 import writer2latex.office.*;
 import writer2latex.util.Misc;
-import writer2latex.xmerge.BinaryGraphicsDocument;
+import writer2latex.base.BinaryGraphicsDocument;
 import writer2latex.latex.StarMathConverter;
 
 /** This class converts formulas: Either as MathML, as an image or as plain text (StarMath or LaTeX format)
@@ -151,7 +151,7 @@ public class MathConverter extends ConverterHelper {
     			// Get the image from the ImageLoader
     			String sHref = Misc.getAttribute(onode,XMLString.XLINK_HREF);
     			if (sHref==null || sHref.length()==0 || ofr.isInPackage(sHref)) {
-    				BinaryGraphicsDocument bgd = converter.getImageLoader().getImage(image);
+    				BinaryGraphicsDocument bgd = converter.getImageCv().getImage(image);
     				if (bgd!=null) {
     					String sMIME = bgd.getDocumentMIMEType();
     					if (MIMETypes.PNG.equals(sMIME) || MIMETypes.JPEG.equals(sMIME) || MIMETypes.GIF.equals(sMIME)) {

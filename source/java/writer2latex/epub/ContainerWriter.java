@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2012 by Henrik Just
+ *  Copyright: 2001-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2012-03-19)
+ *  version 1.4 (2014-08-26)
  *
  */
 
@@ -35,7 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
-import writer2latex.xmerge.DOMDocument;
+import writer2latex.base.DOMDocument;
 
 /** This class creates the required META-INF/container.xml file for an EPUB package 
  *  (see http://www.idpf.org/ocf/ocf1.0/download/ocf10.htm).

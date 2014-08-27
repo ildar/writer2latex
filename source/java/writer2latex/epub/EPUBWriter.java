@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2011 by Henrik Just
+ *  Copyright: 2001-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.2 (2011-03-04)
+ *  version 1.4 (2014-08-27)
  *
  */
 
@@ -49,12 +49,12 @@ public class EPUBWriter implements OutputFile {
 	
 	private ConverterResult xhtmlResult;
 	private String sFileName;
-	private XhtmlConfig config;
+	//private XhtmlConfig config;
 	
 	public EPUBWriter(ConverterResult xhtmlResult, String sFileName, XhtmlConfig config) {
 		this.xhtmlResult = xhtmlResult;
 		this.sFileName = Misc.removeExtension(sFileName);
-		this.config = config;
+		//this.config = config;
 	}
 
 	public String getFileName() {

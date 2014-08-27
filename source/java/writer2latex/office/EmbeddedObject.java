@@ -37,9 +37,9 @@ public abstract class EmbeddedObject {
      * @param   sName    The name of the object.
      * @param   sType    The MIME-type of the object.
      */
-    protected EmbeddedObject(String name, String type) {
-        sName = name;
-        sType = type;
+    protected EmbeddedObject(String sName, String sType) {
+        this.sName = sName;
+        this.sType = sType;
     }
     
     /** Get the name of the embedded object represented by this instance.

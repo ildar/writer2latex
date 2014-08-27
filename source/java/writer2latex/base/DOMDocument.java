@@ -1,15 +1,6 @@
 /************************************************************************
  *
- *  The Contents of this file are made available subject to the terms of
- *
- *         - GNU Lesser General Public License Version 2.1
- *
- *  Sun Microsystems Inc., October, 2000
- *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *  DOMDocument.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -25,21 +16,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
- *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
+ * 
+ *  Version 1.4 (2014-08-26)
  *
- *  Contributor(s): _______________________________________
- *
- *
- ************************************************************************/
- 
-// This version is adapted for writer2latex
-// Version 1.4 (2012-03-19)
+ */
 
-package writer2latex.xmerge;
+package writer2latex.base;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -58,12 +43,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
+import writer2latex.api.OutputFile;
+
 /**
- *  An implementation of <code>Document</code> for
- *  StarOffice documents.
+ *  This class represents XML-based documents. It is loosely based on a class from the former xmerge project
+ *  from OOo.
  */
-public class DOMDocument
-    implements writer2latex.xmerge.Document {
+public class DOMDocument implements OutputFile {
 
     /** Factory for <code>DocumentBuilder</code> objects. */
     private static DocumentBuilderFactory factory =
@@ -352,9 +338,9 @@ public class DOMDocument
             doc = builder.newDocument();
 
         } catch (ParserConfigurationException ex) {
+        	// This will not happen
              System.err.println("Error:"+ ex);
-	   
-
+             throw new IOException(ex);
         }
 
         Element root = (Element) doc.createElement(rootName);

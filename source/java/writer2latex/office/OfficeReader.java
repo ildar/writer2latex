@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-20)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -272,7 +272,7 @@ public class OfficeReader {
             if (next.getNextSibling()!=null) { return next.getNextSibling(); }
             // Then move to parent, if this is the text:p node, we are done
             next = next.getParentNode();
-            if (next.getNodeType()==Node.ELEMENT_NODE &&
+            if (next!=null && next.getNodeType()==Node.ELEMENT_NODE &&
                 next.getNodeName().equals(XMLString.TEXT_P)) {
                 return null;
             }

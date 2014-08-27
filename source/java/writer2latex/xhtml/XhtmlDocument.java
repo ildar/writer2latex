@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-08-26)
  *
  */
 
@@ -32,20 +32,17 @@ package writer2latex.xhtml;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-//import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.DOMImplementation;
-//import org.xml.sax.SAXException;
-//import org.xml.sax.SAXParseException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-//import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import writer2latex.api.MIMETypes;
+import writer2latex.base.DOMDocument;
 import writer2latex.office.XMLString;
-import writer2latex.xmerge.DOMDocument;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -262,15 +259,13 @@ public class XhtmlDocument extends DOMDocument {
 
     /**
      *  Constructor. This constructor also creates the DOM (minimal: root, head,
-     *  title and body node only) - unlike the constructors in
-     *  writer2latex.xmerge.DOMDocument.
-     *  @param  name  <code>Document</code> name.
+     *  title and body node only)
+     *  @param  name  name of this document
      *  @param  nType the type of document
      */
     public XhtmlDocument(String name, int nType) {
         super(name,sExtension[nType]);
         this.nType = nType;
-        
 
         // create DOM
         Document contentDOM = null;
@@ -281,21 +276,21 @@ public class XhtmlDocument extends DOMDocument {
             String[] sDocType = getDoctypeStrings();
             DocumentType doctype = domImpl.createDocumentType("html", sDocType[0], sDocType[1]);
             contentDOM = domImpl.createDocument("http://www.w3.org/1999/xhtml","html",doctype);
+            contentDOM.getDocumentElement().setAttribute("xmlns","http://www.w3.org/1999/xhtml");
+            // add head, title and body
+            headNode = contentDOM.createElement("head");
+            titleNode = contentDOM.createElement("title");
+            bodyNode = contentDOM.createElement("body");
+            contentDOM.getDocumentElement().appendChild(headNode);
+            headNode.appendChild(titleNode);
+            contentDOM.getDocumentElement().appendChild(bodyNode);
+            contentNode = bodyNode;
+            setContentDOM(contentDOM);
         }
-        catch (Throwable t) {
-            t.printStackTrace();
+        catch (ParserConfigurationException e) {
+        	// The newDocumentBuilder() method may in theory throw this, but this will not happen
+            e.printStackTrace();
         }
-        contentDOM.getDocumentElement().setAttribute("xmlns","http://www.w3.org/1999/xhtml");
-        // add head, title and body
-        headNode = contentDOM.createElement("head");
-        titleNode = contentDOM.createElement("title");
-        bodyNode = contentDOM.createElement("body");
-        contentDOM.getDocumentElement().appendChild(headNode);
-        headNode.appendChild(titleNode);
-        contentDOM.getDocumentElement().appendChild(bodyNode);
-        contentNode = bodyNode;
-        setContentDOM(contentDOM);
-        
     }
     
     @Override public String getMIMEType() {

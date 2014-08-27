@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2007 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 0.5 (2007-03-17)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -62,9 +62,9 @@ public class PropertySet {
     public String getName() { return sName; }
 
     public void loadFromDOM(Node node) {
-        sName = node.getNodeName();
         // read the attributes of the node, if any
         if (node!=null) {
+            sName = node.getNodeName();
             NamedNodeMap attrNodes = node.getAttributes();
             if (attrNodes!=null) {    
                 int nLen = attrNodes.getLength();

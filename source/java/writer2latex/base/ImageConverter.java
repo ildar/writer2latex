@@ -24,7 +24,7 @@
  *
  */
 
-package writer2latex.office;
+package writer2latex.base;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -34,15 +34,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import writer2latex.api.GraphicConverter;
+import writer2latex.office.EmbeddedBinaryObject;
+import writer2latex.office.EmbeddedObject;
+import writer2latex.office.MIMETypes;
+import writer2latex.office.OfficeDocument;
+import writer2latex.office.SVMReader;
+import writer2latex.office.XMLString;
 import writer2latex.util.Base64;
 import writer2latex.util.Misc;
-import writer2latex.xmerge.BinaryGraphicsDocument;
 
 /**
  *  <p>This class extracts images from an OOo file.
  *  The images are returned as BinaryGraphicsDocument.</p>
  */
-public final class ImageLoader {
+public final class ImageConverter {
     // The Office document to load images from
     private OfficeDocument oooDoc;
 	
@@ -62,7 +67,7 @@ public final class ImageLoader {
     private String sDefaultVectorFormat = null;
     private HashSet<String> acceptedFormats = new HashSet<String>();
 
-    public ImageLoader(OfficeDocument oooDoc, boolean bExtractEPS) {
+    public ImageConverter(OfficeDocument oooDoc, boolean bExtractEPS) {
         this.oooDoc = oooDoc;
         this.bExtractEPS = bExtractEPS;
         this.formatter = new DecimalFormat("000");
