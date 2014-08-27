@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.0 -> 1.2
 
 ---------- version 1.2.1 beta ----------
 
+[all] The final release is identical to the beta release
+
+---------- version 1.2.1 beta ----------
+
 [all] Filter dialogs now works with LibreOffice 4.x
 
 [w2l] Bugfix: The attribute fontenc on string-replace rules is now again optional in configuration files 
