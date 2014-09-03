@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.4 (2014-09-01)
  *
  */
 
@@ -70,7 +70,7 @@ public class MathConverter extends ConverterHelper {
      * @param onode the math node
      * @param hnode the xhtml node to which content should be added
      */
-    public void convert(Node image, Element onode, Node hnode, boolean bAllowDisplayStyle) {
+    public void convert(Element image, Element onode, Node hnode, boolean bAllowDisplayStyle) {
         if (bSupportMathML) {
             convertAsMathML(onode,hnode,bAllowDisplayStyle);
         }
@@ -131,7 +131,7 @@ public class MathConverter extends ConverterHelper {
 
     
     // For plain xhtml: Convert the formula as an image or as plain text
-    private void convertAsImageOrText(Node image, Node onode, Node hnode) {
+    private void convertAsImageOrText(Element image, Node onode, Node hnode) {
     	NodeList annotationList = ((Element) onode).getElementsByTagName(XMLString.ANNOTATION); // Since OOo 3.2
     	if (annotationList.getLength()==0) {
     		annotationList = ((Element) onode).getElementsByTagName(XMLString.MATH_ANNOTATION);
@@ -153,7 +153,7 @@ public class MathConverter extends ConverterHelper {
     			if (sHref==null || sHref.length()==0 || ofr.isInPackage(sHref)) {
     				BinaryGraphicsDocument bgd = converter.getImageCv().getImage(image);
     				if (bgd!=null) {
-    					String sMIME = bgd.getDocumentMIMEType();
+    					String sMIME = bgd.getMIMEType();
     					if (MIMETypes.PNG.equals(sMIME) || MIMETypes.JPEG.equals(sMIME) || MIMETypes.GIF.equals(sMIME)) {
     						converter.addDocument(bgd);
     	    				// Create the image and add the StarMath/LaTeX formula as alternative text

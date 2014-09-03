@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.4 (2014-09-03)
  *
  */
  
@@ -166,6 +166,7 @@ public class DrawConverter extends ConverterHelper {
                         }
 	                }
                     else { // unsupported object
+                    	System.out.println("Unsupported "+sHref);
                         boolean bIgnore = true;
                         if (ofr.isOpenDocument()) { // look for replacement image
                             Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);
@@ -292,31 +293,13 @@ public class DrawConverter extends ConverterHelper {
     private void includeGraphics(Element node, LaTeXDocumentPortion ldp, Context oc) {
         String sFileName = null;
         boolean bCommentOut = true;
-        String sHref = node.getAttribute(XMLString.XLINK_HREF);
-		
-        if (sHref.length()>0 && !ofr.isInPackage(sHref)) {
-            // Linked image is not yet handled by ImageLoader. This is a temp.
-            // solution (will go away when ImageLoader is finished)
-            sFileName = ofr.fixRelativeLink(sHref);
-            int nExtStart = sHref.lastIndexOf(".");
-            String sExt = nExtStart>=0 ? sHref.substring(nExtStart).toLowerCase() : "";
-            // Accept only relative filenames and supported filetypes:
-            bCommentOut = sFileName.indexOf(":")>-1 || !(
-                config.getBackend()==LaTeXConfig.UNSPECIFIED ||
-                (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PNG_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PDF_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PNG_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PDF_EXT.equals(sExt)) ||
-                (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS_EXT.equals(sExt)));
-        }
-        else { // embedded or base64 encoded image
-            BinaryGraphicsDocument bgd = palette.getImageCv().getImage(node);
-            if (bgd!=null) {
+        
+        BinaryGraphicsDocument bgd = palette.getImageCv().getImage(node);
+        if (bgd!=null) {
+        	if (!bgd.isLinked()) { // embedded image
                 palette.addDocument(bgd);
                 sFileName = bgd.getFileName();
-                String sMIME = bgd.getDocumentMIMEType();
+                String sMIME = bgd.getMIMEType();
                 bCommentOut = !(
                     config.getBackend()==LaTeXConfig.UNSPECIFIED ||
                     (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG.equals(sMIME)) ||
@@ -326,10 +309,23 @@ public class DrawConverter extends ConverterHelper {
                     (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PNG.equals(sMIME)) ||
                     (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PDF.equals(sMIME)) ||
                     (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS.equals(sMIME)));
-            }
+        	}
+        	else { // linked image
+                sFileName = bgd.getURL();
+                String sExt = bgd.getFileExtension().toLowerCase();
+                // Accept only relative filenames and supported filetypes:
+                bCommentOut = sFileName.indexOf(":")>-1 || !(
+                    config.getBackend()==LaTeXConfig.UNSPECIFIED ||
+                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PNG_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PDF_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PNG_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PDF_EXT.equals(sExt)) ||
+                    (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS_EXT.equals(sExt)));
+        	}
         }
-		
-        if (sFileName==null) {
+        else {
             ldp.append("[Warning: Image not found]");
             return;
         }

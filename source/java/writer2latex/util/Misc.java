@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.Math;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.text.Collator;
@@ -294,6 +296,38 @@ public class Misc{
 
         return name;
     }
+    
+    /** Get the file name part of an URL
+     * 
+     * @param sURL the URL from which the filename should be extracted
+     * @return the file name
+     */
+    public static final String getFileName(String sURL) {
+    	try {
+			URI uri = new URI(sURL);
+			String sPath = uri.getPath();
+			return sPath.substring(sPath.lastIndexOf('/')+1);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return "";
+		}    	
+    }
+    
+    /** Get the file extension from an URL
+     * 
+     * @param sURL
+     * @return the file extension (including dot) or the empty string if there is no file extension
+     */
+    public static final String getFileExtension(String sURL) {
+    	String sFileName = getFileName(sURL);
+    	int nDot = sFileName.lastIndexOf('.');
+    	if (nDot>=0) {
+    		return sFileName.substring(nDot);
+    	}
+    	else {
+    		return "";
+    	}
+    }
 	
     public static final String removeExtension(String sName) {
         int n = sName.lastIndexOf(".");
@@ -417,7 +451,7 @@ public class Misc{
      */
     public static String makeHref(String s) {
         try {
-            java.net.URI uri = new java.net.URI(null, null, s, null);
+            URI uri = new URI(null, null, s, null);
             return uri.toString();	    
         }
         catch (Exception e) {

@@ -2,6 +2,14 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.2 alpha ----------
 
+[w2l] Bugfix (StarMath conversion): Do not create display equations in table cells 
+
+[w2l] Bugfix (StarMath conversion): Use array instead of matrix if there is more than 10 columns
+ 
+[w2l] Bugfix (StarMath conversion): Add braces if the argument to a command is a space, e.g. \text{ }
+
+[all] Refactored and optimized memory usage of image conversion
+
 [all] Refactored and rearranged some code; in particular the last remaining bits of the old xmerge framework has been removed
 
 [all] Optimized reading of package format: The settings.xml files are not parsed and the unused parts of the ZIP file are disposed

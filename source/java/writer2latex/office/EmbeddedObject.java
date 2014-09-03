@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-27)
+ *  Version 1.4 (2014-08-27)
  *
  */
 
@@ -29,6 +29,7 @@ package writer2latex.office;
 /** This class represents and embedded object within an ODF package document
  */
 public abstract class EmbeddedObject {
+	private OfficeDocument doc;
     private String sName;
     private String sType;
     
@@ -36,10 +37,12 @@ public abstract class EmbeddedObject {
      *
      * @param   sName    The name of the object.
      * @param   sType    The MIME-type of the object.
+     * @param   doc      The document to which the object belongs.
      */
-    protected EmbeddedObject(String sName, String sType) {
+    protected EmbeddedObject(String sName, String sType, OfficeDocument doc) {
         this.sName = sName;
         this.sType = sType;
+        this.doc = doc;
     }
     
     /** Get the name of the embedded object represented by this instance.
@@ -56,6 +59,14 @@ public abstract class EmbeddedObject {
      */
     public final String getType() {
         return sType;
+    }
+    
+    /** Dispose this <code>EmbeddedObject</code>. This implies that the content is nullified and the object
+     *  is removed from the collection in the <code>OfficeDocument</code>.
+     * 
+     */
+    public void dispose() {
+    	doc.removeEmbeddedObject(sName);
     }
     
 }

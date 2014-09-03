@@ -18,7 +18,7 @@
  *
  *  Copyright: 2002-2014 by Henrik Just
  *  
- *  Version 1.4 (2014-08-05)
+ *  Version 1.4 (2014-09-03)
  *
  *  All Rights Reserved.
  */
@@ -723,6 +723,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     private LaTeXConfig config;
     private Map<String, String> configSymbols;
     private boolean bUseColor;
+    private int nMaxMatrixCols = 10; // trace the largest number of columns in a matrix
     private SmToken curToken=new SmToken(); // contains the data of the current token
     private SimpleInputBuffer buffer; // contains the starmath formula
     //private Float fBaseSize; // base size for the formula (usually 12pt)
@@ -771,67 +772,75 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
 
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-        if (bDefeq) {
-            decl.append("\\newcommand\\defeq{\\stackrel{\\mathrm{def}}{=}}").nl();
+        if (config.useOoomath()) {
+            pack.append("\\usepackage{ooomath}").nl();
         }
-        if (bLambdabar) {
-            decl.append("\\newcommand\\lambdabar{\\mathchar'26\\mkern-10mu\\lambda}").nl();
+        else {
+	        if (bDefeq) {
+	            decl.append("\\newcommand\\defeq{\\stackrel{\\mathrm{def}}{=}}").nl();
+	        }
+	        if (bLambdabar) {
+	            decl.append("\\newcommand\\lambdabar{\\mathchar'26\\mkern-10mu\\lambda}").nl();
+	        }
+	        if (bDdotsup) {
+	            decl.append("\\newcommand\\ddotsup{\\mathinner{\\mkern1mu\\raise1pt\\vbox{\\kern7pt\\hbox{.}}\\mkern2mu\\raise4pt\\hbox{.}\\mkern2mu\\raise7pt\\hbox{.}\\mkern1mu}}").nl();
+	        }
+	        if (bMultimapdotbothA) {
+	            decl.append("\\providecommand\\multimapdotbothA{\\bullet\\kern-0.4em-\\kern-0.4em\\circ}").nl();
+	        }
+	        if (bMultimapdotbothB) {
+	            decl.append("\\providecommand\\multimapdotbothB{\\circ\\kern-0.4em-\\kern-0.4em\\bullet}").nl();
+	        }
+	        if (bLlbracket) {
+	            decl.append("\\providecommand\\llbracket{[}").nl();
+	        }
+	        if (bRrbracket) {
+	            decl.append("\\providecommand\\rrbracket{]}").nl();
+	        }
+	        if (bOiint) {
+	            decl.append("\\providecommand\\oiint{\\oint}").nl();
+	        }
+	        if (bOiiint) {
+	            decl.append("\\providecommand\\oiiint{\\oint}").nl();
+	        }
+	        if (bWideslash) {
+	            decl.append("\\newcommand\\wideslash[2]{{}^{#1}/_{#2}}").nl();
+	        }
+	        if (bWidebslash) {
+	            decl.append("\\newcommand\\widebslash[2]{{}_{#1}\\backslash^{#2}}").nl();
+	        }
+	        if (bBoldsubformula) {
+	            decl.append("\\newcommand\\boldsubformula[1]{\\text{\\mathversion{bold}$#1$}}").nl();
+	        }
+	        if (bNormalsubformula) {
+	            decl.append("\\newcommand\\normalsubformula[1]{\\text{\\mathversion{normal}$#1$}}").nl();
+	        }
+	        if (bMultiscripts || bMathoverstrike) {
+	            decl.append("\\newlength{\\idxmathdepth}\\newlength{\\idxmathtotal}\\newlength{\\idxmathwidth}\\newlength{\\idxraiseme}").nl();
+	            decl.append("\\newcommand{\\idxdheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\displaystyle#1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\displaystyle#1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\displaystyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
+	            decl.append("\\newcommand{\\idxtheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\textstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\textstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\textstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
+	            decl.append("\\newcommand{\\idxsheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\scriptstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\scriptstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\scriptstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
+	            decl.append("\\newcommand{\\idxssheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\scriptscriptstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\scriptscriptstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\scriptscriptstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
+	        }
+	        if (bMultiscripts) {
+	            decl.append("\\newcommand\\multiscripts[5]{\\mathchoice")
+	                .append("{\\idxdheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
+	                .append("{\\idxtheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
+	                .append("{\\idxsheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
+	                .append("{\\idxssheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}}")
+	                .nl();
+	        }
+	        if (bMathoverstrike) {
+	            decl.append("\\newcommand\\mathoverstrike[1]{\\mathchoice")
+	                .append("{\\idxdheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
+	                .append("{\\idxtheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
+	                .append("{\\idxsheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
+	                .append("{\\idxssheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}}")
+	                .nl();
+	        }
         }
-        if (bDdotsup) {
-            decl.append("\\newcommand\\ddotsup{\\mathinner{\\mkern1mu\\raise1pt\\vbox{\\kern7pt\\hbox{.}}\\mkern2mu\\raise4pt\\hbox{.}\\mkern2mu\\raise7pt\\hbox{.}\\mkern1mu}}").nl();
-        }
-        if (bMultimapdotbothA) {
-            decl.append("\\providecommand\\multimapdotbothA{\\bullet\\kern-0.4em-\\kern-0.4em\\circ}").nl();
-        }
-        if (bMultimapdotbothB) {
-            decl.append("\\providecommand\\multimapdotbothB{\\circ\\kern-0.4em-\\kern-0.4em\\bullet}").nl();
-        }
-        if (bLlbracket) {
-            decl.append("\\providecommand\\llbracket{[}").nl();
-        }
-        if (bRrbracket) {
-            decl.append("\\providecommand\\rrbracket{]}").nl();
-        }
-        if (bOiint) {
-            decl.append("\\providecommand\\oiint{\\oint}").nl();
-        }
-        if (bOiiint) {
-            decl.append("\\providecommand\\oiiint{\\oint}").nl();
-        }
-        if (bWideslash) {
-            decl.append("\\newcommand\\wideslash[2]{{}^{#1}/_{#2}}").nl();
-        }
-        if (bWidebslash) {
-            decl.append("\\newcommand\\widebslash[2]{{}_{#1}\\backslash^{#2}}").nl();
-        }
-        if (bBoldsubformula) {
-            decl.append("\\newcommand\\boldsubformula[1]{\\text{\\mathversion{bold}$#1$}}").nl();
-        }
-        if (bNormalsubformula) {
-            decl.append("\\newcommand\\normalsubformula[1]{\\text{\\mathversion{normal}$#1$}}").nl();
-        }
-        if (bMultiscripts || bMathoverstrike) {
-            decl.append("\\newlength{\\idxmathdepth}\\newlength{\\idxmathtotal}\\newlength{\\idxmathwidth}\\newlength{\\idxraiseme}").nl();
-            decl.append("\\newcommand{\\idxdheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\displaystyle#1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\displaystyle#1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\displaystyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
-            decl.append("\\newcommand{\\idxtheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\textstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\textstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\textstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
-            decl.append("\\newcommand{\\idxsheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\scriptstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\scriptstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\scriptstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
-            decl.append("\\newcommand{\\idxssheight}[1]{\\protect\\settoheight{\\idxmathtotal}{\\(\\scriptscriptstyle #1\\)}\\protect\\settodepth{\\idxmathdepth}{\\(\\scriptscriptstyle #1\\)}\\protect\\settowidth{\\idxmathwidth}{\\(\\scriptscriptstyle#1\\)}\\protect\\addtolength{\\idxmathtotal}{\\idxmathdepth}\\protect\\setlength{\\idxraiseme}{\\idxmathtotal/2-\\idxmathdepth}}").nl();
-        }
-        if (bMultiscripts) {
-            decl.append("\\newcommand\\multiscripts[5]{\\mathchoice")
-                .append("{\\idxdheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
-                .append("{\\idxtheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
-                .append("{\\idxsheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}")
-                .append("{\\idxssheight{#4}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#1\\underset{#2}{\\overset{#3}{#4}}\\rule[-\\idxmathdepth]{0mm}{\\idxmathtotal}#5}}")
-                .nl();
-        }
-        if (bMathoverstrike) {
-            decl.append("\\newcommand\\mathoverstrike[1]{\\mathchoice")
-                .append("{\\idxdheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
-                .append("{\\idxtheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
-                .append("{\\idxsheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}")
-                .append("{\\idxssheight{#1}\\rlap{\\rule[\\idxraiseme]{\\idxmathwidth}{0.4pt}}{#1}}}")
-                .nl();
+        if (nMaxMatrixCols>10) { // The default for the matrix environment is at most 10 columns
+        	decl.append("\\setcounter{MaxMatrixCols}{").append(Integer.toString(nMaxMatrixCols)).append("}").nl();
         }
     }
 	
@@ -1606,14 +1615,23 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     private String matrix(float fSize, Token eAlign){
         nextToken();
         if (curToken.eType==Token.LGROUP){
-            StringBuffer bufMatrix=new StringBuffer().append("\\begin{matrix}");
+            StringBuffer bufMatrix = new StringBuffer().append("\\begin{matrix}");
+            int nCols = 1;
             do {
                 nextToken();
                 bufMatrix.append(align(fSize,eAlign,true,true));
-                if (curToken.eType==Token.POUND) bufMatrix.append("&");
-                else if (curToken.eType==Token.DPOUND) bufMatrix.append("\\\\");
+                if (curToken.eType==Token.POUND) {
+                	bufMatrix.append("&");
+                	nCols++;
+                }
+                else if (curToken.eType==Token.DPOUND) { 
+                	bufMatrix.append("\\\\");
+                	nMaxMatrixCols = Math.max(nCols, nMaxMatrixCols);
+                	nCols = 1;
+                }
             } while (curToken.eType==Token.POUND || curToken.eType==Token.DPOUND);
             if (curToken.eType==Token.RGROUP) nextToken(); // otherwise error in formula- ignore
+        	nMaxMatrixCols = Math.max(nCols, nMaxMatrixCols);
             return bufMatrix.append("\\end{matrix}").toString();
         }
         else { // error in formula
@@ -1637,10 +1655,10 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     	}
     }
     
-    // Group a LaTeX string unless it consists of exactly one character
+    // Group a LaTeX string unless it consists of exactly one character which is not a space
     // In the latter case, prepend a space character (because this string follows a command sequence) 
     private String groupsp(String sLaTeX) {
-    	if (sLaTeX.length()!=1) {
+    	if (sLaTeX.length()!=1 || sLaTeX.charAt(0)==' ') {
     		return "{"+sLaTeX+"}";
     	}
     	else {

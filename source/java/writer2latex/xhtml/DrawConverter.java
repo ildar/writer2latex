@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.4 (2014-09-03)
  *
  */
  
@@ -466,30 +466,22 @@ public class DrawConverter extends ConverterHelper {
         // Get the image from the ImageLoader
         BinaryGraphicsDocument bgd = null;
         String sFileName = null;
-        String sHref = Misc.getAttribute(onode,XMLString.XLINK_HREF);
-        if (sHref!=null && sHref.length()>0 && !ofr.isInPackage(sHref)) {
-            // Linked image is not yet handled by ImageLoader. This is a temp.
-            // solution (will go away when ImageLoader is finished)
-        	if (!converter.isOPS()) { // Cannot have linked images in EPUB, ignore the image
-        		sFileName = sHref;
-        		// In OpenDocument *package* format ../ means "leave the package"
-        		if (ofr.isOpenDocument() && ofr.isPackageFormat() && sFileName.startsWith("../")) {
-        			sFileName=sFileName.substring(3);
-        		}
-        		//String sExt = sHref.substring(sHref.lastIndexOf(".")).toLowerCase();
-        	}
-        }
-        else { // embedded or base64 encoded image
-            bgd = converter.getImageCv().getImage(onode);
-            if (bgd!=null) {
+        bgd = converter.getImageCv().getImage(onode);
+        if (bgd!=null) {
+        	if (!bgd.isLinked()) { // embedded image
                 sFileName = bgd.getFileName();
                 // If this is the cover image, add it to the converter result
             	if (bCoverImage && onode==ofr.getFirstImage()) {
             		converter.setCoverImageFile(bgd,null);
             	}        		
-            }
-        }
-		
+        	}
+        	else { // linked image
+            	if (!converter.isOPS()) { // Cannot have linked images in EPUB, ignore the image
+            		sFileName = bgd.getURL();
+            	}
+        	}
+        }        
+        
         if (sFileName==null) { return; } // TODO: Add warning?
         
         // Create the image (sFileName contains the file name)

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25)
+ *  Version 1.4 (2014-08-28)
  *
  */
 
@@ -55,8 +55,8 @@ public class EmbeddedXMLObject extends EmbeddedObject {
      * @param   sType   The MIME-type of the object.
      * @param   source  A ZIP reader providing the contents of the package
      */
-    protected EmbeddedXMLObject(String sName, String sType, SimpleZipReader source) {              
-        super(sName, sType);
+    protected EmbeddedXMLObject(String sName, String sType, OfficeDocument doc, SimpleZipReader source) {              
+        super(sName, sType, doc);
         // Read the bytes, but defer parsing until required (at that point, the bytes are nullified)
         contentBytes = source.getEntry(sName+"/"+OfficeDocument.CONTENTXML);
         stylesBytes = source.getEntry(sName+"/"+OfficeDocument.STYLESXML);
@@ -100,5 +100,13 @@ public class EmbeddedXMLObject extends EmbeddedObject {
     	}
     	return null;
     }
-   
+    
+    public void dispose() {
+    	super.dispose();
+    	contentBytes = null;
+    	stylesBytes = null;
+    	contentDOM  = null;
+        stylesDOM   = null;
+    }
+
 }

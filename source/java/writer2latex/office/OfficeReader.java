@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
@@ -220,7 +220,7 @@ public class OfficeReader {
         return nCount;
     }
 
-    public String getTextContent(Node node) {
+    public static String getTextContent(Node node) {
         String s = "";
         Node child = node.getFirstChild();
         while (child!=null) {
@@ -360,10 +360,10 @@ public class OfficeReader {
     private boolean bText = false;
     private boolean bSpreadsheet = false;
     private boolean bPresentation = false;	
-	
+    
     ///////////////////////////////////////////////////////////////////////////
     // Various methods
-	
+    
     /** Checks whether or not this document is in package format
      *  @return true if it's in package format
      */
@@ -394,7 +394,14 @@ public class OfficeReader {
 	
     ///////////////////////////////////////////////////////////////////////////
     // Accessor methods
-
+    
+    /** Get an embedded object in this office document
+     * 
+     */
+	public EmbeddedObject getEmbeddedObject(String sName) {
+		return oooDoc.getEmbeddedObject(sName);
+	}
+    
     /** <p>Get the collection of all font declarations.</p>
      *  @return the <code>OfficeStyleFamily</code> of font declarations   
      */

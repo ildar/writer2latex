@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
@@ -73,12 +73,7 @@ public final class MathConverter extends ConverterHelper {
 
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
         if (bContainsFormulas) {
-            if (config.useOoomath()) {
-                pack.append("\\usepackage{ooomath}").nl();
-            }
-            else {
-                smc.appendDeclarations(pack,decl);
-            }
+        	smc.appendDeclarations(pack,decl);
         }
         if (bNeedTexMathsPreamble) {
         	// The preamble may be stored as a user defined property (newline is represented as paragraph sign)

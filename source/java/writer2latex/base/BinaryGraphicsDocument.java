@@ -20,160 +20,163 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
 package writer2latex.base;
 
 import java.io.OutputStream;
-import java.io.InputStream;
-//import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import writer2latex.api.OutputFile;
 import writer2latex.util.Misc;
 
 
-/**
- * <p>Class representing a binary graphics document.
- * This class is used for representing graphics documents that are <i>not</i>
- * interpreted in any way, but simply copied verbatim from the source format
- * to the target format.</p>
- *
- * <p><code>GraphicsDocument</code> is used to create new graphics documents.</p>
- *
+/** This class is used to represent a binary graphics document to be included in the converter result.
+ *  I may also represent a linked image, which should <em>not</em> be included (and will produce an empty file
+ *  if it is).
  */
 public class BinaryGraphicsDocument implements OutputFile {
 
-    //private final static int BUFFERSIZE = 1024;
-
-    private String docName;
-    
-    private byte[] data;
-    private int nOff;
-    private int nLen;
-	
+    private String sFileName;
     private String sFileExtension;
     private String sMimeType;
+    
+    private boolean bIsLinked = false;
+    private boolean bIsAcceptedFormat = false;
+    
+    // Data for an embedded image
+    private byte[] blob = null;
+    private int nOff;
+    private int nLen;
+    
+    // Data for a linked image
+    private String sURL = null;
    
-    /**
-     * <p>Constructs a new graphics document.</p>
+    /**Constructs a new graphics document.
+     * This new document does not contain any data. Document data must 
+     * be added using the appropriate methods.
      *
-     * <p>This new document does not contain any information.  Document data must 
-     *    either be added using appropriate methods, or an existing file can be 
-     *    {@link #read(InputStream) read} from an <code>InputStream</code>.</p>
-     *
-     * @param   name    The name of the <code>GraphicsDocument</code>.
+     * @param sName The name of the <code>GraphicsDocument</code>.
+     * @param sFileExtension the file extension
+     * @param sMimeType the MIME type of the document
      */
     public BinaryGraphicsDocument(String name, String sFileExtension, String sMimeType) {
         this.sFileExtension = sFileExtension;
         this.sMimeType = sMimeType;
-        docName = trimDocumentName(name);
+        sFileName = Misc.trimDocumentName(name, sFileExtension);
     }
-    
-    
-    /**
-     * <p>This method reads <code>byte</code> data from the InputStream.</p>
+        
+    /** Set image contents to a byte array
      * 
-     * @param   is      InputStream containing a binary data file.
-     *
-     * @throws  IOException     In case of any I/O errors.
+     * @param data the image data
      */
-    public void read(InputStream is) throws IOException {
-        data = Misc.inputStreamToByteArray(is);        
-    }
-	
-    public void read(byte[] data) {
-        read(data,0,data.length);
+    public void setData(byte[] data, boolean bIsAcceptedFormat) {
+        setData(data,0,data.length,bIsAcceptedFormat);
     }
     
-    public void read(byte[] data, int nOff, int nLen) {
-        this.data = data;
+    /** Set image contents to part of a byte array
+     * 
+     * @param data the image data
+     * @param nOff the offset into the byte array
+     * @param nLen the number of bytes to use
+     * @param bIsAcceptedFormat flag to indicate that the format of the image is acceptable for the converter
+     */
+    public void setData(byte[] data, int nOff, int nLen, boolean bIsAcceptedFormat) {
+        this.blob = data;
         this.nOff = nOff;
         this.nLen = nLen;
+        this.bIsAcceptedFormat = bIsAcceptedFormat;
+        this.bIsLinked = false;
+        this.sURL = null;
     }
     
-    /*
-     * Utility method to make sure the document name is stripped of any file
-     * extensions before use.
+    /** Set the URL of a linked image
+     * 
+     * @param sURL the URL
      */
-    private String trimDocumentName(String name) {
-        String temp = name.toLowerCase();
-        
-        if (temp.endsWith(getFileExtension())) {
-            // strip the extension
-            int nlen = name.length();
-            int endIndex = nlen - getFileExtension().length();
-            name = name.substring(0,endIndex);
-        }
-
-        return name;
-    }
-   
-    /**
-     * <p>Returns the <code>Document</code> name with no file extension.</p>
-     *
-     * @return  The <code>Document</code> name with no file extension.
-     */
-    public String getName() {
-        return docName;
+    public void setURL(String sURL) {
+        this.blob = null;
+        this.nOff = 0;
+        this.nLen = 0;
+        this.bIsAcceptedFormat = false; // or rather don't know
+        this.bIsLinked = true;
+    	this.sURL = sURL;
     }
     
-    /**
-     * <p>Returns the <code>Document</code> name with file extension.</p>
-     *
-     * @return  The <code>Document</code> name with file extension.
+    /** Get the URL of a linked image
+     * 
+     *  @return the URL or null if this is an embedded image
      */
-    public String getFileName() {
-        return new String(docName + getFileExtension());
+    public String getURL() {
+    	return sURL;
+    }
+    
+    /** Does this <code>BinaryGraphicsDocument</code> represent a linked image?
+     * 
+     * @return true if so
+     */
+    public boolean isLinked() {
+    	return bIsLinked;
+    }
+    
+    /** Is this image in an acceptable format for the converter?
+     * 
+     * @return true if so (always returns false for linked images)
+     */
+    public boolean isAcceptedFormat() {
+    	return bIsAcceptedFormat;
     }
     
     public byte[] getData() {
-    	return data;
+    	return blob;
     }
     
+    // Implement OutputFile
     
-    /**
-     * <p>Writes out the <code>Document</code> content to the specified
-     * <code>OutputStream</code>.</p>
+    /** Writes out the content to the specified <code>OutputStream</code>.
+     *  Linked images will not write any data.
      *
-     * <p>This method may not be thread-safe.
-     * Implementations may or may not synchronize this
-     * method.  User code (i.e. caller) must make sure that
-     * calls to this method are thread-safe.</p>
-     *
-     * @param  os  <code>OutputStream</code> to write out the
-     *             <code>Document</code> content.
+     * @param  os  <code>OutputStream</code> to write out the  content.
      *
      * @throws  IOException  If any I/O error occurs.
      */
     public void write(OutputStream os) throws IOException {
-        os.write(data, nOff, nLen);
+    	if (blob!=null) {
+    		os.write(blob, nOff, nLen);
+    	}
+    }
+    
+    /** Get the file extension
+     * 
+     *  @return the file extension
+     */
+    public String getFileExtension() {
+    	return sFileExtension;
     }
 	
-    /**
-     *  Returns the file extension for this type of
-     *  <code>Document</code>.
+    /** Get the document with file extension.</p>
+    *
+    * @return  The document with file extension.
+    */
+   public String getFileName() {
+       return sFileName + sFileExtension;
+   }
+   
+    /** Get the MIME type of the document.
      *
-     *  @return  The file extension of <code>Document</code>.
+     * @return  The MIME type or null if this is unknown
      */
-    public String getFileExtension(){ return sFileExtension; }
-	
-    /** 
-     * Method to return the MIME type of the document.
-     *
-     * @return  String  The document's MIME type.
-     */
-    public String getDocumentMIMEType(){ return sMimeType; }
-
-
 	public String getMIMEType() {
 		return sMimeType;
 	}
 	
-	public boolean isMasterDocument() {
+    /** Is this document a master document?
+     * 
+     *  @return false - a graphics file is never a master document
+     */
+    public boolean isMasterDocument() {
 		return false;
 	}
-    
 }

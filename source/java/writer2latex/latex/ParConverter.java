@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-30)
+ *  Version 1.4 (2014-09-02)
  *
  */
 
@@ -98,7 +98,8 @@ public class ParConverter extends StyleConverter {
      *  \end{enumerate}).
      */
     public void handleParagraph(Element node, LaTeXDocumentPortion ldp, Context oc, boolean bLastInBlock) {
-        if (palette.getMathCv().handleDisplayEquation(node,ldp)) { return; }
+    	// Check for display equation (except in table cells)
+        if ((!oc.isInTable()) && palette.getMathCv().handleDisplayEquation(node,ldp)) { return; }
 		
         // Get the style name for this paragraph
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);

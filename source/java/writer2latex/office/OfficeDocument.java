@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25)
+ *  Version 1.4 (2014-08-28)
  *
  */
 
@@ -77,7 +77,7 @@ public class OfficeDocument {
 
 	/** Collection to keep track of the embedded objects in the document. */
 	private Map<String, EmbeddedObject> embeddedObjects = null;
-
+	
 	/** Package or flat format? 
 	 *  @return true if the document is in package format, false if it's flat XML
 	 */
@@ -145,13 +145,13 @@ public class OfficeDocument {
 						if (sPath.endsWith("/")) { // Remove trailing slash
 							sPath=sPath.substring(0, sPath.length()-1);
 						}
-						embeddedObjects.put(sPath, new EmbeddedXMLObject(sPath, sType, zip));
+						embeddedObjects.put(sPath, new EmbeddedXMLObject(sPath, sType, this, zip));
 					}
 				}
 				else if (!sType.equals("text/xml")) {
 					// XML entries are either embedded ODF doc entries or main document entries, all other
 					// entries are included as binary objects
-					embeddedObjects.put(sPath, new EmbeddedBinaryObject(sPath, sType, zip));
+					embeddedObjects.put(sPath, new EmbeddedBinaryObject(sPath, sType, this, zip));
 				}
 			}
 		}
@@ -172,6 +172,12 @@ public class OfficeDocument {
 			return embeddedObjects.get(sName);
 		}
 		return null;
+	}
+	
+	protected void removeEmbeddedObject(String sName) {
+		if (sName!=null && embeddedObjects!=null && embeddedObjects.containsKey(sName)) {
+			embeddedObjects.remove(sName);
+		}		
 	}
 
 	/**

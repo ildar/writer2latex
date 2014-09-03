@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
@@ -100,20 +100,20 @@ public abstract class ConverterBase implements Converter {
         // Read document
         odDoc = new OfficeDocument();
         odDoc.read(is);
-        return convert(sTargetFileName);
+        return convert(sTargetFileName,true);
     }
     
-    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName) throws IOException {
+    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName, boolean bDestructive) throws IOException {
     	// Read document
     	odDoc = new OfficeDocument();
     	odDoc.read(dom);
-    	return convert(sTargetFileName);
+    	return convert(sTargetFileName,bDestructive);
     }
     
-    private ConverterResult convert(String sTargetFileName) throws IOException {
+    private ConverterResult convert(String sTargetFileName, boolean bDestructive) throws IOException {
         ofr = new OfficeReader(odDoc,false);
         metaData = new MetaData(odDoc);
-        imageConverter = new ImageConverter(odDoc,true);
+        imageConverter = new ImageConverter(ofr,bDestructive,true);
         imageConverter.setGraphicConverter(graphicConverter);
 
         // Prepare output

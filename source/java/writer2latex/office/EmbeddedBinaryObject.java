@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-26)
+ *  Version 1.4 (2012-03-28)
  *
  */
 
@@ -34,7 +34,7 @@ import writer2latex.util.SimpleZipReader;
 public class EmbeddedBinaryObject extends EmbeddedObject {
     
     /** The object's binary representation. */
-    private byte[] objData = null;
+    private byte[] blob = null;
         
     /**
      * Package private constructor for use when reading an object from a 
@@ -42,11 +42,12 @@ public class EmbeddedBinaryObject extends EmbeddedObject {
      *
      * @param   sName    The name of the object.
      * @param   sType    The MIME-type of the object.
+     * @param   doc      The document containing the object.
      * @param   source  A <code>SimpleZipReader</code> containing the object
      */    
-    protected EmbeddedBinaryObject(String sName, String sType, SimpleZipReader source) {
-    	super(sName,sType);
-    	objData = source.getEntry(sName);
+    protected EmbeddedBinaryObject(String sName, String sType, OfficeDocument doc, SimpleZipReader source) {
+    	super(sName,sType,doc);
+    	blob = source.getEntry(sName);
     }
     
     /** Get the binary data for this object
@@ -54,7 +55,12 @@ public class EmbeddedBinaryObject extends EmbeddedObject {
      * @return  A <code>byte</code> array containing the object's data.
      */
     public byte[] getBinaryData() {
-        return objData;
+        return blob;
     }    
     
+    public void dispose() {
+    	super.dispose();
+    	blob = null;
+    }
+
 }

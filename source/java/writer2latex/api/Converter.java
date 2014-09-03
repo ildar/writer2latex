@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-21)
+ *  Version 1.4 (2014-08-28)
  *
  */
  
@@ -144,10 +144,11 @@ public interface Converter {
      * @param sTargetFileName the file name to use for the converted document
      *  (if the converted document is a compound document consisting consisting
      *  of several files, this name will be used for the master document)
+     *  @param bDestructive set to true if the converter is allowed to remove contents from the DOM tree (to save memory)
      * @return a <code>ConverterResult</code> containing the converted document
      * @throws IOException if some exception occurs while reading the document
      */
-    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName)
+    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName, boolean bDestructive)
     	throws IOException;
 
 }

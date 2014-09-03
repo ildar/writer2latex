@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-08-28)
  *  
  */
 
@@ -237,7 +237,7 @@ XTypeProvider {
 		converter.setGraphicConverter(new GraphicConverterImpl(xComponentContext));
 		
 		// Do conversion. The base name is take from the URL provided by the office
-		Iterator<OutputFile> docEnum = converter.convert(dom,Misc.makeFileName(getFileName(sURL))).iterator();
+		Iterator<OutputFile> docEnum = converter.convert(dom,Misc.makeFileName(getFileName(sURL)),true).iterator();
 
 		if (docEnum.hasNext()) {
 			// The master document is written to the XOutStream supplied by the XMLFilterAdaptor
