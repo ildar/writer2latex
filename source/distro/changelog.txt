@@ -2,9 +2,15 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.2 alpha ----------
 
+[w2l] Bugfix (StarMath conversion): Protect the character [ after \\ in gather and matrix environments
+
+[w2l] Bugfix: Protect the character [ after \\ in tables
+
+[w2l] Bugfix (StarMath conversion): Usage of \multiscripts and \mathoverstrike now loads the required calc.sty
+
 [w2l] Bugfix (StarMath conversion): Do not create display equations in table cells 
 
-[w2l] Bugfix (StarMath conversion): Use array instead of matrix if there is more than 10 columns
+[w2l] Bugfix (StarMath conversion): Set the counter MaxMatrixCols if there are matrices with more than 10 columns
  
 [w2l] Bugfix (StarMath conversion): Add braces if the argument to a command is a space, e.g. \text{ }
 

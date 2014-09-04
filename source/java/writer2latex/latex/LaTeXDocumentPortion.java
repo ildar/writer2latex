@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2006 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2007-10-02)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
@@ -43,6 +43,10 @@ public class LaTeXDocumentPortion {
 
     private boolean bWrap; // Do we allow line wrap in this portion?
     
+    /** Construct a new empty <code>LaTeXDocumentPortion</code>
+     * 
+     * @param bWrap set to true if lines may be wrapped on writing
+     */
     public LaTeXDocumentPortion(boolean bWrap){
         this.bWrap = bWrap;
         nodes = new Vector<Object>();
@@ -50,7 +54,11 @@ public class LaTeXDocumentPortion {
         bEmpty = true;
     }
 	
-    /** Add another portion to the end of this portion */
+    /** Add another portion to the end of this portion
+     * 
+     * @param ldp The <code>LaTeXDocuemtPortion</code> to add
+     * @return a reference to this <code>LaTeXDocumentPortion</code> (not the appended one)
+     */
     public LaTeXDocumentPortion append(LaTeXDocumentPortion ldp) {
         if (!bEmpty) {
             // add the current node to the node list and create new current node
@@ -62,14 +70,21 @@ public class LaTeXDocumentPortion {
         return this;
     }
     
-    /** Add a string to the end of this portion */
+    /** Add a string to the end of this portion
+     * 
+     * @param s the string to add
+     * @return a reference to this <code>LaTeXDocumentPortion</code>
+     */
     public LaTeXDocumentPortion append(String s){
         curText.append(s);
         bEmpty = false; // even if this is the empty string!
         return this;
     }
     
-    /** Add a newline to the end of this portion */
+    /** Add a newline to the end of this portion
+     * 
+     * @return a reference to this <code>LaTeXDocumentPortion</code>
+     */
     public LaTeXDocumentPortion nl(){
         curText.append("\n");
         bEmpty = false;
@@ -164,7 +179,13 @@ public class LaTeXDocumentPortion {
         }
     }
 
-    /** Write this portion to the output (note: nLineLen=0 means no wrap) */
+    /** Write this portion to the output
+     * 
+     * @param osw an <code>OutputStreamWriter</code> to write to
+     * @param nLineLen the line length after which automatic line breaks should occur if allowed (nLineLen=0 means no wrap)
+     * @param sNewline the newline character(s) to use
+     * @throws IOException if an exception occurs writing to to osw
+     */
     public void write(OutputStreamWriter osw, int nLineLen, String sNewline) throws IOException {
         int n = nodes.size();
         for (int i=0; i<n; i++) {
@@ -188,7 +209,10 @@ public class LaTeXDocumentPortion {
         }
     }
 	
-    /** Return the content of this LaTeXDocumentStream as a string */
+    /** Return the content of this LaTeXDocumentPortion as a string
+     * 
+     *  @return a string representation of the <code>LaTeXDocumentPortion</code>
+     */
     public String toString() {
         StringBuffer buf = new StringBuffer();
         int n = nodes.size();
@@ -197,7 +221,7 @@ public class LaTeXDocumentPortion {
                 buf.append(((LaTeXDocumentPortion) nodes.get(i)).toString());
             }
             else {
-                buf.append(((StringBuffer) nodes.get(i)).toString());
+                buf.append((StringBuffer) nodes.get(i));
             }
         }
         if (!bEmpty) { // write current node as well
@@ -205,10 +229,4 @@ public class LaTeXDocumentPortion {
         }
         return buf.toString();
     }
-	
-    
-
-} // end class LaTeXDocumentPortion
-
-// TO DO: consider StringBuffer->ByteArrayOutputStream (performance??)
-
+}

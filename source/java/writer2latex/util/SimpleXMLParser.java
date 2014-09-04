@@ -78,7 +78,7 @@ public class SimpleXMLParser extends DefaultHandler {
 	
 	// We don't need - and in fact should avoid - any external entities
 	@Override public InputSource resolveEntity(String publicID, String systemID) throws SAXException {
-		System.out.println("resolveEntity "+publicID+" "+systemID);
+		//System.out.println("resolveEntity "+publicID+" "+systemID);
 		return new InputSource(new StringReader(""));
 	}
 	

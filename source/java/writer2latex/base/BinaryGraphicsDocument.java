@@ -62,10 +62,10 @@ public class BinaryGraphicsDocument implements OutputFile {
      * @param sFileExtension the file extension
      * @param sMimeType the MIME type of the document
      */
-    public BinaryGraphicsDocument(String name, String sFileExtension, String sMimeType) {
+    public BinaryGraphicsDocument(String sName, String sFileExtension, String sMimeType) {
         this.sFileExtension = sFileExtension;
         this.sMimeType = sMimeType;
-        sFileName = Misc.trimDocumentName(name, sFileExtension);
+        sFileName = Misc.trimDocumentName(sName, sFileExtension);
     }
         
     /** Set image contents to a byte array

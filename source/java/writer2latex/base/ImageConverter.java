@@ -72,7 +72,7 @@ public final class ImageConverter {
 
     /** Construct a new <code>ImageConverter</code> referring to a specific document
      * 
-     * @param doc the office document used
+     * @param ofr the office reader to use
      * @param bExtractEPS set true if EPS content should be extracted from SVM files
      */
     public ImageConverter(OfficeReader ofr, boolean bDestructive, boolean bExtractEPS) {

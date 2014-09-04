@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-04-20)
+ *  Version 1.4 (2014-09-03)
  *
  */
 
@@ -414,12 +414,15 @@ public class TableConverter extends ConverterHelper {
             int nRowCount = table.getRowCount();
             int nColCount = table.getColCount();
             boolean bFirst = true;
+            boolean bProtect = false; // Do we need to protect '['?
             int nPreviousRow = -1;
             for (int nRow=0; nRow<nRowCount; nRow++) {
             	if (rowTypes[nRow]==rowType) {
             		// Add interrow material from previous row, if any
             		if (nPreviousRow>-1) {
-            			ldp.append(formatter.getInterrowMaterial(nPreviousRow+1)).nl();
+            			String sInterRowMaterial = formatter.getInterrowMaterial(nPreviousRow+1); 
+            			ldp.append(sInterRowMaterial).nl();
+            			if (sInterRowMaterial.length()>0) { bProtect=false; }
             		}
             		nPreviousRow = nRow;
 
@@ -430,12 +433,13 @@ public class TableConverter extends ConverterHelper {
             			bFirst=false;
             		}
             		// Export columns in this row
+            		LaTeXDocumentPortion rowLdp = new LaTeXDocumentPortion(true);
             		Context icRow = (Context) oc.clone();
             		BeforeAfter baRow = new BeforeAfter();
             		formatter.applyRowStyle(nRow,baRow,icRow);
             		if (!baRow.isEmpty()) {
-            			ldp.append(baRow.getBefore());
-            			if (!formatter.isSimple()) { ldp.nl(); }
+            			rowLdp.append(baRow.getBefore());
+            			if (!formatter.isSimple()) { rowLdp.nl(); }
             		}   
             		int nCol = 0;
             		while (nCol<nColCount) {
@@ -445,18 +449,18 @@ public class TableConverter extends ConverterHelper {
             					Context icCell = (Context) icRow.clone();
             					BeforeAfter baCell = new BeforeAfter();
             					formatter.applyCellStyle(nRow,nCol,baCell,icCell);
-            					ldp.append(baCell.getBefore());
+            					rowLdp.append(baCell.getBefore());
             					if (nCol==nColCount-1) { icCell.setInLastTableColumn(true); }
-            					palette.getBlockCv().traverseBlockText(cell,ldp,icCell);
-            					ldp.append(baCell.getAfter());
+            					palette.getBlockCv().traverseBlockText(cell,rowLdp,icCell);
+            					rowLdp.append(baCell.getAfter());
             				}
             				// Otherwise ignore; the cell is covered by a \multicolumn entry.
             				// (table:covered-table-cell)
             				int nColSpan = Misc.getPosInteger(cell.getAttribute(
             						XMLString.TABLE_NUMBER_COLUMNS_SPANNED),1);
             				if (nCol+nColSpan<nColCount) {
-            					if (formatter.isSimple()) { ldp.append(" & "); }
-            					else { ldp.append(" &").nl(); }
+            					if (formatter.isSimple()) { rowLdp.append(" & "); }
+            					else { rowLdp.append(" &").nl(); }
             				}
             				nCol+=nColSpan;
             			}
@@ -464,7 +468,15 @@ public class TableConverter extends ConverterHelper {
             				nCol++;
             			}
             		}
-            		ldp.append("\\\\");
+            		rowLdp.append("\\\\");
+            		// We have to translate the row to a string to avoid extra newlines and to see the first characters 
+            		String sRowLdp = rowLdp.toString();
+            		// Protect leading [
+            		if (bProtect && ((sRowLdp.length()>0 && sRowLdp.charAt(0)=='[') || sRowLdp.startsWith("\n["))) {
+            			ldp.append("{}");
+            		}
+            		ldp.append(sRowLdp);
+            		bProtect = true;
             	}
             }
     		// Add interrow material from last row, if required

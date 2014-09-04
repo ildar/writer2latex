@@ -772,6 +772,9 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
 
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+        if (bMultiscripts || bMathoverstrike) {
+        	pack.append("\\usepackage{calc}").nl();
+        }
         if (config.useOoomath()) {
             pack.append("\\usepackage{ooomath}").nl();
         }
@@ -1054,7 +1057,12 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
             bufTable.append("\\begin{gathered}").append(sLine);
             while (curToken.eType==Token.NEWLINE){
                 nextToken();
-                bufTable.append("\\\\").append(line(fSize,eAlign,false));
+                bufTable.append("\\\\");
+                sLine = line(fSize,eAlign,false);
+                if (sLine.length()>0 && sLine.charAt(0)=='[') { // Protect [ after \\
+                	bufTable.append("{}");
+                }
+                bufTable.append(sLine);
             }
             return bufTable.append("\\end{gathered}").toString();
         }
@@ -1599,11 +1607,17 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         nextToken();
         if (curToken.eType==Token.LGROUP){
             StringBuffer bufStack=new StringBuffer().append("\\begin{matrix}");
-            do {
+            nextToken();
+            bufStack.append(align(fSize,eAlign,true,true));
+            while (curToken.eType==Token.POUND) {
+                bufStack.append("\\\\");
                 nextToken();
-                bufStack.append(align(fSize,eAlign,true,true));
-                if (curToken.eType==Token.POUND) bufStack.append("\\\\");
-            } while (curToken.eType==Token.POUND);
+                String sAlign = align(fSize,eAlign,true,true);
+                if (sAlign.length()>0 && sAlign.charAt(0)=='[') { // Protect [ after \\
+                	bufStack.append("{}");
+                }
+            	bufStack.append(sAlign);
+            } 
             if (curToken.eType==Token.RGROUP) nextToken(); // otherwise error in formula - ignore
             return bufStack.append("\\end{matrix}").toString();
         }
@@ -1617,17 +1631,24 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         if (curToken.eType==Token.LGROUP){
             StringBuffer bufMatrix = new StringBuffer().append("\\begin{matrix}");
             int nCols = 1;
+            boolean bProtect = false;
             do {
                 nextToken();
-                bufMatrix.append(align(fSize,eAlign,true,true));
+                String sAlign = align(fSize,eAlign,true,true);
+                if (bProtect && sAlign.length()>0 && sAlign.charAt(0)=='[') { // Protect [ after \\
+                	bufMatrix.append("{}");
+                }
+                bufMatrix.append(sAlign);
                 if (curToken.eType==Token.POUND) {
                 	bufMatrix.append("&");
                 	nCols++;
+                	bProtect = false;
                 }
                 else if (curToken.eType==Token.DPOUND) { 
                 	bufMatrix.append("\\\\");
                 	nMaxMatrixCols = Math.max(nCols, nMaxMatrixCols);
                 	nCols = 1;
+                	bProtect = true;
                 }
             } while (curToken.eType==Token.POUND || curToken.eType==Token.DPOUND);
             if (curToken.eType==Token.RGROUP) nextToken(); // otherwise error in formula- ignore
