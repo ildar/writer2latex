@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-05)
  *
  */
 
@@ -262,7 +262,7 @@ public class Converter extends ConverterBase {
         imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         imageConverter.addAcceptedFormat(MIMETypes.GIF);
         
-        if (nType==XhtmlDocument.HTML5 && config.useSVG()) { // HTML supports (inline) SVG as well
+        if (nType==XhtmlDocument.HTML5) { // HTML supports SVG as well
         	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
         }
 

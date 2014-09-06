@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-06)
  *
  */
 
@@ -77,6 +77,8 @@ final class IndexData {
     Element hnode; // a div node where the index should be added
 }
 
+/** This class handles text content
+ */
 public class TextConverter extends ConverterHelper {
 
     // Data used to handle splitting over several files
@@ -1511,11 +1513,14 @@ public class TextConverter extends ConverterHelper {
         while (child!=null) {
             if (child.getNodeType()==Node.ELEMENT_NODE) {
                 Element elm = (Element) child;
-                String sTag = elm.getTagName();
                 if (OfficeReader.isDrawElement(elm)) {
                     elm = getDrawCv().getRealDrawElement(elm);
+                    String sAnchor = elm.getAttribute(XMLString.TEXT_ANCHOR_TYPE);
+                    if (Misc.isElement(elm, XMLString.DRAW_FRAME)) {
+                    	elm = Misc.getFirstChildElement(elm);
+                    }
                     if (elm!=null) {
-                        String sAnchor = elm.getAttribute(XMLString.TEXT_ANCHOR_TYPE);
+                        String sTag = elm.getTagName();
                         // Convert only floating frames; text-boxes must always float
                         if (!"as-char".equals(sAnchor)) {
                             getDrawCv().handleDrawElement(elm,(Element)hnodeBlock,
@@ -2132,10 +2137,23 @@ public class TextConverter extends ConverterHelper {
         getTextSc().applyStyle(sStyleName,info);
         Element newNode = node;
         if (info.hasAttributes() || !"span".equals(info.sTagName)) {
-            // We need to create a new element
+            // We (probably) need to create a new element
             newNode = converter.createElement(info.sTagName);
-            node.appendChild(newNode);
             applyStyle(info,newNode);
+            // But we may want to merge it with the previous element
+            Node prev = node.getLastChild();
+            if (prev!=null && Misc.isElement(prev, info.sTagName)) {
+            	// The previous node is of the same type, compare attributes
+            	Element prevNode = (Element) prev;
+            	if (newNode.getAttribute("class").equals(prevNode.getAttribute("class")) &&
+            		newNode.getAttribute("style").equals(prevNode.getAttribute("style")) &&
+            		newNode.getAttribute("xml:lang").equals(prevNode.getAttribute("xml:lang")) &&
+            		newNode.getAttribute("dir").equals(prevNode.getAttribute("dir"))) {
+            			// Attribute style mapped elements are *not* merged, we will live with that
+            			return applyAttributes(prevNode,ofr.getTextStyle(sStyleName));
+            	}
+            }
+            node.appendChild(newNode);
        }
        return applyAttributes(newNode,ofr.getTextStyle(sStyleName));
     }
@@ -2149,5 +2167,3 @@ public class TextConverter extends ConverterHelper {
 
 	
 }
-
-

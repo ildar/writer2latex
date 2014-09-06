@@ -16,9 +16,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *  
- *  Version 1.4 (2012-04-12)
+ *  Version 1.4 (2014-09-05)
  *
  *  All Rights Reserved.
  */
@@ -134,10 +134,14 @@ public class TableReader {
             if (bHasRelWidth) {
                 sRelColWidth[nCol] = (100.0F*nRelColWidth[nCol]/nColSum)+"%";
             }
-            else {
+            else if (sTableWidth!=null){
             	// Calculate the relative column width from the absolute column widths
             	// This may not add up to exactly 100%, but we will live with that
                 sRelColWidth[nCol] = Misc.divide(sColWidth[nCol], sTableWidth, true);
+            }
+            else {
+            	// The table has not width, distribute the columns evenly
+            	sRelColWidth[nCol] = Double.toString(100.0/nCols)+"%";
             }
         }
 

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-05)
  *
  */
 
@@ -28,6 +28,7 @@ package writer2latex.base;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.w3c.dom.Element;
@@ -69,6 +70,10 @@ public final class ImageConverter {
     private String sDefaultFormat = null;
     private String sDefaultVectorFormat = null;
     private HashSet<String> acceptedFormats = new HashSet<String>();
+    
+    // In the package format, the same image file may be used more than once in the document
+    // Hence we keep information of all documents for potential
+    private HashMap<String,BinaryGraphicsDocument> recycledImages = new HashMap<String,BinaryGraphicsDocument>();
 
     /** Construct a new <code>ImageConverter</code> referring to a specific document
      * 
@@ -159,17 +164,48 @@ public final class ImageConverter {
      * or convert it to an accepted format
      */
     public BinaryGraphicsDocument getImage(Element node) {
+        String sName = sSubDirName+sBaseFileName+formatter.format(++nImageCount);
+        BinaryGraphicsDocument bgd = getImage(node,sName);
+        if (bgd!=null) { 
+        	if (!bgd.isAcceptedFormat()) { // We may have better luck with an alternative image
+	        	Element sibling = getAlternativeImage(node);
+	        	if (sibling!=null) {
+	        		BinaryGraphicsDocument altBgd = getImage(sibling,sName);
+	        		if (altBgd!=null && altBgd.isAcceptedFormat()) {
+	        			bgd = altBgd;
+	        		}
+	        	}
+        	}
+        }
+    	if (bgd==null || bgd.isLinked() || bgd.isRecycled()) {
+    		 // The file name was not used
+    		nImageCount--;
+    	}
+    	else if (node.hasAttribute(XMLString.XLINK_HREF)) {
+    		// This is an embedded image we meet for the first time.
+    		// Recycle it on behalf of the original image node.
+    		String sHref = node.getAttribute(XMLString.XLINK_HREF);
+    		recycledImages.put(sHref, new BinaryGraphicsDocument(bgd));
+    	}
+    	return bgd;
+    }
+    
+    private BinaryGraphicsDocument getImage(Element node, String sName) {
     	assert(XMLString.DRAW_IMAGE.equals(node.getTagName()));
 
     	// Image data
+        String sExt = null;
     	String sMIME = null;
-    	String sExt = null;
     	byte[] blob = null;
     	
     	// First try to extract the image using the xlink:href attribute
     	if (node.hasAttribute(XMLString.XLINK_HREF)) {
     		String sHref = node.getAttribute(XMLString.XLINK_HREF);
     		if (sHref.length()>0) {
+    			// We may have seen this image before, return the recycled version
+    			if (recycledImages.containsKey(sHref)) {
+    				return recycledImages.get(sHref);
+    			}
 	    		// Image may be embedded in package:
     			String sPath = sHref;
 	            if (sPath.startsWith("#")) { sPath = sPath.substring(1); }
@@ -192,9 +228,9 @@ public final class ImageConverter {
 	            else {
 	                // This is a linked image
 	                // TODO: Add option to download image from the URL?
+	            	String sFileName = ofr.fixRelativeLink(sHref);
 	            	BinaryGraphicsDocument bgd
-	            		= new BinaryGraphicsDocument(Misc.getFileName(sHref),Misc.getFileExtension(sHref),null);
-	            	bgd.setURL(ofr.fixRelativeLink(sHref));
+	            		= new BinaryGraphicsDocument(sFileName,null);
 	            	return bgd;
 	            }
     		}
@@ -225,21 +261,22 @@ public final class ImageConverter {
 	        }
     	}
         
-        // We have an embedded image. Assign a name (without extension) 
-        String sName = sSubDirName+sBaseFileName+formatter.format(++nImageCount);
-     
         // Is this an EPS file embedded in an SVM file?
+        // (This case is obsolete, but kept for the sake of old documents)
         if (bExtractEPS && MIMETypes.SVM.equals(sMIME)) {
             // Look for postscript:
             int[] offlen = new int[2];
             if (SVMReader.readSVM(blob,offlen)) {
+            	String sFileName = sName+MIMETypes.EPS_EXT;
                 BinaryGraphicsDocument bgd
-                	= new BinaryGraphicsDocument(sName,MIMETypes.EPS_EXT,MIMETypes.EPS);
+                	= new BinaryGraphicsDocument(sFileName, MIMETypes.EPS);
                 bgd.setData(blob,offlen[0],offlen[1],true);
                 return bgd;
              }
         }
         
+        // We have an embedded image.
+     
         // If we have a converter AND a default format AND this image
         // is not in an accepted format AND the converter knows how to
         // convert it - try to convert...
@@ -264,16 +301,26 @@ public final class ImageConverter {
             	sExt = MIMETypes.getFileExtension(sMIME);
             }
         }
-
+        
         // Create the result
+
         if (isAcceptedFormat(sMIME) || bAcceptOtherFormats) {
-            BinaryGraphicsDocument bgd = new BinaryGraphicsDocument(sName,sExt,sMIME);
+        	String sFileName = sName+sExt;
+            BinaryGraphicsDocument bgd = new BinaryGraphicsDocument(sFileName,sMIME);
             bgd.setData(blob,isAcceptedFormat(sMIME));
             return bgd;
         }
         else {
         	return null;
         }
+    }
+    
+    private Element getAlternativeImage(Element node) {
+    	Node sibling = node.getNextSibling();
+    	if (sibling!=null && Misc.isElement(sibling, XMLString.DRAW_IMAGE)) {
+    		return (Element) sibling;
+    	}
+    	return null;
     }
     
 }

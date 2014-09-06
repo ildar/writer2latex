@@ -12,7 +12,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>HTML 5</value>
+			<value>HTML 5 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -26,7 +26,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop><!-- sic! -->
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>HTML5</value>
+			<value>HTML5 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -40,7 +40,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>XHTML 1.0 strict</value>
+			<value>XHTML 1.0 strict [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -54,7 +54,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>XHTML 1.1</value>
+			<value>XHTML 1.1 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -68,7 +68,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop><!-- sic! -->
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>XHTML 1.0 strict</value>
+			<value>XHTML 1.0 strict [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -82,7 +82,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop><!-- sic! -->
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>XHTML 1.1</value>
+			<value>XHTML 1.1 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -96,7 +96,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>XHTML 1.1 + MathML 2.0</value>
+			<value>XHTML 1.1 + MathML 2.0 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -110,7 +110,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>EPUB</value>
+			<value>EPUB [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>

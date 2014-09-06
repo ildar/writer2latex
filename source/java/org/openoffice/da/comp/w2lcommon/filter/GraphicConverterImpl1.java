@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2012-04-03)
+ *  Version 1.4 (2014-09-05)
  */
 
  
@@ -76,9 +76,8 @@ public class GraphicConverterImpl1 implements GraphicConverter {
         // We don't support cropping and resizing
         if (bCrop || bResize) { return false; }
 
-        // We can convert vector formats to EPS.
-        // The IDL reference claims we can convert to SVG too, but for some reason this always returns an empty array?
-        if ((MIMETypes.EPS.equals(sTargetMime)) && // || MIMETypes.SVG.equals(sTargetMime)) &&
+        // We can convert vector formats to EPS and SVG
+        if ((MIMETypes.EPS.equals(sTargetMime) || MIMETypes.SVG.equals(sTargetMime)) &&
         		(MIMETypes.EMF.equals(sSourceMime) || MIMETypes.WMF.equals(sSourceMime) || MIMETypes.SVM.equals(sSourceMime))) {
             return true;
         }
@@ -133,7 +132,10 @@ public class GraphicConverterImpl1 implements GraphicConverter {
             }
             else {
             	byte[] converted = xTarget.getBuffer();
-                return converted;
+                if (converted.length>0) { // Older versions of AOO/LO fails to convert to SVG (empty result) 
+                	return converted;
+                }
+                return null;
             }
         }
         catch (com.sun.star.io.IOException e) {

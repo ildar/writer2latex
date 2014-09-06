@@ -2,6 +2,24 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.2 alpha ----------
 
+[w2x] Two or more span elements in a row with identical attributes are now merged
+
+[all] Filters: Appended [Writer2LaTeX] or [Writer2xhtml] to all filter UI names to make them more visible 
+
+[w2l] Bugfix: Avoid null pointer exception caused by list styles in some cases
+
+[w2x] Bugfix: EPUB export filter works again (was broken in 1.3.1)
+
+[w2x] Bugfix: Text boxes are no longer lost if within a paragraph
+
+[w2x] SVG support in HTML5 is now finished: Vector graphics is converted to SVG (does not work in older versions of LO).
+  The option use_svg has been renamed to inline_svg. If set to true (default) inline SVG is used, if set to false,
+  external SVG-files are used.
+
+[all] If an image image cannot be converted to an acceptable format, the optional alternative image will now be tried
+
+[all] Bugfix: Avoid null pointer exception if a table has no defined table width
+
 [w2l] Bugfix (StarMath conversion): Protect the character [ after \\ in gather and matrix environments
 
 [w2l] Bugfix: Protect the character [ after \\ in tables
@@ -29,7 +47,7 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
   the option xslt_path has been removed. Also the vacant spot in the export dialog is now used for the option use_mathjax
   (only active for XHTML+MathML and HTML5) 
 
-[w2l] Added support for TexMaths equations in LaTeX, XHTML+MathML and HTML5 (the last two only if use_mathjax=true)
+[all] Added support for TexMaths equations in LaTeX, XHTML+MathML and HTML5 (the last two only if use_mathjax=true)
 
 [all] The command line application now gives an explanation if the source file is not in ODF format
 

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-09-05)
  *
  */
 
@@ -69,6 +69,7 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
     public static final String BIBTEX_EXT = ".bib";
     public static final String XHTML_EXT = ".html";
     public static final String XHTML_MATHML_EXT = ".xhtml";
+    public static final String HTML5_EXT = ".html";
     public static final String PNG_EXT = ".png";
     public static final String JPEG_EXT = ".jpg"; // this is the default in graphicx.sty
     public static final String GIF_EXT = ".gif";
@@ -90,8 +91,8 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
     }
     
     private static final boolean isSVG(byte[] blob) {
-        // Look for <svg within the first 250 bytes
-    	int m = Math.min(blob.length, 250);
+        // Look for <svg within the first 500 bytes
+    	int m = Math.min(blob.length, 500);
         int n = SVG_SIG.length;
         for (int j=0; j<m-n; j++) {
             boolean bFound = true;
@@ -141,6 +142,7 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
         if (BIBTEX.equals(sMIME)) { return BIBTEX_EXT; }
         if (XHTML.equals(sMIME)) { return XHTML_EXT; }
         if (XHTML_MATHML.equals(sMIME)) { return XHTML_MATHML_EXT; }
+        if (HTML5.equals(sMIME)) { return XHTML_EXT; }
         return "";
     }		
 	

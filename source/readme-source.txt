@@ -13,7 +13,7 @@ Overview
 The source of Writer2LaTeX consists of three major parts:
 
 * A general purpose java library for converting OpenDocument files into LaTeX,
-  BibTeX, xhtml, xhtml+MathML and EPUB
+  BibTeX, XHTML, XHTML+MathML, HTML5 and EPUB
   This is to be found in the packages writer2latex.* and should only be used
   through the provided api writer2latex.api.*
 * A command line utility writer2latex.Application
@@ -21,19 +21,11 @@ The source of Writer2LaTeX consists of three major parts:
   These are to be found in the packages org.openoffice.da.comp.*
   
 Currently parts of the source for Writer2LaTeX are somewhat messy and
-undocumented. This situation is improving from time to time :-)
+undocumented. This situation tends to improve over time :-)
 
 
 Third-party software
 --------------------
-
-From OpenOffice.org:
-
-Writer2LaTeX includes some classes from the OpenOffice.org project:
-writer2latex.xmerge.* contains some classes which are part of the xmerge
-project within OOo (some of the classes are slightly modified)
-See copyright notices within the source files
-
 
 From JSON.org:
 
@@ -71,9 +63,10 @@ To make these files available for the compiler, edit the file build.xml
 as follows:
 
 The lines
-	<property name="OFFICE_CLASSES" location="/usr/share/java/openoffice" />
-	<property name="URE_CLASSES" location="/usr/share/java/openoffice" />
-should be modified to the directories where your OOo installation keeps these files
+	<property name="OFFICE_CLASSES" location="/usr/share/java" />
+	<property name="URE_CLASSES" location="/usr/share/java" />
+should be modified to the directories where your LO/AOO installation keeps these files
+In some cases your need to install the office development kit as well
 
 To build, open a command shell, navigate to the source directory and type
 

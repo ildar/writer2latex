@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2010 by Henrik Just
+ *  Copyright: 2001-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.2 (2010-12-15)
+ *  version 1.4 (2014-09-06)
  *
  */
 
@@ -41,12 +41,22 @@ public final class EPUBConverter extends Xhtml11Converter {
     // Constructor
     public EPUBConverter() {
         super();
+        System.out.println("Creating epub converter");
     }
 	
     @Override public ConverterResult convert(InputStream is, String sTargetFileName) throws IOException {
     	setOPS(true);
     	ConverterResult xhtmlResult = super.convert(is, "chapter");
-    	
+    	return createPackage(xhtmlResult,sTargetFileName);
+    }
+    
+    @Override public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName, boolean bDestructive) throws IOException {
+    	setOPS(true);
+    	ConverterResult xhtmlResult = super.convert(dom, "chapter", bDestructive);
+    	return createPackage(xhtmlResult,sTargetFileName);    	
+    }
+    
+    private ConverterResult createPackage(ConverterResult xhtmlResult, String sTargetFileName) {
     	ConverterResultImpl epubResult = new ConverterResultImpl();
     	epubResult.addDocument(new EPUBWriter(xhtmlResult,sTargetFileName,getXhtmlConfig()));
     	epubResult.setMetaData(xhtmlResult.getMetaData());

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-05)
  *
  */
 
@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import writer2latex.api.OutputFile;
-import writer2latex.util.Misc;
 
 
 /** This class is used to represent a binary graphics document to be included in the converter result.
@@ -40,37 +39,55 @@ import writer2latex.util.Misc;
 public class BinaryGraphicsDocument implements OutputFile {
 
     private String sFileName;
-    private String sFileExtension;
     private String sMimeType;
     
-    private boolean bIsLinked = false;
-    private boolean bIsAcceptedFormat = false;
+    private boolean bAcceptedFormat;
+    
+    private boolean bRecycled = false;
     
     // Data for an embedded image
     private byte[] blob = null;
-    private int nOff;
-    private int nLen;
+    private int nOff = 0;
+    private int nLen = 0;
     
-    // Data for a linked image
-    private String sURL = null;
-   
     /**Constructs a new graphics document.
-     * This new document does not contain any data. Document data must 
-     * be added using the appropriate methods.
+     * Until data is added using the <code>read</code> methods, the document is considered a link to
+     * the image given by the file name.
      *
-     * @param sName The name of the <code>GraphicsDocument</code>.
-     * @param sFileExtension the file extension
+     * @param sFileName The name or URL of the <code>GraphicsDocument</code>.
      * @param sMimeType the MIME type of the document
      */
-    public BinaryGraphicsDocument(String sName, String sFileExtension, String sMimeType) {
-        this.sFileExtension = sFileExtension;
+    public BinaryGraphicsDocument(String sFileName, String sMimeType) {
+        this.sFileName = sFileName; 
         this.sMimeType = sMimeType;
-        sFileName = Misc.trimDocumentName(sName, sFileExtension);
+        bAcceptedFormat = false; // or rather "don't know"
     }
-        
+    
+    /** Construct a new graphics document which is a recycled version of the supplied one.
+     *  This implies that all information is identical, but the recycled version does not contain any data.
+     *  This is for images that are used more than once in the document.
+     * 
+     * @param bgd the source document
+     */
+    public BinaryGraphicsDocument(BinaryGraphicsDocument bgd) {
+    	this.sFileName = bgd.getFileName();
+    	this.sMimeType = bgd.getMIMEType();
+    	this.bAcceptedFormat = bgd.isAcceptedFormat();
+    	this.bRecycled = true;
+    }
+    
+    /** Is this graphics document recycled?
+     * 
+     * @return true if this is the case
+     */
+    public boolean isRecycled() {
+    	return bRecycled;
+    }
+
     /** Set image contents to a byte array
      * 
      * @param data the image data
+     * @param bIsAcceptedFormat flag to indicate that the format of the image is acceptable for the converter
      */
     public void setData(byte[] data, boolean bIsAcceptedFormat) {
         setData(data,0,data.length,bIsAcceptedFormat);
@@ -87,30 +104,7 @@ public class BinaryGraphicsDocument implements OutputFile {
         this.blob = data;
         this.nOff = nOff;
         this.nLen = nLen;
-        this.bIsAcceptedFormat = bIsAcceptedFormat;
-        this.bIsLinked = false;
-        this.sURL = null;
-    }
-    
-    /** Set the URL of a linked image
-     * 
-     * @param sURL the URL
-     */
-    public void setURL(String sURL) {
-        this.blob = null;
-        this.nOff = 0;
-        this.nLen = 0;
-        this.bIsAcceptedFormat = false; // or rather don't know
-        this.bIsLinked = true;
-    	this.sURL = sURL;
-    }
-    
-    /** Get the URL of a linked image
-     * 
-     *  @return the URL or null if this is an embedded image
-     */
-    public String getURL() {
-    	return sURL;
+        this.bAcceptedFormat = bIsAcceptedFormat;
     }
     
     /** Does this <code>BinaryGraphicsDocument</code> represent a linked image?
@@ -118,7 +112,7 @@ public class BinaryGraphicsDocument implements OutputFile {
      * @return true if so
      */
     public boolean isLinked() {
-    	return bIsLinked;
+    	return blob==null && !bRecycled;
     }
     
     /** Is this image in an acceptable format for the converter?
@@ -126,9 +120,13 @@ public class BinaryGraphicsDocument implements OutputFile {
      * @return true if so (always returns false for linked images)
      */
     public boolean isAcceptedFormat() {
-    	return bIsAcceptedFormat;
+    	return bAcceptedFormat;
     }
     
+    /** Get the data of the image
+     * 
+     * @return the image data as a byte array - or null if this is a linked image
+     */
     public byte[] getData() {
     	return blob;
     }
@@ -148,20 +146,12 @@ public class BinaryGraphicsDocument implements OutputFile {
     	}
     }
     
-    /** Get the file extension
-     * 
-     *  @return the file extension
-     */
-    public String getFileExtension() {
-    	return sFileExtension;
-    }
-	
-    /** Get the document with file extension.</p>
+    /** Get the document name or URL</p>
     *
-    * @return  The document with file extension.
+    * @return  The document name or URL
     */
    public String getFileName() {
-       return sFileName + sFileExtension;
+       return sFileName;
    }
    
     /** Get the MIME type of the document.

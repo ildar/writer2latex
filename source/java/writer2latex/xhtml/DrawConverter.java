@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-05)
  *
  */
  
@@ -128,7 +128,7 @@ public class DrawConverter extends ConverterHelper {
         nImageSize = config.imageSize();
         sImageSplit = config.imageSplit();
         bCoverImage = config.coverImage();
-        bUseSVG = config.useSVG();
+        bUseSVG = config.inlineSVG();
     }
     
     ///////////////////////////////////////////////////////////////////////
@@ -477,7 +477,7 @@ public class DrawConverter extends ConverterHelper {
         	}
         	else { // linked image
             	if (!converter.isOPS()) { // Cannot have linked images in EPUB, ignore the image
-            		sFileName = bgd.getURL();
+            		sFileName = bgd.getFileName();
             	}
         	}
         }        
@@ -509,7 +509,7 @@ public class DrawConverter extends ConverterHelper {
         }
         else {
         	// In all other cases, create an img element
-            if (bgd!=null) { converter.addDocument(bgd); }
+            if (bgd!=null && !bgd.isLinked() && !bgd.isRecycled()) { converter.addDocument(bgd); }
         	Element image = converter.createElement("img");
         	String sName = Misc.getAttribute(getFrame(onode),XMLString.DRAW_NAME);
         	converter.addTarget(image,sName+"|graphic");

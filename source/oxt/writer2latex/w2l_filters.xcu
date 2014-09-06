@@ -20,7 +20,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>LaTeX 2e</value>
+			<value>LaTeX 2e [Writer2LaTeX]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>
@@ -34,7 +34,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>BibTeX</value>
+			<value>BibTeX [Writer2LaTeX]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-05)
  *
  */
  
@@ -297,7 +297,7 @@ public class DrawConverter extends ConverterHelper {
         BinaryGraphicsDocument bgd = palette.getImageCv().getImage(node);
         if (bgd!=null) {
         	if (!bgd.isLinked()) { // embedded image
-                palette.addDocument(bgd);
+        		if (!bgd.isRecycled()) { palette.addDocument(bgd); }
                 sFileName = bgd.getFileName();
                 String sMIME = bgd.getMIMEType();
                 bCommentOut = !(
@@ -311,8 +311,8 @@ public class DrawConverter extends ConverterHelper {
                     (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS.equals(sMIME)));
         	}
         	else { // linked image
-                sFileName = bgd.getURL();
-                String sExt = bgd.getFileExtension().toLowerCase();
+                sFileName = bgd.getFileName();
+                String sExt = Misc.getFileExtension(sFileName).toLowerCase();
                 // Accept only relative filenames and supported filetypes:
                 bCommentOut = sFileName.indexOf(":")>-1 || !(
                     config.getBackend()==LaTeXConfig.UNSPECIFIED ||

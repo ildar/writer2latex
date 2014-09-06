@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-05)
+ *  Version 1.4 (2014-09-06)
  *
  */
 
@@ -94,7 +94,7 @@ public class ListStyleConverter extends StyleConverter {
 		if (config.formatting()==LaTeXConfig.CONVERT_BASIC ||
 				(config.formatting()>=LaTeXConfig.CONVERT_MOST && oc.isInTable())) {
 			if (oc.getListLevel()==1) {
-				if (!styleNames.containsName(getDisplayName(oc.getListStyleName()))) {
+				if (!listStyleLevelNames.containsKey(oc.getListStyleName())) {
 					createListStyleLabels(oc.getListStyleName());
 				}
 				ba.add("\\liststyle"+styleNames.getExportName(getDisplayName(oc.getListStyleName()))+"\n","");
