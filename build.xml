@@ -70,6 +70,7 @@
                destdir="${classes}"
                encoding="us-ascii"
         	   source="1.5"
+        	   target="1.5"
                debug="on">
             <classpath refid="main.class.path"/>
         </javac>
