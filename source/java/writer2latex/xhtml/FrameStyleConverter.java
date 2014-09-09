@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-03-01)
+ *  Version 1.4 (2014-09-07)
  *
  */
 
@@ -33,6 +33,7 @@ import writer2latex.office.OfficeStyleFamily;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
+import writer2latex.util.Misc;
 //import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
@@ -272,7 +273,9 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
             while(in.peekChar()==' ') { out.append(" "); in.getChar(); }
             // If it's a number it must be a unit -> convert it
             if ('0'<=in.peekChar() && in.peekChar()<='9') {
-                out.append(scale(in.getNumber()+in.getIdentifier()));
+                String sDim = scale(in.getNumber()+in.getIdentifier());
+                // Do not output a border less than 1px wide - some browsers will render it invisible
+                out.append(Misc.isLessThan(sDim, "1px") ? "1px" : sDim);
             }
             // skip other characters
             while (in.peekChar()!=' ' && in.peekChar()!='\0') {

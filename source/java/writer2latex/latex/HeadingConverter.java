@@ -16,28 +16,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-05)
+ *  Version 1.4 (2014-09-08)
  *
  */
 
 package writer2latex.latex;
 
-//import java.util.Hashtable;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import writer2latex.util.*;
-import writer2latex.office.*;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.HeadingMap;
-//import writer2latex.latex.util.StyleMap;
+import writer2latex.office.ListStyle;
+import writer2latex.office.OfficeReader;
+import writer2latex.office.StyleWithProperties;
+import writer2latex.office.XMLString;
+import writer2latex.util.Misc;
 
 /* This class converts OpenDocument headings (<code>text:h</code>) and
  * paragraph styles/formatting into LaTeX
@@ -52,12 +52,15 @@ import writer2latex.latex.util.HeadingMap;
  */
 public class HeadingConverter extends ConverterHelper {
     private String[] sHeadingStyles = new String[11];
+    
+    // Display hidden text?
+    private boolean bDisplayHiddenText = false;
 
     /** Constructs a new <code>HeadingConverter</code>.
      */
-    public HeadingConverter(OfficeReader ofr, LaTeXConfig config,
-        ConverterPalette palette) {
+    public HeadingConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
+        this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
@@ -70,18 +73,27 @@ public class HeadingConverter extends ConverterHelper {
      *  @param oc The current context
      */
     public void handleHeading(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        // Get the level, the heading map and the style name
+    	// Get the style
+        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
+		StyleWithProperties style = ofr.getParStyle(sStyleName);
+		
+		// Check for hidden text
+        if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
+        	return;
+        }
+
+        // Get the level
         int nLevel = ofr.isOpenDocument() ?
             Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_OUTLINE_LEVEL),1) :
             Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_LEVEL),1);
         boolean bUnNumbered = "true".equals(Misc.getAttribute(node,XMLString.TEXT_IS_LIST_HEADER));
 
+        // Get the heading map
         HeadingMap hm = config.getHeadingMap();
-        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
 
         if (nLevel<=hm.getMaxLevel()) {
             // Always push the font used
-            palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getParStyle(sStyleName)));
+            palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(style));
 
             Context ic = (Context) oc.clone();
             ic.setInSection(true);
@@ -125,7 +137,6 @@ public class HeadingConverter extends ConverterHelper {
             palette.getParCv().handleParagraph(node,ldp,oc,false);
         }
     }
-
 
     /** Use a paragraph style on a heading. If hard paragraph formatting
      *  is applied to a heading, page break and font is converted - other
@@ -415,6 +426,5 @@ public class HeadingConverter extends ConverterHelper {
             default: return null;
         }
     }
-
 
 }

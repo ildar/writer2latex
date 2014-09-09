@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-02-01)
+ *  Version 1.4 (2014-09-08)
  *
  */
 
@@ -42,6 +42,9 @@ import writer2latex.latex.util.HeadingMap;
  *  <p>This class handles basic inline text.</p>
  */
 public class InlineConverter extends ConverterHelper {
+	
+    // Display hidden text?
+    private boolean bDisplayHiddenText = false;
 
 	private boolean bIncludeOriginalCitations = false;
     private String sTabstop = "\\ \\ ";
@@ -54,6 +57,7 @@ public class InlineConverter extends ConverterHelper {
         if (config.getTabstop().length()>0) {
             sTabstop = config.getTabstop();
         }
+        this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
@@ -78,6 +82,11 @@ public class InlineConverter extends ConverterHelper {
         // TODO: Handle a selection of formatting attributes: color, supscript...
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
         StyleWithProperties style = ofr.getTextStyle(sStyleName);
+        
+		// Check for hidden text
+        if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
+        	return;
+        }
 
         // Always push the font used
         palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(style));
@@ -105,10 +114,16 @@ public class InlineConverter extends ConverterHelper {
     }
 	
     private void handleTextSpanText(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        String styleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
+        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
+        StyleWithProperties style = ofr.getTextStyle(sStyleName);
+        
+		// Check for hidden text
+        if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
+        	return;
+        }
 		
         // Check for strict handling of styles
-        String sDisplayName = ofr.getTextStyles().getDisplayName(styleName);
+        String sDisplayName = ofr.getTextStyles().getDisplayName(sStyleName);
         if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getTextStyleMap().contains(sDisplayName)) {
             if (config.otherStyles()==LaTeXConfig.WARNING) {
                 System.err.println("Warning: Text with style "+sDisplayName+" was ignored");
@@ -133,12 +148,12 @@ public class InlineConverter extends ConverterHelper {
         boolean bNoFootnotes = false;
 		
         // Always push the font used
-        palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getTextStyle(styleName)));
+        palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getTextStyle(sStyleName)));
 		
         // Apply the style
         BeforeAfter ba = new BeforeAfter();
         Context ic = (Context) oc.clone();
-        if (styled) { palette.getCharSc().applyTextStyle(styleName,ba,ic); }
+        if (styled) { palette.getCharSc().applyTextStyle(sStyleName,ba,ic); }
 		
         // Footnote problems:
         // No footnotes in sub/superscript (will disappear)
@@ -148,7 +163,6 @@ public class InlineConverter extends ConverterHelper {
 
         // Temp solution: Ignore hard formatting in header/footer (name clash problem)
         // only in package format.
-        StyleWithProperties style = ofr.getTextStyle(styleName);
         if (ofr.isPackageFormat() && (style!=null && style.isAutomatic()) && ic.isInHeaderFooter()) {
             styled = false;
         }

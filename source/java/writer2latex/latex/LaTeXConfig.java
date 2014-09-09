@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-05)
+ *  Version 1.4 (2014-09-08)
  *
  */
 
@@ -49,7 +49,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 70; }
+    protected int getOptionCount() { return 71; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -163,24 +163,25 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int IGNORE_HARD_LINE_BREAKS = 49;
     private static final int IGNORE_EMPTY_PARAGRAPHS =50;
     private static final int IGNORE_DOUBLE_SPACES = 51;
-    private static final int ALIGN_FRAMES = 52;
-    private static final int FLOAT_FIGURES = 53; 
-    private static final int FLOAT_TABLES = 54; 
-    private static final int FLOAT_OPTIONS = 55;
-    private static final int FIGURE_SEQUENCE_NAME = 56; 
-    private static final int TABLE_SEQUENCE_NAME = 57; 
-    private static final int IMAGE_OPTIONS = 58;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 59;
-    private static final int ORIGINAL_IMAGE_SIZE = 60;
-    private static final int SIMPLE_TABLE_LIMIT = 61;
-    private static final int NOTES = 62;
-    private static final int METADATA = 63;
-    private static final int TABSTOP = 64;
-    private static final int WRAP_LINES_AFTER = 65;
-    private static final int SPLIT_LINKED_SECTIONS = 66;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 67;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 68;
-    private static final int DEBUG = 69;
+    private static final int DISPLAY_HIDDEN_TEXT = 52;
+    private static final int ALIGN_FRAMES = 53;
+    private static final int FLOAT_FIGURES = 54; 
+    private static final int FLOAT_TABLES = 55; 
+    private static final int FLOAT_OPTIONS = 56;
+    private static final int FIGURE_SEQUENCE_NAME = 57; 
+    private static final int TABLE_SEQUENCE_NAME = 58; 
+    private static final int IMAGE_OPTIONS = 59;
+    private static final int REMOVE_GRAPHICS_EXTENSION = 60;
+    private static final int ORIGINAL_IMAGE_SIZE = 61;
+    private static final int SIMPLE_TABLE_LIMIT = 62;
+    private static final int NOTES = 63;
+    private static final int METADATA = 64;
+    private static final int TABSTOP = 65;
+    private static final int WRAP_LINES_AFTER = 66;
+    private static final int SPLIT_LINKED_SECTIONS = 67;
+    private static final int SPLIT_TOPLEVEL_SECTIONS = 68;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 69;
+    private static final int DEBUG = 70;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -288,6 +289,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[IGNORE_HARD_LINE_BREAKS] = new BooleanOption("ignore_hard_line_breaks","false");
         options[IGNORE_EMPTY_PARAGRAPHS] = new BooleanOption("ignore_empty_paragraphs","false");
         options[IGNORE_DOUBLE_SPACES] = new BooleanOption("ignore_double_spaces","false");
+        options[DISPLAY_HIDDEN_TEXT] = new BooleanOption("display_hidden_text","false");
         options[ALIGN_FRAMES] = new BooleanOption("align_frames","true");
         options[FLOAT_FIGURES] = new BooleanOption("float_figures","false");
         options[FLOAT_TABLES] = new BooleanOption("float_tables","false");
@@ -700,6 +702,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean ignoreHardLineBreaks() { return ((BooleanOption) options[IGNORE_HARD_LINE_BREAKS]).getValue(); }
     public boolean ignoreEmptyParagraphs() { return ((BooleanOption) options[IGNORE_EMPTY_PARAGRAPHS]).getValue(); }
     public boolean ignoreDoubleSpaces() { return ((BooleanOption) options[IGNORE_DOUBLE_SPACES]).getValue(); }
+    public boolean displayHiddenText() { return ((BooleanOption) options[DISPLAY_HIDDEN_TEXT]).getValue(); }
 
     // Graphics options
     public boolean alignFrames() { return ((BooleanOption) options[ALIGN_FRAMES]).getValue(); }

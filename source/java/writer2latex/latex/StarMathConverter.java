@@ -18,7 +18,7 @@
  *
  *  Copyright: 2002-2014 by Henrik Just
  *  
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-08)
  *
  *  All Rights Reserved.
  */
@@ -421,8 +421,8 @@ class SmTokenTable{
          new SmTokenTableEntry( "backepsilon" , Token.BACKEPSILON, "\\backepsilon ", TGroup.STANDALONE, 5),
          new SmTokenTableEntry( "bar", Token.BAR, "\\bar", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "binom", Token.BINOM, "" , 5 ),
-         new SmTokenTableEntry( "black", Token.BLACK, "black", TGroup.COLOR, 0),
-         new SmTokenTableEntry( "blue", Token.BLUE, "blue", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "black", Token.BLACK, "\\textcolor{black}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "blue", Token.BLUE, "\\textcolor[rgb]{0,0,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "bold", Token.BOLD, "\\boldsubformula", TGroup.FONTATTR, 5),
          new SmTokenTableEntry( "boper", Token.BOPER, "", TGroup.PRODUCT, 0),
          new SmTokenTableEntry( "breve", Token.BREVE, "\\breve", TGroup.ATTRIBUT, 5),
@@ -439,7 +439,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "coth", Token.COTH, "\\coth ", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "csub", Token.CSUB, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "csup", Token.CSUP, "", TGroup.POWER, 0),
-         new SmTokenTableEntry( "cyan", Token.CYAN, "cyan", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "cyan", Token.CYAN, "\\textcolor[rgb]{0,0.5,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "dddot", Token.DDDOT, "\\dddot", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "ddot", Token.DDOT, "\\ddot", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "def", Token.DEF, "\\defeq ", TGroup.RELATION, 0),
@@ -471,7 +471,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "geslant", Token.GESLANT, "\\geqslant ", TGroup.RELATION, 0 ),
          new SmTokenTableEntry( "gg", Token.GG, "\\gg ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "grave", Token.GRAVE, "\\grave", TGroup.ATTRIBUT, 5),
-         new SmTokenTableEntry( "green", Token.GREEN, "green", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "green", Token.GREEN, "\\textcolor[rgb]{0,0.5,0}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "gt", Token.GT, ">", TGroup.RELATION, 0),
          new SmTokenTableEntry( "hat", Token.HAT, "\\hat", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "hbar" , Token.HBAR, "\\hbar ", TGroup.STANDALONE, 5),
@@ -508,7 +508,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "lsub", Token.LSUB, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "lsup", Token.LSUP, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "lt", Token.LT, "<", TGroup.RELATION, 0),
-         new SmTokenTableEntry( "magenta", Token.MAGENTA, "magenta", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "magenta", Token.MAGENTA, "\\textcolor[rgb]{0.5,0,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "matrix", Token.MATRIX, "", 5),
          new SmTokenTableEntry( "minusplus", Token.MINUSPLUS, "\\mp ", TGroup.UNOPER, TGroup.SUM, 5),
          new SmTokenTableEntry( "mline", Token.MLINE, "", 0),
@@ -551,7 +551,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "rceil", Token.RCEIL, "\\rceil ", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rdbracket", Token.RDBRACKET, "\\rrbracket ", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rdline", Token.RDLINE, "\\|", TGroup.RBRACES, 0),
-         new SmTokenTableEntry( "red", Token.RED, "red", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "red", Token.RED, "\\textcolor[rgb]{0.5,0,0}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "rfloor", Token.RFLOOR, "\\rfloor", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "right", Token.RIGHT, "", 0),
          new SmTokenTableEntry( "rightarrow" , Token.RIGHTARROW, "\\rightarrow ", TGroup.STANDALONE, 5),
@@ -595,14 +595,14 @@ class SmTokenTable{
          new SmTokenTableEntry( "uoper", Token.UOPER, "", TGroup.UNOPER, 5),
          new SmTokenTableEntry( "uparrow" , Token.UPARROW, "\\uparrow ", TGroup.STANDALONE, 5),
          new SmTokenTableEntry( "vec", Token.VEC, "\\vec", TGroup.ATTRIBUT, 5),
-         new SmTokenTableEntry( "white", Token.WHITE, "white", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "white", Token.WHITE, "\\textcolor{white}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "widebslash", Token.WIDEBACKSLASH, "", TGroup.PRODUCT, 0 ),
          new SmTokenTableEntry( "widehat", Token.WIDEHAT, "\\widehat ", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "widetilde", Token.WIDETILDE, "\\widetilde", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "wideslash", Token.WIDESLASH, "", TGroup.PRODUCT, 0 ),
          new SmTokenTableEntry( "widevec", Token.WIDEVEC, "\\overrightarrow", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "wp" , Token.WP, "\\wp ", TGroup.STANDALONE, 5),
-         new SmTokenTableEntry( "yellow", Token.YELLOW, "yellow", TGroup.COLOR, 0),    
+         new SmTokenTableEntry( "yellow", Token.YELLOW, "\\textcolor{yellow}", TGroup.COLOR, 0),    
     	new SmTokenTableEntry( "nospace", Token.NOSPACE, "", TGroup.ATTRIBUT, 0),
     	// nospace is flagged as standalone in parse.cxx for some reason, but is really treated like an attribute
     	new SmTokenTableEntry( "prec", Token.PREC, "\\prec ", TGroup.RELATION, 0),
@@ -1442,8 +1442,10 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
                 sAttribute=curToken.sLaTeX; // the color name
                 nextToken();
                 if (bUseColor) {
-                    return "\\textcolor{"+sAttribute+"}"+group(term(fSize,eAlign));
-                    // note: despite the name, \textcolor also works in math mode!
+                    // The attribute contains the appropriate \textcolor command
+                	// Note: 5 of the 8 colors are in a dark variant
+                	// Note: despite the name, \textcolor also works in math mode!
+                    return sAttribute+group(term(fSize,eAlign));
                 }
                 else {
                     return term(fSize,eAlign);

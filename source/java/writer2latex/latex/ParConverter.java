@@ -20,25 +20,22 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-02)
+ *  Version 1.4 (2014-09-08)
  *
  */
 
 package writer2latex.latex;
 
-//import java.util.Hashtable;
-
 import org.w3c.dom.Element;
-//import org.w3c.dom.Node;
-//import org.w3c.dom.NodeList;
 
-import writer2latex.util.*;
-import writer2latex.office.*;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.StyleMapItem;
-//import writer2latex.latex.util.HeadingMap;
 import writer2latex.latex.util.StyleMap;
+import writer2latex.office.OfficeReader;
+import writer2latex.office.StyleWithProperties;
+import writer2latex.office.XMLString;
+import writer2latex.util.Misc;
 
 /* <p>This class converts OpenDocument paragraphs (<code>text:p</code>) and
  * paragraph styles/formatting into LaTeX</p>
@@ -55,12 +52,15 @@ import writer2latex.latex.util.StyleMap;
 public class ParConverter extends StyleConverter {
 
     private boolean bNeedArrayBslash = false;
+    
+    // Display hidden text?
+    private boolean bDisplayHiddenText = false;
 
     /** <p>Constructs a new <code>ParConverter</code>.</p>
      */
-    public ParConverter(OfficeReader ofr, LaTeXConfig config,
-        ConverterPalette palette) {
+    public ParConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
+        this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
@@ -90,7 +90,7 @@ public class ParConverter extends StyleConverter {
 	
     /**
      * <p> Process a text:p tag</p>
-     *  @param node The text:h element node containing the heading
+     *  @param node The text:p element node containing the paragraph
      *  @param ldp The <code>LaTeXDocumentPortion</code> to add LaTeX code to
      *  @param oc The current context
      *  @param bLastInBlock If this is true, the paragraph is the
@@ -101,9 +101,15 @@ public class ParConverter extends StyleConverter {
     	// Check for display equation (except in table cells)
         if ((!oc.isInTable()) && palette.getMathCv().handleDisplayEquation(node,ldp)) { return; }
 		
-        // Get the style name for this paragraph
+        // Get the style for this paragraph
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
+        StyleWithProperties style = ofr.getParStyle(sStyleName);
         String sDisplayName = ofr.getParStyles().getDisplayName(sStyleName);
+        
+		// Check for hidden text
+        if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
+        	return;
+        }
 		
         // Check for strict handling of styles
         if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getParStyleMap().contains(sDisplayName)) {
@@ -128,7 +134,6 @@ public class ParConverter extends StyleConverter {
         if (OfficeReader.isWhitespaceContent(node)) {
             // Always add page break; other formatting is ignored
             BeforeAfter baPage = new BeforeAfter();
-            StyleWithProperties style = ofr.getParStyle(sStyleName);
             palette.getPageSc().applyPageBreak(style,true,baPage);
             if (!oc.isInTable()) { ldp.append(baPage.getBefore()); }
             if (!config.ignoreEmptyParagraphs()) {

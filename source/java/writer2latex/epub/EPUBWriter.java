@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2014-08-27)
+ *  version 1.4 (2014-09-07)
  *
  */
 
@@ -116,11 +116,12 @@ public class EPUBWriter implements OutputFile {
 	}
 	
 	private void writeZipEntry(OutputFile file, ZipOutputStream zos) throws IOException {
-		// TODO: Fix this waste of memory :-)
+		// Unfortunately we cannot simply do file.write(zos) because the write method of OutputFile
+		// closes the OutputStream. Hence this suboptimal solution
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		file.write(baos);
 		byte[] content = baos.toByteArray();
-		zos.write(content, 0, content.length);		
+		zos.write(content, 0, content.length);
 	}
 
 }

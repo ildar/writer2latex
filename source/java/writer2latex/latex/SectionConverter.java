@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-01-24)
+ *  Version 1.4 (2014-09-08)
  *
  */
 
@@ -45,15 +45,18 @@ public class SectionConverter extends ConverterHelper {
 
     // Do we need multicols.sty?
     private boolean bNeedMulticol = false;
+    
+    // Display hidden text?
+    private boolean bDisplayHiddenText = false;
 	
     // Filenames for external sections
     private ExportNameCollection fileNames = new ExportNameCollection(true);
     
     /** <p>Constructs a new <code>SectionStyleConverter</code>.</p>
      */
-    public SectionConverter(OfficeReader ofr, LaTeXConfig config,
-        ConverterPalette palette) {
+    public SectionConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
+        this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
@@ -143,6 +146,11 @@ public class SectionConverter extends ConverterHelper {
      * @param oc the current context
      */
     public void handleSection(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    	// Unlike headings, paragraphs and spans, text:display is not attached to the style:
+        if (!bDisplayHiddenText && "none".equals(Misc.getAttribute(node,XMLString.TEXT_DISPLAY))) {
+        	return;
+        }
+
         // We may need a hyperlink target, add this first
         palette.getFieldCv().addTarget(node,"|region",ldp);
 
