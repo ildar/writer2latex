@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.2 (2011-04-20)
+ *  Version 1.4 (2014-09-16)
  *  
  */
  
@@ -402,7 +402,7 @@ public class TableFormatter extends ConverterHelper {
             return "\\hline";
         }
         else { // individual borders for each column
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append("\\hhline{");
             for (int nCol=0; nCol<nColCount; nCol++) {
                 if (bHBorder[nRow][nCol]) { buf.append("-"); }

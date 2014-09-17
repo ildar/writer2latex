@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -538,7 +538,7 @@ public class Converter extends ConverterBase {
     
     /* get inline text, ignoring any draw objects, footnotes, formatting and hyperlinks */
     protected String getPlainInlineText(Node node) {
-    	StringBuffer buf = new StringBuffer();
+    	StringBuilder buf = new StringBuilder();
         Node child = node.getFirstChild();
         while (child!=null) {
             short nodeType = child.getNodeType();
@@ -575,7 +575,7 @@ public class Converter extends ConverterBase {
     public void handleOfficeAnnotation(Node onode, Node hnode) {
         if (config.xhtmlNotes()) {
             // Extract the text from the paragraphs, separate paragraphs with newline
-        	StringBuffer buf = new StringBuffer();
+        	StringBuilder buf = new StringBuilder();
         	Element creator = null;
         	Element date = null;
         	Node child = onode.getFirstChild();

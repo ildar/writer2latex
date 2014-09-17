@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-05-09)
+ *  Version 1.4 (2014-09-16)
  *
  */package writer2latex.xhtml;
 
@@ -42,7 +42,7 @@ public class HeadingStyleConverter extends StyleConverterHelper {
 	@Override
 	public String getStyleDeclarations(String sIndent) {
         if (bConvertStyles) {
-        	StringBuffer buf = new StringBuffer();
+        	StringBuilder buf = new StringBuilder();
         	for (int i=1; i<=6; i++) {
         		if (ofr.getHeadingStyle(i)!=null) {
         			CSVList props = new CSVList(";");

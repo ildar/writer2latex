@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-12-29)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -136,7 +136,7 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param sIndent a String of spaces to add before each line
      */
     public String getStyleDeclarations(String sIndent) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(super.getStyleDeclarations(sIndent));
         if (bConvertStyles) {
             // Export anchor styles

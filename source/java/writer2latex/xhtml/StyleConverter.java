@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -123,7 +123,7 @@ class StyleConverter extends ConverterHelper {
     public String exportStyles(boolean bIndent) {
     	String sIndent = bIndent ? "      " : "";
     	
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         
         // Export default style
         if (config.xhtmlCustomStylesheet().length()==0 &&

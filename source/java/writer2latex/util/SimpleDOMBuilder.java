@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2012-03-22)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -40,6 +40,7 @@ import org.w3c.dom.Element;
 public class SimpleDOMBuilder {
 	private Document dom=null;
 	private Element currentElement=null;
+	private StringBuilder charBuffer=new StringBuilder();
 	
 	/**
 	 * Append an element to the current element and set this new element to be the current element.
@@ -51,6 +52,7 @@ public class SimpleDOMBuilder {
 	 */
 	public boolean startElement(String sTagName) {
 		if (currentElement!=null) {
+			flushCharacters();
 			currentElement = (Element) currentElement.appendChild(dom.createElement(sTagName));
 		}
 		else {
@@ -74,6 +76,7 @@ public class SimpleDOMBuilder {
 	 */
 	public boolean endElement() {
 		if (currentElement!=null) {
+			flushCharacters();
 			if (currentElement!=dom.getDocumentElement()) {
 				currentElement=(Element) currentElement.getParentNode();
 			}
@@ -100,16 +103,24 @@ public class SimpleDOMBuilder {
 	}
 	
 	/**
-	 * Add characters to the currentElement
+	 * Add characters to the currentElement. The actual writing of characters to the DOM is delayed until the
+	 * <code>startElement</code> or <code>endElement</code> methods are invoked
 	 * @param sText
 	 * @return true on success, false if there is no current element
 	 */
 	public boolean characters(String sText) {
 		if (currentElement!=null) {
-			currentElement.appendChild(dom.createTextNode(sText));
+			charBuffer.append(sText);
 			return true;
 		}
 		return false;
+	}
+	
+	private void flushCharacters() {
+		if (charBuffer.length()>0) {
+			currentElement.appendChild(dom.createTextNode(charBuffer.toString()));
+			charBuffer.setLength(0);
+		}
 	}
 	
 	/**

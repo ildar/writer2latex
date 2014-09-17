@@ -18,7 +18,7 @@
  *
  *  Copyright: 2002-2014 by Henrik Just
  *  
- *  Version 1.4 (2014-09-08)
+ *  Version 1.4 (2014-09-16)
  *
  *  All Rights Reserved.
  */
@@ -1051,7 +1051,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     // Grammar
     
     private String table(float fSize, Token eAlign){
-        StringBuffer bufTable=new StringBuffer();
+        StringBuilder bufTable=new StringBuilder();
         String sLine=line(fSize,eAlign,true);
         if (curToken.eType==Token.NEWLINE){ // more than one line
             bufTable.append("\\begin{gathered}").append(sLine);
@@ -1126,7 +1126,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
     
     private String expression(float fSize, Token eAlign){
-        StringBuffer bufExpression=new StringBuffer().append(relation(fSize,eAlign));
+        StringBuilder bufExpression=new StringBuilder().append(relation(fSize,eAlign));
         while (curToken.nLevel>=5){
             bufExpression.append(relation(fSize,eAlign));
         }
@@ -1134,7 +1134,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
     
     private String relation(float fSize, Token eAlign){
-        StringBuffer bufRelation=new StringBuffer().append(sum(fSize,eAlign));
+        StringBuilder bufRelation=new StringBuilder().append(sum(fSize,eAlign));
         while (tokenInGroup(TGroup.RELATION)){
             if (curToken.eType==Token.TRANSL) { bMultimapdotbothA=true; }
             else if (curToken.eType==Token.TRANSR) { bMultimapdotbothB=true; }
@@ -1145,7 +1145,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
     
     private String sum(float fSize, Token eAlign){
-        StringBuffer bufSum=new StringBuffer().append(product(fSize,eAlign));
+        StringBuilder bufSum=new StringBuilder().append(product(fSize,eAlign));
         while (tokenInGroup(TGroup.SUM)){
             bufSum.append(opsubsup(fSize,eAlign)).append(product(fSize,eAlign));
         }
@@ -1262,7 +1262,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
     
     private String blank(){
-        StringBuffer bufBlank=new StringBuffer();
+        StringBuilder bufBlank=new StringBuilder();
         while (tokenInGroup(TGroup.BLANK)){
             bufBlank.append(curToken.sLaTeX);
             nextToken();
@@ -1608,7 +1608,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     private String stack(float fSize, Token eAlign){
         nextToken();
         if (curToken.eType==Token.LGROUP){
-            StringBuffer bufStack=new StringBuffer().append("\\begin{matrix}");
+            StringBuilder bufStack=new StringBuilder().append("\\begin{matrix}");
             nextToken();
             bufStack.append(align(fSize,eAlign,true,true));
             while (curToken.eType==Token.POUND) {
@@ -1631,7 +1631,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     private String matrix(float fSize, Token eAlign){
         nextToken();
         if (curToken.eType==Token.LGROUP){
-            StringBuffer bufMatrix = new StringBuffer().append("\\begin{matrix}");
+            StringBuilder bufMatrix = new StringBuilder().append("\\begin{matrix}");
             int nCols = 1;
             boolean bProtect = false;
             do {

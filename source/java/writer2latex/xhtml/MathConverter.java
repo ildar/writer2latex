@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-01)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -259,7 +259,7 @@ public class MathConverter extends ConverterHelper {
     // with real unicode positions.
     private String replacePrivateChars(String s) {        
         int nLen = s.length();
-        StringBuffer buf = new StringBuffer(nLen);
+        StringBuilder buf = new StringBuilder(nLen);
         for (int i=0; i<nLen; i++) {
             buf.append(replacePrivateChar(s.charAt(i)));
         }

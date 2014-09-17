@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-11-22)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -66,7 +66,7 @@ public final class IndexMark {
     }
 
     private final static String collectMark(Node node) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String sId = Misc.getAttribute(node,XMLString.TEXT_ID);
         node = getRightNode(node);
         while (node!=null) {

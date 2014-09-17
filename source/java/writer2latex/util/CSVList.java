@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 0.4 (2004-08-10)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -31,7 +31,7 @@ public class CSVList{
     private String sSep;
     private String sNameValueSep;
     private boolean bEmpty = true;
-    private StringBuffer buf = new StringBuffer();
+    private StringBuilder buf = new StringBuilder();
 	
     public CSVList(String sSep, String sNameValueSep) {
         this.sSep=sSep;

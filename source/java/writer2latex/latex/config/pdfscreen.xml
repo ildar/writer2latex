@@ -10,7 +10,7 @@
   <option name="documentclass" value="article" />
   <option name="backend" value="pdftex" />
   <option name="inputencoding" value="ascii" />
-  <option name="use_ooomath" value="true" />
+  <option name="use_ooomath" value="false" />
   <option name="use_pifont" value="true" />
   <option name="use_ifsym" value="true" />
   <option name="use_wasysym" value="true" />

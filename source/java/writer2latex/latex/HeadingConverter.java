@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-08)
+ *  Version 1.4 (2014-09-15)
  *
  */
 
@@ -409,7 +409,8 @@ public class HeadingConverter extends ConverterHelper {
         for (int i = 0; i < nLen; i++) {
             Node child = list.item(i);
             if (child.getNodeType()==Node.ELEMENT_NODE && 
-                !child.getNodeName().startsWith(XMLString.TEXT_REFERENCE_MARK)) {
+                !(child.getNodeName().startsWith(XMLString.TEXT_REFERENCE_MARK) ||
+                		child.getNodeName().startsWith(XMLString.TEXT_BOOKMARK))) {
                 return true;
             }
         }

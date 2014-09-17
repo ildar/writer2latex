@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-07)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -62,7 +62,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
      */
     public String getStyleDeclarations(String sIndent) {
         if (bConvertStyles) {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append(super.getStyleDeclarations(sIndent));
             Enumeration<String> names = styleNames.keys();
             while (names.hasMoreElements()) {
@@ -267,7 +267,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
     // Scale the border with while preserving the rest of the attribute
     public String borderScale(String sBorder) {
         SimpleInputBuffer in = new SimpleInputBuffer(sBorder);
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         while (in.peekChar()!='\0') {
             // Skip spaces
             while(in.peekChar()==' ') { out.append(" "); in.getChar(); }
@@ -287,7 +287,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
 	
     // Must escape certain characters in the url property	
     private String escapeUrl(String sUrl) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int nLen = sUrl.length();
         for (int i=0; i<nLen; i++) {
             char c = sUrl.charAt(i);

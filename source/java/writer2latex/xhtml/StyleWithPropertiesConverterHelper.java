@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-07)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -94,7 +94,7 @@ public abstract class StyleWithPropertiesConverterHelper
      */
     public String getStyleDeclarations(String sIndent) {
         if (bConvertStyles) {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             Enumeration<String> names = styleNames.keys();
             while (names.hasMoreElements()) {
                 String sDisplayName = names.nextElement();

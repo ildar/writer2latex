@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-05-07) 
+ *  Version 1.4 (2014-09-16) 
  * 
  */
 
@@ -453,7 +453,7 @@ public class ClassicI18n extends I18n {
      */
     public String convert(String s, boolean bMathMode, String sLang){
         if (!bAlwaysUseDefaultLang && sLang!=null) { languages.add(sLang); }
-        StringBuffer buf=new StringBuffer();
+        StringBuilder buf=new StringBuilder();
         int nFontenc = bAlwaysUseDefaultLang ? nDefaultFontenc : getFontenc(sLang);
         int nLen = s.length();
         int i = 0;
@@ -485,7 +485,7 @@ public class ClassicI18n extends I18n {
         return buf.toString();
     }
 	
-    private void convert(String s, int nStart, int nEnd, boolean bMathMode, String sLang, StringBuffer buf, int nFontenc) {
+    private void convert(String s, int nStart, int nEnd, boolean bMathMode, String sLang, StringBuilder buf, int nFontenc) {
         int nCurFontenc = nFontenc;
         ucparser.reset(table,s,nStart,nEnd);
         boolean bIsFirst = true; // Protect all dangerous characters at the start

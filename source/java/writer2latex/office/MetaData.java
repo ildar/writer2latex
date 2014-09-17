@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-03-29)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -174,7 +174,7 @@ public class MetaData implements writer2latex.api.MetaData {
     public Map<String,String> getUserDefinedMetaData() { return userdefined; }
 
     private String getContent(Node node) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         Node child = node.getFirstChild();
         while (child!=null) {
            if (child.getNodeType()==Node.TEXT_NODE) {

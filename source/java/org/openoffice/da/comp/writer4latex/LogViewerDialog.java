@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-02-23)
+ *  Version 1.4 (2014-09-16)
  *
  */ 
  
@@ -117,7 +117,7 @@ public class LogViewerDialog extends DialogBase
     // Utility methods
 	
     private String readTextFile(String sUrl) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         try {
             File file = new File(new URI(sUrl));
             if (file.exists() && file.isFile()) {

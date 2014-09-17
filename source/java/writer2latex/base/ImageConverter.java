@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -240,7 +240,7 @@ public final class ImageConverter {
     	if (blob==null) {
 	        Node obd = Misc.getChildByTagName(node,XMLString.OFFICE_BINARY_DATA);
 	        if (obd!=null) {
-	            StringBuffer buf = new StringBuffer();
+	            StringBuilder buf = new StringBuilder();
 	            NodeList nl = obd.getChildNodes();
 	            int nLen = nl.getLength();
 	            for (int i=0; i<nLen; i++) {

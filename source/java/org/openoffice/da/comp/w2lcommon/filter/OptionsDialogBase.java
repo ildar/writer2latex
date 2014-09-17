@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.3.1 (2014-08-04)
+ *  Version 1.4 (2014-09-16)
  *
  */ 
  
@@ -403,7 +403,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
         		Object resources = XPropertySetHelper.getPropertyValue(xCfgProps,"Resources");
         		XNameAccess xResourceNameAccess = (XNameAccess) UnoRuntime.queryInterface(XNameAccess.class,resources);
         		if (xResourceNameAccess!=null) {
-        			StringBuffer buf = new StringBuffer();
+        			StringBuilder buf = new StringBuilder();
         			String[] sResourceNames = xResourceNameAccess.getElementNames();
         			for (String sName : sResourceNames) {
         				Object resource = xResourceNameAccess.getByName(sName);

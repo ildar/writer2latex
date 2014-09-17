@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-10-10)
+ *  Version 1.4 (2014-09-16)
  *
  */ 
  
@@ -229,7 +229,7 @@ public final class ApplicationsDialog
     }
     
     // Unix: Configure a certain application, reporting the availability
-    private boolean configureApp(String sName, String sAppName, String sArguments, StringBuffer info) {
+    private boolean configureApp(String sName, String sAppName, String sArguments, StringBuilder info) {
     	if (hasApp(sAppName)) {
     		externalApps.setApplication(sName, sAppName, sArguments);
     		info.append("Found "+sAppName+" - OK\n");
@@ -244,7 +244,7 @@ public final class ApplicationsDialog
     
     // Unix: Configure a certain application testing the availability
     // This variant uses an array of potential apps
-    private boolean configureApp(String sName, String[] sAppNames, String sArguments, StringBuffer info) {
+    private boolean configureApp(String sName, String[] sAppNames, String sArguments, StringBuilder info) {
     	for (String sAppName : sAppNames) {
     		if (configureApp(sName, sAppName, sArguments)) {
     			info.append("Found "+sName+": "+sAppName+" - OK\n");
@@ -266,7 +266,7 @@ public final class ApplicationsDialog
     }
 	
     // Windows: Configure a certain MikTeX application
-    private boolean configureMikTeX(String sPath, String sName, String sAppName, String sArguments, StringBuffer info, boolean bRequired) {
+    private boolean configureMikTeX(String sPath, String sName, String sAppName, String sArguments, StringBuilder info, boolean bRequired) {
     	File app = new File(new File(sPath),sAppName+".exe");
     	if (app.exists()) {
     		externalApps.setApplication(sName, sAppName, sArguments);
@@ -285,7 +285,7 @@ public final class ApplicationsDialog
 		String sOsName = System.getProperty("os.name");
 		String sOsVersion = System.getProperty("os.version");
 		String sOsArch = System.getProperty("os.arch");
-		StringBuffer info = new StringBuffer();
+		StringBuilder info = new StringBuilder();
 		info.append("Results of configuration:\n\n");
 		info.append("Your system identifies itself as "+sOsName+" version "+sOsVersion+ " (" + sOsArch +")\n\n");
     	if (sOsName.startsWith("Windows")) {

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-05)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -969,7 +969,7 @@ public class FieldConverter extends ConverterHelper {
 
     // For the argument to a href, we have to escape or encode certain characters
     private String escapeHref(String s, boolean bInFootnote) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i=0; i<s.length(); i++) {
             if (bInFootnote && s.charAt(i)=='#') { buf.append("\\#"); }
             else if (bInFootnote && s.charAt(i)=='%') { buf.append("\\%"); }

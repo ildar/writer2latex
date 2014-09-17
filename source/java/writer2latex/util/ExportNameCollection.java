@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-10-27)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -58,7 +58,7 @@ public class ExportNameCollection{
     
     public void addName(String sName){
         if (containsName(sName)) { return; }
-        StringBuffer outbuf=new StringBuffer();
+        StringBuilder outbuf=new StringBuilder();
         SimpleInputBuffer inbuf=new SimpleInputBuffer(sName);
 		
         // Don't start with a digit

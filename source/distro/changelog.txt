@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.2 alpha ----------
 
+[w2l] Replace usage of StringBuffer with StringBuilder everywhere (marginal optimization)
+
+[w2l] The standard configurations pdfprint.xml and pdfscreen.xml no longer requires ooomath.sty
+
+[w2l] A bookmark in a heading no longer results in an optional argument to \section commands 
+ 
 [w2l] New option display_hidden_text (default false) to toggle whether or not hidden text should be included in
   the export (there is currently no user interface for this option)
 

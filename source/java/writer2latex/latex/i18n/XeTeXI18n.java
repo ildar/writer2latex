@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-27)
+ *  Version 1.4 (2014-09-16)
  * 
  */
 
@@ -134,7 +134,7 @@ public class XeTeXI18n extends I18n {
      *  @return the LaTeX string
      */
     public String convert(String s, boolean bMathMode, String sLang){
-    	StringBuffer buf = new StringBuffer();
+    	StringBuilder buf = new StringBuilder();
     	int nLen = s.length();
         char c;
         if (bMathMode) {
@@ -190,7 +190,7 @@ public class XeTeXI18n extends I18n {
         return buf.toString();
     }
     
-    private void convert(char c, StringBuffer buf) {
+    private void convert(char c, StringBuilder buf) {
 		switch (c) {
 		case '#' : buf.append("\\#"); break; // Parameter
 		case '$' : buf.append("\\$"); break; // Math shift

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -91,7 +91,7 @@ public class Misc{
 	
     public static final String int2roman(int number) {
     	assert number>0; // Only works for positive numbers!
-        StringBuffer roman=new StringBuffer();
+        StringBuilder roman=new StringBuilder();
         while (number>=1000) { roman.append('m'); number-=1000; }
         if (number>=900) { roman.append("cm"); number-=900; }
         if (number>=500) { roman.append('d'); number-=500; }
@@ -404,7 +404,7 @@ public class Misc{
 	
     /* utility method that collects PCDATA content of an element */
     public static String getPCDATA(Node node) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if (node.hasChildNodes()) {
             NodeList nl = node.getChildNodes();
             int nLen = nl.getLength();

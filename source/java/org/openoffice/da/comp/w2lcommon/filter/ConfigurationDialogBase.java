@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.4 (2014-08-05)
+*  Version 1.4 (2014-09-16)
 *
 */ 
 
@@ -437,7 +437,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 					if (xIs!=null) {
 						InputStream is = new XInputStreamToInputStreamAdapter(xIs);
 						BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-						StringBuffer buf = new StringBuffer();
+						StringBuilder buf = new StringBuilder();
 						String sLine;
 						try {
 							while ((sLine = reader.readLine())!=null) {

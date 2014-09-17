@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -38,7 +38,7 @@ public class LaTeXDocumentPortion {
 
     private Vector<Object> nodes; // The collection of all nodes in this portion
 
-    private StringBuffer curText; // The currently active node (always the last node)
+    private StringBuilder curText; // The currently active node (always the last node)
     private boolean bEmpty; // Is the active node empty?
 
     private boolean bWrap; // Do we allow line wrap in this portion?
@@ -50,7 +50,7 @@ public class LaTeXDocumentPortion {
     public LaTeXDocumentPortion(boolean bWrap){
         this.bWrap = bWrap;
         nodes = new Vector<Object>();
-        curText = new StringBuffer();
+        curText = new StringBuilder();
         bEmpty = true;
     }
 	
@@ -63,7 +63,7 @@ public class LaTeXDocumentPortion {
         if (!bEmpty) {
             // add the current node to the node list and create new current node
             nodes.add(curText);
-            curText = new StringBuffer();
+            curText = new StringBuilder();
             bEmpty = true;
         }
         nodes.add(ldp);
@@ -96,8 +96,8 @@ public class LaTeXDocumentPortion {
         for (int i=nStart; i<nEnd; i++) { osw.write(s.charAt(i)); }
     }
 	
-    /** write the contents of a StringBuffer to the output */
-    private void writeBuffer(StringBuffer text, OutputStreamWriter osw, int nLineLen, String sNewline) throws IOException {
+    /** write the contents of a StringBuilder to the output */
+    private void writeBuffer(StringBuilder text, OutputStreamWriter osw, int nLineLen, String sNewline) throws IOException {
         String s = text.toString();
         int nLen = s.length();
 
@@ -157,8 +157,8 @@ public class LaTeXDocumentPortion {
         }
     }
 	
-    /** write the contents of a StringBuffer to the output without wrap */
-    private void writeBuffer(StringBuffer text, OutputStreamWriter osw, String sNewline) throws IOException {
+    /** write the contents of a StringBuilder to the output without wrap */
+    private void writeBuffer(StringBuilder text, OutputStreamWriter osw, String sNewline) throws IOException {
         String s = text.toString();
         int nLen = s.length();
 
@@ -193,10 +193,10 @@ public class LaTeXDocumentPortion {
                 ((LaTeXDocumentPortion) nodes.get(i)).write(osw,nLineLen,sNewline);
             }
             else if (bWrap && nLineLen>0) {
-                writeBuffer((StringBuffer) nodes.get(i),osw,nLineLen,sNewline);
+                writeBuffer((StringBuilder) nodes.get(i),osw,nLineLen,sNewline);
             }
             else {
-                writeBuffer((StringBuffer) nodes.get(i),osw,sNewline);
+                writeBuffer((StringBuilder) nodes.get(i),osw,sNewline);
             }
         }
         if (!bEmpty) { // write current node as well
@@ -214,14 +214,14 @@ public class LaTeXDocumentPortion {
      *  @return a string representation of the <code>LaTeXDocumentPortion</code>
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int n = nodes.size();
         for (int i=0; i<n; i++) {
             if (nodes.get(i) instanceof LaTeXDocumentPortion) {
                 buf.append(((LaTeXDocumentPortion) nodes.get(i)).toString());
             }
             else {
-                buf.append((StringBuffer) nodes.get(i));
+                buf.append((StringBuilder) nodes.get(i));
             }
         }
         if (!bEmpty) { // write current node as well

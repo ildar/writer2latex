@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-08)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -483,7 +483,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             mathSymbols.put(sName, attr);
         }
         else if (elm.getTagName().equals("custom-preamble")) {
-        	StringBuffer buf = new StringBuffer();
+        	StringBuilder buf = new StringBuilder();
             Node child = elm.getFirstChild();
             while (child!=null) {
                 if (child.getNodeType()==Node.TEXT_NODE) {

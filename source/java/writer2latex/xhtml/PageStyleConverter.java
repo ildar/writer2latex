@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-21)
+ *  Version 1.4 (2014-09-16)
  *
  */
 
@@ -130,7 +130,7 @@ public class PageStyleConverter extends StyleConverterHelper {
      *  @param sIndent a String of spaces to add before each line
      */
     public String getStyleDeclarations(String sIndent) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         // This will be master pages for presentations only
         Enumeration<String> names = styleNames.keys();

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-03-12)
+ *  Version 1.4 (2014-09-16)
  *
  */ 
  
@@ -434,7 +434,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 						sNextItems[i]=internalNames.get(sNextItems[i]);
 					}
 				}
-    			StringBuffer list = new StringBuffer();
+    			StringBuilder list = new StringBuilder();
     			for (int i=0; i<nLen; i++) {
     				if (i>0) list.append(';');
     				list.append(sNextItems[i]);

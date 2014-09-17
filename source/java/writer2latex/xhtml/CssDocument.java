@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-02-17)
+ *  Version 1.4 (2014-09-16)
  *
  */
  
@@ -75,7 +75,7 @@ public class CssDocument implements OutputFile {
 	
 	public void read(InputStream is) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"));
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		String sLine;
 		while ((sLine=reader.readLine())!=null) {
 			buf.append(sLine).append('\n');
