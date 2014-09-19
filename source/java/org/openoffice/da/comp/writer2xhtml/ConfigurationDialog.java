@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2012 by Henrik Just
+*  Copyright: 2002-2014 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.2 (2012-03-07)
+*  Version 1.4 (2014-09-19)
 *
 */ 
 
@@ -495,12 +495,14 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		listBoxFromConfig(dlg, "Formulas", "formulas", sFormulaValues, (short) 0);
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
+    		checkBoxFromConfig(dlg, "InlineSvg", "inline_svg");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		listBoxToConfig(dlg, "Formulas", "formulas", sFormulaValues);
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
+    		checkBoxToConfig(dlg, "InlineSvg", "inline_svg");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {

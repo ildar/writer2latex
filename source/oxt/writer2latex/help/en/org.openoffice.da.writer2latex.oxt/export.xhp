@@ -221,6 +221,12 @@
         subject and keywords will be exported to the pdf document and will be viewable if the pdf viewer supports it.
         If the option is not checked, only the title will be exported.</paragraph>
         
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:DisplayHiddenText" id="bm_display_hidden_text"/>
+		<paragraph role="heading" level="3" xml-lang="en-US">Display hidden text</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:DisplayHiddenText" visibility="hidden">Check this if you want to export text that is currently hidden in the document</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will export all text in the
+        document, even if it is currently hidden.</paragraph>
+
         <paragraph role="heading" level="2" xml-lang="en-US">Figures and tables</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsOriginalImageSize" id="bm_options_originalimagesize"/>

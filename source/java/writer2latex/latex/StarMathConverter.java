@@ -18,7 +18,7 @@
  *
  *  Copyright: 2002-2014 by Henrik Just
  *  
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-09-19)
  *
  *  All Rights Reserved.
  */
@@ -843,7 +843,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
 	        }
         }
         if (nMaxMatrixCols>10) { // The default for the matrix environment is at most 10 columns
-        	decl.append("\\setcounter{MaxMatrixCols}{").append(Integer.toString(nMaxMatrixCols)).append("}").nl();
+        	decl.append("\\setcounter{MaxMatrixCols}{").append(nMaxMatrixCols).append("}").nl();
         }
     }
 	

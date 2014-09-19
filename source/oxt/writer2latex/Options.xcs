@@ -39,6 +39,7 @@
             <!--Special content -->
             <prop oor:name="Notes" oor:type="xs:short" />
             <prop oor:name="Metadata" oor:type="xs:boolean" />
+            <prop oor:name="DisplayHiddenText" oor:type="xs:boolean" />
             <!-- Figures and tables -->
             <prop oor:name="OriginalImageSize" oor:type="xs:boolean"/>
             <prop oor:name="OptimizeSimpleTables" oor:type="xs:boolean"/>

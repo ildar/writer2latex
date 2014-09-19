@@ -18,7 +18,7 @@
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Formulas" id="bm_configformulas"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Include as</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select how to export formulas if you are not using XHTML+MathML.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select how to export formulas if you are not using XHTML+MathML or HTML5.</paragraph>
         <list type="unordered">
 			<listitem>
 		        <paragraph role="paragraph" xml-lang="en-US"><emph>Image with StarMath code</emph>: Export formulas as images
@@ -51,5 +51,14 @@
         If you want to add a heading for the footnotes in the exported document, enter the desired heading here.
         This has no effect if footnotes are placed at the bottom of the page.</paragraph>
 
+
+        <paragraph role="heading" level="2" xml-lang="en-US">SVG images</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:InlineSvg" id="bm_configinlinesvg"/>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Embed SVG images in the HTML document</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, SVG images will be embedded directly
+        in the HTML document. Otherwise they will be included in a separate file. SVG images are only supported
+        in HTML5.</paragraph>
     </body>
 </helpdocument>

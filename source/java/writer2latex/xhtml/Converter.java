@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-09-18)
  *
  */
 
@@ -598,7 +598,7 @@ public class Converter extends ConverterBase {
         	}
         	if (date!=null) {
     			if (buf.length()>0) { buf.append('\n'); }
-    			buf.append(Misc.formatDate(ofr.getTextContent(date), l10n.getLocale().getLanguage(), l10n.getLocale().getCountry()));
+    			buf.append(Misc.formatDate(OfficeReader.getTextContent(date), l10n.getLocale().getLanguage(), l10n.getLocale().getCountry()));
         	}
             Node commentNode = htmlDOM.createComment(buf.toString());
             hnode.appendChild(commentNode);

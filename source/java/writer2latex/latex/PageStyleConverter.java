@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.4 (2014-09-19
  *
  */
 
@@ -277,7 +277,7 @@ public class PageStyleConverter extends StyleConverter {
                     String sPageNumber = pageLayout.getProperty(XMLString.STYLE_FIRST_PAGE_NUMBER);
                     if (sPageNumber!=null && !sPageNumber.equals("continue")) {
                     ldp.append("  \\setcounter{page}{")
-                       .append(Integer.toString(Misc.getPosInteger(sPageNumber,0)))
+                       .append(Misc.getPosInteger(sPageNumber,0))
                        .append("}").nl();
                     }
                 }

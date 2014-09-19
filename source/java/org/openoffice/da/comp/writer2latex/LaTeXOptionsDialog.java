@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.2 (2010-12-14)
+ *  Version 1.4 (2014-09-19)
  *  
  */
 
@@ -104,6 +104,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // Special content
         loadListBoxOption(xProps,"Notes");
         loadCheckBoxOption(xProps,"Metadata");
+        loadCheckBoxOption(xProps,"DisplayHiddenText");
 		
         // Figures and tables
         loadCheckBoxOption(xProps,"OriginalImageSize");
@@ -175,6 +176,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // Special content
         saveListBoxOption(xProps, filterData, "Notes", "notes", NOTES_VALUES);
         saveCheckBoxOption(xProps, filterData, "Metadata", "metadata");
+        saveCheckBoxOption(xProps, filterData, "DisplayHiddenText", "display_hidden_text");
 
         // Figures and tables
         saveCheckBoxOption(xProps, filterData, "OriginalImageSize", "original_image_size");
@@ -300,6 +302,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("NotesLabel",!isLocked("notes"));
         setControlEnabled("Notes",!isLocked("notes"));
         setControlEnabled("Metadata",!isLocked("metadata"));
+        setControlEnabled("DisplayHiddenText",!isLocked("display_hidden_text"));
 
         // Figures and tables
         setControlEnabled("OriginalImageSize",!isLocked("original_image_size"));

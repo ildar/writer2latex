@@ -20,11 +20,13 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-08)
+ *  Version 1.4 (2014-09-19)
  *
  */
 
 package writer2latex.latex;
+
+import java.util.Vector;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -70,16 +72,30 @@ public class InlineConverter extends ConverterHelper {
                 .append("}\\fi}").nl();
         }
     }
+    
+    /** Handle several text:span elements
+     * 
+     */
+    private void handleTextSpans(Element[] nodes, LaTeXDocumentPortion ldp, Context oc) {
+    	if (oc.isMathMode()) {
+    		for (Element node : nodes) {
+    			handleTextSpanMath(node, ldp, oc);
+    		}
+    	}
+    	else {
+    		handleTextSpanText(ldp, oc, nodes);
+    	}
+    }
 	
     /** Handle a text:span element
      */     
     public void handleTextSpan(Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (oc.isMathMode()) { handleTextSpanMath(node, ldp, oc); }
-        else { handleTextSpanText(node, ldp, oc); }
+        else { handleTextSpanText(ldp, oc, node); }
     }
 	
     private void handleTextSpanMath(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        // TODO: Handle a selection of formatting attributes: color, supscript...
+        // TODO: Handle a selection of formatting attributes: color, superscript...
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
         StyleWithProperties style = ofr.getTextStyle(sStyleName);
         
@@ -113,79 +129,86 @@ public class InlineConverter extends ConverterHelper {
         palette.getI18n().popSpecialTable();
     }
 	
-    private void handleTextSpanText(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
-        StyleWithProperties style = ofr.getTextStyle(sStyleName);
-        
-		// Check for hidden text
-        if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
-        	return;
-        }
-		
-        // Check for strict handling of styles
-        String sDisplayName = ofr.getTextStyles().getDisplayName(sStyleName);
-        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getTextStyleMap().contains(sDisplayName)) {
-            if (config.otherStyles()==LaTeXConfig.WARNING) {
-                System.err.println("Warning: Text with style "+sDisplayName+" was ignored");
-            }
-            else if (config.otherStyles()==LaTeXConfig.ERROR) {
-                ldp.append("% Error in source document: Text with style ")
-                   .append(palette.getI18n().convert(sDisplayName,false,oc.getLang()))
-                   .append(" was ignored").nl();
-            }
-            // Ignore this text:
-            return;
-        }
-			
-        boolean styled = true;
-		
-        // don't style it if a {foot|end}note is the only content
-        if (onlyNote(node) || OfficeReader.getCharacterCount(node)==0) { styled = false; }
-		
-        // Also don't style it if we're already within a verbatim environment
-        if (oc.isVerbatim()) { styled = false; }        
-		
-        boolean bNoFootnotes = false;
-		
-        // Always push the font used
-        palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getTextStyle(sStyleName)));
-		
-        // Apply the style
-        BeforeAfter ba = new BeforeAfter();
-        Context ic = (Context) oc.clone();
-        if (styled) { palette.getCharSc().applyTextStyle(sStyleName,ba,ic); }
-		
-        // Footnote problems:
-        // No footnotes in sub/superscript (will disappear)
-        // No multiparagraph footnotes embedded in text command (eg. \textbf{..})
-        // Simple solution: styled text element is forbidden footnote area
-        if (styled && !ic.isInFootnote()) { bNoFootnotes = true; }
-
-        // Temp solution: Ignore hard formatting in header/footer (name clash problem)
-        // only in package format.
-        if (ofr.isPackageFormat() && (style!=null && style.isAutomatic()) && ic.isInHeaderFooter()) {
-            styled = false;
-        }
-
-        if (styled) {    
-            if (bNoFootnotes) { ic.setNoFootnotes(true); }
-            ldp.append(ba.getBefore());
-        }
-                              
-        traverseInlineText(node,ldp,ic);
-        
-        if (styled) {    
-            ldp.append(ba.getAfter());
-            ic.setNoFootnotes(false);
-            if (!ic.isInFootnote()) { palette.getNoteCv().flushFootnotes(ldp,oc); }
-        }
-		
-        // Flush any pending index marks and reference marks
-        palette.getFieldCv().flushReferenceMarks(ldp,oc);
-        palette.getIndexCv().flushIndexMarks(ldp,oc);
-		
-        // finally pop the special table
-        palette.getI18n().popSpecialTable();
+    // Handle several spans.
+    // If the converted formatting happens to be identical (e.g. \textbf{...}), the spans will be merged.
+    private void handleTextSpanText(LaTeXDocumentPortion ldp, Context oc, Element... nodes) {
+    	// The current formatting
+    	BeforeAfter baCurrent = new BeforeAfter();
+    	for (Element node : nodes) {
+	        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
+	        StyleWithProperties style = ofr.getTextStyle(sStyleName);
+	        
+			// First check for hidden text
+	        if (bDisplayHiddenText || style==null || !"none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
+		        // Then check for strict handling of styles
+		        String sDisplayName = ofr.getTextStyles().getDisplayName(sStyleName);
+		        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getTextStyleMap().contains(sDisplayName)) {
+		            if (config.otherStyles()==LaTeXConfig.WARNING) {
+		                System.err.println("Warning: Text with style "+sDisplayName+" was ignored");
+		            }
+		            else if (config.otherStyles()==LaTeXConfig.ERROR) {
+		                ldp.append("% Error in source document: Text with style ")
+		                   .append(palette.getI18n().convert(sDisplayName,false,oc.getLang()))
+		                   .append(" was ignored").nl();
+		            }
+		        }
+		        else {
+		        	// We do want to convert this span :-)
+					
+			        // Always push the font used
+			        palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getTextStyle(sStyleName)));
+					
+			        // Apply the style
+			        BeforeAfter ba = new BeforeAfter();
+			        Context ic = (Context) oc.clone();
+			        // Don't style it if
+		        	// - we're already within a verbatim environment
+		        	// - a {foot|end}note is the only content
+		        	// - there is no content
+			        // - this is an automatic style in header/footer (name clash problem, only in package format)
+			        if (!oc.isVerbatim() && !onlyNote(node) && OfficeReader.getCharacterCount(node)>0
+			        	&& !(ofr.isPackageFormat() && (style!=null && style.isAutomatic()) && oc.isInHeaderFooter())) {
+			        	palette.getCharSc().applyTextStyle(sStyleName,ba,ic);
+			        }
+					
+			        // Footnote problems:
+			        // No footnotes in sub/superscript (will disappear)
+			        // No multiparagraph footnotes embedded in text command (eg. \textbf{..})
+			        // Simple solution: styled text element is forbidden area for footnotes
+			        if ((ba.getBefore().length()>0 || ba.getAfter().length()>0) && !ic.isInFootnote()) {
+			        	ic.setNoFootnotes(true);
+			        }
+			        
+			        // Merge spans? If the formatting of this span differs from the previous span, we will close the
+			        // previous span and start a new one
+			        if (!ba.getBefore().equals(baCurrent.getBefore()) || !ba.getAfter().equals(baCurrent.getAfter())) {
+			        	ldp.append(baCurrent.getAfter());
+			            ldp.append(ba.getBefore());
+			        	baCurrent = ba;
+			        }
+			                              
+			        traverseInlineText(node,ldp,ic);
+			        
+			        // In the special case of pending footnotes, index marks and reference marks, we will close the span now.
+			        // Otherwise we will wait and see
+			        if (palette.getNoteCv().hasPendingFootnotes(oc)
+			        		|| palette.getIndexCv().hasPendingIndexMarks(oc)
+			        		|| palette.getFieldCv().hasPendingReferenceMarks(oc)) {
+			        	ldp.append(baCurrent.getAfter());
+			        	baCurrent = new BeforeAfter();
+			        }
+			        
+			        // Flush any pending footnotes, index marks and reference marks
+		            if (!ic.isInFootnote()) { palette.getNoteCv().flushFootnotes(ldp,oc); }
+			        palette.getFieldCv().flushReferenceMarks(ldp,oc);
+			        palette.getIndexCv().flushIndexMarks(ldp,oc);
+					
+			        // finally pop the special table
+			        palette.getI18n().popSpecialTable();
+		        }
+	        }
+    	}
+        ldp.append(baCurrent.getAfter());
     }
 	
     public void traverseInlineText(Element node, LaTeXDocumentPortion ldp, Context oc) {
@@ -257,122 +280,141 @@ public class InlineConverter extends ConverterHelper {
 
                             ldp.append("$");
                         }
-                        else {                        
-                            handleTextSpan(child,ldp,oc);
+                        else {
+                        	// Collect further spans
+                        	Vector<Element> spans = new Vector<Element>();
+
+                            Node remember;
+                            boolean bContinue = false;
+                            do {
+                            	spans.add((Element)childNode);
+                                remember = childNode;
+                                childNode = childNode.getNextSibling();
+                                bContinue = false;
+                                if (childNode!=null && childNode.getNodeType()==Node.ELEMENT_NODE &&
+                                    childNode.getNodeName().equals(XMLString.TEXT_SPAN)) {
+                                    sStyleName = Misc.getAttribute(childNode,XMLString.TEXT_STYLE_NAME);
+                                    if (!"OOoLaTeX".equals(ofr.getTextStyles().getDisplayName(sStyleName))) 
+                                        bContinue = true;
+                                    }
+                            } while(bContinue);
+                            childNode = remember;
+                        	
+                            handleTextSpans(spans.toArray(new Element[spans.size()]),ldp,oc);
                         }
                     }
                     else if (child.getNodeName().startsWith("draw:")) {
-                            palette.getDrawCv().handleDrawElement(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_S)) {
-                            if (config.ignoreDoubleSpaces()) {
-                                ldp.append(" ");
-                            }
-                            else {
-                                int count= Misc.getPosInteger(child.getAttribute(XMLString.TEXT_C),1);
-                                //String sSpace = config.ignoreDoubleSpaces() ? " " : "\\ ";
-                                for ( ; count > 0; count--) { ldp.append("\\ "); }
-                            }
-                        }
-                        else if (sName.equals(XMLString.TEXT_TAB_STOP) || sName.equals(XMLString.TEXT_TAB)) { // text:tab in oasis
-                            // tab stops are not supported by the converter, but the special usage
-                            // of tab stops in header and footer can be emulated with \hfill
-                            // TODO: Sometimes extra \hfill should be added at end of line
-                            if (oc.isInHeaderFooter()) { ldp.append("\\hfill "); }
-                            else { ldp.append(sTabstop); }
-                        }
-                        else if (sName.equals(XMLString.TEXT_LINE_BREAK)) {
-                            if (!oc.isInHeaderFooter() && !config.ignoreHardLineBreaks()) {
-                                ldp.append("\\newline").nl();
-                            }
-                            else { ldp.append(" "); }
-                        }
-                        else if (sName.equals(XMLString.TEXT_A)) {
-                            palette.getFieldCv().handleAnchor(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.OFFICE_ANNOTATION)) {
-                            handleOfficeAnnotation(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_PAGE_NUMBER)) {
-                            palette.getFieldCv().handlePageNumber(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_PAGE_COUNT)) {
-                            palette.getFieldCv().handlePageCount(child,ldp,oc);
-                        }
-                        else if (oc.isInHeaderFooter()) {
-                            if (sName.equals(XMLString.TEXT_CHAPTER)) {
-                                handleChapterField(child,ldp,oc);
-                            }
-                            else if (sName.startsWith("text:")) {
-                                traverseInlineText(child,ldp,oc);
-                            }
+                        palette.getDrawCv().handleDrawElement(child,ldp,oc);
+                    }
+                    else if (sName.equals(XMLString.TEXT_S)) {
+                        if (config.ignoreDoubleSpaces()) {
+                            ldp.append(" ");
                         }
                         else {
-	                        // These tags are ignored in header and footer
-                            if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
-                                palette.getNoteCv().handleFootnote(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
+                            int count= Misc.getPosInteger(child.getAttribute(XMLString.TEXT_C),1);
+                            //String sSpace = config.ignoreDoubleSpaces() ? " " : "\\ ";
+                            for ( ; count > 0; count--) { ldp.append("\\ "); }
+                        }
+                    }
+                    else if (sName.equals(XMLString.TEXT_TAB_STOP) || sName.equals(XMLString.TEXT_TAB)) { // text:tab in oasis
+                        // tab stops are not supported by the converter, but the special usage
+                        // of tab stops in header and footer can be emulated with \hfill
+                        // TODO: Sometimes extra \hfill should be added at end of line
+                        if (oc.isInHeaderFooter()) { ldp.append("\\hfill "); }
+                        else { ldp.append(sTabstop); }
+                    }
+                    else if (sName.equals(XMLString.TEXT_LINE_BREAK)) {
+                        if (!oc.isInHeaderFooter() && !config.ignoreHardLineBreaks()) {
+                            ldp.append("\\newline").nl();
+                        }
+                        else { ldp.append(" "); }
+                    }
+                    else if (sName.equals(XMLString.TEXT_A)) {
+                        palette.getFieldCv().handleAnchor(child,ldp,oc);
+                    }
+                    else if (sName.equals(XMLString.OFFICE_ANNOTATION)) {
+                        handleOfficeAnnotation(child,ldp,oc);
+                    }
+                    else if (sName.equals(XMLString.TEXT_PAGE_NUMBER)) {
+                        palette.getFieldCv().handlePageNumber(child,ldp,oc);
+                    }
+                    else if (sName.equals(XMLString.TEXT_PAGE_COUNT)) {
+                        palette.getFieldCv().handlePageCount(child,ldp,oc);
+                    }
+                    else if (oc.isInHeaderFooter()) {
+                        if (sName.equals(XMLString.TEXT_CHAPTER)) {
+                            handleChapterField(child,ldp,oc);
+                        }
+                        else if (sName.startsWith("text:")) {
+                            traverseInlineText(child,ldp,oc);
+                        }
+                    }
+                    else {
+                        // These tags are ignored in header and footer
+                        if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
+                            palette.getNoteCv().handleFootnote(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
+                            palette.getNoteCv().handleEndnote(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_NOTE)) {
+                            if ("endnote".equals(child.getAttribute(XMLString.TEXT_NOTE_CLASS))) {
                                 palette.getNoteCv().handleEndnote(child,ldp,oc);
                             }
-                            else if (sName.equals(XMLString.TEXT_NOTE)) {
-                                if ("endnote".equals(child.getAttribute(XMLString.TEXT_NOTE_CLASS))) {
-                                    palette.getNoteCv().handleEndnote(child,ldp,oc);
-                                }
-                                else {
-                                    palette.getNoteCv().handleFootnote(child,ldp,oc);
-                                }
-                            }
-                            else if (sName.equals(XMLString.TEXT_SEQUENCE)) {
-	                            palette.getFieldCv().handleSequence(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_SEQUENCE_REF)) {
-	                            palette.getFieldCv().handleSequenceRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_FOOTNOTE_REF)) {
-	                            palette.getNoteCv().handleFootnoteRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_ENDNOTE_REF)) {
-                                palette.getNoteCv().handleEndnoteRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_NOTE_REF)) { // oasis
-                                palette.getNoteCv().handleNoteRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_REFERENCE_MARK)) {
-	                            palette.getFieldCv().handleReferenceMark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_REFERENCE_MARK_START)) {
-                                palette.getFieldCv().handleReferenceMark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_REFERENCE_MARK_END)) {
-                                palette.getFieldCv().handleReferenceMarkEnd(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_REFERENCE_REF)) {
-	                            palette.getFieldCv().handleReferenceRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_BOOKMARK)) {
-                                palette.getFieldCv().handleBookmark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_BOOKMARK_START)) {
-	                            palette.getFieldCv().handleBookmark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_BOOKMARK_REF)) {
-                                palette.getFieldCv().handleBookmarkRef(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
-                                palette.getBibCv().handleBibliographyMark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK)) {
-                                palette.getIndexCv().handleAlphabeticalIndexMark(child,ldp,oc);
-                            }
-                            else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK_START)) {
-                                palette.getIndexCv().handleAlphabeticalIndexMark(child,ldp,oc);
-                            }
-                            else if (sName.startsWith("text:")) {
-                                traverseInlineText(child,ldp,oc);
+                            else {
+                                palette.getNoteCv().handleFootnote(child,ldp,oc);
                             }
                         }
-                        break;
+                        else if (sName.equals(XMLString.TEXT_SEQUENCE)) {
+                            palette.getFieldCv().handleSequence(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_SEQUENCE_REF)) {
+                            palette.getFieldCv().handleSequenceRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_FOOTNOTE_REF)) {
+                            palette.getNoteCv().handleFootnoteRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_ENDNOTE_REF)) {
+                            palette.getNoteCv().handleEndnoteRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_NOTE_REF)) { // oasis
+                            palette.getNoteCv().handleNoteRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_REFERENCE_MARK)) {
+                            palette.getFieldCv().handleReferenceMark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_REFERENCE_MARK_START)) {
+                            palette.getFieldCv().handleReferenceMark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_REFERENCE_MARK_END)) {
+                            palette.getFieldCv().handleReferenceMarkEnd(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_REFERENCE_REF)) {
+                            palette.getFieldCv().handleReferenceRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_BOOKMARK)) {
+                            palette.getFieldCv().handleBookmark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_BOOKMARK_START)) {
+                            palette.getFieldCv().handleBookmark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_BOOKMARK_REF)) {
+                            palette.getFieldCv().handleBookmarkRef(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
+                            palette.getBibCv().handleBibliographyMark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK)) {
+                            palette.getIndexCv().handleAlphabeticalIndexMark(child,ldp,oc);
+                        }
+                        else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK_START)) {
+                            palette.getIndexCv().handleAlphabeticalIndexMark(child,ldp,oc);
+                        }
+                        else if (sName.startsWith("text:")) {
+                            traverseInlineText(child,ldp,oc);
+                        }
+                    }
+                    break;
                     default:
                         // Do nothing
             }
@@ -627,7 +669,7 @@ public class InlineConverter extends ConverterHelper {
         	}
         	if (date!=null) {
         		ldp.append("%")
-        		   .append(Misc.formatDate(ofr.getTextContent(date), palette.getI18n().getDefaultLanguage(), null))
+        		   .append(Misc.formatDate(OfficeReader.getTextContent(date), palette.getI18n().getDefaultLanguage(), null))
         		   .nl();
         	}
         	return;
@@ -670,7 +712,7 @@ public class InlineConverter extends ConverterHelper {
     	if (date!=null) {
     		if (creator!=null) ldp.append(", ");
     		else if (!bFirst) ldp.append(" ");
-    		ldp.append(Misc.formatDate(ofr.getTextContent(date), palette.getI18n().getDefaultLanguage(), null));
+    		ldp.append(Misc.formatDate(OfficeReader.getTextContent(date), palette.getI18n().getDefaultLanguage(), null));
     	}
 
     	ldp.append("}");

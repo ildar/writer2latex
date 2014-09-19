@@ -2,6 +2,11 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.3.2 alpha ----------
 
+[w2l] Two or more span elements in a row which generates identical formatting in LaTeX are now merged.
+  This avoids constructs like \textbf{this is }\textbf{bold}.
+
+[w2l] Optimization: The SimpleDomBuilder now merges text nodes
+
 [w2l] Replace usage of StringBuffer with StringBuilder everywhere (marginal optimization)
 
 [w2l] The standard configurations pdfprint.xml and pdfscreen.xml no longer requires ooomath.sty
@@ -9,7 +14,7 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 [w2l] A bookmark in a heading no longer results in an optional argument to \section commands 
  
 [w2l] New option display_hidden_text (default false) to toggle whether or not hidden text should be included in
-  the export (there is currently no user interface for this option)
+  the export. In the export filter, this option can be toggled in the export options dialog.
 
 [w2l] Bugfix (StarMath conversion): The five colors red, green, blue, magenta and yellow is now exported to the
   correct dark colors rather than the previous bright colors (the colors white, black and yellow are unchanged)
@@ -31,6 +36,7 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
   Other vector images are converted to SVG (filter only). This only works with recent versions of the office
   (LO 4.2 and AOO 4.1 are known to work). The option use_svg has been renamed to inline_svg. If set to
   true (default) inline SVG is used, if set to false, external SVG-files (img-elements) are used.
+  In the UI, this setting can be found on the options page Writer2xhtml - Content.
 
 [all] If an image image cannot be converted to an acceptable format, the optional alternative image will now be tried
 

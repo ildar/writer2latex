@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2012 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2012-02-22)
+ *  Version 1.4 (2014-09-18)
  *
  */
 
@@ -106,6 +106,15 @@ public class NoteConverter extends ConverterHelper {
             }
         }
 	} 
+    
+    /** Do we have any pending footnotes, that may be inserted in this context?
+     * 
+     * @param oc the context to verify against
+     * @return true if there are pending footnotes
+     */
+    public boolean hasPendingFootnotes(Context oc) {
+    	return !oc.isNoFootnotes() && postponedFootnotes.size()>0;
+    }
 	
     /** Flush the queue of postponed footnotes */
     public void flushFootnotes(LaTeXDocumentPortion ldp, Context oc) {

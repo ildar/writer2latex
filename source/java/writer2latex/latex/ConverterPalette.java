@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27) 
+ *  Version 1.4 (2014-09-19)
  *
  */
 
@@ -45,8 +45,7 @@ import writer2latex.office.MIMETypes;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 
-/**
- *  <p>This class converts a Writer XML file to a LaTeX file<.</p>
+/** This class converts a Writer XML file to a LaTeX file
  */
 public final class ConverterPalette extends ConverterBase {
 
@@ -98,7 +97,7 @@ public final class ConverterPalette extends ConverterBase {
     public void addGlobalOption(String sOption) {
 	    globalOptions.addValue(sOption);
     }
-
+    
     // Accessor methods for helpers
     public I18n getI18n() { return i18n; }
     public ColorConverter getColorCv() { return colorCv; }

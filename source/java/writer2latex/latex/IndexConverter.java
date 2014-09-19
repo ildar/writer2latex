@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-11-23)
+ *  Version 1.4 (2014-09-18)
  *
  */
 
@@ -193,6 +193,16 @@ public class IndexConverter extends ConverterHelper {
             // Index marks should not appear within \section or \caption
             postponedIndexMarks.add(node);
         }
+    }
+    
+    /** Do we have any pending index marks, that may be inserted in this context?
+     * 
+     * @param oc the context to verify against
+     * @return true if there are pending index marks
+     */
+    public boolean hasPendingIndexMarks(Context oc) {
+    	return !oc.isInSection() && !oc.isInCaption() && !oc.isVerbatim() &&
+    			postponedIndexMarks.size()>0;
     }
 	
     public void flushIndexMarks(LaTeXDocumentPortion ldp, Context oc) {

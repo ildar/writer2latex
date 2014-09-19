@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-09-18)
  *
  */
 
@@ -820,6 +820,16 @@ public class FieldConverter extends ConverterHelper {
             palette.getInlineCv().traversePCDATA(node,ldp,oc);
         }
     }
+    
+    /** Do we have any pending reference marks or bookmarks, that may be inserted in this context?
+     * 
+     * @param oc the context to verify against
+     * @return true if there are pending marks
+     */
+    public boolean hasPendingReferenceMarks(Context oc) {
+    	return !oc.isInSection() && !oc.isInCaption() && !oc.isVerbatim() &&
+    			postponedReferenceMarks.size()+postponedBookmarks.size()>0;
+    }
 	
     /** <p>Process pending reference marks and bookmarks (which may have been
      * postponed within sections, captions or verbatim text.</p>
@@ -870,7 +880,7 @@ public class FieldConverter extends ConverterHelper {
             }
             else {
 			    if (bUseHyperref) {
-                    if (ofr.getTextContent(node).trim().equals(sHref)) {
+                    if (OfficeReader.getTextContent(node).trim().equals(sHref)) {
                         // The link text equals the url
                         ldp.append("\\url{")
                            .append(escapeHref(sHref,oc.isInFootnote()))

@@ -53,6 +53,9 @@
         <prop oor:name="Metadata" oor:type="xs:boolean">
             <value>true</value>
         </prop>
+        <prop oor:name="DisplayHiddenText" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
         <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
             <value>false</value>
         </prop>

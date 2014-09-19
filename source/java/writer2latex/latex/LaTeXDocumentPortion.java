@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-09-19)
  *
  */
 
@@ -78,6 +78,17 @@ public class LaTeXDocumentPortion {
     public LaTeXDocumentPortion append(String s){
         curText.append(s);
         bEmpty = false; // even if this is the empty string!
+        return this;
+    }
+    
+    /** Add an integer to the end of this portion
+     * 
+     * @param n the integer to add
+     * @return a reference to this <code>LaTeXDocumentPortion</code>
+     */
+    public LaTeXDocumentPortion append(int n){
+        curText.append(n);
+        bEmpty = false;
         return this;
     }
     
