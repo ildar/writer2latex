@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.4 (2014-09-23)
  *
  */
 
@@ -324,16 +324,33 @@ public class XhtmlDocument extends DOMDocument {
     public Element getFooterNode() { return footerNode; }
 	
     public void createHeaderFooter() {
-    	// TODO: Use semantic elements for HTML5?
-        headerNode = getContentDOM().createElement("div");
+    	if (nType==HTML5) {
+    		Element header1 = getContentDOM().createElement("header");
+    		bodyNode.appendChild(header1);
+            headerNode = getContentDOM().createElement("nav");
+            header1.appendChild(headerNode);
+    	}
+    	else {
+    		headerNode = getContentDOM().createElement("div");
+            bodyNode.appendChild(headerNode);
+    	}
         headerNode.setAttribute("id",sHeaderId);
-        bodyNode.appendChild(headerNode);
+        
         contentNode = getContentDOM().createElement("div");
         contentNode.setAttribute("id",sContentId);
         bodyNode.appendChild(contentNode);
-        footerNode = getContentDOM().createElement("div");
+
+    	if (nType==HTML5) {
+    		Element footer1 = getContentDOM().createElement("footer");
+    		bodyNode.appendChild(footer1);
+            footerNode = getContentDOM().createElement("nav");
+            footer1.appendChild(footerNode);
+    	}
+    	else {
+    		footerNode = getContentDOM().createElement("div");
+            bodyNode.appendChild(footerNode);
+    	}
         footerNode.setAttribute("id",sFooterId);
-        bodyNode.appendChild(footerNode);
     }
 	
     public void setContentDOM(Document doc) {
@@ -445,7 +462,7 @@ public class XhtmlDocument extends DOMDocument {
         else if ("title".equals(sTagName)) {
             titleNode = elm;
         }
-        else if ("div".equals(sTagName)) {
+        else {
             String sId = elm.getAttribute("id");
             if (sContentId.equals(sId)) { contentNode = elm; }
             else if (sHeaderId.equals(sId)) { headerNode = elm; }

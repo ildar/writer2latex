@@ -28,6 +28,7 @@
   <option name="ignore_hard_page_breaks" value="false" />
   <option name="ignore_hard_line_breaks" value="false" />
   <option name="ignore_double_spaces" value="true" />
+  <option name="display_hidden_text" value="false" />
   <option name="debug" value="false" />
   <heading-map max-level="5">
     <heading-level-map writer-level="1" name="section" level="1" />

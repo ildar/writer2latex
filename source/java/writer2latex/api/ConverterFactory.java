@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-19)
+ *  Version 1.4 (2014-09-22)
  *
  */
  
@@ -32,8 +32,8 @@ package writer2latex.api;
 public class ConverterFactory {
 
     // Version information
-    private static final String VERSION = "1.3.2";
-    private static final String DATE = "2014-09-19";
+    private static final String VERSION = "1.4";
+    private static final String DATE = "2014-09-22";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>

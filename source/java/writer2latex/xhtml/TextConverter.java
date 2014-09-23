@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-06)
+ *  Version 1.4 (2014-09-23)
  *
  */
 
@@ -699,14 +699,7 @@ public class TextConverter extends ConverterHelper {
 
         		// Prepend numbering
         		if (!bUnNumbered) {
-        			if (config.zenHack() && nLevel==2) {
-        				// Hack for ePub Zen Garden: Special style for the prefix at level 2
-        				// TODO: Replace by some proper style map construct...
-        				insertListLabel(listStyle,nListLevel,"SectionNumber",counter.getPrefix(),counter.getLabelAndSuffix(),heading);
-        			}
-        			else {
-        				insertListLabel(listStyle,nListLevel,"SectionNumber",null,sLabel,heading);            	
-        			}
+    				insertListLabel(listStyle,nListLevel,"SectionNumber",null,sLabel,heading);            	
         		}
 
         		// Add to toc
