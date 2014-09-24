@@ -2,6 +2,13 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.4 beta ----------
 
+[w2x] Bugfix: Avoid null pointer exception in HTML5 export if embed_svg is true and an image is used more than once
+
+[all] An image that is used more than once in the source document is now only exported once. This was already the
+  case for the package format (since 1.3.2), but now also for flat XML.
+
+[w2x] The The option inline_svg has been renamed (again) to embed_svg, and the default is changed to false
+
 [w2x] The experimental option zen_hack has been removed
 
 [w2x] For templates it is no longer required that the footer, header and panel are contained in a div element.

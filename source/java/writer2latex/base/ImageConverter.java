@@ -20,16 +20,21 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-09-24)
  *
  */
 
 package writer2latex.base;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -181,12 +186,6 @@ public final class ImageConverter {
     		 // The file name was not used
     		nImageCount--;
     	}
-    	else if (node.hasAttribute(XMLString.XLINK_HREF)) {
-    		// This is an embedded image we meet for the first time.
-    		// Recycle it on behalf of the original image node.
-    		String sHref = node.getAttribute(XMLString.XLINK_HREF);
-    		recycledImages.put(sHref, new BinaryGraphicsDocument(bgd));
-    	}
     	return bgd;
     }
     
@@ -197,6 +196,7 @@ public final class ImageConverter {
         String sExt = null;
     	String sMIME = null;
     	byte[] blob = null;
+    	String sId = null;
     	
     	// First try to extract the image using the xlink:href attribute
     	if (node.hasAttribute(XMLString.XLINK_HREF)) {
@@ -224,6 +224,8 @@ public final class ImageConverter {
 	            	if (bDestructive) {
 	            		object.dispose();
 	            	}
+	            	// We got an image, define ID for recycling
+	            	sId = sHref;
 	            }
 	            else {
 	                // This is a linked image
@@ -249,11 +251,18 @@ public final class ImageConverter {
 	                }
 	            }
 	            blob = Base64.decode(buf.toString());
-	            sMIME = MIMETypes.getMagicMIMEType(blob);
+    			// We may have seen this image before, return the recycled version
+	            String sId1 = createId(blob);
+    			if (recycledImages.containsKey(sId1)) {
+    				return recycledImages.get(sId1);
+    			}
+    			sMIME = MIMETypes.getMagicMIMEType(blob);
 	            sExt = MIMETypes.getFileExtension(sMIME);
 	            if (bDestructive) {
 	            	node.removeChild(obd);
 	            }
+	            // We got an image, define ID for recycling
+	            sId = sId1;
 	        }
 	        else {
 	        	// There is no image data
@@ -303,11 +312,13 @@ public final class ImageConverter {
         }
         
         // Create the result
-
         if (isAcceptedFormat(sMIME) || bAcceptOtherFormats) {
         	String sFileName = sName+sExt;
             BinaryGraphicsDocument bgd = new BinaryGraphicsDocument(sFileName,sMIME);
             bgd.setData(blob,isAcceptedFormat(sMIME));
+            if (sId!=null) {
+        		recycledImages.put(sId, new BinaryGraphicsDocument(bgd));
+            }
             return bgd;
         }
         else {
@@ -321,6 +332,19 @@ public final class ImageConverter {
     		return (Element) sibling;
     	}
     	return null;
+    }
+    
+    // Create a fingerprint of a blob. The fingerprint concatenates the MD5 hash with the first 10 bytes of the blob.
+    private String createId(byte[] blob) {
+    	MessageDigest md;
+    	try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// This would be surprising
+			return null;
+		}
+    	return DatatypeConverter.printHexBinary(md.digest(blob))
+    			+DatatypeConverter.printHexBinary(Arrays.copyOf(blob, 10));
     }
     
 }

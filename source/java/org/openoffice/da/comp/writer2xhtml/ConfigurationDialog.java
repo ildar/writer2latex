@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.4 (2014-09-19)
+*  Version 1.4 (2014-09-23)
 *
 */ 
 
@@ -495,14 +495,14 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		listBoxFromConfig(dlg, "Formulas", "formulas", sFormulaValues, (short) 0);
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxFromConfig(dlg, "InlineSvg", "inline_svg");
+    		checkBoxFromConfig(dlg, "EmbedSvg", "embed_svg");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		listBoxToConfig(dlg, "Formulas", "formulas", sFormulaValues);
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxToConfig(dlg, "InlineSvg", "inline_svg");
+    		checkBoxToConfig(dlg, "EmbedSvg", "embed_svg");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {

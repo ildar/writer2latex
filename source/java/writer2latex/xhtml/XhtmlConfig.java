@@ -143,7 +143,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int SPLIT_AFTER = 40;
     private static final int IMAGE_SPLIT = 41;
     private static final int COVER_IMAGE = 42;
-    private static final int INLINE_SVG = 43;
+    private static final int EMBED_SVG = 43;
     private static final int USE_MATHJAX = 44;
     private static final int CALC_SPLIT = 45;
     private static final int DISPLAY_HIDDEN_SHEETS = 46;
@@ -273,7 +273,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         };
         options[IMAGE_SPLIT] = new Option("image_split","none");
         options[COVER_IMAGE] = new BooleanOption("cover_image","false");
-        options[INLINE_SVG] = new BooleanOption("inline_svg","true");
+        options[EMBED_SVG] = new BooleanOption("embed_svg","false");
         options[USE_MATHJAX] = new BooleanOption("use_mathjax","false");
         options[CALC_SPLIT] = new BooleanOption("calc_split","false");
         options[DISPLAY_HIDDEN_SHEETS] = new BooleanOption("display_hidden_sheets", "false");
@@ -399,7 +399,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public int splitAfter() { return ((IntegerOption) options[SPLIT_AFTER]).getValue(); }
     public String imageSplit() { return options[IMAGE_SPLIT].getString(); }
     public boolean coverImage() { return ((BooleanOption) options[COVER_IMAGE]).getValue(); }
-    public boolean inlineSVG() { return ((BooleanOption) options[INLINE_SVG]).getValue(); }
+    public boolean embedSVG() { return ((BooleanOption) options[EMBED_SVG]).getValue(); }
     public boolean useMathJax() { return ((BooleanOption) options[USE_MATHJAX]).getValue(); }
     public boolean xhtmlCalcSplit() { return ((BooleanOption) options[CALC_SPLIT]).getValue(); }
     public boolean xhtmlDisplayHiddenSheets() { return ((BooleanOption) options[DISPLAY_HIDDEN_SHEETS]).getValue(); }

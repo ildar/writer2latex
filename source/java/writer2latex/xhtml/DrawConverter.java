@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 1.4 (2014-09-24)
  *
  */
  
@@ -38,9 +38,9 @@
   * export notes (part of draw-page)
   * export list-style-image for image bullets!
   */
-
 package writer2latex.xhtml;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -53,8 +53,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
-
-//import writer2latex.xmerge.EmbeddedBinaryObject;
 
 import writer2latex.util.Misc;
 import writer2latex.util.CSVList;
@@ -101,7 +99,10 @@ public class DrawConverter extends ConverterHelper {
     private int nImageSize;
     private String sImageSplit;
     private boolean bCoverImage;
-    private boolean bUseSVG;
+    private boolean bEmbedSVG;
+
+    // Embedded SVG images for recycling are collected here
+    private HashMap<String,Element> svgImages = new HashMap<String,Element>();
     
     // Frames in spreadsheet documents are collected here
     private Vector<Element> frames = new Vector<Element>();
@@ -128,7 +129,7 @@ public class DrawConverter extends ConverterHelper {
         nImageSize = config.imageSize();
         sImageSplit = config.imageSplit();
         bCoverImage = config.coverImage();
-        bUseSVG = config.inlineSVG();
+        bEmbedSVG = config.embedSVG();
     }
     
     ///////////////////////////////////////////////////////////////////////
@@ -486,26 +487,38 @@ public class DrawConverter extends ConverterHelper {
         
         // Create the image (sFileName contains the file name)
         Element imageElement = null;
-        if (converter.nType==XhtmlDocument.HTML5 && bUseSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
+        if (converter.nType==XhtmlDocument.HTML5 && bEmbedSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
         	// In HTML5 we may embed SVG images directly in the document
-        	byte[] blob = bgd.getData();
-        	try {
-				Document dom = SimpleXMLParser.parse(new ByteArrayInputStream(blob));
-				if (dom!=null) {
+        	if (bgd.isRecycled()) {
+        		// Get from the cache (actually we are certain it is there)
+        		if (svgImages.containsKey(bgd.getFileName())) {
 					Element elm = hnodeInline!=null ? hnodeInline : hnodeBlock;
-					imageElement = (Element) elm.getOwnerDocument().importNode(dom.getDocumentElement(), true);
+					imageElement = (Element) elm.getOwnerDocument().importNode(svgImages.get(bgd.getFileName()), true);
+        		}
+        	}
+        	else {
+        		// Parse the data
+	        	byte[] blob = bgd.getData();
+	        	try {
+					Document dom = SimpleXMLParser.parse(new ByteArrayInputStream(blob));
+					if (dom!=null) {
+						Element elm = hnodeInline!=null ? hnodeInline : hnodeBlock;
+						imageElement = (Element) elm.getOwnerDocument().importNode(dom.getDocumentElement(), true);
+						// Store in cache in case we need to recycle
+						svgImages.put(bgd.getFileName(), imageElement);
+					}
+					else {
+						System.out.println("Failed to parse SVG");
+					}
+				} catch (IOException e) {
+					// Will not happen with a byte array
+					System.out.println("IOException parsing SVG");
+					e.printStackTrace();
+				} catch (SAXException e) {
+					e.printStackTrace();
+					System.out.println("SAXException parsing SVG");
 				}
-				else {
-					System.out.println("Failed to parse SVG");
-				}
-			} catch (IOException e) {
-				// Will not happen with a byte array
-				System.out.println("IOException parsing SVG");
-				e.printStackTrace();
-			} catch (SAXException e) {
-				e.printStackTrace();
-				System.out.println("SAXException parsing SVG");
-			}
+        	}
         }
         else {
         	// In all other cases, create an img element
