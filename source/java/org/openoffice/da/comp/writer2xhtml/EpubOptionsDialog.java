@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-06-19)
+ *  Version 1.4 (2014-09-24)
  *
  */
 
@@ -309,7 +309,6 @@ public class EpubOptionsDialog extends OptionsDialogBase {
 	        // Dispose the dialog after execution (to free up the memory)
 	        XComponent xComponent = (XComponent) UnoRuntime.queryInterface(XComponent.class, dialog);
 	        if (xComponent!=null) {
-	        	System.out.println("Disposing the dialog!");
 	        	xComponent.dispose();
 	        }
 		} catch (Exception e) {

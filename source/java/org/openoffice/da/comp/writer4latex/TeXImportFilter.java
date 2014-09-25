@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-01-25)
+ *  Version 1.4 (2014-09-24)
  *
  */ 
  
@@ -288,8 +288,6 @@ public class TeXImportFilter extends WeakBase implements XInitialization, XNamed
     	if ("org.openoffice.da.writer4latex.xelatex".equals(m_sFilterName)) {
     		sCommand = "ooxelatex";
     	}
-    	
-    	System.out.println("Executing tex4ht with command "+sCommand+" on file "+file.getName());
     	
     	externalApps.execute(ExternalApps.MK4HT, sCommand, file.getName(), file.getParentFile(), null, true);
 		

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13) 
+ *  Version 1.4 (2014-08-25) 
  *
  */
  
@@ -87,11 +87,11 @@ public final class Application {
      */
     public static final void main (String[] args){
         try {
-        	long time = System.currentTimeMillis();
+        	//long time = System.currentTimeMillis();
             Application app = new Application();
             app.parseCommandLine(args);
             app.doConversion();
-            System.out.println("Total conversion time was "+(System.currentTimeMillis()-time)+" miliseconds");
+            //System.out.println("Total conversion time was "+(System.currentTimeMillis()-time)+" miliseconds");
         } catch (IllegalArgumentException ex) {
             String msg = ex.getMessage();
             showUsage(msg);

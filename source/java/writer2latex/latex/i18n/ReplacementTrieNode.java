@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-09-20)
+ *  Version 1.4 (2014-09-24)
  *
  */
 
@@ -122,7 +122,6 @@ public class ReplacementTrieNode {
     	while (child!=null) {
         	if (child.getLaTeXCode()!=null) {
         		strings.add(sPrefix+child.getLetter());
-        		System.out.println("Found "+sPrefix+child.getLetter());
         	}
     		child.collectStrings(strings, sPrefix+child.getLetter());
     		child = child.getNextSibling();

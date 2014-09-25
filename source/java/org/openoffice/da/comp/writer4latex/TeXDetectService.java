@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-06-19)
+ *  Version 1.4 (2014-09-24)
  *
  */ 
 
@@ -113,11 +113,9 @@ private final XComponentContext m_xContext;
 		
 		// If there's no URL, we cannot verify the type (this should never happen on proper use of the service)
 		if (sURL==null) {
-			System.out.println("No URL given!");
 			return "";
 		}
 		
-		System.out.println("Asked to verify the type "+sTypeName);
 		// Also, we can only verify LaTeX and XeLaTeX
 		if (sTypeName==null || !(sTypeName.equals(LATEX_FILE) || sTypeName.equals(XELATEX_FILE))) {
 			return "";
@@ -132,7 +130,6 @@ private final XComponentContext m_xContext;
 		}
 		catch (com.sun.star.uno.Exception e) {
 			// failed to get SimpleFileAccess service (should not happen)
-			System.out.println("Failed to get SFA service");
 			return "";
 		}
 		
@@ -144,12 +141,10 @@ private final XComponentContext m_xContext;
 		}
 		catch (com.sun.star.ucb.CommandAbortedException e) {
 			// Failed to create input stream, cannot verify the type
-			System.out.println("Failed to get input stream");
 			return "";
 		}
 		catch (com.sun.star.uno.Exception e) {
 			// Failed to create input stream, cannot verify the type
-			System.out.println("Failed to get input stream");
 			return "";
 		}
 
@@ -157,7 +152,6 @@ private final XComponentContext m_xContext;
 		DeTeXtive deTeXtive = new DeTeXtive();
 		try {
 			String sType = deTeXtive.deTeXt(is);
-			System.out.println("The DeTeXtive returned the type "+sType);
 			if ("LaTeX".equals(sType)) {
 				return LATEX_FILE;
 			}
@@ -170,7 +164,6 @@ private final XComponentContext m_xContext;
 		}
 		catch (IOException e) {
 			// Failed to read the stream, cannot verify the type
-			System.out.println("Failed to read the input stream");
 			return "";
 		}
 				

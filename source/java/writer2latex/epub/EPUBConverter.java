@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2014-09-06)
+ *  version 1.4 (2014-09-24)
  *
  */
 
@@ -41,7 +41,6 @@ public final class EPUBConverter extends Xhtml11Converter {
     // Constructor
     public EPUBConverter() {
         super();
-        System.out.println("Creating epub converter");
     }
 	
     @Override public ConverterResult convert(InputStream is, String sTargetFileName) throws IOException {

@@ -507,16 +507,11 @@ public class DrawConverter extends ConverterHelper {
 						// Store in cache in case we need to recycle
 						svgImages.put(bgd.getFileName(), imageElement);
 					}
-					else {
-						System.out.println("Failed to parse SVG");
-					}
+					// Else fail silently
 				} catch (IOException e) {
 					// Will not happen with a byte array
-					System.out.println("IOException parsing SVG");
-					e.printStackTrace();
 				} catch (SAXException e) {
-					e.printStackTrace();
-					System.out.println("SAXException parsing SVG");
+					// Fail silently
 				}
         	}
         }

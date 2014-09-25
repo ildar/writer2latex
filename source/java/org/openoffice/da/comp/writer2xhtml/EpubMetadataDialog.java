@@ -697,7 +697,6 @@ public class EpubMetadataDialog extends DialogBase {
 		date.Year = (short) (nDate/10000);
 		date.Month = (short) ((nDate%10000)/100);
 		date.Day = (short) (nDate%100);
-		System.out.println(date.Year+"-"+date.Month+"-"+date.Day);
 		return date;
 	}*/
 	

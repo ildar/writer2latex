@@ -166,7 +166,6 @@ public class DrawConverter extends ConverterHelper {
                         }
 	                }
                     else { // unsupported object
-                    	//System.out.println("Unsupported "+sHref);
                         boolean bIgnore = true;
                         if (ofr.isOpenDocument()) { // look for replacement image
                             Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);

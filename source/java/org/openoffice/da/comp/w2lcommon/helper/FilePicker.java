@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-06-11)
+ *  Version 1.4 (2014-09-24)
  *
  */ 
 
@@ -109,7 +109,6 @@ public class FilePicker {
 				sPaths = new String[nCount-1];
 				for (int i=1; i<nCount; i++) {
 					sPaths[i-1]=sPathList[0] + sPathList[i];
-					System.out.println("File "+sPaths[i-1]);
 				}
 			}
 			else if (nCount==1) {

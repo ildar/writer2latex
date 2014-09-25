@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-06-19)
+ *  Version 1.4 (2014-09-24)
  *
  */ 
  
@@ -88,7 +88,7 @@ public class DeTeXtive {
 		skipBlanks();
 		if (token.isCS("documentclass") || token.isCS("documentstyle")) {
 			// The first non-blank token is \documentclass or \documentstyle => could be a LaTeX document
-			System.out.println("** Found "+token.toString());
+			//System.out.println("** Found "+token.toString());
 			mouth.getToken();
 			skipSpaces();
 			// Skip options, if any
@@ -99,12 +99,12 @@ public class DeTeXtive {
 			if (token.getType()==TokenType.BEGIN_GROUP) {
 				// Get class name
 				String sClassName = parseArgumentAsString();
-				System.out.println("** Found the class name "+sClassName);
+				//System.out.println("** Found the class name "+sClassName);
 				// Accept any class name of one or more characters
 				if (sClassName.length()>0) { return true; }
 			}
 		}
-		System.out.println("** Doesn't look like LaTeX; failed to get class name");
+		//System.out.println("** Doesn't look like LaTeX; failed to get class name");
 		return false;
 	}
 	
@@ -122,7 +122,7 @@ public class DeTeXtive {
 					skipSpaces();
 				}
 				String sName = parseArgumentAsString();
-				System.out.println("** Found package "+sName);
+				//System.out.println("** Found package "+sName);
 				packages.add(sName);
 			}
 			else if (token.getType()==TokenType.BEGIN_GROUP) {
@@ -134,7 +134,7 @@ public class DeTeXtive {
 				mouth.getToken();
 				skipSpaces();
 				if ("document".equals(parseArgumentAsString())) {
-					System.out.println("Found \\begin{document}");
+					//System.out.println("Found \\begin{document}");
 					return true;
 				}
 			}
@@ -143,7 +143,7 @@ public class DeTeXtive {
 				mouth.getToken();
 			}
 		}
-		System.out.println("** Doesn't look like LaTeX; failed to find \\begin{document}");
+		//System.out.println("** Doesn't look like LaTeX; failed to find \\begin{document}");
 		return false;
 	}
 
