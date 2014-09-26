@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-24)
+ *  Version 1.4 (2014-09-25)
  *
  */
 
@@ -74,10 +74,20 @@ public class EpubOptionsDialog extends OptionsDialogBase {
     @Override protected void loadSettings(XPropertySet xProps) {
         // Style
         loadConfig(xProps);
-        loadNumericOption(xProps, "Scaling");
-        loadNumericOption(xProps, "ColumnScaling");
+        int nScaling = loadNumericOption(xProps, "Scaling");
+        if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
+        	setNumericFieldValue("Scaling",100);
+        }
+        int nColumnScaling = loadNumericOption(xProps, "ColumnScaling");
+        if (nColumnScaling<=1) {
+        	setNumericFieldValue("ColumnScaling",100);
+        }
         loadCheckBoxOption(xProps, "RelativeFontSize");
         loadNumericOption(xProps, "FontScaling");
+        int nFontScaling = loadNumericOption(xProps, "FontScaling");
+        if (nFontScaling<=1) {
+        	setNumericFieldValue("FontScaling",100);
+        }
         loadCheckBoxOption(xProps, "RelativeFontSize");
         loadCheckBoxOption(xProps, "UseDefaultFont");
         loadComboBoxOption(xProps, "DefaultFontName");

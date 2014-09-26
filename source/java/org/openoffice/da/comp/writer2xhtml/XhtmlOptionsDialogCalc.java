@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-21)
+ *  Version 1.4 (2014-09-25)
  *
  */ 
  
@@ -69,8 +69,14 @@ public class XhtmlOptionsDialogCalc extends OptionsDialogBase {
         // Style
         loadConfig(xProps);
         loadCheckBoxOption(xProps, "ConvertToPx");
-        loadNumericOption(xProps, "Scaling");
-        loadNumericOption(xProps, "ColumnScaling");
+        int nScaling = loadNumericOption(xProps, "Scaling");
+        if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
+        	setNumericFieldValue("Scaling",100);
+        }
+        int nColumnScaling = loadNumericOption(xProps, "ColumnScaling");
+        if (nColumnScaling<=1) {
+        	setNumericFieldValue("ColumnScaling",100);
+        }
         loadCheckBoxOption(xProps, "OriginalImageSize");
 		
         // Special content

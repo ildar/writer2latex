@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-18)
+ *  Version 1.4 (2014-09-25)
  *
  */ 
  
@@ -69,8 +69,14 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         // Style
         loadConfig(xProps);
         loadCheckBoxOption(xProps, "ConvertToPx");
-        loadNumericOption(xProps, "Scaling");
-        loadNumericOption(xProps, "ColumnScaling");
+        int nScaling = loadNumericOption(xProps, "Scaling");
+        if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
+        	setNumericFieldValue("Scaling",100);
+        }
+        int nColumnScaling = loadNumericOption(xProps, "ColumnScaling");
+        if (nColumnScaling<=1) {
+        	setNumericFieldValue("ColumnScaling",100);
+        }
         loadCheckBoxOption(xProps, "OriginalImageSize");
 		
         // Special content

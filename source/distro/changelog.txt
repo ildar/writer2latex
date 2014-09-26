@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.4 beta ----------
 
+[w2x] If the export dialogs are loaded with a setting for scaling or column_scaling of 1% or less, the value
+  is reset to 100%. This is a workaround for an obscure bug in the extension manager, which in some cases sets
+  the value to 1% if the export is used right after installation.
+
+[w2x] Bugfix: The help button on the EPUB export dialog now works
+
 [w2x] Bugfix: Avoid null pointer exception in HTML5 export if embed_svg is true and an image is used more than once
 
 [all] An image that is used more than once in the source document is now only exported once. This was already the
