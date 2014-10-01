@@ -11,8 +11,8 @@ in the user guide, which is included in the
 directory doc.
   
 Bugs and feature requests should be reported to
-  henrikjust (at) openoffice.org
+  writer2latex (at) gmail.com
   
 
-September 2014
+October 2014
 Henrik Just

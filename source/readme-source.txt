@@ -17,7 +17,7 @@ The source of Writer2LaTeX consists of three major parts:
   This is to be found in the packages writer2latex.* and should only be used
   through the provided api writer2latex.api.*
 * A command line utility writer2latex.Application
-* A collection of components for OpenOffice.org
+* A collection of components for LibreOffice and Apache OpenOffice
   These are to be found in the packages org.openoffice.da.comp.*
   
 Currently parts of the source for Writer2LaTeX are somewhat messy and
@@ -53,7 +53,7 @@ The class writer2latex.util.Base64 is Robert Harders public domain Base64 class
 Building Writer2LaTeX
 ---------------------
 
-Writer2LaTeX uses Ant version 1.5 or later (http://ant.apache.org) to build.
+Writer2LaTeX uses Ant version 1.6 or later (http://ant.apache.org) to build.
 
 
 Some java libraries from OOo are needed to build the filter part of Writer2LaTeX,
@@ -66,7 +66,12 @@ The lines
 	<property name="OFFICE_CLASSES" location="/usr/share/java" />
 	<property name="URE_CLASSES" location="/usr/share/java" />
 should be modified to the directories where your LO/AOO installation keeps these files
-In some cases your need to install the office development kit as well
+With some LO/AOO installations, you need to install the office development kit as well
+
+The line
+	<property name="JAVA6_RT_JAR" location="/home/hj/jre6/lib/rt.jar" />
+should be modified to point to rt.jar from a java 6 runtime
+(if you want to cross compile for java 6, otherwise change the parameters to the javac task) 
 
 To build, open a command shell, navigate to the source directory and type
 
@@ -88,7 +93,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, September 2014
+Henrik Just, October 2014
 
 
 Thanks to Michael Niedermair for writing the original ant build file

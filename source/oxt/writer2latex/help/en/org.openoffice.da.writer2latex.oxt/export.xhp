@@ -179,7 +179,7 @@
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsSaveImagesInSubdir" id="bm_options_saveimagesinsubdir"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Save images in subdirectory</paragraph>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsSaveImagesInSubdir" visibility="hidden">Check this to save the documents in a separate subdirectory</ahelp></paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsSaveImagesInSubdir" visibility="hidden">Check this to save the images in a separate subdirectory</ahelp></paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX normally saves images associated with the document in the same
 		directory as the LaTeX document. If the document contains a large number of images it may be more convenient to save
 		the images in a separate subdirectory. This option will create a subdirectory with the same name as the LaTeX document

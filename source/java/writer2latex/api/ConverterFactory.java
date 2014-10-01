@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-26)
+ *  Version 1.4 (2014-09-30)
  *
  */
  
@@ -33,7 +33,7 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.4";
-    private static final String DATE = "2014-09-26";
+    private static final String DATE = "2014-09-30";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
@@ -59,8 +59,6 @@ public class ConverterFactory {
      *    (see http://www.w3.org/TR/xhtml-media-types/), but it is used internally
      *    by Writer2xhtml to distinguish from XHTML+MathML</li>
      *    <li><code>application/xhtml+xml</code> for XHTML+MathML</li>
-     *    <li><code>application/xml</code> for XHTML+MathML using stylesheets from w3c's
-     *        math working group</li>
      *    <li><code>text/html5</code> for HTML5 documents
      *    Note that this is <em>not</em> the recommended media type for HTML5
      *    (see http://wiki.whatwg.org/), but it is used internally

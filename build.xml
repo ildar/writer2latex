@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.4 (2014-08-25)
+  # version 1.4 (2014-10-01)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -10,6 +10,8 @@
     <!-- set this property to the location of your SO/OOo installation -->
 	<property name="OFFICE_CLASSES" location="/usr/share/java" />
 	<property name="URE_CLASSES" location="/usr/share/java" />
+    <!-- set this property to the location of the java 6 bootstrap classes (rt.jar) -->
+	<property name="JAVA6_RT_JAR" location="/home/hj/jre6/lib/rt.jar" />
 
     <description>writer2latex - build file</description>
 
@@ -34,8 +36,8 @@
 
     <!-- configure the directories -->
     <property name="jarfile" value="writer2latex"/>
-    <property name="basename" value="writer2latex13"/>
-    <property name="distrofile" value="${basename}2alpha.zip" />
+    <property name="basename" value="writer2latex14"/>
+    <property name="distrofile" value="${basename}beta.zip" />
     <!--<property name="sourcedistrofile" value="${basename}source.zip" />-->
     <property name="src" location="source/java"/>
     <property name="source.distro" location="source/distro" />
@@ -70,6 +72,9 @@
                destdir="${classes}"
                encoding="us-ascii"
         	   source="1.6"
+        	   target="1.6"
+        	   bootclasspath="${JAVA6_RT_JAR}"
+        	   includeantruntime="false"
                debug="on">
             <classpath refid="main.class.path"/>
         </javac>

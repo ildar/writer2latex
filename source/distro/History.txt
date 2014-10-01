@@ -1,9 +1,32 @@
 Version history for Writer2LaTeX
 ================================
 
+Version 1.4 beta (October 2014)
+  - All:
+       - Optimized memory usage
+       - Images that are used more than once in the document are now only exported once
+       - Now requires Java 6
+  - LaTeX:
+       - New option display_hidden_text to toggle the export of hidden text in the document
+       - Merge spans with identical formatting
+       - Support for TexMaths equations
+       - The package ooomath.sty is no longer required by standard configurations
+       - StarMath bugfixes
+  - XHTML:
+       - Support for (polyglot) HTML5, replacing the target format XHTML+MathML+XSLT
+       - New option use_mathjax to load the MathJax library if the target format is XHTML+MathML or HTML5
+       - Support for TexMaths equations (only if use_mathjax=true)
+       - Vector graphics is now converted to SVG if target format is HTML5
+       - New option embed_svg to embed SVG directly in HTML if target format is HTML5
+       - Support for HTML5 elements in templates
+       - Merge span elements with identical attributes
+       - New option table_size replacing the option ignore_table_dimensions
+       - Support display equations
+       
 Version 1.2.1 (September 2014)
   - All:
        - Updated to work with LO 4.x
+       
 Version 1.2 beta (March 2012)
   - Filters:
        - Added user interface to edit custom configuration
@@ -36,7 +59,8 @@ Version 1.2 beta (March 2012)
        - New method in the converter API to access the metadata of the converted document
        - The converter API now provides pointers to headings and other important places in the converted document
        - The converter API now provides better identification of files that are part of the main document flow
-       - New attributes Resouces, ResourceURL in filter API    
+       - New attributes Resources, ResourceURL in filter API
+           
 Version 1.0 (September 2009)
   -Filters:
       - Changed to oxt format and separated into Writer2LaTeX and Writer2xhtml extensions
