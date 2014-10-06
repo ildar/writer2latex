@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.4 beta ----------
 
+[w4l] Zotero BibTeX exporter is updated to the latest version
+
 [all] Build file is now set up to cross compile for java 6
 
 [w2x] If the export dialogs are loaded with a setting for scaling or column_scaling of 1% or less, the value
