@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-10-10)
  *
  */
 
@@ -329,10 +329,9 @@ public class Misc{
     	}
     }
 	
-    public static final String removeExtension(String sName) {
-        int n = sName.lastIndexOf(".");
-        if (n<0) { return sName; }
-        return sName.substring(0,n);
+    public static final String removeExtension(String sURL) {
+    	String sExt = getFileExtension(sURL);
+    	return sURL.substring(0, sURL.length()-sExt.length());
     }
 	
      /*

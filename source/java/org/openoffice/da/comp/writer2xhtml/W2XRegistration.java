@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-18) 
+ *  Version 1.6 (2014-10-06) 
  *
  */ 
  
@@ -60,7 +60,13 @@ public class W2XRegistration {
         XMultiServiceFactory multiFactory, XRegistryKey regKey) {
         xMultiServiceFactory = multiFactory;
         XSingleServiceFactory xSingleServiceFactory = null;
-        if (implName.equals(W2XExportFilter.class.getName()) ) {
+        if (implName.equals(Writer2xhtml.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Writer2xhtml.class,
+            Writer2xhtml.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(W2XExportFilter.class.getName()) ) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(W2XExportFilter.class,
             W2XExportFilter.__serviceName,
             multiFactory,						    
@@ -124,6 +130,8 @@ public class W2XRegistration {
         return
             FactoryHelper.writeRegistryServiceInfo(BatchConverter.__implementationName,
                 BatchConverter.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName,
+                        Writer2xhtml.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,
                 W2XExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,

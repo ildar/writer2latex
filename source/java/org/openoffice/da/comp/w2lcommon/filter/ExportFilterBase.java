@@ -20,38 +20,24 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2014-08-28)
+ *  Version 1.6 (2014-10-06)
  *  
  */
 
 package org.openoffice.da.comp.w2lcommon.filter;
 
-import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
-
-import com.sun.star.io.XInputStream;
-import com.sun.star.io.XOutputStream;
-import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XServiceName;
 import com.sun.star.lang.XTypeProvider;
-import com.sun.star.uno.AnyConverter;
-import com.sun.star.ucb.XSimpleFileAccess2;
 import com.sun.star.uno.Type;
-import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.xml.sax.XDocumentHandler;
 import com.sun.star.xml.XExportFilter;
 
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-import writer2latex.api.Converter;
-import writer2latex.api.ConverterFactory;
-import writer2latex.api.OutputFile;
-import writer2latex.util.Misc;
 import writer2latex.util.SimpleDOMBuilder;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Iterator;
 
 
 /** This class provides an abstract UNO component which implements an XExportFilter.
@@ -74,96 +60,29 @@ XTypeProvider {
 	/** Filter name to include in error messages */
 	public String __displayName = "";
 
-	private static XComponentContext xComponentContext = null;
-	protected static XMultiServiceFactory xMSF;
+	private XComponentContext xComponentContext = null;
 	private SimpleDOMBuilder domBuilder = new SimpleDOMBuilder(); 
-	private static XOutputStream xos = null;
-	private static String sdMime=null;
-	private static String sURL="";
+	private UNOConverter converter = null;
 
-	private Object filterData;
-	private XSimpleFileAccess2 sfa2;
-
-	/** We need to get the Service Manager from the Component context to
-	 *  instantiate certain services, hence this constructor.
-	 *  The subclass must override this to set xMSF properly from the registration class
+	/** Construct a new ExportFilterBase from a given component context
+	 * 
+	 * @param xComponentContext the component context used to instantiate new UNO services
 	 */
-	public ExportFilterBase(XComponentContext xComponentContext1) {
-		xComponentContext = xComponentContext1;
-		xMSF = null;
+	public ExportFilterBase(XComponentContext xComponentContext) {
+		this.xComponentContext = xComponentContext;
 	}
 	
-	// Utility method:
-
-	String getFileName(String origName) {
-		String name=null;
-		if (origName !=null) {
-			if(origName.equalsIgnoreCase(""))
-				name = "OutFile"; 
-			else {
-				if (origName.lastIndexOf("/")>=0) {
-					origName=origName.substring(origName.lastIndexOf("/")+1,origName.length());
-				}
-				if (origName.lastIndexOf(".")>=0) {
-					name = origName.substring(0,(origName.lastIndexOf(".")));
-				}
-				else {
-					name=origName;
-				}
-			}
-		}
-		else{   
-			name = "OutFile"; 
-		}
-
-		return name;
-	}
-
+	// ---------------------------------------------------------------------------
 	// Implementation of XExportFilter:
 
 	public boolean exporter(com.sun.star.beans.PropertyValue[] aSourceData, 
-			java.lang.String[] msUserData) throws com.sun.star.uno.RuntimeException{
-		sURL=null;
-		filterData = null;
-
-		// Get user data from configuration (type detection)
-		//String udConvertClass=msUserData[0];
-		//String udImport =msUserData[2];
-		//String udExport =msUserData[3];
-		sdMime = msUserData[5];
-
-		// Get source data (only the OutputStream and the URL are actually used)
-		com.sun.star.beans.PropertyValue[] pValue = aSourceData;
-		for  (int  i = 0 ; i < pValue.length; i++) {
-			try{
-				if (pValue[i].Name.compareTo("OutputStream")==0){
-					xos=(com.sun.star.io.XOutputStream)AnyConverter.toObject(new Type(com.sun.star.io.XOutputStream.class), pValue[i].Value);
-				}
-				//if (pValue[i].Name.compareTo("FileName")==0){
-				//    sFileName=(String)AnyConverter.toObject(new Type(java.lang.String.class), pValue[i].Value);
-				//}  
-				if (pValue[i].Name.compareTo("URL")==0){
-					sURL=(String)AnyConverter.toObject(new Type(java.lang.String.class), pValue[i].Value);
-				}
-				//if (pValue[i].Name.compareTo("Title")==0){
-				//    title=(String)AnyConverter.toObject(new Type(java.lang.String.class), pValue[i].Value);
-				//}
-				if (pValue[i].Name.compareTo("FilterData")==0) {
-					filterData = pValue[i].Value;
-				}
-			} 
-			catch(com.sun.star.lang.IllegalArgumentException AnyExec){
-				System.err.println("\nIllegalArgumentException "+AnyExec);
-			}
-		}
-
-		if (sURL==null){
-			sURL="";
-		}
-
+			java.lang.String[] msUserData) {
+		// Create a suitable converter
+		converter = new UNOConverter(aSourceData, xComponentContext);
 		return true;
 	}
 
+	// ---------------------------------------------------------------------------
 	// Implementation of XDocumentHandler:
 	// A flat XML DOM tree is created by the SAX events and finally converted
 
@@ -173,7 +92,7 @@ XTypeProvider {
 
 	public void endDocument()throws com.sun.star.uno.RuntimeException {
 		try{
-			convert(domBuilder.getDOM(),xos);
+			converter.convert(domBuilder.getDOM());
 		}
 		catch (IOException e){
 			MessageBox msgBox = new MessageBox(xComponentContext);
@@ -188,8 +107,6 @@ XTypeProvider {
 			throw new com.sun.star.uno.RuntimeException(__displayName+" Exception");
 		}
 	}
-
-
 
 	public void startElement (String sTagName, com.sun.star.xml.sax.XAttributeList xAttribs) {
 		domBuilder.startElement(sTagName);
@@ -216,112 +133,8 @@ XTypeProvider {
 	public void setDocumentLocator(com.sun.star.xml.sax.XLocator xLocator){
 	}
 
-
-	// This is the actual conversion method, using Writer2LaTeX to convert
-	// the flat XML from the DOM, and writing the result
-	// to the XOutputStream. The XMLExporter does not support export to
-	// compound documents with multiple output files; hence the main file
-	// is written to the XOutStream and other files are written using UCB.
-
-	public void convert (org.w3c.dom.Document dom,com.sun.star.io.XOutputStream exportStream)
-	throws com.sun.star.uno.RuntimeException, IOException {
-		// Create converter and supply it with filter data and a suitable graphic converter
-		Converter converter = ConverterFactory.createConverter(sdMime);
-		if (converter==null) {
-			throw new com.sun.star.uno.RuntimeException("Failed to create converter to "+sdMime);
-		}
-		if (filterData!=null) {
-			FilterDataParser fdp = new FilterDataParser(xComponentContext);
-			fdp.applyFilterData(filterData,converter);
-		}
-		converter.setGraphicConverter(new GraphicConverterImpl(xComponentContext));
-		
-		// Do conversion. The base name is take from the URL provided by the office
-		Iterator<OutputFile> docEnum = converter.convert(dom,Misc.makeFileName(getFileName(sURL)),true).iterator();
-
-		if (docEnum.hasNext()) {
-			// The master document is written to the XOutStream supplied by the XMLFilterAdaptor
-			XOutputStreamToOutputStreamAdapter newxos =new XOutputStreamToOutputStreamAdapter(exportStream);
-			docEnum.next().write(newxos);
-			newxos.flush();
-			newxos.close();
-			
-			if (docEnum.hasNext() && sURL.startsWith("file:")) {
-				// Additional files are written directly using UCB
-				// Initialize the file access (used to write all additional output files)
-				sfa2 = null;
-				try {
-					Object sfaObject = xComponentContext.getServiceManager().createInstanceWithContext(
-							"com.sun.star.ucb.SimpleFileAccess", xComponentContext);
-					sfa2 = (XSimpleFileAccess2) UnoRuntime.queryInterface(XSimpleFileAccess2.class, sfaObject);
-				}
-				catch (com.sun.star.uno.Exception e) {
-					// failed to get SimpleFileAccess service (should not happen)
-				}
-				
-				if (sfa2!=null) {
-					// Remove the file name part of the URL
-					String sNewURL = null;
-					if (sURL.lastIndexOf("/")>-1) {
-						// Take the URL up to and including the last slash
-						sNewURL = sURL.substring(0,sURL.lastIndexOf("/")+1);
-					}
-					else {
-						// The URL does not include a path; this should not really happen,
-						// but in this case we will write to the current default directory
-						sNewURL = "";
-					}
-				
-					while (docEnum.hasNext()) {
-						OutputFile docOut = docEnum.next();
-						// Get the file name and the (optional) directory name
-						String sFullFileName = Misc.makeHref(docOut.getFileName());
-						String sDirName = "";
-						String sFileName = sFullFileName;
-						int nSlash = sFileName.indexOf("/");
-						if (nSlash>-1) {
-							sDirName = sFileName.substring(0,nSlash);
-							sFileName = sFileName.substring(nSlash+1);
-						}
-		
-						try{
-							// Create subdirectory if required
-							if (sDirName.length()>0 && !sfa2.exists(sNewURL+sDirName)) {
-								sfa2.createFolder(sNewURL+sDirName);
-							}
-		
-							// writeFile demands an InputStream, so we need a pipe
-							Object xPipeObj=xMSF.createInstance("com.sun.star.io.Pipe");
-							XInputStream xInStream	= (XInputStream) UnoRuntime.queryInterface(XInputStream.class, xPipeObj );
-							XOutputStream xOutStream = (XOutputStream) UnoRuntime.queryInterface(XOutputStream.class, xPipeObj );
-							OutputStream outStream = new XOutputStreamToOutputStreamAdapter(xOutStream);
-							// Feed the pipe with content...
-							docOut.write(outStream);
-							outStream.flush();
-							outStream.close();
-							xOutStream.closeOutput();
-							// ...and then write the content to the URL
-							sfa2.writeFile(sNewURL+sFullFileName,xInStream);
-						}
-						catch (Throwable e){
-							MessageBox msgBox = new MessageBox(xComponentContext);
-							msgBox.showMessage(__displayName+": Error writing files",
-									e.toString()+" at "+e.getStackTrace()[0].toString());
-						}
-					}
-				}
-			}
-		}
-		else {
-			// The converter did not produce any files (should not happen)
-			MessageBox msgBox = new MessageBox(xComponentContext);
-			msgBox.showMessage(__displayName+": Conversion failed","Internal error");
-		}
-	}
-
-
+	// ---------------------------------------------------------------------------
 	// Implement methods from interface XTypeProvider
-	// Implementation of XTypeProvider
 
 	public com.sun.star.uno.Type[] getTypes() {
 		Type[] typeReturn = {};
@@ -349,11 +162,13 @@ XTypeProvider {
 		return( byteReturn );
 	}
 
+	// ---------------------------------------------------------------------------
 	// Implement method from interface XServiceName
 	public String getServiceName() {
 		return( __serviceName );
 	}
 
+	// ---------------------------------------------------------------------------
 	// Implement methods from interface XServiceInfo
 	public boolean supportsService(String stringServiceName) {
 		return( stringServiceName.equals( __serviceName ) );
@@ -367,6 +182,5 @@ XTypeProvider {
 		String[] stringSupportedServiceNames = { __serviceName };
 		return( stringSupportedServiceNames );
 	}
-
 
 }

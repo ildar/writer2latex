@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-09-06)
+ *  Version 1.6 (2014-10-06)
  *
  */ 
  
@@ -46,7 +46,6 @@ public class W2XExportFilter extends ExportFilterBase {
 
     public W2XExportFilter(XComponentContext xComponentContext1) {
         super(xComponentContext1);
-        xMSF = W2XRegistration.xMultiServiceFactory;
     }
 
 		
