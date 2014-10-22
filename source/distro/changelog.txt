@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
-[w2x] Added toolbar with two buttons to publish directly to XHTML/EPUB.
+[w2x] Added toolbar with four buttons: Publish directly to XHTML, publish directly to EPUB, edit EPUB metadata
+  and edit custom configuration. Publishing directly implies that the export dialog is not displayed. Instead
+  the document will be exported to the same directory as the currently open document and with the same name.
+  This feature bypasses the filter logic, which gives a significant performance gain for large documents.
 
 [all] Filter: Refactored filter code, the actual conversion has been separated from the XExportFilter implementation

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-10-10)
+ *  Version 1.4 (2014-10-21)
  *
  */
 
@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.Math;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.text.Collator;
@@ -44,7 +43,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
-//import java.util.Hashtable;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -303,14 +301,7 @@ public class Misc{
      * @return the file name
      */
     public static final String getFileName(String sURL) {
-    	try {
-			URI uri = new URI(sURL);
-			String sPath = uri.getPath();
-			return sPath.substring(sPath.lastIndexOf('/')+1);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return "";
-		}    	
+    	return sURL.substring(sURL.lastIndexOf('/')+1);
     }
     
     /** Get the file extension from an URL
