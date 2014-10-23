@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-23)
+ *  Version 1.6 (2014-10-23)
  *
  */ 
  
@@ -134,6 +134,8 @@ public final class Writer4LaTeX extends WeakBase
                 return this;
             else if ( aURL.Path.compareTo("ViewLog") == 0 )
                 return this;
+            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 )
+                return this;
         }
         return null;
     }
@@ -172,6 +174,10 @@ public final class Writer4LaTeX extends WeakBase
             }
             else if ( aURL.Path.compareTo("ViewLog") == 0 ) {
                 viewLog();
+                return;
+            }
+            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) {
+                insertBibTeX();
                 return;
             }
         }
@@ -339,6 +345,11 @@ public final class Writer4LaTeX extends WeakBase
             }
         }
     }
+	
+	private void insertBibTeX() {
+        MessageBox msgBox = new MessageBox(m_xContext, m_xFrame);
+        msgBox.showMessage("Writer4LaTeX","This feature is not implemented yet");
+	}
     
     // Some utility methods
     private void prepareMediaProperties() {
