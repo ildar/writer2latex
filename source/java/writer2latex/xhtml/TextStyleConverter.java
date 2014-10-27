@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2014-10-24)
  *
  */
 
@@ -107,8 +107,9 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
         // Look for a style map
         String sDisplayName = ofr.getTextStyles().getDisplayName(sStyleName);
         if (styleMap.contains(sDisplayName)) { // class name from config
-            if (!"(none)".equals(styleMap.getCss(sDisplayName))) {
-                info.sClass = styleMap.getCss(sDisplayName);
+        	XhtmlStyleMapItem map = styleMap.get(sDisplayName);
+            if (!"(none)".equals(map.sCss)) {
+                info.sClass = map.sCss;
             }
             return;
         }

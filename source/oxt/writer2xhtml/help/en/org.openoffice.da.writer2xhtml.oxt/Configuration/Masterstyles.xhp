@@ -44,6 +44,16 @@
         <paragraph role="heading" level="3" xml-lang="en-US">CSS class</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Enter the name of a CSS class. If you leave this field empty, the
         <emph>class</emph> attribute will not be set.</paragraph>
+        
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Before" id="bm_configbefore"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Before</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The text you enter here will be added to the beginning of
+        each paragraph formatted with this style.</paragraph>
+        
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:After" id="bm_configafter"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">After</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The text you enter here will be added to the end of
+        each paragraph formatted with this style.</paragraph>        
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:BlockElement" id="bm_configblockelement"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Block XHTML element</paragraph>

@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
+[w2x] Style maps for paragraphs and headings now support the attributes before and after. These define fixed texts
+  to add before/after the content. (This is similar to the pseudo-elements ::before and ::after in CSS.)
+
 [w4l] Replaced menu with a toolbar with four buttons: Insert BibTeX citation (not yet implemented), publish to LaTeX,
   view log files and edit custom format. (Publishing without showing the dialog is currently removed.)
 

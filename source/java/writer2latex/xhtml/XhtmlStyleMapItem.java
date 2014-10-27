@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  XhtmlStyleMap.java
+ *  XhtmlStyleMapItem.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -23,30 +23,25 @@
  *  Version 1.6 (2014-10-24)
  *
  */
-
 package writer2latex.xhtml;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-public class XhtmlStyleMap {
-	private Map<String,XhtmlStyleMapItem> items = new HashMap<String,XhtmlStyleMapItem>();
+/** This is a simple struct to hold data about a single style map
+ */
+public class XhtmlStyleMapItem {
+    public String sBlockElement=null;
+    public String sBlockCss=null;
+    public String sElement=null;
+    public String sCss=null;
+    public String sBefore=null;
+    public String sAfter=null;
     
-	public boolean contains(String sName) {
-        return sName!=null && items.containsKey(sName);
-    }
-	
-    public void put(String sName, XhtmlStyleMapItem item) {
-        items.put(sName, item);
-    }
-
-    public XhtmlStyleMapItem get(String sName) {
-        return items.get(sName);
+    public XhtmlStyleMapItem(String sBlockElement, String sBlockCss, String sElement, String sCss, String sBefore, String sAfter) {
+        this.sBlockElement=sBlockElement;
+        this.sBlockCss=sBlockCss;
+        this.sElement=sElement;
+        this.sCss=sCss;
+        this.sBefore=sBefore;
+        this.sAfter=sAfter;
     }
 
-    public Iterator<String> getNames() {
-        return items.keySet().iterator();
-    }
-	
 }

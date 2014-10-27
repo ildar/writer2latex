@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-23)
+ *  Version 1.6 (2014-10-26)
  *
  */
 
@@ -395,12 +395,13 @@ public class TextConverter extends ConverterHelper {
 					
                     if (sDisplayName!=null && xpar.contains(sDisplayName)) {
                         Node curHnode = hnode;
-                        String sBlockElement = xpar.getBlockElement(sDisplayName);
-                        String sBlockCss = xpar.getBlockCss(sDisplayName);
-                        if (xpar.getBlockElement(sDisplayName).length()>0) {
-                            Element block = converter.createElement(xpar.getBlockElement(sDisplayName));
-                            if (!"(none)".equals(xpar.getBlockCss(sDisplayName))) {
-                                block.setAttribute("class",xpar.getBlockCss(sDisplayName));
+                        XhtmlStyleMapItem map = xpar.get(sDisplayName);
+                        String sBlockElement = map.sBlockElement;
+                        String sBlockCss = map.sBlockCss;
+                        if (map.sBlockElement.length()>0) {
+                            Element block = converter.createElement(map.sBlockElement);
+                            if (!"(none)".equals(map.sBlockCss)) {
+                                block.setAttribute("class",map.sBlockCss);
                             }
                             hnode.appendChild(block);
                             curHnode = block;
@@ -415,8 +416,9 @@ public class TextConverter extends ConverterHelper {
                                 if (cnodeName.equals(XMLString.TEXT_P)) {
                                     String sCurDisplayName = ofr.getParStyles().getDisplayName(Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME));
                                     if (sCurDisplayName!=null && xpar.contains(sCurDisplayName)) {
-                                        if (sBlockElement.equals(xpar.getBlockElement(sCurDisplayName)) &&
-	                                        sBlockCss.equals(xpar.getBlockCss(sCurDisplayName))) {
+                                    	XhtmlStyleMapItem newmap = xpar.get(sCurDisplayName);
+                                        if (sBlockElement.equals(newmap.sBlockElement) &&
+	                                        sBlockCss.equals(newmap.sBlockCss)) {
                                             bMoreParagraphs = true;
                                          }
                                     }
@@ -701,7 +703,7 @@ public class TextConverter extends ConverterHelper {
         		if (!bUnNumbered) {
     				insertListLabel(listStyle,nListLevel,"SectionNumber",null,sLabel,heading);            	
         		}
-
+        		
         		// Add to toc
         		if (!bInToc) {
         			String sTarget = "toc"+(++nTocIndex);
@@ -734,7 +736,11 @@ public class TextConverter extends ConverterHelper {
         			applyStyle(innerInfo, content);
         		}
         		traverseInlineText(onode,content);
-                // Keep track of current headings for split output
+
+            	// Add before/after text if required
+            	addBeforeAfter(heading,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXHeadingStyleMap());
+        		
+        		// Keep track of current headings for split output
                 currentHeading[nLevel] = heading;
                 for (int i=nLevel+1; i<=6; i++) {
                     currentHeading[i] = null;
@@ -817,9 +823,13 @@ public class TextConverter extends ConverterHelper {
             sCurrentListLabel = null;
         }        
         
-        // Finally, in EPUB export, if the exported paragraph turns out to be empty, remove it
         if (converter.isOPS() && !par.hasChildNodes()) {
+            // Finally, in EPUB export, if the exported paragraph turns out to be empty, remove it
         	hnode.removeChild(par);
+        }
+        else {
+        	// Otherwise, add before/after text if required
+        	addBeforeAfter(par,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXParStyleMap());
         }
     }
     
@@ -1979,6 +1989,26 @@ public class TextConverter extends ConverterHelper {
     // UTILITY METHODS
     ///////////////////////////////////////////////////////////////////////////
     
+    // Insert text before/after in an element
+    private void addBeforeAfter(Element elm, StyleWithProperties style, XhtmlStyleMap styleMap) {
+    	if (style!=null && styleMap.contains(style.getDisplayName())) {
+    		XhtmlStyleMapItem mapItem = styleMap.get(style.getDisplayName());
+    		if (mapItem.sBefore!=null && mapItem.sBefore.length()>0) {
+    			Node child = elm.getFirstChild();
+    			if (child!=null) {
+    				elm.insertBefore(converter.createTextNode(mapItem.sBefore),child);
+    			}
+    			else {
+    				elm.appendChild(converter.createTextNode(mapItem.sBefore));
+    			}
+    		}
+    		if (mapItem.sAfter!=null && mapItem.sAfter.length()>0) {
+				elm.appendChild(converter.createTextNode(mapItem.sAfter));    			
+    		}
+    		
+    	}
+    }
+    
     // Methods to query individual formatting properties (no inheritance)
 	
     // Does this style contain the bold attribute?
@@ -2079,10 +2109,11 @@ public class TextConverter extends ConverterHelper {
     private Element applyAttribute(Element node, String sAttr, boolean bApply) {
     	if (bApply) {
     		XhtmlStyleMap xattr = config.getXAttrStyleMap();
-    		if (xattr.contains(sAttr) && xattr.getElement(sAttr).length()>0) { 
-    			Element attr = converter.createElement(xattr.getElement(sAttr));
-    			if (!"(none)".equals(xattr.getCss(sAttr))) {
-    				attr.setAttribute("class",xattr.getCss(sAttr));
+    		if (xattr.contains(sAttr) && xattr.get(sAttr).sElement.length()>0) {
+    			XhtmlStyleMapItem map = xattr.get(sAttr);
+    			Element attr = converter.createElement(map.sElement);
+    			if (!"(none)".equals(map.sCss)) {
+    				attr.setAttribute("class",map.sCss);
     			}
     			node.appendChild(attr);
     			return attr;
@@ -2157,6 +2188,4 @@ public class TextConverter extends ConverterHelper {
             Misc.getPosInteger(node.getAttribute(XMLString.TEXT_LEVEL),1);
     }
 
-
-	
 }

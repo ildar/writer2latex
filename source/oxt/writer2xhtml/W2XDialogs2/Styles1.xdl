@@ -28,11 +28,15 @@
   <dlg:combobox dlg:id="Element" dlg:tab-index="8" dlg:left="80" dlg:top="54" dlg:width="170" dlg:height="12" dlg:spin="true" dlg:linecount="11" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Element"/>
   <dlg:text dlg:id="CssLabel" dlg:tab-index="9" dlg:left="10" dlg:top="70" dlg:width="60" dlg:height="12" dlg:value="CSS class"/>
   <dlg:textfield dlg:id="Css" dlg:tab-index="10" dlg:left="80" dlg:top="68" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Css"/>
-  <dlg:text dlg:id="BlockElementLabel" dlg:tab-index="11" dlg:left="10" dlg:top="84" dlg:width="60" dlg:height="12" dlg:value="Block XHTML element"/>
-  <dlg:combobox dlg:id="BlockElement" dlg:tab-index="12" dlg:left="80" dlg:top="82" dlg:width="170" dlg:height="12" dlg:spin="true" dlg:linecount="10" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:BlockElement"/>
-  <dlg:text dlg:id="BlockCssLabel" dlg:tab-index="13" dlg:left="10" dlg:top="98" dlg:width="60" dlg:height="12" dlg:value="Block CSS class"/>
-  <dlg:textfield dlg:id="BlockCss" dlg:tab-index="14" dlg:left="80" dlg:top="96" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:BlockCss"/>
-  <dlg:button dlg:id="LoadDefaultsButton" dlg:tab-index="15" dlg:left="10" dlg:top="118" dlg:width="120" dlg:height="12" dlg:value="Load default mappings..." dlg:help-url="org.openoffice.da.writer2xhtml.oxt:LoadDefaults">
+  <dlg:text dlg:id="BeforeLabel" dlg:tab-index="11" dlg:left="10" dlg:top="84" dlg:width="60" dlg:height="12" dlg:value="Text before"/>
+  <dlg:textfield dlg:id="Before" dlg:tab-index="12" dlg:left="80" dlg:top="82" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Before"/>
+  <dlg:text dlg:id="AfterLabel" dlg:tab-index="13" dlg:left="10" dlg:top="98" dlg:width="60" dlg:height="12" dlg:value="Text after"/>
+  <dlg:textfield dlg:id="After" dlg:tab-index="14" dlg:left="80" dlg:top="96" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:After"/>
+  <dlg:text dlg:id="BlockElementLabel" dlg:tab-index="15" dlg:left="10" dlg:top="112" dlg:width="60" dlg:height="12" dlg:value="Block XHTML element"/>
+  <dlg:combobox dlg:id="BlockElement" dlg:tab-index="16" dlg:left="80" dlg:top="110" dlg:width="170" dlg:height="12" dlg:spin="true" dlg:linecount="10" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:BlockElement"/>
+  <dlg:text dlg:id="BlockCssLabel" dlg:tab-index="17" dlg:left="10" dlg:top="126" dlg:width="60" dlg:height="12" dlg:value="Block CSS class"/>
+  <dlg:textfield dlg:id="BlockCss" dlg:tab-index="18" dlg:left="80" dlg:top="124" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:BlockCss"/>
+  <dlg:button dlg:id="LoadDefaultsButton" dlg:tab-index="19" dlg:left="10" dlg:top="146" dlg:width="120" dlg:height="12" dlg:value="Load default mappings..." dlg:help-url="org.openoffice.da.writer2xhtml.oxt:LoadDefaults">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:LoadDefaultsClick" script:language="UNO"/>
   </dlg:button>
  </dlg:bulletinboard>

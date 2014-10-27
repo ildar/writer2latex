@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2014-10-24)
  *
  */package writer2latex.xhtml;
 
@@ -82,9 +82,10 @@ public class HeadingStyleConverter extends StyleConverterHelper {
                 String sDisplayName = style.getDisplayName();
                 if (styleMap.contains(sDisplayName)) {
                     // Apply attributes as specified in style map from user
-                    info.sTagName = styleMap.getBlockElement(sDisplayName);
-                    if (!"(none)".equals(styleMap.getBlockCss(sDisplayName))) {
-                        info.sClass = styleMap.getBlockCss(sDisplayName);
+                	XhtmlStyleMapItem map = styleMap.get(sDisplayName);
+                    info.sTagName = map.sBlockElement;
+                    if (!"(none)".equals(map.sBlockCss)) {
+                        info.sClass = map.sBlockCss;
                     }
                 }
                 else {
@@ -113,9 +114,10 @@ public class HeadingStyleConverter extends StyleConverterHelper {
                 String sDisplayName = style.getDisplayName();
                 if (styleMap.contains(sDisplayName)) {
                     // Apply attributes as specified in style map from user
-                    info.sTagName = styleMap.getElement(sDisplayName);
-                    if (!"(none)".equals(styleMap.getCss(sDisplayName))) {
-                        info.sClass = styleMap.getCss(sDisplayName);
+                	XhtmlStyleMapItem map = styleMap.get(sDisplayName);
+                    info.sTagName = map.sElement;
+                    if (!"(none)".equals(map.sCss)) {
+                        info.sClass = map.sCss;
                     }
                 }
             }

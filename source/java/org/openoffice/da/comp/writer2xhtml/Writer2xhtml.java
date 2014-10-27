@@ -34,9 +34,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.sun.star.beans.PropertyValue;
-import com.sun.star.frame.XDispatchHelper;
-import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lib.uno.helper.WeakBase;

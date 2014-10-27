@@ -12,7 +12,7 @@
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
 		<prop oor:name="UIName">
-			<value>HTML 5 [Writer2xhtml]</value>
+			<value>HTML5 [Writer2xhtml]</value>
 		</prop>
 		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
 	</node>

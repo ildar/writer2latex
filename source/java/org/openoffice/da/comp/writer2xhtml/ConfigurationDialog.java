@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.4 (2014-09-23)
+*  Version 1.4 (2014-09-26)
 *
 */ 
 
@@ -363,6 +363,18 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
 			if (!attr.containsKey("css")) { attr.put("css", ""); }
 			dlg.setComboBoxText("Element", attr.get("element"));
 			dlg.setTextFieldText("Css", none2empty(attr.get("css")));
+			
+			if (nCurrentFamily==1 || nCurrentFamily==2) {
+				if (!attr.containsKey("before")) { attr.put("before", ""); }
+				if (!attr.containsKey("after")) { attr.put("after", ""); }
+				dlg.setTextFieldText("Before", attr.get("before"));
+				dlg.setTextFieldText("After", attr.get("after"));
+			}
+			else {
+				dlg.setTextFieldText("Before", "");
+				dlg.setTextFieldText("After", "");				
+			}
+			
 			if (nCurrentFamily==1 || nCurrentFamily==2) {
 				if (!attr.containsKey("block-element")) { attr.put("block-element", ""); }
 				if (!attr.containsKey("block-css")) { attr.put("block-css", ""); }
@@ -379,6 +391,10 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
 			attr.put("element", dlg.getComboBoxText("Element"));
 			attr.put("css", empty2none(dlg.getTextFieldText("Css")));
 			if (nCurrentFamily==1 || nCurrentFamily==2) {
+				attr.put("before", dlg.getTextFieldText("Before"));
+				attr.put("after", dlg.getTextFieldText("After"));
+			}
+			if (nCurrentFamily==1 || nCurrentFamily==2) {
 				attr.put("block-element", dlg.getComboBoxText("BlockElement"));
 				attr.put("block-css", empty2none(dlg.getTextFieldText("BlockCss")));
 			}
@@ -387,6 +403,8 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
 		protected void clearControls(DialogAccess dlg) {
 			dlg.setComboBoxText("Element", "");
 			dlg.setTextFieldText("Css", "");
+			dlg.setTextFieldText("Before", "");
+			dlg.setTextFieldText("After", "");
 			dlg.setComboBoxText("BlockElement", "");
 			dlg.setTextFieldText("BlockCss", "");
 		}
@@ -397,7 +415,11 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
 			dlg.setControlEnabled("ElementLabel", bHasMappings && nCurrentFamily<=2);			
 			dlg.setControlEnabled("Element", bHasMappings && nCurrentFamily<=2);			
 			dlg.setControlEnabled("CssLabel", bHasMappings);			
-			dlg.setControlEnabled("Css", bHasMappings);			
+			dlg.setControlEnabled("Css", bHasMappings);
+			dlg.setControlEnabled("BeforeLabel", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
+			dlg.setControlEnabled("Before", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
+			dlg.setControlEnabled("AfterLabel", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
+			dlg.setControlEnabled("After", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
 			dlg.setControlEnabled("BlockElementLabel", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
 			dlg.setControlEnabled("BlockElement", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));
 			dlg.setControlEnabled("BlockCssLabel", bHasMappings && (nCurrentFamily==1 || nCurrentFamily==2));		

@@ -10,7 +10,7 @@
 		<prop oor:name="MediaType"/>
 		<prop oor:name="Preferred"><value>false</value></prop>
 		<prop oor:name="UIName">
-			<value>HTML 5</value>
+			<value>HTML5</value>
 		</prop>
 		<prop oor:name="ClipboardFormat"/>
 	</node>

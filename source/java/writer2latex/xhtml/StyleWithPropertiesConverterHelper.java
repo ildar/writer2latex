@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2014-10-24)
  *
  */
 
@@ -73,11 +73,12 @@ public abstract class StyleWithPropertiesConverterHelper
                 String sDisplayName = style.getDisplayName();
                 if (styleMap.contains(sDisplayName)) {
                     // Apply attributes as specified in style map from user
-                	if (styleMap.getElement(sDisplayName).length()>0) {
-                		info.sTagName = styleMap.getElement(sDisplayName);
+                	XhtmlStyleMapItem map = styleMap.get(sDisplayName);
+                	if (map.sElement.length()>0) {
+                		info.sTagName = map.sElement;
                 	}
-                    if (!"(none)".equals(styleMap.getCss(sDisplayName))) {
-                        info.sClass = styleMap.getCss(sDisplayName);
+                    if (!"(none)".equals(map.sCss)) {
+                        info.sClass = map.sCss;
                     }
                 }
                 else {

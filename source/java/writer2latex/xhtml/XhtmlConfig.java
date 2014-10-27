@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-23)
+ *  Version 1.6 (2014-10-24)
  *
  */
 
@@ -295,27 +295,38 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
             if (sFamily.length()==0) { // try old name
                 sFamily = elm.getAttribute("class");
             }
+            Map<String,String> attr = new HashMap<String,String>();
+
             String sElement = elm.getAttribute("element");
             String sCss = elm.getAttribute("css");
             if (sCss.length()==0) { sCss="(none)"; }
-            Map<String,String> attr = new HashMap<String,String>();
             attr.put("element", sElement);
             attr.put("css", sCss);
+
             String sBlockElement = elm.getAttribute("block-element");
             String sBlockCss = elm.getAttribute("block-css");
             if (sBlockCss.length()==0) { sBlockCss="(none)"; }
-
+            
+            String sBefore = elm.getAttribute("before");
+            String sAfter = elm.getAttribute("after");
+            
             if ("heading".equals(sFamily)) {
                 attr.put("block-element", sBlockElement);
                 attr.put("block-css", sBlockCss);
+                attr.put("before", sBefore);
+                attr.put("after", sAfter);
                 xheading.put(sName,attr);
             }
             if ("paragraph".equals(sFamily)) {
                 attr.put("block-element", sBlockElement);
                 attr.put("block-css", sBlockCss);
+                attr.put("before", sBefore);
+                attr.put("after", sAfter);
                 xpar.put(sName,attr);
             }
             else if ("text".equals(sFamily)) {
+                attr.put("before", sBefore);
+                attr.put("after", sAfter);
                 xtext.put(sName,attr);
             }
             else if ("frame".equals(sFamily)) {
@@ -351,6 +362,8 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
             smNode.setAttribute("css",attr.get("css"));
             if (attr.containsKey("block-element")) smNode.setAttribute("block-element",attr.get("block-element"));
             if (attr.containsKey("block-css")) smNode.setAttribute("block-css",attr.get("block-css"));
+            if (attr.containsKey("before")) smNode.setAttribute("before",attr.get("before"));
+            if (attr.containsKey("after")) smNode.setAttribute("after",attr.get("after"));
             dom.getDocumentElement().appendChild(smNode);
         }
     }
@@ -428,7 +441,9 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     		String sCss = attr.containsKey("css") ? attr.get("css") : "";
     		String sBlockElement = attr.containsKey("block-element") ? attr.get("block-element") : "";
     		String sBlockCss = attr.containsKey("block-css") ? attr.get("block-css") : "";
-    		map.put(sName, sBlockElement, sBlockCss, sElement, sCss);
+    		String sBefore = attr.containsKey("before") ? attr.get("before") : "";
+    		String sAfter = attr.containsKey("after") ? attr.get("after") : "";
+    		map.put(sName, new XhtmlStyleMapItem(sBlockElement, sBlockCss, sElement, sCss, sBefore, sAfter));
     	}
     	return map;
 
