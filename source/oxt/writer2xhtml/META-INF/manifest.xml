@@ -10,6 +10,10 @@
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
      
     <manifest:file-entry
+     manifest:full-path="AddonsAOO4.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+     
+    <manifest:file-entry
      manifest:full-path="Office/UI/WriterWindowState.xcu"
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
 

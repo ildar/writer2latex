@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
+[w2x] Bugfix: The date field in the EPUB Metadata dialog did not work in LO 4.1 and newer. This was due to and API
+  change in LO (long replaced by com.sun.star.util.Date), and is now fixed.
+
 [all] Implementation detail: Replaced Robert Harder's base 64 class with javax.xml.bind.DatatypeConverter
 
 [w2x] Style maps for paragraphs and headings now support the attributes before and after. These define fixed texts
