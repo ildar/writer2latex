@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
+[all] Implementation detail: Replaced Robert Harder's base 64 class with javax.xml.bind.DatatypeConverter
+
 [w2x] Style maps for paragraphs and headings now support the attributes before and after. These define fixed texts
   to add before/after the content. (This is similar to the pseudo-elements ::before and ::after in CSS.)
 

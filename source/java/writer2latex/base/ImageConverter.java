@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-24)
+ *  Version 1.6 (2014-10-27)
  *
  */
 
@@ -47,7 +47,6 @@ import writer2latex.office.MIMETypes;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.SVMReader;
 import writer2latex.office.XMLString;
-import writer2latex.util.Base64;
 import writer2latex.util.Misc;
 
 /** This class extracts and converts images from an office document.
@@ -250,7 +249,8 @@ public final class ImageConverter {
 	                    buf.append(nl.item(i).getNodeValue());
 	                }
 	            }
-	            blob = Base64.decode(buf.toString());
+	            //blob = Base64.decode(buf.toString());
+	            blob = DatatypeConverter.parseBase64Binary(buf.toString());
     			// We may have seen this image before, return the recycled version
 	            String sId1 = createId(blob);
     			if (recycledImages.containsKey(sId1)) {
