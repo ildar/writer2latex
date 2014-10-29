@@ -2,8 +2,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
-[w2x] Bugfix: The date field in the EPUB Metadata dialog did not work in LO 4.1 and newer. This was due to and API
-  change in LO (long replaced by com.sun.star.util.Date), and is now fixed.
+[w2l] Merged the extension Writer4LaTeX into Writer2LaTeX, where it now appears as "the Writer2LaTeX toolbar".
 
 [all] Implementation detail: Replaced Robert Harder's base 64 class with javax.xml.bind.DatatypeConverter
 
@@ -14,7 +13,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
   view log files and edit custom format. (Publishing without showing the dialog is currently removed.)
 
 [w2x] Added toolbar with four buttons: Publish directly to XHTML, publish directly to EPUB, edit EPUB metadata
-  and edit custom configuration. Publishing directly implies that the export dialog is not displayed. Instead
+  and edit custom configuration. Publishing directly implies that the file picker is not displayed. Instead
   the document will be exported to the same directory as the currently open document and with the same name.
   This feature bypasses the filter logic, which gives a significant performance gain for large documents.
 
