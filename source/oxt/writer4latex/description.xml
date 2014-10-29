@@ -3,7 +3,7 @@
              xmlns:d="http://openoffice.org/extensions/description/2006"
              xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <identifier value="org.openoffice.da.writer4latex.oxt" />
+  <identifier value="org.openoffice.da.writer2latex-configurations.oxt" />
   <version value="1.5.1" />
   <dependencies>
     <OpenOffice.org-minimal-version value="3.0" d:name="OpenOffice.org 3.0"/>
@@ -11,12 +11,12 @@
   
   <publisher>
     <name xlink:href="http://writer2latex.sourceforge.net" 
-    lang="en">Writer2LaTeX</name>
+    lang="en">Writer2LaTeX configurations</name>
   </publisher>
   
   <display-name>
-    <name lang="da">Writer4LaTeX frontend</name>
-    <name lang="en">Writer4LaTeX frontend</name>
+    <name lang="da">Writer2LaTeX konfigurationer</name>
+    <name lang="en">Writer4LaTeX configurations</name>
   </display-name>
   
   <extension-description>

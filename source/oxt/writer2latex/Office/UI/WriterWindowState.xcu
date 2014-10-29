@@ -5,9 +5,9 @@
  oor:package="org.openoffice.Office.UI">
 	<node oor:name="UIElements">
 		<node oor:name="States">
-			<node oor:name="private:resource/toolbar/addon_org.openoffice.da.writer4latex.OfficeToolBar" oor:op="replace">
+			<node oor:name="private:resource/toolbar/addon_org.openoffice.da.writer2latex.OfficeToolBar" oor:op="replace">
 				<prop oor:name="UIName" oor:type="xs:string">
-					<value>Writer4LaTeX</value>
+					<value>Writer2LaTeX</value>
 				</prop>
 			</node>
 		</node>

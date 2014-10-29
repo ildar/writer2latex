@@ -14,6 +14,10 @@
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
 
     <manifest:file-entry
+     manifest:full-path="ToolbarOptionPages.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+
+    <manifest:file-entry
      manifest:full-path="OptionPages.xcu"
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
 	 
@@ -24,6 +28,30 @@
     <manifest:file-entry
      manifest:full-path="Options.xcu"
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
+     
+    <manifest:file-entry
+     manifest:full-path="ToolbarOptions.xcs"
+     manifest:media-type="application/vnd.sun.star.configuration-schema"/>
+
+    <manifest:file-entry
+     manifest:full-path="ToolbarOptions.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+  
+    <manifest:file-entry
+     manifest:full-path="ProtocolHandler.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+ 
+    <manifest:file-entry
+     manifest:full-path="Addons.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+     
+    <manifest:file-entry
+     manifest:full-path="AddonsAOO4.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
+     
+    <manifest:file-entry
+     manifest:full-path="Office/UI/WriterWindowState.xcu"
+     manifest:media-type="application/vnd.sun.star.configuration-data"/>
 
     <manifest:file-entry
      manifest:full-path="W2LDialogs/"
@@ -32,7 +60,11 @@
     <manifest:file-entry
      manifest:full-path="W2LDialogs2/"
      manifest:media-type="application/vnd.sun.star.basic-library"/>
-	 
+     
+    <manifest:file-entry
+     manifest:full-path="W4LDialogs/"
+     manifest:media-type="application/vnd.sun.star.basic-library"/>
+     	 
     <manifest:file-entry
      manifest:full-path="writer2latex.rdb"
      manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/>
