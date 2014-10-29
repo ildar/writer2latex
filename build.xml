@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2014-10-06)
+  # version 1.6 (2014-10-29)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -214,32 +214,9 @@
 
         <!-- Third extension: writer4latex.oxt -->
     	
-        <!-- Create jar with relevant files  -->
-        <jar jarfile="${tmp}/writer4latex.jar">
-            <fileset dir="${classes}">
-                <patternset>
-                	<include name="org/openoffice/da/comp/w2lcommon/helper/**/*"/>
-                	<include name="org/openoffice/da/comp/writer4latex/**/*"/>
-                	<include name="com/sun/star/lib/loader/**/*"/>
-                </patternset>
-            </fileset>
-            <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
-                <attribute name="Class-Path" value="jaxp.jar parser.jar"/>
-                <!-- OOo needs this to register the filter: -->
-                <attribute name="RegistrationClassName" value="org.openoffice.da.comp.writer4latex.W4LRegistration" />
-            </manifest>
-        </jar>
-        
     	<!-- Pack extension -->
-        <zip destfile="${target.lib}/writer4latex.oxt">
-            <zipfileset dir="source/oxt/writer4latex" prefix="" />
-            <zipfileset dir="${tmp}" includes="writer4latex.jar" />
-        </zip>
+        <zip destfile="${target.lib}/writer4latex.oxt" basedir="source/oxt/writer4latex"/>
 
-    	<!-- delete the jar for this extension -->
-        <delete file="${tmp}/writer4latex.jar" />
-		
         <!-- Fourth extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
 
         <zip destfile="${target.lib}/xhtml-config-sample.oxt" basedir="source/oxt/xhtml-config-sample"/>
