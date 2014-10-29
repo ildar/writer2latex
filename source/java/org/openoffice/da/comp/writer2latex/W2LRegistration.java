@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-09-06) 
+ *  Version 1.4 (2014-10-29) 
  *
  */ 
  
@@ -84,6 +84,42 @@ public class W2LRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(Writer2LaTeX.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Writer2LaTeX.class,
+            Writer2LaTeX.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(TeXImportFilter.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(TeXImportFilter.class,
+            TeXImportFilter.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(TeXDetectService.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(TeXDetectService.class,
+            TeXDetectService.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(ApplicationsDialog.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(ApplicationsDialog.class,
+            ApplicationsDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(BibliographyDialog.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(BibliographyDialog.class,
+            BibliographyDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(LogViewerDialog.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(LogViewerDialog.class,
+            LogViewerDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         
         return xSingleServiceFactory;
     }
@@ -105,7 +141,19 @@ public class W2LRegistration {
             FactoryHelper.writeRegistryServiceInfo(W2LStarMathConverter.__implementationName,
                 W2LStarMathConverter.__serviceName, regKey) &
         	FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
-                ConfigurationDialog.__serviceName, regKey);
+                ConfigurationDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Writer2LaTeX.__implementationName,
+                Writer2LaTeX.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(TeXImportFilter.__implementationName,
+                TeXImportFilter.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(TeXDetectService.__implementationName,
+                TeXDetectService.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(ApplicationsDialog.__implementationName,
+            	ApplicationsDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(BibliographyDialog.__implementationName,
+                BibliographyDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(LogViewerDialog.__implementationName,
+                LogViewerDialog.__serviceName, regKey);    
     }
 }
 
