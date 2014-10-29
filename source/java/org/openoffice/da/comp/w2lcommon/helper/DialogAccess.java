@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-27)
+ *  Version 1.4 (2014-10-27)
  *
  */ 
 
