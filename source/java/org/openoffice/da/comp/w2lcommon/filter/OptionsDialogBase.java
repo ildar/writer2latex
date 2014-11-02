@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.4 (2014-11-01)
  *
  */ 
  
@@ -378,18 +378,18 @@ public abstract class OptionsDialogBase extends DialogBase implements
             }
         }
     }
-	
+    
     protected short saveConfig(XPropertySet xProps, PropertyHelper filterData) {
         // The Config list box is common for all dialogs
         Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
         XNameAccess xNameAccess = (XNameAccess)
             UnoRuntime.queryInterface(XNameAccess.class,configurations);
 
-        boolean bFound = false;
         short nConfig = getListBoxSelectedItem("Config");
         int nStdConfigs = getListBoxStringItemList("Config").length - sConfigNames.length;
         if (nConfig>=nStdConfigs) { // only handle registry configurations
         	int i = nConfig-nStdConfigs;
+			XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[i]);
         	try {
         		Object config = xNameAccess.getByName(sConfigNames[i]);
         		XPropertySet xCfgProps = (XPropertySet)
@@ -414,17 +414,16 @@ public abstract class OptionsDialogBase extends DialogBase implements
         				if (buf.length()>0) { buf.append(';'); }
         				buf.append(sURL).append("::").append(sFileName).append("::").append(sMediaType);
         			}
-    				filterData.put("Resources",buf.toString());
-
-        			XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[i]);
-        			bFound = true;
+    				filterData.put("Resources",buf.toString());    				
         		}
         	}
         	catch (Exception e) {
         	}
         }
+        else { // Standard configurations have no name
+            XPropertySetHelper.setPropertyValue(xProps,"ConfigName","");        	
+        }
         XPropertySetHelper.setPropertyValue(xProps,"Config",nConfig);
-        if (!bFound) { XPropertySetHelper.setPropertyValue(xProps,"ConfigName",""); }
         return nConfig;
     }
 	

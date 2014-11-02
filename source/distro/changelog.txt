@@ -1,5 +1,14 @@
 Changelog for Writer2LaTeX version 1.2 -> 1.4
 
+---------- version 1.4 final ----------
+
+[w2l] Bugfix: In the export dialog, the LaTeX format is now persistent, also for custom formats
+
+[w2x] Bugfix: The date dialog used by the EPUB Metadata dialog now has a title
+
+[w2x] Bugfix: The date field in the EPUB Metadata dialog did not work in LO 4.1 and newer. This was due to an API
+  change in LO (long replaced by com.sun.star.util.Date), and is now fixed.
+
 ---------- version 1.4 beta ----------
 
 [w4l] Zotero BibTeX exporter is updated to the latest version

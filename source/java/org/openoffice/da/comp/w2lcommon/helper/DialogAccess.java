@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-03)
+ *  Version 1.4 (2014-10-27)
  *
  */ 
 
@@ -32,6 +32,7 @@ import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XDialog;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.UnoRuntime;
+import com.sun.star.util.Date;
 
 
 /** This class provides some convenient methods to access a uno dialog
@@ -279,7 +280,20 @@ public class DialogAccess {
     public int getDateFieldValue(String sControlName) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
-        	return ((Integer) xPropertySet.getPropertyValue("Date")).intValue();
+            Object dateObject = xPropertySet.getPropertyValue("Date");
+            if (dateObject instanceof Date) {
+            	// Since LO 4.1
+            	Date date = (Date) dateObject;
+            	return 10000*date.Year+100*date.Month+date.Day;				
+            }
+            else if (dateObject instanceof Integer) {
+            	// AOO and older versions of LO
+            	return ((Integer) dateObject).intValue();
+            }
+            else {
+            	// The date field does not have a value
+            	return 0;
+            }
         }
         catch (Exception e) {
             // Will fail if the control does not exist or is not a date field
@@ -289,12 +303,22 @@ public class DialogAccess {
 	
     public void setDateFieldValue(String sControlName, int nValue) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
-        try {
-        	xPropertySet.setPropertyValue("Date", nValue);
-        }
-        catch (Exception e) {
-            // Will fail if the control does not exist or is not a date field
-        }
+    	Date date = new Date();
+		date.Year = (short) (nValue/10000);
+		date.Month = (short) ((nValue%10000)/100);
+		date.Day = (short) (nValue%100);
+
+        // TODO: Use reflection to identify the correct type of the property
+    	try {
+        	// Since LO 4.1
+			xPropertySet.setPropertyValue("Date", date);
+		} catch (Exception e) {
+        	// AOO and older versions of LO
+			try {
+				xPropertySet.setPropertyValue("Date", nValue);
+			} catch (Exception e1) {
+			}            	
+		}            	
     }
 	
     public int getNumericFieldValue(String sControlName) {
