@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <helpdocument version="1.0">
 	<meta>
-        <topic id="writer4latex-templates" indexer="include">
+        <topic id="writer2latex-configurations-templates" indexer="include">
             <title xml-lang="en-US">Using the templates</title>
-            <filename>org.openoffice.da.writer4latex.oxt/templates.xhp</filename>
+            <filename>org.openoffice.da.writer2latex-configurations.oxt/templates.xhp</filename>
         </topic>
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Using the templates</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">You can use some special
-		Writer templates provided with Writer4LaTeX to
+		Writer templates provided with Writer2LaTeX configurations to
 		create your documents. Using the styles supported by these templates, you can easily create standard LaTeX documents
 		using the opportunities of standard LaTeX document classes.
 		</paragraph>
