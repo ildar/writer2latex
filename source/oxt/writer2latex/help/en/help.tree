@@ -2,10 +2,9 @@
 <tree_view version="02-nov-2014">
   <help_section application="writer2latex" id="w2l01_writer" title="Writer2LaTeX">
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/introduction.xhp">Introduction</topic>
-      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/menu.xhp">Menu reference</topic>
-      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/guidelines.xhp">Guidelines</topic>
+      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/menu.xhp">Menu and toolbar</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/export.xhp">LaTeX Export</topic>
-      <!--<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/import.xhp">Importing TeX files</topic>-->
+      <!--<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/import.xhp">LaTeX import</topic>-->
       <node id="w2l01_writer_toolbar_configuration" title="Toolbar configuration">
 	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/applications.xhp">Applications</topic>
 	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/bibliography.xhp">Bibliography</topic>

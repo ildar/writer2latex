@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <helpdocument version="1.0">
 	<meta>
-        <topic id="writer4latex-bibliography" indexer="include">
+        <topic id="writer2latex-bibliography" indexer="include">
             <title xml-lang="en-US">Bibliography</title>
-            <filename>org.openoffice.da.writer4latex.oxt/bibliography.xhp</filename>
+            <filename>org.openoffice.da.writer2latex.oxt/bibliography.xhp</filename>
         </topic>
     </meta>
     <body>
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyDialog" id="bm_bibliographydialog"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyDialog" id="bm_bibliographydialog"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Configuration of bibliography</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">On this page you can define the interaction between Writer4LaTeX and
+        <paragraph role="paragraph" xml-lang="en-US">On this page you can define the interaction between Writer2LaTeX and
         external bibliographic tools.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Select <emph>Tools - Options - %PRODUCTNAME Writer - Writer4LaTeX - Bibliography</emph>
+        	Select <emph>Tools - Options - %PRODUCTNAME Writer - Writer2LaTeX toolbar - Bibliography</emph>
         </section>
 
 		<paragraph role="heading" level="2" xml-lang="en-US">Citations and BibTeX files</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">There are several ways to handle bibliographic references in %PRODUCTNAME Writer.
-		If you use the standard bibliographic tool provided by %PRODUCTNAME, Writer4LaTeX can convert the references to BibTeX if you
+		If you use the standard bibliographic tool provided by %PRODUCTNAME, Writer2LaTeX can convert the references to BibTeX if you
 		choose to do so in the export dialog. In this case you should not make any settings on this page.</paragraph>
 		
 		<paragraph role="paragraph" xml-lang="en-US">You may also use other tools such as Zotero or JabRef to handle your citations.
-		If you want to use BibTeX to format references inserted by these tools, Writer4LaTeX can convert them for you. In this case
+		If you want to use BibTeX to format references inserted by these tools, Writer2LaTeX can convert them for you. In this case
 		you have to define the location of the BibTeX files produced by Zotero or JabRef.</paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyUseExternalBibTeXFiles" id="bm_useexternalbibtexfiles"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" id="bm_useexternalbibtexfiles"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Use external BibTeX files for ordinary citations</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if the citations in your document refers to one or more external BibTeX files.
 		(The keys used in the document must match up with the keys in the external BibTeX files.)</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">This feature is for advanced users that maintain their references in BibTeX.
 		It enables you to use the original BibTeX files in the LaTeX document rather than converting the inserted
 		references back into BibTeX.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyUseExternalBibTeXFiles" visibility="hidden">Check this if your citations refer to external BibTeX file(s)</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" visibility="hidden">Check this if your citations refer to external BibTeX file(s)</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyConvertZoteroCitations" id="bm_convertzoterocitations"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" id="bm_convertzoterocitations"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Convert Zotero citations</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><link href="http://www.zotero.org" name="Link to the Zotero Website">Zotero</link>
 		is a free, easy-to-use tool to help you collect, organize, cite, and share your research sources.
@@ -55,9 +55,9 @@
 		<paragraph role="paragraph" xml-lang="en-US">You can now export your Zotero database: In Zotero, select
 		<emph>Export Library</emph>, and choose <emph>BibTeX (Writer2LaTeX)</emph> (not <emph>BibTeX</emph>).
 		Save the file in the folder, you have defined.</paragraph>		
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyConvertZoteroCitations" visibility="hidden">Check this to convert Zotero citations to LaTeX</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" visibility="hidden">Check this to convert Zotero citations to LaTeX</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyConvertJabRefCitations" id="bm_convertjabrefcitations"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertJabRefCitations" id="bm_convertjabrefcitations"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Convert JabRef citations</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><link href="http://jabref.sourceforge.net/" name="Link to the JabRef Website">JabRef</link>
 		is an open source bibliography reference manager using BibTeX as native file format.
@@ -69,18 +69,18 @@
 		Also, the bibliography created by JabRef will be replaced with a BibTeX-generated bibliography.
 		If you do not check this option, the original
 		citation text inserted by JabRef will be used.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyConvertJabRefCitations" visibility="hidden">Check this to convert JabRef citations to LaTeX</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyConvertJabRefCitations" visibility="hidden">Check this to convert JabRef citations to LaTeX</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyIncludeOriginalCitations" id="bm_includeoriginalcitations"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyIncludeOriginalCitations" id="bm_includeoriginalcitations"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Include original citations as comments</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if you want to include the original citations produced by Zotero or
 		JabRef as comments in the LaTeX source. This has no effect on the final result but might be helpful if you edit the LaTeX source.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyIncludeOriginalCitations" visibility="hidden">Check this to include the citations inserted by Zotero or JabRef as comments in the LaTeX source.</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyIncludeOriginalCitations" visibility="hidden">Check this to include the citations inserted by Zotero or JabRef as comments in the LaTeX source.</ahelp></paragraph>
 		
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyBibTeXLocation" id="bm_bibtexlocation"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXLocation" id="bm_bibtexlocation"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">BibTeX location</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Writer4LaTeX will look for BibTeX files in the location you define.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX will look for BibTeX files in the location you define.</paragraph>
 		<list type="unordered">
         	<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>In central folder</emph>: Select this option if you keep all your
@@ -97,30 +97,30 @@
 				same name for the LaTeX file and the BibTeX file (your BibTeX file might be overwritten if you do).</paragraph>
         	</listitem>
 		</list>		
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyBibTeXLocation" visibility="hidden">Select the type of location for your BibTeX files</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXLocation" visibility="hidden">Select the type of location for your BibTeX files</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyBibTeXDir" id="bm_bibtexdir"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDir" id="bm_bibtexdir"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">BibTeX folder</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Enter the path to the folder containing your BibTeX files, or select the folder
 		using the <emph>Browse</emph>-button.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyBibTeXDir" visibility="hidden">Enter the path to the folder containing the BibTeX files</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDir" visibility="hidden">Enter the path to the folder containing the BibTeX files</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyBibTeXDirButton" id="bm_bibtexdirbutton"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyBibTeXDirButton" visibility="hidden">Click to select the path to the folder containing the BibTeX files</ahelp></paragraph>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDirButton" id="bm_bibtexdirbutton"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDirButton" visibility="hidden">Click to select the path to the folder containing the BibTeX files</ahelp></paragraph>
 
 		<paragraph role="heading" level="2" xml-lang="en-US">Natbib</paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyUseNatbib" id="bm_usenatbib"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyUseNatbib" id="bm_usenatbib"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Use natbib.sty</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">To fully support the citations inserted by Zotero or JabRef you will need
 		the package natbib.sty. Check this if you want to take advantage of this package (the BibTeX style you use must be compatible
 		with natbib.sty).</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyUseNatbib" visibility="hidden">Check this to use the package natbib.sty for your citations</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseNatbib" visibility="hidden">Check this to use the package natbib.sty for your citations</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer4latex.oxt:BibliographyNatbibOptions" id="bm_natbiboptions"/>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions" id="bm_natbiboptions"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Options</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Enter any options to the package natbib.sty here.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer4latex.oxt:BibliographyNatbibOptions" visibility="hidden">Enter any options to the package natbib.sty here</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions" visibility="hidden">Enter any options to the package natbib.sty here</ahelp></paragraph>
 
 		<paragraph role="paragraph" xml-lang="en-US"></paragraph>
 

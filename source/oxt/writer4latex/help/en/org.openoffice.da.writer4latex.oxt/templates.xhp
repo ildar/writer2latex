@@ -8,10 +8,20 @@
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Using the templates</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">You can use some special
+		Writer templates provided with Writer4LaTeX to
+		create your documents. Using the styles supported by these templates, you can easily create standard LaTeX documents
+		using the opportunities of standard LaTeX document classes.
+		</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">For this initial version, templates for the standard LaTeX classes article
+        are provided. More templates will be added later (report, book, beamer...), and you can also add your own templates.
+        </paragraph>
+
         <paragraph role="heading" level="2" xml-lang="en-US">The article template</paragraph>
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>File - New - Templates and Documents - Writer2LaTeX</emph>
         </section>
+        
         <paragraph role="paragraph" xml-lang="en-US">This template contains a number of styles that corresponds to LaTeX code.
         If you use these styles and makes sure to use the configuration <emph>W4L: Article</emph> when you convert your document
         (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
