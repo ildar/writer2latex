@@ -20,19 +20,13 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-21)
+ *  Version 1.6 (2014-11-03)
  *
  */ 
  
 package org.openoffice.da.comp.writer2xhtml;
 
 // TODO: Create common base for dispatcher classes
-
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.XComponent;
@@ -41,9 +35,7 @@ import com.sun.star.ui.dialogs.XExecutableDialog;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
-import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher;
 import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
        
 /** This class implements the ui (dispatch) commands provided by Writer2xhtml.
  */
@@ -58,7 +50,7 @@ public final class Writer2xhtml extends WeakBase
     // From constructor+initialization
     private final XComponentContext m_xContext;
     private XFrame m_xFrame;
-    private UNOPublisher unoPublisher = null;
+    private XhtmlUNOPublisher unoPublisher = null;
 	
     // Global data
     public static final String __implementationName = Writer2xhtml.class.getName();
@@ -178,38 +170,9 @@ public final class Writer2xhtml extends WeakBase
     
     private void publish(TargetFormat format) {
     	if (unoPublisher==null) { 
-    		unoPublisher = new UNOPublisher(m_xContext,m_xFrame);
+    		unoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2xhtml");
     	}
-    	String sTargetURL = unoPublisher.publish(format);
-        // Display the result
-        File file = urlToFile(sTargetURL);
-        if (file.exists()) {
-	        // Open the file in the default application on this system (if any)
-	        if (Desktop.isDesktopSupported()) {
-	            Desktop desktop = Desktop.getDesktop();
-	            try {
-					desktop.open(file);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-				}
-	        }        
-	    }
-        else {        	
-            MessageBox msgBox = new MessageBox(m_xContext, m_xFrame);
-            msgBox.showMessage("Writer2xhtml","Error: Failed to open exported document");
-        }
-    }
-    
-    private File urlToFile(String sUrl) {
-        try {
-            return new File(new URI(sUrl));
-        }
-        catch (URISyntaxException e) {
-            return new File(".");
-        }
-    }
-
-
-	
+    	unoPublisher.publish(format);
+    }	
 	
 }

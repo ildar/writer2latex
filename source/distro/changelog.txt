@@ -3,14 +3,14 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 ---------- version 1.5.1 ----------
 
 [w2l] Merged the extension Writer4LaTeX into Writer2LaTeX, where it now appears as "the Writer2LaTeX toolbar".
+  Replaced menu with a toolbar with four buttons: Insert BibTeX citation (not yet implemented), publish to LaTeX,
+  view log files and edit custom format. (Publishing without showing the dialog is currently removed.)
+  Using the toolbar bypasses the filter logic, which gives a significant performance gain for large documents.
 
 [all] Implementation detail: Replaced Robert Harder's base 64 class with javax.xml.bind.DatatypeConverter
 
 [w2x] Style maps for paragraphs and headings now support the attributes before and after. These define fixed texts
   to add before/after the content. (This is similar to the pseudo-elements ::before and ::after in CSS.)
-
-[w4l] Replaced menu with a toolbar with four buttons: Insert BibTeX citation (not yet implemented), publish to LaTeX,
-  view log files and edit custom format. (Publishing without showing the dialog is currently removed.)
 
 [w2x] Added toolbar with four buttons: Publish directly to XHTML, publish directly to EPUB, edit EPUB metadata
   and edit custom configuration. Publishing directly implies that the file picker is not displayed. Instead

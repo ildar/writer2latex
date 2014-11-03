@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-10-21)
+ *  Version 1.6 (2014-11-03)
  *
  */
 
@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.Math;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.text.Collator;
@@ -295,6 +296,15 @@ public class Misc{
         return name;
     }
     
+    /** Get the path part of an URL
+     * 
+     * @param sURL the URL from which the filename should be extracted
+     * @return the file name
+     */
+    public static final String getPath(String sURL) {
+    	return sURL.substring(0,sURL.lastIndexOf('/')+1);
+    }
+    
     /** Get the file name part of an URL
      * 
      * @param sURL the URL from which the filename should be extracted
@@ -464,7 +474,14 @@ public class Misc{
     	return "error";
     }
  
-    
+    public static File urlToFile(String sUrl) {
+        try {
+            return new File(new URI(sUrl));
+        }
+        catch (URISyntaxException e) {
+            return new File(".");
+        }
+    }
 	
     /** <p>Read an <code>InputStream</code> into a <code>byte</code>array</p>
      *  @param is   the <code>InputStream</code> to read
