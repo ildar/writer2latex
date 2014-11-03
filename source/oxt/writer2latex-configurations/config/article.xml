@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- article.xml
-     This is a configuration file for Writer4LaTeX.
+     This is a configuration file for Writer2LaTeX configurations.
      It contains a lot of style mappings, which correspond to
      the template LaTeX-article.odt.
      Some definitions have been chosen for compatibility with tex4ht

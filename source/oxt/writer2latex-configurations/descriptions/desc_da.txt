@@ -1,1 +1,1 @@
-Writer2LaTeX configurations installerer skabeloner og formater til brug sammen med Writer2LaTeX
+Writer2LaTeX konfigurationer installerer skabeloner og formater til brug sammen med Writer2LaTeX
