@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2014-11-03)
+  # version 1.6 (2014-11-04)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -212,10 +212,10 @@
         <!-- delete the jar for this extension -->
         <delete file="${tmp}/writer2xhtml-filter.jar" />
 
-        <!-- Third extension: writer2latex-configurations.oxt -->
+        <!-- Third extension: w2lconfig.oxt -->
     	
     	<!-- Pack extension -->
-        <zip destfile="${target.lib}/writer2latex-configurations.oxt" basedir="source/oxt/writer2latex-configurations"/>
+        <zip destfile="${target.lib}/w2lconfig.oxt" basedir="source/oxt/w2lconfig"/>
 
         <!-- Fourth extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
 

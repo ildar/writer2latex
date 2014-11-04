@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <helpdocument version="1.0">
 	<meta>
-        <topic id="writer2latex-configurations-templates" indexer="include">
+        <topic id="w2lconfigtemplates" indexer="include">
             <title xml-lang="en-US">Using the templates</title>
-            <filename>org.openoffice.da.writer2latex-configurations.oxt/templates.xhp</filename>
+            <filename>org.openoffice.da.w2lconfig.oxt/templates.xhp</filename>
         </topic>
     </meta>
     <body>

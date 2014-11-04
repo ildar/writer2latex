@@ -6,6 +6,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
   Replaced menu with a toolbar with four buttons: Insert BibTeX citation (not yet implemented), publish to LaTeX,
   view log files and edit custom format. (Publishing without showing the dialog is currently removed.)
   Using the toolbar bypasses the filter logic, which gives a significant performance gain for large documents.
+  The remaining parts of Writer4LaTeX (the article template, configuration and help file) has been renamed
+  to "Writer2LaTeX configurations" (short w2lconfig).
 
 [all] Implementation detail: Replaced Robert Harder's base 64 class with javax.xml.bind.DatatypeConverter
 
