@@ -23,7 +23,7 @@
         </section>
         
         <paragraph role="paragraph" xml-lang="en-US">This template contains a number of styles that corresponds to LaTeX code.
-        If you use these styles and makes sure to use the configuration <emph>W4L: Article</emph> when you convert your document
+        If you use these styles and makes sure to use the configuration <emph>W2L: Article</emph> when you convert your document
         (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
         Note that hard formatting and any other styles will be ignored. The available styles are summarized in the following tables.
         </paragraph>
