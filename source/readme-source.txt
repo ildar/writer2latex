@@ -27,7 +27,8 @@ undocumented. This situation tends to improve over time :-)
 Third-party software
 --------------------
 
-From JSON.org:
+The classes org.json.* from JSON.org are included as json-20140107.jar. The source code is available from JSON.org.
+Copyright notice:
 
 The classes org.json.* are copyright (c) 2002 JSON.org and is used subject to the following notice
 

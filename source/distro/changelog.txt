@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.1 ----------
 
+[w2l] Implementation detail: Updated to version 20140107 of the JSON library org.json.* from JSON.org.
+  Now based on prebuilt jar rather than directly on the source.
+
 [w2l] Merged the extension Writer4LaTeX into Writer2LaTeX, where it now appears as "the Writer2LaTeX toolbar".
   Replaced menu with a toolbar with four buttons: Insert BibTeX citation (not yet implemented), publish to LaTeX,
   view log files and edit custom format. (Publishing without showing the dialog is currently removed.)

@@ -47,6 +47,8 @@
     <property name="target" location="target"/>
     <property name="target.lib" location="target/lib"/>
     <property name="source.idl" location="source/idl"/>
+    <property name="source.lib" location="source/lib"/>
+    <property name="org.json" value="json-20140107.jar"/>
     <!-- classpath for the application; needs java-uno classes -->
     <path id="main.class.path"> 
         <!-- java uno classes -->
@@ -54,6 +56,9 @@
 	        files="jurt.jar,juh.jar,ridl.jar"/>
         <filelist dir="${OFFICE_CLASSES}"
     		files="unoil.jar"/>
+    	<!-- third party jars -->
+    	<filelist dir="${source.lib}"
+	        files="${org.json}"/>
         <!-- additional uno interfaces generated from idl -->
         <pathelement path="${source.idl}/writer2latex"/>
         <pathelement path="${source.idl}/writer2xhtml"/>
@@ -73,6 +78,7 @@
                encoding="us-ascii"
         	   source="1.6"
         	   target="1.6"
+	     	   classpath="${source.lib}/${org.json}"
         	   bootclasspath="${JAVA6_RT_JAR}"
         	   includeantruntime="false"
                debug="on">
@@ -89,7 +95,7 @@
     <target name="jar"
             depends="compile"
             description="Create writer2latex jar file containing all compiled classes except OOo components and test cases.">
-    <!-- make a jar from the classes not matching magic testcase identifiers-->
+	    <!-- make a jar from the classes not matching magic testcase identifiers-->
         <mkdir dir="${target.lib}"/>
         <jar jarfile="${target.lib}/${jarfile}.jar">
             <fileset dir="${classes}">
@@ -103,6 +109,8 @@
                 	<exclude name="org/openoffice/**/*"/>
                 </patternset>
             </fileset>
+        	<!-- include third party libraries -->
+        	<zipgroupfileset dir="${source.lib}" includes="${org.json}" />
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
                 <attribute name="Main-Class" value="writer2latex.Application"/>
@@ -133,6 +141,8 @@
                 	<exclude name="org/openoffice/da/comp/writer2xhtml/**/*"/>
                 </patternset>
             </fileset>
+        	<!-- include third party libraries -->
+        	<zipgroupfileset dir="${source.lib}" includes="${org.json}" />
             <!-- also include uno interface as generated from idl -->
             <fileset dir="${source.idl}/writer2latex">
                 <include name="org/**/*"/>
