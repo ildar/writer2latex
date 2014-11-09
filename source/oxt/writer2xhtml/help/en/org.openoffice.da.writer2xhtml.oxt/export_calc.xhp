@@ -12,7 +12,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Exports the current document to XHTML format.</paragraph>
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>File - Export - XHTML 1.0 strict</emph><br/>
-        	or <emph>File - Export - XHTML 1.1</emph>
+        	or <emph>File - Export - XHTML 1.1</emph><br/>
         	or <emph>File - Export - HTML5</emph>
         </section>
         

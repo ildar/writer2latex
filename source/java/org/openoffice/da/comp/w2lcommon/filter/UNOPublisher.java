@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-11-03)
+ *  Version 1.6 (2014-11-08)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -176,7 +176,7 @@ public class UNOPublisher {
             msgBox.showMessage(sAppName,"Please save the document before publishing the file");
             return false;
         }
-        else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl))) {
+        else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl)) && !".ods".equals(Misc.getFileExtension(sDocumentUrl)) && !".fods".equals(Misc.getFileExtension(sDocumentUrl))) {
             MessageBox msgBox = new MessageBox(xContext, xFrame);
             msgBox.showMessage(sAppName,"Please save the document in OpenDocument format (.odt)");
             return false;        	        	
@@ -256,37 +256,35 @@ public class UNOPublisher {
     private boolean updateMediaProperties(TargetFormat format) {
     	prepareMediaProperties(format);
     	
-        try {
-            // Display options dialog
-            Object dialog = xContext.getServiceManager()
-                .createInstanceWithContext(getDialogName(format), xContext);
-
-            XPropertyAccess xPropertyAccess = (XPropertyAccess)
-                UnoRuntime.queryInterface(XPropertyAccess.class, dialog);
-            xPropertyAccess.setPropertyValues(mediaProps);
-
-            XExecutableDialog xDialog = (XExecutableDialog)
-                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
-            if (xDialog.execute()==ExecutableDialogResults.OK) {
-                mediaProps = postProcessMediaProps(xPropertyAccess.getPropertyValues());
-                
-                return true;
-            }
-            else {
-                mediaProps = null;
-                return false;
-            }
-        }
-        catch (com.sun.star.beans.UnknownPropertyException e) {
-            // setPropertyValues will not fail..
-            mediaProps = null;
-            return false;
-        }
-        catch (com.sun.star.uno.Exception e) {
-            // getServiceManager will not fail..
-            mediaProps = null;
-            return false;
-        }
+    	String sDialogName = xModel.getURL().endsWith(".odt") || xModel.getURL().endsWith(".fodt") ?
+    			getDialogName(format) : getDialogNameCalc(format);
+    	if (sDialogName!=null) {
+	    	try {
+	            // Display options dialog
+	            Object dialog = xContext.getServiceManager()
+	                .createInstanceWithContext(sDialogName, xContext);
+	
+	            XPropertyAccess xPropertyAccess = (XPropertyAccess)
+	                UnoRuntime.queryInterface(XPropertyAccess.class, dialog);
+	            xPropertyAccess.setPropertyValues(mediaProps);
+	
+	            XExecutableDialog xDialog = (XExecutableDialog)
+	                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
+	            if (xDialog.execute()==ExecutableDialogResults.OK) {
+	                mediaProps = postProcessMediaProps(xPropertyAccess.getPropertyValues());
+	                return true;
+	            }
+	        }
+	        catch (com.sun.star.beans.UnknownPropertyException e) {
+	            // setPropertyValues will not fail..
+	        }
+	        catch (com.sun.star.uno.Exception e) {
+	            // getServiceManager will not fail..
+	        }
+    	}
+    	// No dialog exists, or the dialog was cancelled
+    	mediaProps = null;
+    	return false;
     }
     
     private static String getTargetExtension(TargetFormat format) {
@@ -303,14 +301,26 @@ public class UNOPublisher {
       
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
-    	case xhtml: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog";
+    	case xhtml: 
     	case xhtml11: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog";
-    	case xhtml_mathml: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
+    	case xhtml_mathml:
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";
-    	default: return "";
+    	default: return null;
     	}
+    }
+    
+    private static String getDialogNameCalc(TargetFormat format) {
+    	switch (format) {
+    	case xhtml: 
+    	case xhtml11: 
+    	case xhtml_mathml:
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc"; 
+    	case epub: 
+    	case latex:
+    	default: return null;
+    	}    	
     }
       
     private static String getFilterName(TargetFormat format) {
