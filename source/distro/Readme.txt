@@ -1,7 +1,7 @@
-Writer2LaTeX version 1.5.1 (alpha test release)
+Writer2LaTeX version 1.5.2 (alpha test release)
 ===============================================
 
-This is the distribution of Writer2LaTeX version 1.5.1 alpha
+This is the distribution of Writer2LaTeX version 1.5.2 alpha
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net
@@ -14,5 +14,5 @@ Bugs and feature requests should be reported to
   writer2latex (at) gmail.com
   
 
-October 2014
+November 2014
 Henrik Just

@@ -1,4 +1,4 @@
-Writer2LaTeX source version 1.5.1 alpha
+Writer2LaTeX source version 1.5.2 alpha
 =======================================
 
 Writer2LaTeX is (c) 2002-2014 by Henrik Just.
@@ -90,7 +90,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, October 2014
+Henrik Just, November 2014
 
 
 Thanks to Michael Niedermair for writing the original ant build file

@@ -14,6 +14,14 @@
         </node>
       </node>
     </node>
+    <!-- This node should also appear in the Calc module -->
+    <node oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:op="fuse">
+      <node oor:name="Nodes">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration" 
+          oor:op="fuse">
+        </node>
+      </node>
+    </node>
   </node>
   
   <node oor:name="Nodes">
