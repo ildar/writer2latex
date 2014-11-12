@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2014-11-04)
+  # version 1.6 (2014-11-10)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -248,7 +248,7 @@
 		
             <!-- Add jar and oxt's -->
             <zipfileset dir="${target.lib}" prefix="${basename}"
-             includes="${jarfile}.jar,writer2latex.oxt,writer2xhtml.oxt,writer4latex.oxt,xhtml-config-sample.oxt"/>
+             includes="${jarfile}.jar,writer2latex.oxt,writer2xhtml.oxt,w2lconfig.oxt,xhtml-config-sample.oxt"/>
         </zip>
 		
         <!-- Pack the source distribution -->

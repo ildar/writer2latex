@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16) 
+ *  Version 1.6 (2014-11-12) 
  * 
  */
 
@@ -303,6 +303,9 @@ public class ClassicI18n extends I18n {
         fontencs.addValue("T1");
         pack.append("\\usepackage[").append(fontencs.toString())
             .append("]{fontenc}").nl();
+        
+        // use font package(s)
+        useFontPackages(pack);
 
         // usepackage babel
 		
@@ -393,6 +396,76 @@ public class ClassicI18n extends I18n {
         pack.append("\\usepackage{amssymb,amsfonts,textcomp}").nl();
 		
     }
+    
+    private void useFontPackages(LaTeXDocumentPortion ldp) {
+    	String sFont = config.getFont();
+    	// Sources:
+    	// A Survey of Free Math Fonts for TeX and LaTeX, Stephen G. Hartke 2006
+    	if ("cmbright".equals(sFont)) { // Computer Modern Bright designed by Walter A. Schmidt
+    		ldp.append("\\usepackage{cmbright}").nl();
+    	}
+    	else if ("ccfonts".equals(sFont)) { // Concrete designed by Donald E. Knuth
+    		ldp.append("\\usepackage{ccfonts}").nl();
+    	}
+    	else if ("ccfonts-euler".equals(sFont)) { // Concrete with Euler math fonts
+    		ldp.append("\\usepackage{ccfonts,eulervm}").nl();
+    	}
+    	else if ("iwona".equals(sFont)) { // Iwona
+    		ldp.append("\\usepackage[math]{iwona}").nl();
+    	}
+    	else if ("kurier".equals(sFont)) { // Kurier
+    		ldp.append("\\usepackage[math]{kurier}").nl();
+    	}
+    	else if ("anttor".equals(sFont)) { // Antykwa Torunska 
+    		ldp.append("\\usepackage[math]{anttor}").nl();
+    	}
+    	else if ("kmath-kerkis".equals(sFont)) { // Kerkis
+    		ldp.append("\\usepackage{kmath,kerkis}");
+    	}
+    	else if ("millennial".equals(sFont)) { // New Century Schoolbook + Millennial
+    		ldp.append("\\usepackage{millennial}");
+    	}
+    	else if ("fouriernc".equals(sFont)) { // New Century Schoolbook + Fourier
+    		ldp.append("\\usepackage{fouriernc}");
+    	}
+    	else if ("pxfonts".equals(sFont)) { // Palatino + pxfonts math
+    		ldp.append("\\usepackage{pxfonts}");
+    	}
+    	else if ("mathpazo".equals(sFont)) { // Palatino + Pazo math
+    		ldp.append("\\usepackage{mathpazo}");
+    	}
+    	else if ("mathpple".equals(sFont)) { // Palatino + Euler
+    		ldp.append("\\usepackage{mathpple}");
+    	}
+    	else if ("txfonts".equals(sFont)) { // Times + txfonts math
+    		ldp.append("\\usepackage[varg]{txfonts}");
+    	}
+    	else if ("mathtime".equals(sFont)) { // Times + Beleek math
+    		ldp.append("\\usepackage{mathtime}");
+    	}
+    	else if ("mathptmx".equals(sFont)) { // Times + Symbol
+    		ldp.append("\\usepackage{mathptmx}");
+    	}
+    	else if ("mbtimes".equals(sFont)) { // Omega serif + Omega math
+    		ldp.append("\\usepackage{mbtimes}");
+    	}
+    	else if ("arev".equals(sFont)) { // Arev Sans + Arev math 
+    		ldp.append("\\usepackage{arev}");
+    	}
+    	else if ("charter-mathdesign".equals(sFont)) { // Bitstream Charter + Math Design
+    		ldp.append("\\usepackage[charter]{mathdesign}");
+    	}
+    	else if ("garamond-mathdesign".equals(sFont)) { // URW Garamond + Math Design
+    		ldp.append("\\usepackage[garamond]{mathdesign}");
+    	}
+    	else if ("utopia-mathdesign".equals(sFont)) { // Utopia + Math Design
+    		ldp.append("\\usepackage[utopia]{mathdesign}");
+    	}
+    	else if ("fourier".equals(sFont)) { // Utopia + Fourier
+    		ldp.append("\\usepackage{fourier}");
+    	}
+    }
+
     
     /** Apply a language language
      *  @param style the OOo style to read attributes from

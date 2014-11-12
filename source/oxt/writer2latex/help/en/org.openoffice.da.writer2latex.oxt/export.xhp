@@ -114,6 +114,12 @@
         so if you have a document that is written in one language only you may want to uncheck this option.
         This will produce a cleaner LaTeX file because you may avoid a large number of language selections.</paragraph>
         
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsFont" id="bm_options_font"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Font</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:Font" visibility="hidden">Select a font scheme to use in the LaTeX document</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Use this option to select a font scheme to use in the LaTeX document.
+        (TODO)</paragraph>
+        
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsGreekMath" id="bm_options_greekmath"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use greek letters as symbols</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsGreekMath" visibility="hidden">Check this treat greek characters as symbols rather than as text</ahelp></paragraph>

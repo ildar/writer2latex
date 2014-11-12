@@ -41,9 +41,8 @@
    </dlg:menupopup>
   </dlg:menulist>
   <dlg:checkbox dlg:id="Multilingual" dlg:tab-index="8" dlg:left="12" dlg:top="64" dlg:width="149" dlg:height="12" dlg:help-text="&amp;33.LaTeXOptions.Multilingual.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsMultilingual" dlg:value="&amp;34.LaTeXOptions.Multilingual.Label" dlg:checked="true"/>
-  <dlg:checkbox dlg:id="GreekMath" dlg:tab-index="9" dlg:left="12" dlg:top="78" dlg:width="149" dlg:height="12" dlg:help-text="&amp;35.LaTeXOptions.GreekMath.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsGreekMath" dlg:value="&amp;36.LaTeXOptions.GreekMath.Label" dlg:checked="true"/>
-  <dlg:checkbox dlg:id="AdditionalSymbols" dlg:tab-index="10" dlg:left="12" dlg:top="92" dlg:width="149" dlg:height="12" dlg:help-text="&amp;37.LaTeXOptions.AdditionalSymbols.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsAdditionalSymbols" dlg:value="&amp;38.LaTeXOptions.AdditionalSymbols.Label" dlg:checked="false"/>
-  <dlg:text dlg:id="BibliographyLabel" dlg:tab-index="11" dlg:left="5" dlg:top="106" dlg:width="156" dlg:height="12" dlg:help-text="&amp;39.LaTeXOptions.BibliographyLabel.HelpText" dlg:value="&amp;40.LaTeXOptions.BibliographyLabel.Label"/>
+  <dlg:checkbox dlg:id="GreekMath" dlg:tab-index="10" dlg:left="12" dlg:top="92" dlg:width="149" dlg:height="12" dlg:help-text="&amp;35.LaTeXOptions.GreekMath.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsGreekMath" dlg:value="&amp;36.LaTeXOptions.GreekMath.Label" dlg:checked="true"/>
+  <dlg:checkbox dlg:id="AdditionalSymbols" dlg:tab-index="11" dlg:left="12" dlg:top="106" dlg:width="149" dlg:height="12" dlg:help-text="&amp;37.LaTeXOptions.AdditionalSymbols.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsAdditionalSymbols" dlg:value="&amp;38.LaTeXOptions.AdditionalSymbols.Label" dlg:checked="false"/>
   <dlg:checkbox dlg:id="UseBibtex" dlg:tab-index="12" dlg:left="12" dlg:top="120" dlg:width="149" dlg:height="12" dlg:help-text="&amp;41.LaTeXOptions.UseBibtex.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsUseBibtex" dlg:value="&amp;42.LaTeXOptions.UseBibtex.Label" dlg:checked="true">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseBibtexChange" script:language="UNO"/>
   </dlg:checkbox>
@@ -106,7 +105,9 @@
   <dlg:checkbox dlg:id="IgnoreDoubleSpaces" dlg:tab-index="40" dlg:left="193" dlg:top="218" dlg:width="149" dlg:height="12" dlg:help-text="&amp;104.LaTeXOptions.IgnoreDoubleSpaces.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreDoubleSpaces" dlg:value="&amp;105.LaTeXOptions.IgnoreDoubleSpaces.Label" dlg:checked="false"/>
   <dlg:button dlg:id="ExportButton" dlg:tab-index="41" dlg:left="5" dlg:top="242" dlg:width="60" dlg:height="13" dlg:help-text="&amp;106.LaTeXOptions.ExportButton.HelpText" dlg:value="&amp;107.LaTeXOptions.ExportButton.Label" dlg:button-type="ok"/>
   <dlg:button dlg:id="CancelButton" dlg:tab-index="42" dlg:left="75" dlg:top="242" dlg:width="60" dlg:height="13" dlg:help-text="&amp;108.LaTeXOptions.CancelButton.HelpText" dlg:value="&amp;109.LaTeXOptions.CancelButton.Label" dlg:button-type="cancel"/>
-  <dlg:button dlg:id="HelpButton" dlg:tab-index="43" dlg:left="282" dlg:top="242" dlg:width="60" dlg:height="13" dlg:help-url="org.openoffice.da.writer2latex.oxt:Options" dlg:value="?" dlg:button-type="help"/>
+  <dlg:button dlg:id="HelpButton" dlg:tab-index="43" dlg:left="282" dlg:top="242" dlg:width="60" dlg:height="13" dlg:help-url="org.openoffice.da.writer2latex.oxt:Options" dlg:value="Hjælp" dlg:button-type="help"/>
   <dlg:checkbox dlg:id="DisplayHiddenText" dlg:tab-index="26" dlg:left="193" dlg:top="50" dlg:width="149" dlg:height="12" dlg:help-text="&amp;147.LaTeXOptions.DisplayHiddenText.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:DisplayHiddenText" dlg:value="&amp;148.LaTeXOptions.DisplayHiddenText.Label" dlg:checked="false"/>
+  <dlg:text dlg:id="FontLabel" dlg:tab-index="44" dlg:left="12" dlg:top="78" dlg:width="47" dlg:height="12" dlg:help-text="&amp;151.LaTeXOptions.FontLabel.HelpText" dlg:value="&amp;152.LaTeXOptions.FontLabel.Label"/>
+  <dlg:menulist dlg:id="Font" dlg:tab-index="9" dlg:left="65" dlg:top="76" dlg:width="96" dlg:height="12" dlg:help-text="&amp;154.LaTeXOptions.Font.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsFont" dlg:spin="true" dlg:linecount="10"/>
  </dlg:bulletinboard>
 </dlg:window>

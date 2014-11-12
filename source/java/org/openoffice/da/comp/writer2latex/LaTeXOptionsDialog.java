@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2014-09-19)
+ *  Version 1.6 (2014-11-12)
  *  
  */
 
@@ -51,6 +51,24 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         { "ignore", "comment", "marginpar", "pdfannotation" };
     private static final String[] FLOATOPTIONS_VALUES =
         { "", "tp", "bp", "htp", "hbp" };
+    
+    // UI names and configuration option values for fonts
+    private static final String[] FONT_VALUES = 
+    	{ "default", "cmbright", "ccfonts", "ccfonts-euler",
+    		"iwona", "kurier", "anttor", "kmath-kerkis",
+    		"millennial", "fouriernc",
+    		"pxfonts", "mathpazo", "mathpple",
+    		"txfonts", "mathtime", "mathptmx",
+    		"mbtimes", "arev",
+    		"charter-mathdesign", "garamond-mathdesign", "utopia-mathdesign", "fourier" };
+    private static final String[] FONT_NAMES = 
+    	{ "Default (Computer Modern)", "CM Bright", "Concrete", "Concrete + Euler Math",
+    		"Iwona", "Kurier", "Antykwa Torunska", "Kerkis",
+    		"New Century Schoolbook + Millennial Math", "New Century Schoolbook + Fourier Math",
+    		"Palatino + PXfonts Math", "Palatino + Pazo Math", "Palatino + Euler Math",
+    		"Times + TXfonts Math", "Times + Belleek Math", "Times + Symbol",
+    		"Omega Serif + Omega Math", "Arev Sans + Arev Math",
+    		"Bitstream Charter + Math Design", "URW Garamond + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };    
     
     /** The component will be registered under this name.
      */
@@ -87,6 +105,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         loadListBoxOption(xProps,"Backend");
         loadListBoxOption(xProps,"Inputencoding");
         loadCheckBoxOption(xProps,"Multilingual");
+        setListBoxStringItemList("Font", FONT_NAMES);
+        loadListBoxOption(xProps,"Font");
         loadCheckBoxOption(xProps,"GreekMath");
         loadCheckBoxOption(xProps,"AdditionalSymbols");
 		
@@ -145,6 +165,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         }
         saveListBoxOption(xProps, filterData, "Inputencoding", "inputencoding", INPUTENCODING_VALUES);
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
+        saveListBoxOption(xProps, filterData, "Font", "font", FONT_VALUES);
         saveCheckBoxOption(xProps, filterData, "GreekMath", "greek_math");
         // AdditionalSymbols sets 5 different w2l options...
         saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_pifont");
@@ -280,6 +301,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("InputencodingLabel",!isLocked("inputencoding"));
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
+        setControlEnabled("Font",!isLocked("font"));
         setControlEnabled("GreekMath",!isLocked("greek_math"));
         setControlEnabled("AdditionalSymbols",!isLocked("additional_symbols"));
 

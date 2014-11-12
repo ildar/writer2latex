@@ -2,6 +2,13 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.2 ----------
 
+[w2l] Added new option font to load font packages. It accepts a large number of standard font packages such as
+  cmbright or fourier. Only packages with math support are included. Unknown packages defaults to Computer Modern.
+  In the user interface, this option can be found in the export dialog. To make room for this, the BibTeX
+  settings no longer has a heading in the dialog.
+
+[w2l] Bugfix: Include w2lconfig.oxt in the distribution (was missing in 1.5.1)
+
 ---------- version 1.5.1 ----------
 
 [w2l] Implementation detail: Updated to version 20140107 of the JSON library org.json.* from JSON.org.
