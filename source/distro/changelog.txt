@@ -4,6 +4,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 [w2l] Added new option font to load font packages. It accepts a large number of standard font packages such as
   cmbright or fourier. Only packages with math support are included. Unknown packages defaults to Computer Modern.
+  The font option is currently not available for the backend xetex.
   In the user interface, this option can be found in the export dialog. To make room for this, the BibTeX
   settings no longer has a heading in the dialog.
 

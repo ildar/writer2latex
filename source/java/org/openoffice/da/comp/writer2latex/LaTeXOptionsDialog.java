@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-11-12)
+ *  Version 1.6 (2014-11-14)
  *  
  */
 
@@ -63,7 +63,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     		"charter-mathdesign", "garamond-mathdesign", "utopia-mathdesign", "fourier" };
     private static final String[] FONT_NAMES = 
     	{ "Default (Computer Modern)", "CM Bright", "Concrete", "Concrete + Euler Math",
-    		"Iwona", "Kurier", "Antykwa Torunska", "Kerkis",
+    		"Iwona", "Kurier", "Antykwa Toru\u0144ska", "Kerkis",
     		"New Century Schoolbook + Millennial Math", "New Century Schoolbook + Fourier Math",
     		"Palatino + PXfonts Math", "Palatino + Pazo Math", "Palatino + Euler Math",
     		"Times + TXfonts Math", "Times + Belleek Math", "Times + Symbol",
@@ -264,6 +264,10 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         	// backend=xetex locks the encoding to utf8
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
+        else if ("font".equals(sOptionName)) {
+        	// backend=xetex does not (currently) use the font option
+        	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
+        }
         else if ("greek_math".equals(sOptionName)) {
         	// this option has no effect if backend=xetex
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
@@ -301,6 +305,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("InputencodingLabel",!isLocked("inputencoding"));
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
+        setControlEnabled("FontLabel",!isLocked("font"));
         setControlEnabled("Font",!isLocked("font"));
         setControlEnabled("GreekMath",!isLocked("greek_math"));
         setControlEnabled("AdditionalSymbols",!isLocked("additional_symbols"));

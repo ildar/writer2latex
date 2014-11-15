@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-12) 
+ *  Version 1.6 (2014-11-14) 
  * 
  */
 
@@ -291,24 +291,19 @@ public class ClassicI18n extends I18n {
      *  @param decl other declarations
      */
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-   		pack.append("\\usepackage[")
-   			.append(writeInputenc(config.getInputencoding()))
-            .append("]{inputenc}").nl();
-
-        // usepackage fontenc
-        CSVList fontencs = new CSVList(',');
-        if (bT2A) { fontencs.addValue("T2A"); }
-        if (bGreek) { fontencs.addValue("LGR"); }
-        if (config.useTipa()) { fontencs.addValue("T3"); }
-        fontencs.addValue("T1");
-        pack.append("\\usepackage[").append(fontencs.toString())
-            .append("]{fontenc}").nl();
-        
-        // use font package(s)
-        useFontPackages(pack);
-
-        // usepackage babel
-		
+    	useInputenc(pack);
+    	useBabel(pack);
+    	useSymbolFonts(pack);
+    	useTextFonts(pack);
+    }
+    
+    private void useInputenc(LaTeXDocumentPortion ldp) {
+    	ldp.append("\\usepackage[")
+			.append(writeInputenc(config.getInputencoding()))
+        .append("]{inputenc}").nl();
+    }
+    
+    private void useBabel(LaTeXDocumentPortion ldp) {
         // If the document contains "anonymous" greek letters we need greek in any case
         // If the document contains "anonymous cyrillic letters we need one of the
         // languages russian, ukrainian or bulgarian
@@ -349,54 +344,65 @@ public class ClassicI18n extends I18n {
         }
 
         if (!babelopt.isEmpty()) {
-            pack.append("\\usepackage[")
-                .append(babelopt.toString())
-                .append("]{babel}").nl();
+            ldp.append("\\usepackage[")
+               .append(babelopt.toString())
+               .append("]{babel}").nl();
             // For Polish we must undefine \lll which is later defined by ams
             if (languages.contains("pl")) { 
-            	pack.append("\\let\\lll\\undefined").nl();
+            	ldp.append("\\let\\lll\\undefined").nl();
             }
-        }
-			
-        // usepackage tipa
-        if (config.useTipa()) {
-            pack.append("\\usepackage[noenc]{tipa}").nl()
-                .append("\\usepackage{tipx}").nl();
-        }
-
-        // usepackage bbding (Has to avoid some nameclashes.)
-        if (config.useBbding()) {
-            pack.append("\\usepackage{bbding}").nl()
-                .append("\\let\\bbCross\\Cross\\let\\Cross\\undefined").nl()
-                .append("\\let\\bbSquare\\Square\\let\\Square\\undefined").nl()
-                .append("\\let\\bbTrianbleUp\\TriangleUp\\let\\TriangleUp\\undefined").nl()
-                .append("\\let\\bbTrianlgeDown\\TriangleDown\\let\\TriangleDown\\undefined").nl();
-        }
-		
-        // usepackage ifsym
-        if (config.useIfsym()) {
-            pack.append("\\usepackage[geometry,weather,misc,clock]{ifsym}").nl();
-        }
-
-        // usepackage pifont
-        if (config.usePifont()) { pack.append("\\usepackage{pifont}").nl(); }
-
-        // usepackage eurosym
-        if (config.useEurosym()) { pack.append("\\usepackage{eurosym}").nl(); }
-
-        // usepackage amsmath (always!)
-        pack.append("\\usepackage{amsmath}").nl();
-
-        // usepackage wasysym (*must* be loaded between amsmath and amsfonts!)
-        if (config.useWasysym()) { 
-            pack.append("\\usepackage{wasysym}").nl();
-        }
-		
-        // usepackage amssymb, amsfonts, textcomp (always!)
-        pack.append("\\usepackage{amssymb,amsfonts,textcomp}").nl();
-		
+        }	
     }
     
+    private void useSymbolFonts(LaTeXDocumentPortion ldp) {
+        if (config.useTipa()) {
+            ldp.append("\\usepackage[noenc]{tipa}").nl()
+               .append("\\usepackage{tipx}").nl();
+        }
+
+        // Has to avoid some nameclashes
+        if (config.useBbding()) {
+            ldp.append("\\usepackage{bbding}").nl()
+               .append("\\let\\bbCross\\Cross\\let\\Cross\\undefined").nl()
+               .append("\\let\\bbSquare\\Square\\let\\Square\\undefined").nl()
+               .append("\\let\\bbTrianbleUp\\TriangleUp\\let\\TriangleUp\\undefined").nl()
+               .append("\\let\\bbTrianlgeDown\\TriangleDown\\let\\TriangleDown\\undefined").nl();
+        }    	
+
+        if (config.useIfsym()) {
+	        ldp.append("\\usepackage[geometry,weather,misc,clock]{ifsym}").nl();
+	    }
+
+        if (config.usePifont()) { ldp.append("\\usepackage{pifont}").nl(); }
+
+        if (config.useEurosym()) { ldp.append("\\usepackage{eurosym}").nl(); }
+
+        // Always use amsmath
+        ldp.append("\\usepackage{amsmath}").nl();
+
+        // wasysym *must* be loaded between amsmath and amsfonts!
+	    if (config.useWasysym()) { 
+	        ldp.append("\\usepackage{wasysym}").nl();
+	    }
+	
+	    // Always use amssymb, amsfonts, textcomp (always!)
+	    ldp.append("\\usepackage{amssymb,amsfonts,textcomp}").nl();
+    }
+    
+    private void useTextFonts(LaTeXDocumentPortion ldp) {
+        // usepackage fontenc
+        CSVList fontencs = new CSVList(',');
+        if (bT2A) { fontencs.addValue("T2A"); }
+        if (bGreek) { fontencs.addValue("LGR"); }
+        if (config.useTipa()) { fontencs.addValue("T3"); }
+        fontencs.addValue("T1");
+        ldp.append("\\usepackage[").append(fontencs.toString())
+            .append("]{fontenc}").nl();
+        
+        // use font package(s)
+        useFontPackages(ldp);		
+    }
+
     private void useFontPackages(LaTeXDocumentPortion ldp) {
     	String sFont = config.getFont();
     	// Sources:
