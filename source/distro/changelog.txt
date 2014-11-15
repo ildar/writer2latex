@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.2 ----------
 
+[w2x] Changed export format for toolbar from XHTML+MathML to HTML5
+
 [w2l] Added new option font to load font packages. It accepts a large number of standard font packages such as
   cmbright or fourier. Only packages with math support are included. Unknown packages defaults to Computer Modern.
   The font option is currently not available for the backend xetex.

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-03)
+ *  Version 1.6 (2014-11-15)
  *
  */ 
  
@@ -58,7 +58,7 @@ public final class Writer2xhtml extends WeakBase
     private static final String[] m_serviceNames = { __serviceName };
     
     // TODO: These should be configurable
-    private TargetFormat xhtmlFormat = TargetFormat.xhtml_mathml;
+    private TargetFormat xhtmlFormat = TargetFormat.html5;
     private TargetFormat epubFormat = TargetFormat.epub;    
       
     public Writer2xhtml(XComponentContext xContext) {
