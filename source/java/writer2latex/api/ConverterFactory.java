@@ -33,7 +33,7 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.5.2";
-    private static final String DATE = "2014-11-09";
+    private static final String DATE = "2014-11-18";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
