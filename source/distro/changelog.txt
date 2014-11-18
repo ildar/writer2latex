@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.4 final ----------
 
+[w2l] Workaround for an oddity seen in AOO 4.1 and LO 4.0: For SVG images the alternative PNG representation is stored
+  before the SVG image in the document. Now the alternative image is preferred if it can be converted to the default
+  vector format of the conversion.
+
 [w2x] Bugfix: The option pages for editing the custom style are now also visible in Calc
 
 [w2l] Bugfix: In the export dialog, the LaTeX format is now persistent, also for custom formats

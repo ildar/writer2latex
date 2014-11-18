@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-24)
+ *  Version 1.4 (2014-11-18)
  *
  */
 
@@ -172,12 +172,17 @@ public final class ImageConverter {
         String sName = sSubDirName+sBaseFileName+formatter.format(++nImageCount);
         BinaryGraphicsDocument bgd = getImage(node,sName);
         if (bgd!=null) { 
-        	if (!bgd.isAcceptedFormat()) { // We may have better luck with an alternative image
+        	if (!bgd.isAcceptedFormat() || (sDefaultVectorFormat!=null && !sDefaultVectorFormat.equals(bgd.getMIMEType()))) {
+        		// We may have better luck with an alternative image
 	        	Element sibling = getAlternativeImage(node);
 	        	if (sibling!=null) {
 	        		BinaryGraphicsDocument altBgd = getImage(sibling,sName);
 	        		if (altBgd!=null && altBgd.isAcceptedFormat()) {
-	        			bgd = altBgd;
+	        			if (!bgd.isAcceptedFormat() ||
+	        				(sDefaultVectorFormat!=null && !sDefaultVectorFormat.equals(bgd.getMIMEType()) &&
+	        								sDefaultVectorFormat.equals(altBgd.getMIMEType()))) {
+		        			bgd = altBgd;
+	        			}
 	        		}
 	        	}
         	}
