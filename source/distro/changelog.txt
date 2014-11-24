@@ -2,6 +2,11 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.2 ----------
 
+[w2x] Bugfix: No longer include xmlns attribute on math nodes in HTML5
+
+[w2l] Various improvements to the log viewer dialog: Reduced height to better accommodate small screen resolutions.
+  Added checkbox to filter the LaTeX log to display only errors. Added help page and long tips.
+
 [w2x] Changed export format for toolbar from XHTML+MathML to HTML5
 
 [w2l] Added new option font to load font packages. It accepts a large number of standard font packages such as

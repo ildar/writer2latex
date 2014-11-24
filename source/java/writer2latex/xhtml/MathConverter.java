@@ -187,9 +187,10 @@ public class MathConverter extends ConverterHelper {
     	if (onode.hasAttribute("xmlns:math")) {
     		math.setAttribute("xmlns", onode.getAttribute("xmlns:math"));
     	}
-    	else if (onode.hasAttribute("xmlns")) {
+    	else if (onode.hasAttribute("xmlns") && converter.nType!=XhtmlDocument.HTML5) {
+    		// Don't include xmlns attribute in HTML5
     		math.setAttribute("xmlns", onode.getAttribute("xmlns"));
-    	} 
+    	}
     	if (bAllowDisplay && onode.hasAttribute("display")) {
     		// Starting with version 4.2, LO exports display="block" for display equations
     		// This is a good thing, but in XHTML we can unfortunately only allow this for

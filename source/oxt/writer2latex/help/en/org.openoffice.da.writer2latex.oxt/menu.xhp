@@ -51,7 +51,8 @@
         
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:ProcessDocument" visibility="hidden">Run LaTeX and display the result</ahelp></paragraph>
 
-        <paragraph role="heading" level="3" xml-lang="en-US">View Log files</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/logviewer.xhp"
+          name="View log files">View Log files</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex:ViewLog" id="bm_viewlog"/>
         <paragraph role="paragraph" xml-lang="en-US">In case of any problems in the conversion process, you can view the log files created by

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-29)
+ *  Version 1.6 (2014-11-20)
  *
  */ 
  
@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import com.sun.star.awt.XDialog;
 import com.sun.star.uno.XComponentContext;
 
+import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
 import org.openoffice.da.comp.w2lcommon.helper.DialogBase;
 
 /** This class provides a uno component which displays logfiles
@@ -59,6 +60,7 @@ public class LogViewerDialog extends DialogBase
 	
     private String sBaseUrl = null;
     private String sLaTeXLog = null;
+    private String sLaTeXErrors = null;
     private String sBibTeXLog = null;
     private String sMakeindexLog = null;
 
@@ -71,6 +73,7 @@ public class LogViewerDialog extends DialogBase
     public void initialize() {
         if (sBaseUrl!=null) {
             sLaTeXLog = readTextFile(sBaseUrl+".log");
+            sLaTeXErrors = errorFilter(sLaTeXLog);
             sBibTeXLog = readTextFile(sBaseUrl+".blg");
             sMakeindexLog = readTextFile(sBaseUrl+".ilg");
             setComboBoxText("LogContents",sLaTeXLog);
@@ -98,19 +101,27 @@ public class LogViewerDialog extends DialogBase
    // Implement XDialogEventHandler
     public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
         if (sMethod.equals("ViewLaTeXLog")) {
-            setComboBoxText("LogContents", sLaTeXLog);
+            setComboBoxText("LogContents",
+            	getCheckBoxState("ErrorFilter")==DialogAccess.CHECKBOX_CHECKED ? sLaTeXErrors : sLaTeXLog);
+            setControlEnabled("ErrorFilter",true);
         }
         else if (sMethod.equals("ViewBibTeXLog")) {
             setComboBoxText("LogContents", sBibTeXLog);
+            setControlEnabled("ErrorFilter",false);
         }
         else if (sMethod.equals("ViewMakeindexLog")) {
             setComboBoxText("LogContents", sMakeindexLog);
+            setControlEnabled("ErrorFilter",false);
+        }
+        else if (sMethod.equals("ErrorFilterChange")) {
+            setComboBoxText("LogContents",
+                	getCheckBoxState("ErrorFilter")==DialogAccess.CHECKBOX_CHECKED ? sLaTeXErrors : sLaTeXLog);            
         }
         return true;
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "ViewLaTeXLog", "ViewBibTeXLog", "ViewMakeindexLog" };
+        String[] sNames = { "ViewLaTeXLog", "ViewBibTeXLog", "ViewMakeindexLog", "ErrorFilterChange" };
         return sNames;
     }
 	
@@ -138,6 +149,32 @@ public class LogViewerDialog extends DialogBase
             return "";
         }
         return buf.toString();
+    }
+    
+    // Extract errors from LaTeX log file only
+    private String errorFilter(String log) {
+    	StringBuilder buf = new StringBuilder();
+    	int nLen = log.length();
+    	int nIndex = 0;
+    	boolean bIncludeLines = false;
+    	while (nIndex<nLen) {
+    		int nNewline = log.indexOf('\n', nIndex);
+    		if (nNewline==-1) nNewline = nLen;
+    		if (nNewline-nIndex>1 && log.charAt(nIndex)=='!') {
+    			bIncludeLines = true;
+    		}
+    		else if (nNewline==nIndex) {
+    			if (bIncludeLines) {
+    				buf.append('\n');
+    			}
+    			bIncludeLines = false;
+    		}
+    		if (bIncludeLines) {
+    			buf.append(log.substring(nIndex,nNewline)).append('\n');
+    		}
+    		nIndex = nNewline+1;
+    	}
+    	return buf.toString();
     }
 	
 }
