@@ -1,7 +1,7 @@
 Version history for Writer2LaTeX
 ================================
 
-Version 1.4 beta (October 2014)
+Version 1.4 (December 2014)
   - All:
        - Optimized memory usage
        - Images that are used more than once in the document are now only exported once

@@ -1,5 +1,5 @@
-Writer2LaTeX source version 1.4 beta
-====================================
+Writer2LaTeX source version 1.4
+===============================
 
 Writer2LaTeX is (c) 2002-2014 by Henrik Just.
 The source is available under the terms and conditions of the
@@ -93,7 +93,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, October 2014
+Henrik Just, December 2014
 
 
 Thanks to Michael Niedermair for writing the original ant build file
