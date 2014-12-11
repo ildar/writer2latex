@@ -6,4 +6,5 @@
  <library:element library:name="Bibliography"/>
  <library:element library:name="LogViewer"/>
  <library:element library:name="AutoConfigInfo"/>
+ <library:element library:name="BibTeXEntry"/>
 </library:library>

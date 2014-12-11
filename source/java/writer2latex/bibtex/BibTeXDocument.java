@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.6 (2014-11-28)
  *
  */
 
@@ -39,8 +39,8 @@ import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.I18n;
 import writer2latex.util.ExportNameCollection;
-//import writer2latex.util.Misc;
 import writer2latex.office.BibMark;
+import writer2latex.office.BibMark.EntryType;;
 
 /**
  * <p>Class representing a BibTeX document.</p>
@@ -126,15 +126,15 @@ public class BibTeXDocument implements OutputFile {
             osw.write("{");
             osw.write(exportNames.getExportName(entry.getIdentifier()));
             osw.write(",\n");
-            for (int i=0; i<BibMark.FIELD_COUNT; i++) {
-                String sValue = entry.getField(i);
+            for (EntryType entryType : EntryType.values()) {
+                String sValue = entry.getField(entryType);
                 if (sValue!=null) {
-                    if (i==BibMark.AUTHOR || i==BibMark.EDITOR) {
+                    if (entryType==EntryType.author || entryType==EntryType.editor) {
                         // OOo uses ; to separate authors and editors - BibTeX uses and
                         sValue = sValue.replaceAll(";" , " and ");
                     }
                     osw.write("    ");
-                    osw.write(getFieldName(i).toUpperCase());
+                    osw.write(BibTeXEntryMap.getFieldName(entryType).toUpperCase());
                     osw.write(" = {");
                     for (int j=0; j<sValue.length(); j++) {
                         String s = i18n.convert(Character.toString(sValue.charAt(j)),false,"en");
@@ -150,47 +150,6 @@ public class BibTeXDocument implements OutputFile {
         osw.flush();
         osw.close();
     }	
-
-    /** 
-     * <p> Return BibTeX name of field </p>
-     */
-    public static final String getFieldName(int nField) {
-        switch (nField) {
-            case BibMark.ADDRESS: return "address";
-            case BibMark.ANNOTE: return "annote";  
-            case BibMark.AUTHOR: return "author";  
-            case BibMark.BOOKTITLE: return "booktitle";  
-            case BibMark.CHAPTER: return "chapter";  
-            // case BibMark.CROSSREF: return "croosref"; // not in OOo  
-            case BibMark.EDITION: return "edition";  
-            case BibMark.EDITOR: return "editor";  
-            case BibMark.HOWPUBLISHED: return "howpublished";  
-            case BibMark.INSTITUTION: return "institution";  
-            case BibMark.JOURNAL: return "journal";  
-            // case BibMark.KEY: return "key";  // not in OOo
-            case BibMark.MONTH: return "month";  
-            case BibMark.NOTE: return "note";  
-            case BibMark.NUMBER: return "number";  
-            case BibMark.ORGANIZATIONS: return "organization";  
-            case BibMark.PAGES: return "pages";
-            case BibMark.PUBLISHER: return "publisher";  
-            case BibMark.SCHOOL: return "school";  
-            case BibMark.SERIES: return "series";  
-            case BibMark.TITLE: return "title";  
-            case BibMark.REPORT_TYPE: return "type";
-            case BibMark.VOLUME: return "volume";  
-            case BibMark.YEAR: return "year";
-            case BibMark.URL: return "url"; 
-            case BibMark.CUSTOM1: return "custom1"; 
-            case BibMark.CUSTOM2: return "custom2";  
-            case BibMark.CUSTOM3: return "custom3";  
-            case BibMark.CUSTOM4: return "custom4";  
-            case BibMark.CUSTOM5: return "custom5";  
-            case BibMark.ISBN: return "isbn";
-            default: return null;
-        }
-    }
-
 
     /*
      * <p>Check if this entry exists</p>

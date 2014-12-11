@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2014-11-10)
+  # version 1.6 (2014-11-24)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -49,6 +49,7 @@
     <property name="source.idl" location="source/idl"/>
     <property name="source.lib" location="source/lib"/>
     <property name="org.json" value="json-20140107.jar"/>
+    <property name="org.jbibtex" value="jbibtex-1.0.14.jar"/>
     <!-- classpath for the application; needs java-uno classes -->
     <path id="main.class.path"> 
         <!-- java uno classes -->
@@ -58,7 +59,7 @@
     		files="unoil.jar"/>
     	<!-- third party jars -->
     	<filelist dir="${source.lib}"
-	        files="${org.json}"/>
+	        files="${org.json},${org.jbibtex}"/>
         <!-- additional uno interfaces generated from idl -->
         <pathelement path="${source.idl}/writer2latex"/>
         <pathelement path="${source.idl}/writer2xhtml"/>
@@ -78,7 +79,7 @@
                encoding="us-ascii"
         	   source="1.6"
         	   target="1.6"
-	     	   classpath="${source.lib}/${org.json}"
+	     	   classpath="${source.lib}/${org.json}:${source.lib}/${org.jbibtex}"
         	   bootclasspath="${JAVA6_RT_JAR}"
         	   includeantruntime="false"
                debug="on">
@@ -142,7 +143,7 @@
                 </patternset>
             </fileset>
         	<!-- include third party libraries -->
-        	<zipgroupfileset dir="${source.lib}" includes="${org.json}" />
+        	<zipgroupfileset dir="${source.lib}" includes="${org.json},${org.jbibtex}" />
             <!-- also include uno interface as generated from idl -->
             <fileset dir="${source.idl}/writer2latex">
                 <include name="org/**/*"/>

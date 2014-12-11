@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-03)
+ *  Version 1.6 (2014-12-11)
  *
  */ 
  
@@ -34,7 +34,6 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
        
 /** This class implements the ui (dispatch) commands provided by the Writer2LaTeX toolbar.
  *  The actual processing is done by the core classes <code>UNOPublisher</code>,
@@ -176,8 +175,19 @@ public final class Writer2LaTeX extends WeakBase
     }
 	
 	private void insertBibTeX() {
-        MessageBox msgBox = new MessageBox(m_xContext, m_xFrame);
-        msgBox.showMessage("Writer2LaTeX","This feature is not implemented yet");
+		// Execute the BibTeX dialog
+        try {
+            Object dialog = m_xContext.getServiceManager()
+                .createInstanceWithContext(
+                "org.openoffice.da.writer2latex.BibTeXDialog", m_xContext);
+            XExecutableDialog xDialog = (XExecutableDialog)
+                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
+            if (xDialog.execute()==ExecutableDialogResults.OK) {
+                // Closed with the close button
+            }
+        }
+        catch (com.sun.star.uno.Exception e) {
+        }
 	}
 	
 	private void createUNOPublisher() {

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-10-29) 
+ *  Version 1.6 (2014-12-11) 
  *
  */ 
  
@@ -120,6 +120,12 @@ public class W2LRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(BibTeXDialog.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(BibTeXDialog.class,
+            BibTeXDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         
         return xSingleServiceFactory;
     }
@@ -153,7 +159,8 @@ public class W2LRegistration {
             FactoryHelper.writeRegistryServiceInfo(BibliographyDialog.__implementationName,
                 BibliographyDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(LogViewerDialog.__implementationName,
-                LogViewerDialog.__serviceName, regKey);    
+                LogViewerDialog.__serviceName, regKey) &    
+        	FactoryHelper.writeRegistryServiceInfo(BibTeXDialog.__implementationName,
+                BibTeXDialog.__serviceName, regKey);    
     }
 }
-

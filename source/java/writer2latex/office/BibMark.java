@@ -16,76 +16,54 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-11-22) 
+ *  Version 1.6 (2014-11-24) 
  *
  */
 
 package writer2latex.office;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.w3c.dom.Node;
+import writer2latex.util.Misc;
 
-import writer2latex.util.*;
-//import writer2latex.office.*;
-
-/**
- *  <p>This class represents a single bibliography-mark.</p>
+/** This class represents a single bibliography-mark in an ODF document
  */
 public final class BibMark {
-    // Available fields
-    public static final int ADDRESS = 0;  
-    public static final int ANNOTE = 1;  
-    public static final int AUTHOR = 2;  
-    public static final int BOOKTITLE = 3;  
-    public static final int CHAPTER = 4;  
-    // public static final int CROSSREF = 5; // BibTeX, missing in OOo
-    public static final int EDITION = 6;  
-    public static final int EDITOR = 7;  
-    public static final int HOWPUBLISHED = 8;  
-    public static final int INSTITUTION = 9;  
-    public static final int JOURNAL = 10;  
-    // public static final int KEY = 11; // BibTeX, missing in OOo
-    public static final int MONTH = 12;  
-    public static final int NOTE = 13;  
-    public static final int NUMBER = 14;  
-    public static final int ORGANIZATIONS = 15; // BibTeX: organization  
-    public static final int PAGES = 16;  
-    public static final int PUBLISHER = 17;  
-    public static final int SCHOOL = 18;  
-    public static final int SERIES = 19;  
-    public static final int TITLE = 20 ;  
-    public static final int REPORT_TYPE = 21;  // BibTeX: report
-    public static final int VOLUME = 22;  
-    public static final int YEAR = 23;
-    // remaining fields are not standard in BibTeX
-    public static final int URL = 24; 
-    public static final int CUSTOM1 = 25; 
-    public static final int CUSTOM2 = 26;  
-    public static final int CUSTOM3 = 27;  
-    public static final int CUSTOM4 = 28;  
-    public static final int CUSTOM5 = 29;  
-    public static final int ISBN = 30;
-    public static final int FIELD_COUNT = 31;  
 	
+    /** Entry types in an ODF bibliography marks. These are more or less modeled on BibTeX with
+     *  the following exceptions: organizations is organization in BibTeX, report_type is report in BibTeX,
+     *  the BibTeX fields crossref and key are missing in ODF, the ODF fields
+     *  url, custom1, custom2, custom3, custom4, custom5, isbn are not standard in BibTeX 
+     * 
+     */
+    public enum EntryType { address, annote, author, booktitle, chapter, 
+		edition, editor, howpublished, institution, journal, month,
+		note, number, organizations, pages, publisher, school, series,
+		title, report_type, volume, year,
+		url, custom1, custom2, custom3, custom4, custom5, isbn
+	}
 	
-    // Private data
+    // The data of the bibliography mark
     private String sIdentifier;
     private String sEntryType;
-    private String[] fields = new String[FIELD_COUNT];
+    private Map<EntryType,String> fields = new HashMap<EntryType,String>();
 	
-    /**
-     *  <p>Create a new BibMark from scratch.</p>
+    /** Create a new BibMark from scratch.
+     *  @param sIdentifier the unique identifier for this BibMark
+     *  @param sEntryType the type of entry such as book or article
      */
     public BibMark(String sIdentifier, String sEntryType) {
         this.sIdentifier = sIdentifier;
         this.sEntryType = sEntryType;
     }
 
-    /**
-     *  <p>Create a new BibMark from a text:bibliography-mark node.</p>
+    /** Create a new <code>BibMark</code> from a text:bibliography-mark node.
      */
     public BibMark(Node node) {
         sIdentifier = Misc.getAttribute(node,XMLString.TEXT_IDENTIFIER);
@@ -93,54 +71,62 @@ public final class BibMark {
         if (sEntryType==null) { // bug in OOo 1.0!
             sEntryType = Misc.getAttribute(node,XMLString.TEXT_BIBILIOGRAPHIC_TYPE);
         }
-        fields[ADDRESS] = Misc.getAttribute(node,XMLString.TEXT_ADDRESS);  
-        fields[ANNOTE] = Misc.getAttribute(node,XMLString.TEXT_ANNOTE);  
-        fields[AUTHOR] = Misc.getAttribute(node,XMLString.TEXT_AUTHOR);
-        fields[BOOKTITLE] = Misc.getAttribute(node,XMLString.TEXT_BOOKTITLE);
-        fields[CHAPTER] = Misc.getAttribute(node,XMLString.TEXT_CHAPTER);
-        fields[EDITION] = Misc.getAttribute(node,XMLString.TEXT_EDITION);
-        fields[EDITOR] = Misc.getAttribute(node,XMLString.TEXT_EDITOR);
-        fields[HOWPUBLISHED] = Misc.getAttribute(node,XMLString.TEXT_HOWPUBLISHED);
-        fields[INSTITUTION] = Misc.getAttribute(node,XMLString.TEXT_INSTITUTION);
-        fields[JOURNAL] = Misc.getAttribute(node,XMLString.TEXT_JOURNAL);
-        fields[MONTH] = Misc.getAttribute(node,XMLString.TEXT_MONTH);
-        fields[NOTE] = Misc.getAttribute(node,XMLString.TEXT_NOTE);
-        fields[NUMBER] = Misc.getAttribute(node,XMLString.TEXT_NUMBER);
-        fields[ORGANIZATIONS] = Misc.getAttribute(node,XMLString.TEXT_ORGANIZATIONS);
-        fields[PAGES] = Misc.getAttribute(node,XMLString.TEXT_PAGES);
-        fields[PUBLISHER] = Misc.getAttribute(node,XMLString.TEXT_PUBLISHER);
-        fields[SCHOOL] = Misc.getAttribute(node,XMLString.TEXT_SCHOOL);
-        fields[SERIES] = Misc.getAttribute(node,XMLString.TEXT_SERIES);
-        fields[TITLE] = Misc.getAttribute(node,XMLString.TEXT_TITLE);
-        fields[REPORT_TYPE] = Misc.getAttribute(node,XMLString.TEXT_REPORT_TYPE);
-        fields[VOLUME] = Misc.getAttribute(node,XMLString.TEXT_VOLUME);
-        fields[YEAR] = Misc.getAttribute(node,XMLString.TEXT_YEAR);
-        fields[URL] = Misc.getAttribute(node,XMLString.TEXT_URL);
-        fields[CUSTOM1] = Misc.getAttribute(node,XMLString.TEXT_CUSTOM1);
-        fields[CUSTOM2] = Misc.getAttribute(node,XMLString.TEXT_CUSTOM2);
-        fields[CUSTOM3] = Misc.getAttribute(node,XMLString.TEXT_CUSTOM3);
-        fields[CUSTOM4] = Misc.getAttribute(node,XMLString.TEXT_CUSTOM4);
-        fields[CUSTOM5] = Misc.getAttribute(node,XMLString.TEXT_CUSTOM5);
-        fields[ISBN] = Misc.getAttribute(node,XMLString.TEXT_ISBN);
+        fields.put(EntryType.address, Misc.getAttribute(node,XMLString.TEXT_ADDRESS));  
+        fields.put(EntryType.annote, Misc.getAttribute(node,XMLString.TEXT_ANNOTE));  
+        fields.put(EntryType.author, Misc.getAttribute(node,XMLString.TEXT_AUTHOR));
+        fields.put(EntryType.booktitle, Misc.getAttribute(node,XMLString.TEXT_BOOKTITLE));
+        fields.put(EntryType.chapter, Misc.getAttribute(node,XMLString.TEXT_CHAPTER));
+        fields.put(EntryType.edition, Misc.getAttribute(node,XMLString.TEXT_EDITION));
+        fields.put(EntryType.editor, Misc.getAttribute(node,XMLString.TEXT_EDITOR));
+        fields.put(EntryType.howpublished, Misc.getAttribute(node,XMLString.TEXT_HOWPUBLISHED));
+        fields.put(EntryType.institution, Misc.getAttribute(node,XMLString.TEXT_INSTITUTION));
+        fields.put(EntryType.journal, Misc.getAttribute(node,XMLString.TEXT_JOURNAL));
+        fields.put(EntryType.month, Misc.getAttribute(node,XMLString.TEXT_MONTH));
+        fields.put(EntryType.note, Misc.getAttribute(node,XMLString.TEXT_NOTE));
+        fields.put(EntryType.number, Misc.getAttribute(node,XMLString.TEXT_NUMBER));
+        fields.put(EntryType.organizations, Misc.getAttribute(node,XMLString.TEXT_ORGANIZATIONS));
+        fields.put(EntryType.pages, Misc.getAttribute(node,XMLString.TEXT_PAGES));
+        fields.put(EntryType.publisher, Misc.getAttribute(node,XMLString.TEXT_PUBLISHER));
+        fields.put(EntryType.school, Misc.getAttribute(node,XMLString.TEXT_SCHOOL));
+        fields.put(EntryType.series, Misc.getAttribute(node,XMLString.TEXT_SERIES));
+        fields.put(EntryType.title, Misc.getAttribute(node,XMLString.TEXT_TITLE));
+        fields.put(EntryType.report_type, Misc.getAttribute(node,XMLString.TEXT_REPORT_TYPE));
+        fields.put(EntryType.volume, Misc.getAttribute(node,XMLString.TEXT_VOLUME));
+        fields.put(EntryType.year, Misc.getAttribute(node,XMLString.TEXT_YEAR));
+        fields.put(EntryType.url, Misc.getAttribute(node,XMLString.TEXT_URL));
+        fields.put(EntryType.custom1, Misc.getAttribute(node,XMLString.TEXT_CUSTOM1));
+        fields.put(EntryType.custom2, Misc.getAttribute(node,XMLString.TEXT_CUSTOM2));
+        fields.put(EntryType.custom3, Misc.getAttribute(node,XMLString.TEXT_CUSTOM3));
+        fields.put(EntryType.custom4, Misc.getAttribute(node,XMLString.TEXT_CUSTOM4));
+        fields.put(EntryType.custom5, Misc.getAttribute(node,XMLString.TEXT_CUSTOM5));
+        fields.put(EntryType.isbn, Misc.getAttribute(node,XMLString.TEXT_ISBN));
     }
 	
-    /**
-     *  <p>Get the identifier.</p>
+    /** Get the identifier.
+     * 
+     *  @return the unique identifier of this <code>BibMark</code>
      */
     public String getIdentifier() { return sIdentifier; }
 	
-    /**
-     *  <p>Get the entry type.</p>
+    /** Get the entry type.
+     * 
+     *  @return the entry type of this <code>BibMark</code>
      */
     public String getEntryType() { return sEntryType; }
 	
-    /**
-     *  <p>Set a specific field.</p>
+    /** Set a specific field.
+     * 
+     *  @param entryType the type of field to set
+     *  @param sValue the new value of the field
      */
-    public void setField(int nField,String sValue) { fields[nField] = sValue; }
+    public void setField(EntryType entryType,String sValue) { fields.put(entryType, sValue); }
 
-    /**
-     *  <p>Return a specific field.</p>
+    /** Return a specific field.
+     * 
+     *  @param entryType the type of the field to get
+     *  @return the value of the field, or null if the field is not set
      */
-    public String getField(int nField) { return fields[nField]; }
+    public String getField(EntryType entryType) {
+    	return fields.containsKey(entryType) ? fields.get(entryType) : null;
+    }
 }
