@@ -20,18 +20,20 @@
 		If you use the standard bibliographic tool provided by %PRODUCTNAME, Writer2LaTeX can convert the references to BibTeX if you
 		choose to do so in the export dialog. In this case you should not make any settings on this page.</paragraph>
 		
+		<paragraph role="paragraph" xml-lang="en-US">You may also use the Writer2LaTeX toolbar to insert bibliographic references from
+		BibTeX files. In this case Writer2LaTeX can be configured to use the original BibTeX files.
+		To use this feature, you have to define the location of your BibTeX files.</paragraph>
+		
 		<paragraph role="paragraph" xml-lang="en-US">You may also use other tools such as Zotero or JabRef to handle your citations.
 		If you want to use BibTeX to format references inserted by these tools, Writer2LaTeX can convert them for you. In this case
 		you have to define the location of the BibTeX files produced by Zotero or JabRef.</paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" id="bm_useexternalbibtexfiles"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Use external BibTeX files for ordinary citations</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Check this if the citations in your document refers to one or more external BibTeX files.
-		(The keys used in the document must match up with the keys in the external BibTeX files.)</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">This feature is for advanced users that maintain their references in BibTeX.
-		It enables you to use the original BibTeX files in the LaTeX document rather than converting the inserted
-		references back into BibTeX.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" visibility="hidden">Check this if your citations refer to external BibTeX file(s)</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Check this if you use the Writer2LaTeX toolbar to insert bibliographic references from BibTeX files.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">This enables you to use the original BibTeX files in the LaTeX document rather than converting the
+		inserted references back into BibTeX.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" visibility="hidden">Check this if your citatations are inserted from BibTeX file(s)</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" id="bm_convertzoterocitations"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Convert Zotero citations</paragraph>
@@ -121,8 +123,6 @@
 		<paragraph role="heading" level="3" xml-lang="en-US">Options</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Enter any options to the package natbib.sty here.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions" visibility="hidden">Enter any options to the package natbib.sty here</ahelp></paragraph>
-
-		<paragraph role="paragraph" xml-lang="en-US"></paragraph>
 
 	</body>
 </helpdocument>

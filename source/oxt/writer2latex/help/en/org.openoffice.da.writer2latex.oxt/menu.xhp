@@ -32,10 +32,11 @@
         <paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX adds a toolbar in Writer,
         providing the following commands.</paragraph>
 
-        <paragraph role="heading" level="3" xml-lang="en-US">Insert BibTeX reference</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/bibtex.xhp"
+          name="Insert BibTeX reference">Insert BibTeX reference</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex:InsertBibTeX" id="bm_insertbibtex"/>
-        <paragraph role="paragraph" xml-lang="en-US">Insert a reference to an item in a BibTeX file.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Insert a bibliographic reference to an item in a BibTeX file.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:InsertBibTeX" visibility="hidden">Insert reference to an item in a BibTeX file</ahelp></paragraph>
 
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/export.xhp"

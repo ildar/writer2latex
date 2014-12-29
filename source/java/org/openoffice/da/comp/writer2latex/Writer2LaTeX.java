@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-12-11)
+ *  Version 1.6 (2014-12-27)
  *
  */ 
  
@@ -175,19 +175,26 @@ public final class Writer2LaTeX extends WeakBase
     }
 	
 	private void insertBibTeX() {
-		// Execute the BibTeX dialog
-        try {
-            Object dialog = m_xContext.getServiceManager()
-                .createInstanceWithContext(
-                "org.openoffice.da.writer2latex.BibTeXDialog", m_xContext);
-            XExecutableDialog xDialog = (XExecutableDialog)
-                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
-            if (xDialog.execute()==ExecutableDialogResults.OK) {
-                // Closed with the close button
-            }
-        }
-        catch (com.sun.star.uno.Exception e) {
-        }
+		createUNOPublisher();
+    	if (unoPublisher.documentSaved()) {
+			// Execute the BibTeX dialog
+	        try {
+	        	// The dialog needs the current frame and the path to the BibTeX directory
+	            Object[] args = new Object[2];
+	            args[0] = m_xFrame;
+	            args[1] = unoPublisher.getBibTeXDirectory().getPath();
+	            Object dialog = m_xContext.getServiceManager()
+	                    .createInstanceWithArgumentsAndContext(
+	                    "org.openoffice.da.writer2latex.BibTeXDialog", args, m_xContext);
+	            XExecutableDialog xDialog = (XExecutableDialog)
+	                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
+	            if (xDialog.execute()==ExecutableDialogResults.OK) {
+	                // Closed with the close button
+	            }
+	        }
+	        catch (com.sun.star.uno.Exception e) {
+	        }
+	    }
 	}
 	
 	private void createUNOPublisher() {

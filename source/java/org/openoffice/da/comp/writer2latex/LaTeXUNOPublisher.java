@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-11-03)
+ *  Version 1.6 (2014-12-27)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -55,7 +55,26 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     	super(xContext, xFrame, sAppName);
     }
     
-    /** Make a file name LaTeX friendly 
+    /** Get the directory containing the BibTeX files (as defined in the registry)
+     * 
+     * @return the directory
+     */
+    public File getBibTeXDirectory() {
+        // Get the BibTeX settings from the registry
+    	RegistryHelper registry = new RegistryHelper(xContext);
+		Object view;
+		try {
+			view = registry.getRegistryView(BibliographyDialog.REGISTRY_PATH, false);
+		} catch (Exception e) {
+			// Failed to get registry settings
+			return null;
+		}
+		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
+		return getDirectory(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"),
+				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir"));
+    }
+    
+    /** Make a file name LaTeX friendly
      */
     @Override protected String filterFileName(String sFileName) {
         String sResult = "";
@@ -229,31 +248,35 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         }
     }
     
-    private String getFileList(short nType, String sDirectory) {
-    	File dir;
+    private File getDirectory(short nType, String sDirectory) {
     	switch (nType) {
     	case 0: // absolute path
-        	dir = new File(sDirectory);
-        	break;
+        	return new File(sDirectory);
     	case 1: // relative path
-    		dir = new File(Misc.urlToFile(getTargetPath()),sDirectory);
-    		break;
+    		return new File(Misc.urlToFile(getTargetPath()),sDirectory);
     	default: // document directory
-    		dir = Misc.urlToFile(getTargetPath());
+    		return Misc.urlToFile(getTargetPath());
     	}
-    	
-    	CSVList filelist = new CSVList(",");
+    }
+
+    private String getFileList(short nType, String sDirectory) {
+    	File dir = getDirectory(nType,sDirectory);
+    	File[] files;
     	if (dir.isDirectory()) {
-    		File[] files = dir.listFiles();
+    		files = dir.listFiles();
+    	}
+    	else {
+    		return null;
+    	}
+    	CSVList filelist = new CSVList(",");
+    	if (files!=null) {
     		for (File file : files) {
     			if (file.isFile() && file.getName().endsWith(".bib")) {
-    				//filelist.addValue(file.getAbsolutePath());
     				filelist.addValue(Misc.removeExtension(file.getName()));
     			}
     		}
     	}
-    	String sFileList = filelist.toString();
-    	return sFileList.length()>0 ? sFileList : "dummy";
+    	return filelist.toString();
 	}
 
 }

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-28)
+ *  Version 1.6 (2014-12-16)
  *
  */
 package writer2latex.bibtex;
@@ -104,6 +104,7 @@ public class BibTeXEntryMap {
 		if (bibTeXFields == null) {
 			createMaps();
 		}
+		sFieldName = sFieldName.toLowerCase();
 		return entryTypes.containsKey(sFieldName) ? entryTypes.get(sFieldName) : null;
 	}
 }

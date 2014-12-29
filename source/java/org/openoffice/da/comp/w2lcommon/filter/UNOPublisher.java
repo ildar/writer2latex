@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-11-08)
+ *  Version 1.6 (2014-12-27)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -173,7 +173,7 @@ public class UNOPublisher {
         String sDocumentUrl = xModel.getURL();
         if (sDocumentUrl.length()==0) { // The document has no location
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,"Please save the document before publishing the file");
+            msgBox.showMessage(sAppName,"Please save the document first");
             return false;
         }
         else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl)) && !".ods".equals(Misc.getFileExtension(sDocumentUrl)) && !".fods".equals(Misc.getFileExtension(sDocumentUrl))) {

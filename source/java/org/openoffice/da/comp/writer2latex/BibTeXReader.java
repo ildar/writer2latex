@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-24) 
+ *  Version 1.6 (2014-12-27) 
  *
  */
 
@@ -55,18 +55,34 @@ import writer2latex.office.BibMark.EntryType;
  */
 public class BibTeXReader {
 
+	private File file;
 	private Map<String, BibMark> entries;
-
-	/**
-	 * Construct a new <code>BibTeXReader</code> based on a file
+	
+	/** Construct a new <code>BibTeXReader</code> based on a file
 	 * 
 	 * @param file the file to read
 	 * @throws IOException if any error occurs reading the file
 	 * @throws ParseException if any error occurs interpreting the contents of the file
 	 */
 	public BibTeXReader(File file) throws IOException, ParseException {
+		this.file = file;
+		reload();
+	}
+
+	/** Parse the contents of the file, replacing any previous entries in this <code>BibTeXReader</code>
+	 */
+	public void reload() throws IOException, ParseException {
+		entries = new HashMap<String, BibMark>();
 		BibTeXDatabase database = parseBibTeX(file);
-		readEntries(database);
+		readEntries(database);		
+	}
+	
+	/** Get the file associated with this <code>BibTeXReader</code>
+	 * 
+	 * @return the file
+	 */
+	public File getFile() {
+		return file;
 	}
 	
 	/** Get the entries of this BibTeX file
@@ -77,7 +93,7 @@ public class BibTeXReader {
 		return entries;
 	}
 
-	private static BibTeXDatabase parseBibTeX(File file) throws IOException, ParseException {
+	private static BibTeXDatabase parseBibTeX(File file) throws ParseException, IOException {
 		Reader reader = new FileReader(file);
 		try {
 			BibTeXParser parser = new BibTeXParser() {
@@ -102,8 +118,7 @@ public class BibTeXReader {
 		}
 	}
 
-	private void readEntries(BibTeXDatabase database) throws IOException {
-		entries = new HashMap<String, BibMark>();
+	private void readEntries(BibTeXDatabase database) {
 		Map<Key, BibTeXEntry> entryMap = database.getEntries();
 
 		Collection<BibTeXEntry> bibentries = entryMap.values();
@@ -124,7 +139,7 @@ public class BibTeXReader {
 		}	
 	}
 
-	private static String parseLaTeX(String string) throws IOException {
+	private static String parseLaTeX(String string) {
 		Reader reader = new StringReader(string);
 		try {
 			LaTeXParser parser = new LaTeXParser();
@@ -134,7 +149,11 @@ public class BibTeXReader {
 			// If parsing fails, return the original string
 			return string;
 		} finally {
-			reader.close();
+			try {
+				reader.close();
+			} catch (IOException e) {
+				// Reading from a String will not fail :-)
+			}
 		}
 	}
 

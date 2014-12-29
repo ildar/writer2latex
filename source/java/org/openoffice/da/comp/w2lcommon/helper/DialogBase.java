@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2014 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-02-25)
+ *  Version 1.6 (2014-12-16)
  *
  */ 
  
@@ -392,6 +392,27 @@ public abstract class DialogBase implements
         }
     }
     
+    public String getLabelText(String sControlName) {
+        XPropertySet xPropertySet = getControlProperties(sControlName);
+        try {
+            return (String) xPropertySet.getPropertyValue("Label");
+        }
+        catch (Exception e) {
+            // Will fail if the control does not exist or is not a label
+            return "";
+        }
+    }
+	
+    public void setLabelText(String sControlName, String sLabel) {
+        XPropertySet xPropertySet = getControlProperties(sControlName);
+        try {
+            xPropertySet.setPropertyValue("Label",sLabel);
+        }
+        catch (Exception e) {
+            // Will fail if the control does not exist or is not a label
+        }
+    }    
+	    
     protected String getFormattedFieldText(String sControlName) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
