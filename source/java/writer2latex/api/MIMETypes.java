@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.6 (2015-01-09)
  *
  */
 
@@ -54,6 +54,8 @@ public class MIMETypes {
     /** This is a fake MIME type, for internal use only */
     public static final String HTML5="text/html5";
     public static final String EPUB="application/epub+zip";
+    /** This is not a MIME type either */
+    public static final String EPUB3="epub3";
     public static final String LATEX="application/x-latex";
     public static final String BIBTEX="application/x-bibtex";
     public static final String TEXT="text";

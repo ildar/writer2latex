@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-12-27)
+ *  Version 1.6 (2015-01-09)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -51,7 +51,7 @@ import com.sun.star.util.XModifiable;
  */
 public class UNOPublisher {
 	
-    public enum TargetFormat { xhtml, xhtml11, xhtml_mathml, html5, epub, latex };
+    public enum TargetFormat { xhtml, xhtml11, xhtml_mathml, html5, epub, epub3, latex };
     
     private String sAppName;
     
@@ -294,6 +294,7 @@ public class UNOPublisher {
     	case xhtml_mathml: return ".xhtml";
     	case html5: return ".html";
     	case epub: return ".epub";
+    	case epub3: return ".epub";
     	case latex: return ".tex";
     	default: return "";
     	}
@@ -306,6 +307,7 @@ public class UNOPublisher {
     	case xhtml_mathml:
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
+    	case epub3: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";
     	default: return null;
     	}
@@ -318,6 +320,7 @@ public class UNOPublisher {
     	case xhtml_mathml:
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc"; 
     	case epub: 
+    	case epub3: 
     	case latex:
     	default: return null;
     	}    	
@@ -330,6 +333,7 @@ public class UNOPublisher {
     	case xhtml_mathml: return "org.openoffice.da.writer2xhtml.mathml";
     	case html5: return "org.openoffice.da.writer2xhtml5";
     	case epub: return "org.openoffice.da.writer2xhtml.epub";
+    	case epub3: return "org.openoffice.da.writer2xhtml.epub";
     	case latex: return "org.openoffice.da.writer2latex";
     	default: return "";
     	}

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-24)
+ *  Version 1.6 (2015-01-14)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 56; }
+    protected int getOptionCount() { return 57; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -144,18 +144,19 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int IMAGE_SPLIT = 41;
     private static final int COVER_IMAGE = 42;
     private static final int EMBED_SVG = 43;
-    private static final int USE_MATHJAX = 44;
-    private static final int CALC_SPLIT = 45;
-    private static final int DISPLAY_HIDDEN_SHEETS = 46;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 47;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 48;
-    private static final int APPLY_PRINT_RANGES = 49;
-    private static final int USE_TITLE_AS_HEADING = 50;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 51;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 52;
-    private static final int UPLINK = 53;
-    private static final int DIRECTORY_ICON = 54;
-    private static final int DOCUMENT_ICON = 55;
+    private static final int EMBED_IMG = 44;
+    private static final int USE_MATHJAX = 45;
+    private static final int CALC_SPLIT = 46;
+    private static final int DISPLAY_HIDDEN_SHEETS = 47;
+    private static final int DISPLAY_HIDDEN_ROWS_COLS = 48;
+    private static final int DISPLAY_FILTERED_ROWS_COLS = 49;
+    private static final int APPLY_PRINT_RANGES = 50;
+    private static final int USE_TITLE_AS_HEADING = 51;
+    private static final int USE_SHEET_NAMES_AS_HEADINGS = 52;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 53;
+    private static final int UPLINK = 54;
+    private static final int DIRECTORY_ICON = 55;
+    private static final int DOCUMENT_ICON = 56;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -274,6 +275,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[IMAGE_SPLIT] = new Option("image_split","none");
         options[COVER_IMAGE] = new BooleanOption("cover_image","false");
         options[EMBED_SVG] = new BooleanOption("embed_svg","false");
+        options[EMBED_IMG] = new BooleanOption("embed_img","false");
         options[USE_MATHJAX] = new BooleanOption("use_mathjax","false");
         options[CALC_SPLIT] = new BooleanOption("calc_split","false");
         options[DISPLAY_HIDDEN_SHEETS] = new BooleanOption("display_hidden_sheets", "false");
@@ -413,6 +415,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public String imageSplit() { return options[IMAGE_SPLIT].getString(); }
     public boolean coverImage() { return ((BooleanOption) options[COVER_IMAGE]).getValue(); }
     public boolean embedSVG() { return ((BooleanOption) options[EMBED_SVG]).getValue(); }
+    public boolean embedImg() { return ((BooleanOption) options[EMBED_IMG]).getValue(); }
     public boolean useMathJax() { return ((BooleanOption) options[USE_MATHJAX]).getValue(); }
     public boolean xhtmlCalcSplit() { return ((BooleanOption) options[CALC_SPLIT]).getValue(); }
     public boolean xhtmlDisplayHiddenSheets() { return ((BooleanOption) options[DISPLAY_HIDDEN_SHEETS]).getValue(); }

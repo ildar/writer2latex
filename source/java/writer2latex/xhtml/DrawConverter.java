@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-24)
+ *  Version 1.6 (2015-01-14)
  *
  */
  
@@ -46,6 +46,8 @@ import java.util.Vector;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.xml.sax.SAXException;
 
@@ -100,6 +102,7 @@ public class DrawConverter extends ConverterHelper {
     private String sImageSplit;
     private boolean bCoverImage;
     private boolean bEmbedSVG;
+    private boolean bEmbedImg;
 
     // Embedded SVG images for recycling are collected here
     private HashMap<String,Element> svgImages = new HashMap<String,Element>();
@@ -113,7 +116,7 @@ public class DrawConverter extends ConverterHelper {
     private Vector<Element> fullscreenFrames = new Vector<Element>();
     // This flag determines whether to collect full screen images or insert them immediately
     private boolean bCollectFullscreenFrames = true;
-	
+
     public DrawConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         // We can only handle one form; pick an arbitrary one.
@@ -130,6 +133,7 @@ public class DrawConverter extends ConverterHelper {
         sImageSplit = config.imageSplit();
         bCoverImage = config.coverImage();
         bEmbedSVG = config.embedSVG();
+        bEmbedImg = config.embedImg();
     }
     
     ///////////////////////////////////////////////////////////////////////
@@ -516,21 +520,28 @@ public class DrawConverter extends ConverterHelper {
         	}
         }
         else {
-        	// In all other cases, create an img element
-            if (bgd!=null && !bgd.isLinked() && !bgd.isRecycled()) { converter.addDocument(bgd); }
+        	 // In all other cases, create an img element
+        	if (bgd!=null && !bgd.isLinked() && !bgd.isRecycled() && !bEmbedImg) { converter.addDocument(bgd); }
         	Element image = converter.createElement("img");
         	String sName = Misc.getAttribute(getFrame(onode),XMLString.DRAW_NAME);
         	converter.addTarget(image,sName+"|graphic");
-        	image.setAttribute("src",sFileName);
-        
+        	if (!bEmbedImg || bgd.isLinked()) {
+        		image.setAttribute("src",sFileName);
+        	}
+        	else {
+        		StringBuilder buf = new StringBuilder();
+        		buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
+        			.append(DatatypeConverter.printBase64Binary(bgd.getData()));
+        		image.setAttribute("src", buf.toString());
+        	}
         	// Add alternative text, using either alt.text, name or file name
         	Element desc = Misc.getChildByTagName(frame,XMLString.SVG_DESC);
         	if (desc==null) {
-        		desc = Misc.getChildByTagName(frame,XMLString.SVG_TITLE);        	
+        		desc = Misc.getChildByTagName(frame,XMLString.SVG_TITLE);
         	}
         	String sAltText = desc!=null ? Misc.getPCDATA(desc) : (sName!=null ? sName : sFileName);
         	image.setAttribute("alt",sAltText);
-        	imageElement = image;
+        	imageElement = image; 
         }
         
         if (imageElement!=null) {

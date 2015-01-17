@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-09)
+ *  Version 1.6 (2015-01-14)
  *
  */
  
@@ -33,7 +33,7 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.5.2";
-    private static final String DATE = "2014-11-18";
+    private static final String DATE = "2015-01-14";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
@@ -63,7 +63,8 @@ public class ConverterFactory {
      *    Note that this is <em>not</em> the recommended media type for HTML5
      *    (see http://wiki.whatwg.org/), but it is used internally
      *    by Writer2xhtml to distinguish from HTML5</li>
-     *    <li><code>application/epub+zip</code></li> for EPUB format    
+     *    <li><code>application/epub+zip</code></li> for EPUB format</li>
+     *    <li><code>epub3</code> for EPUB 3 format</li>
      *  </ul>
      *  
      *  @param sMIME the MIME type of the target format
@@ -89,6 +90,9 @@ public class ConverterFactory {
         }
         else if (MIMETypes.HTML5.equals(sMIME)) {
             converter = createInstance("writer2latex.xhtml.Html5Converter");
+        }
+        else if (MIMETypes.EPUB3.equals(sMIME)) {
+            converter = createInstance("writer2latex.epub.EPUB3Converter");
         }
         else if (MIMETypes.EPUB.equals(sMIME)) {
             converter = createInstance("writer2latex.epub.EPUBConverter");

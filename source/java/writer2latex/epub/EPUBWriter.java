@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2014-09-07)
+ *  version 1.6 (2015-01-15)
  *
  */
 
@@ -51,25 +51,34 @@ public class EPUBWriter implements OutputFile {
 	private String sFileName;
 	//private XhtmlConfig config;
 	
-	public EPUBWriter(ConverterResult xhtmlResult, String sFileName, XhtmlConfig config) {
+	/** Create a new <code>EPUBWriter</code> based on a <code>ConverterResult</code>.
+	 * 
+	 * @param xhtmlResult the converter result to repackage
+	 * @param sFileName the file name to use for the result
+	 * @param nVersion the EPUB version number. Can be either 2 or 3, other values are interpreted as 2.
+	 * @param config the configuration to use
+	 */
+	public EPUBWriter(ConverterResult xhtmlResult, String sFileName, int nVersion, XhtmlConfig config) {
 		this.xhtmlResult = xhtmlResult;
 		this.sFileName = Misc.removeExtension(sFileName);
 		//this.config = config;
 	}
+	
+	// Implement OutputFile
 
-	public String getFileName() {
+	@Override public String getFileName() {
 		return sFileName+".epub";
 	}
 
-	public String getMIMEType() {
+	@Override public String getMIMEType() {
 		return "application/epub+zip";
 	}
 
-	public boolean isMasterDocument() {
+	@Override public boolean isMasterDocument() {
 		return true;
 	}
 
-	public void write(OutputStream os) throws IOException {		
+	@Override public void write(OutputStream os) throws IOException {		
 		ZipOutputStream zos = new ZipOutputStream(os);
 		
 		// Write uncompressed MIME type as first entry

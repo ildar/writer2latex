@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-15)
+ *  Version 1.6 (2015-01-09)
  *
  */ 
  
@@ -59,7 +59,7 @@ public final class Writer2xhtml extends WeakBase
     
     // TODO: These should be configurable
     private TargetFormat xhtmlFormat = TargetFormat.html5;
-    private TargetFormat epubFormat = TargetFormat.epub;    
+    private TargetFormat epubFormat = TargetFormat.epub3;    
       
     public Writer2xhtml(XComponentContext xContext) {
         m_xContext = xContext;

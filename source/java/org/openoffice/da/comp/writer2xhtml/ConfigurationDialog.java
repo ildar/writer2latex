@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2014 by Henrik Just
+*  Copyright: 2002-2015 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.4 (2014-09-26)
+*  Version 1.6 (2015-01-14)
 *
 */ 
 
@@ -518,6 +518,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
     		checkBoxFromConfig(dlg, "EmbedSvg", "embed_svg");
+    		checkBoxFromConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
@@ -525,6 +526,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
     		checkBoxToConfig(dlg, "EmbedSvg", "embed_svg");
+    		checkBoxToConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-10-07)
+ *  Version 1.6 (2015-01-13)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -79,6 +79,7 @@ public class UNOConverter {
 		filterNames.put("org.openoffice.da.writer2xhtml5","text/html5");
 		filterNames.put("org.openoffice.da.writer2xhtml.mathml","application/xhtml+xml");
 		filterNames.put("org.openoffice.da.writer2xhtml.epub","application/epub+zip");
+		filterNames.put("org.openoffice.da.writer2xhtml.epub3","epub3");
 		filterNames.put("org.openoffice.da.calc2xhtml","text/html");
 		filterNames.put("org.openoffice.da.calc2xhtml11","application/xhtml11");
 		filterNames.put("org.openoffice.da.calc2xhtml5","text/html5");

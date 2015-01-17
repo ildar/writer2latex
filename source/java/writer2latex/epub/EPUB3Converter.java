@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  EPUBConverter.java
+ *  EPUB3Converter.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -31,15 +31,15 @@ import java.io.InputStream;
 
 import writer2latex.api.ConverterResult;
 import writer2latex.base.ConverterResultImpl;
-import writer2latex.xhtml.Xhtml11Converter;
+import writer2latex.xhtml.Html5Converter;
 
 
-/** This class converts an OpenDocument file to an EPUB document.
+/** This class converts an OpenDocument file to an EPUB 3 document.
  */
-public final class EPUBConverter extends Xhtml11Converter {
+public final class EPUB3Converter extends Html5Converter {
                         
     // Constructor
-    public EPUBConverter() {
+    public EPUB3Converter() {
         super();
     }
 	
@@ -57,7 +57,7 @@ public final class EPUBConverter extends Xhtml11Converter {
     
     private ConverterResult createPackage(ConverterResult xhtmlResult, String sTargetFileName) {
     	ConverterResultImpl epubResult = new ConverterResultImpl();
-    	epubResult.addDocument(new EPUBWriter(xhtmlResult,sTargetFileName,2,getXhtmlConfig()));
+    	epubResult.addDocument(new EPUBWriter(xhtmlResult,sTargetFileName,3,getXhtmlConfig()));
     	epubResult.setMetaData(xhtmlResult.getMetaData());
     	return epubResult;
     }

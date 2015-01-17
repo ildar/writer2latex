@@ -2,7 +2,18 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.2 ----------
 
-[w2l] Added new BibTeX dialog to insert a bibliographic reference to a BibTeX file. The BibTeX files are located as
+Items marked with * are work in progress
+
+[all] *Document the use of soffice --headless --convert-to 
+
+[w2x] *Added EPUB 3 as export format and changed the toolbar to export to EPUB 3
+
+[all] Fixed typo in export dialogs: The text on the help button was in danish.
+
+[w2x] New boolean option embed_img (default false). If set to true, the binary contents of img elements are included
+  directly on the src attribute as base64.
+
+[w2l] *Added new BibTeX dialog to insert a bibliographic reference to a BibTeX file. The BibTeX files are located as
   defined in the configuration, and the reference is inserted as an ordinary reference mark.
 
 [w2l] Various improvements to the log viewer dialog: Reduced height to better accommodate small screen resolutions.
@@ -10,7 +21,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 [w2x] Changed export format for toolbar from XHTML+MathML to HTML5
 
-[w2l] Added new option font to load font packages. It accepts a large number of standard font packages such as
+[w2l] *Added new option font to load font packages. It accepts a large number of standard font packages such as
   cmbright or fourier. Only packages with math support are included. Unknown packages defaults to Computer Modern.
   The font option is currently not available for the backend xetex.
   In the user interface, this option can be found in the export dialog. To make room for this, the BibTeX

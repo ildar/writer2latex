@@ -52,7 +52,7 @@
         This has no effect if footnotes are placed at the bottom of the page.</paragraph>
 
 
-        <paragraph role="heading" level="2" xml-lang="en-US">SVG images</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Images</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EmbedSvg" id="bm_configembedsvg"/>
 
@@ -60,5 +60,12 @@
         <paragraph role="paragraph" xml-lang="en-US">If you check this option, SVG images will be embedded directly
         in the HTML document. Otherwise they will be included in a separate file. SVG images are only supported
         in HTML5.</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EmbedImg" id="bm_configembedimg"/>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Embed all images in the HTML document</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, all images will be embedded directly
+        in the HTML document (base64 encoded). Otherwise they will be included in a separate file.
+        This is not recommended for documents with large images.</paragraph>
     </body>
 </helpdocument>

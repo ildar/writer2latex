@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-25) 
+ *  Version 1.6 (2015-01-09) 
  *
  */
  
@@ -54,7 +54,7 @@ import writer2latex.util.Misc;
  * <p>Where the available options are
  * <ul>
  * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>, <code>-xhtml</code>,
-       <code>-xhtml+mathml</code>, <code>-epub</code>
+       <code>-xhtml+mathml</code>, <code>-epub</code>, <code>-epub3</code>
  * <li><code>-recurse</code>
  * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-pdfscreen</code>,
  * <code>-pdfprint</code>, <code>-cleanxhtml</code>
@@ -330,6 +330,7 @@ public final class Application {
         System.out.println("   -xhtml+mathml");
         System.out.println("   -html5");
         System.out.println("   -epub");
+        System.out.println("   -epub3");
         System.out.println("   -recurse");
         System.out.println("   -template[=]<template file>");
         System.out.println("   -stylesheet[=]<style sheet file>");
@@ -366,6 +367,7 @@ public final class Application {
                 else if ("-xhtml11".equals(sArg)) { sTargetMIME = MIMETypes.XHTML11; }
                 else if ("-xhtml+mathml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML; }
                 else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
+                else if ("-epub3".equals(sArg)) { sTargetMIME = MIMETypes.EPUB3; }
                 else if ("-recurse".equals(sArg)) { bRecurse = true; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
                 else if ("-clean".equals(sArg)) { configFileNames.add("*clean.xml"); }
