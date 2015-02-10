@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-29)
+ *  Version 1.6 (2015-02-10)
  *
  */ 
  
@@ -419,7 +419,7 @@ public final class ApplicationsDialog
 
     
     private void displayAutoConfigInfo(String sText) {
-    	XDialog xDialog = getDialog("W4LDialogs.AutoConfigInfo");
+    	XDialog xDialog = getDialog("W2LDialogs2.AutoConfigInfo");
     	if (xDialog!=null) {
     		DialogAccess info = new DialogAccess(xDialog);
     		info.setTextFieldText("Info", sText);

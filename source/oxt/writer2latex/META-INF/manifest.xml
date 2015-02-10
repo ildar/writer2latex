@@ -62,10 +62,6 @@
      manifest:media-type="application/vnd.sun.star.basic-library"/>
      
     <manifest:file-entry
-     manifest:full-path="W4LDialogs/"
-     manifest:media-type="application/vnd.sun.star.basic-library"/>
-     	 
-    <manifest:file-entry
      manifest:full-path="writer2latex.rdb"
      manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/>
 

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-09)
+ *  Version 1.6 (2015-02-10)
  *
  */ 
  
@@ -103,7 +103,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     /** Return the name of the library containing the dialog
      */
     @Override public String getDialogLibraryName() {
-        return "W4LDialogs";
+        return "W2LDialogs2";
     }
     
     /** Return the name of the dialog within the library
@@ -130,6 +130,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	}
     	else if (sMethod.equals("InsertReference")) {
     		insertReference();
+    	}
+    	else if (sMethod.equals("New")) {
+    		newFile();
     	}
     	else if (sMethod.equals("Edit")) {
     		edit();
@@ -284,6 +287,14 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         if (xFrame!=null) {        	
             insertReference(getCurrentEntry());
         }
+    }
+    
+    // Create a new BibTeX file
+    private void newFile() {
+        if (xFrame!=null) {        	
+            MessageBox msgBox = new MessageBox(xContext, xFrame);
+            msgBox.showMessage("Writer2LaTeX","This feature is not implemented yet");
+        }				
     }
     
     // Edit the currently selected BibTeX file, if any

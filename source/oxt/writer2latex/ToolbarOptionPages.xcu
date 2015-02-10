@@ -28,7 +28,7 @@
         <value xml:lang="en-US">Writer2LaTeX toolbar</value>
       </prop>
       <prop oor:name="OptionsPage">
-        <value>%origin%/W4LDialogs/ConfigurationRoot.xdl</value>
+        <value>%origin%/W2LDialogs2/ToolbarConfigurationRoot.xdl</value>
       </prop>
       <prop oor:name="EventHandlerService">
         <value></value>
@@ -45,7 +45,7 @@
             <value xml:lang="en-US">Applications</value>
           </prop>
           <prop oor:name="OptionsPage">
-            <value>%origin%/W4LDialogs/Applications.xdl</value>
+            <value>%origin%/W2LDialogs2/Applications.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
             <value>org.openoffice.da.writer2latex.ApplicationsDialog</value>
@@ -60,7 +60,7 @@
             <value xml:lang="en-US">Bibliography</value>
           </prop>
           <prop oor:name="OptionsPage">
-            <value>%origin%/W4LDialogs/Bibliography.xdl</value>
+            <value>%origin%/W2LDialogs2/Bibliography.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
             <value>org.openoffice.da.writer2latex.BibliographyDialog</value>

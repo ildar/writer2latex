@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-12-27)
+ *  Version 1.6 (2015-02-09)
  *
  */ 
  
@@ -199,7 +199,7 @@ public final class Writer2LaTeX extends WeakBase
 	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 
-    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame,"Writer2latex");
+    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX");
     	}		
 	}
     	
