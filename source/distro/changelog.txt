@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.2 -> 1.4
 
 ---------- version 1.4 final ----------
 
+[all] The help button is now labeled Help in all export dialogs 
+
 [w2x] Bugfix: No longer include xmlns attribute on math nodes in HTML5 export
 
 [w2l] Workaround for an oddity seen in AOO 4.1 and LO 4.0: For SVG images the alternative PNG representation is stored
