@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-12-27)
+ *  Version 1.6 (2015-02-16)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -77,84 +77,7 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     /** Make a file name LaTeX friendly
      */
     @Override protected String filterFileName(String sFileName) {
-        String sResult = "";
-        for (int i=0; i<sFileName.length(); i++) {
-            char c = sFileName.charAt(i);
-            if ((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9')) {
-                sResult += Character.toString(c);
-            }
-            else {
-            	switch (c) {
-            	case '.': sResult += "."; break;
-            	case '-': sResult += "-"; break;
-            	case ' ' : sResult += "-"; break;
-            	case '_' : sResult += "-"; break;
-            	// Replace accented and national characters
-            	case '\u00c0' : sResult += "A"; break;
-            	case '\u00c1' : sResult += "A"; break;
-            	case '\u00c2' : sResult += "A"; break;
-            	case '\u00c3' : sResult += "A"; break;
-            	case '\u00c4' : sResult += "AE"; break;
-            	case '\u00c5' : sResult += "AA"; break;
-            	case '\u00c6' : sResult += "AE"; break;
-            	case '\u00c7' : sResult += "C"; break;
-            	case '\u00c8' : sResult += "E"; break;
-            	case '\u00c9' : sResult += "E"; break;
-            	case '\u00ca' : sResult += "E"; break;
-            	case '\u00cb' : sResult += "E"; break;
-            	case '\u00cc' : sResult += "I"; break;
-            	case '\u00cd' : sResult += "I"; break;
-            	case '\u00ce' : sResult += "I"; break;
-            	case '\u00cf' : sResult += "I"; break;
-            	case '\u00d0' : sResult += "D"; break;
-            	case '\u00d1' : sResult += "N"; break;
-            	case '\u00d2' : sResult += "O"; break;
-            	case '\u00d3' : sResult += "O"; break;
-            	case '\u00d4' : sResult += "O"; break;
-            	case '\u00d5' : sResult += "O"; break;
-            	case '\u00d6' : sResult += "OE"; break;
-            	case '\u00d8' : sResult += "OE"; break;
-            	case '\u00d9' : sResult += "U"; break;
-            	case '\u00da' : sResult += "U"; break;
-            	case '\u00db' : sResult += "U"; break;
-            	case '\u00dc' : sResult += "UE"; break;
-            	case '\u00dd' : sResult += "Y"; break;
-            	case '\u00df' : sResult += "sz"; break;
-            	case '\u00e0' : sResult += "a"; break;
-            	case '\u00e1' : sResult += "a"; break;
-            	case '\u00e2' : sResult += "a"; break;
-            	case '\u00e3' : sResult += "a"; break;
-            	case '\u00e4' : sResult += "ae"; break;
-            	case '\u00e5' : sResult += "aa"; break;
-            	case '\u00e6' : sResult += "ae"; break;
-            	case '\u00e7' : sResult += "c"; break;
-            	case '\u00e8' : sResult += "e"; break;
-            	case '\u00e9' : sResult += "e"; break;
-            	case '\u00ea' : sResult += "e"; break;
-            	case '\u00eb' : sResult += "e"; break;
-            	case '\u00ec' : sResult += "i"; break;
-            	case '\u00ed' : sResult += "i"; break;
-            	case '\u00ee' : sResult += "i"; break;
-            	case '\u00ef' : sResult += "i"; break;
-            	case '\u00f0' : sResult += "d"; break;
-            	case '\u00f1' : sResult += "n"; break;
-            	case '\u00f2' : sResult += "o"; break;
-            	case '\u00f3' : sResult += "o"; break;
-            	case '\u00f4' : sResult += "o"; break;
-            	case '\u00f5' : sResult += "o"; break;
-            	case '\u00f6' : sResult += "oe"; break;
-            	case '\u00f8' : sResult += "oe"; break;
-            	case '\u00f9' : sResult += "u"; break;
-            	case '\u00fa' : sResult += "u"; break;
-            	case '\u00fb' : sResult += "u"; break;
-            	case '\u00fc' : sResult += "ue"; break;
-            	case '\u00fd' : sResult += "y"; break;
-            	case '\u00ff' : sResult += "y"; break;
-            	}
-            }
-        }
-        if (sResult.length()==0) { return "writer2latex"; }
-        else { return sResult; }
+    	return Misc.makeTeXFriendly(sFileName,"writer2latex");
     }
 
     /** Post process the filter data: Set bibliography options and

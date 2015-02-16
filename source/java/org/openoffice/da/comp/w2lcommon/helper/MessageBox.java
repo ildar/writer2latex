@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-07-21)
+ *  Version 1.6 (2015-02-16)
  *
  */ 
  
@@ -83,7 +83,7 @@ public class MessageBox {
             descriptor.ParentIndex = -1;
             descriptor.Parent = (XWindowPeer) UnoRuntime.queryInterface(
                 XWindowPeer.class,xFrame.getContainerWindow());
-            descriptor.Bounds = new Rectangle(0,0,300,200);
+            descriptor.Bounds = new Rectangle(200,100,300,200);
             descriptor.WindowAttributes = WindowAttribute.BORDER |
                 WindowAttribute.MOVEABLE | WindowAttribute.CLOSEABLE;
             XWindowPeer xPeer = xToolkit.createWindow(descriptor);

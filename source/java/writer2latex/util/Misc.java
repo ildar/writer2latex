@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-03)
+ *  Version 1.6 (2015-02-16)
  *
  */
 
@@ -276,6 +276,92 @@ public class Misc{
     
     public static String abs(String sLength) {
         return sLength.startsWith("-") ? sLength.substring(1) : sLength;
+    }
+    
+    /** Make a file name TeX friendly, replacing offending characters
+     * 
+     * @param sFileName the file name
+     * @param sDefault a default name to use if no characters remains after filtering
+     * @return the modified file name
+     */
+    public static String makeTeXFriendly(String sFileName, String sDefault) {
+        StringBuilder builder = new StringBuilder();
+        for (int i=0; i<sFileName.length(); i++) {
+            char c = sFileName.charAt(i);
+            if ((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9')) {
+                builder.append(c);
+            }
+            else {
+            	switch (c) {
+            	case '.': builder.append('.'); break;
+            	case '-': builder.append('-'); break;
+            	case ' ' : builder.append('-'); break;
+            	case '_' : builder.append('-'); break;
+            	// Replace accented and national characters
+            	case '\u00c0' : builder.append('A'); break;
+            	case '\u00c1' : builder.append('A'); break;
+            	case '\u00c2' : builder.append('A'); break;
+            	case '\u00c3' : builder.append('A'); break;
+            	case '\u00c4' : builder.append("AE"); break;
+            	case '\u00c5' : builder.append("AA"); break;
+            	case '\u00c6' : builder.append("AE"); break;
+            	case '\u00c7' : builder.append('C'); break;
+            	case '\u00c8' : builder.append('E'); break;
+            	case '\u00c9' : builder.append('E'); break;
+            	case '\u00ca' : builder.append('E'); break;
+            	case '\u00cb' : builder.append('E'); break;
+            	case '\u00cc' : builder.append('I'); break;
+            	case '\u00cd' : builder.append('I'); break;
+            	case '\u00ce' : builder.append('I'); break;
+            	case '\u00cf' : builder.append('I'); break;
+            	case '\u00d0' : builder.append('D'); break;
+            	case '\u00d1' : builder.append('N'); break;
+            	case '\u00d2' : builder.append('O'); break;
+            	case '\u00d3' : builder.append('O'); break;
+            	case '\u00d4' : builder.append('O'); break;
+            	case '\u00d5' : builder.append('O'); break;
+            	case '\u00d6' : builder.append("OE"); break;
+            	case '\u00d8' : builder.append("OE"); break;
+            	case '\u00d9' : builder.append('U'); break;
+            	case '\u00da' : builder.append('U'); break;
+            	case '\u00db' : builder.append('U'); break;
+            	case '\u00dc' : builder.append("UE"); break;
+            	case '\u00dd' : builder.append('Y'); break;
+            	case '\u00df' : builder.append("sz"); break;
+            	case '\u00e0' : builder.append('a'); break;
+            	case '\u00e1' : builder.append('a'); break;
+            	case '\u00e2' : builder.append('a'); break;
+            	case '\u00e3' : builder.append('a'); break;
+            	case '\u00e4' : builder.append("ae"); break;
+            	case '\u00e5' : builder.append("aa"); break;
+            	case '\u00e6' : builder.append("ae"); break;
+            	case '\u00e7' : builder.append('c'); break;
+            	case '\u00e8' : builder.append('e'); break;
+            	case '\u00e9' : builder.append('e'); break;
+            	case '\u00ea' : builder.append('e'); break;
+            	case '\u00eb' : builder.append('e'); break;
+            	case '\u00ec' : builder.append('i'); break;
+            	case '\u00ed' : builder.append('i'); break;
+            	case '\u00ee' : builder.append('i'); break;
+            	case '\u00ef' : builder.append('i'); break;
+            	case '\u00f0' : builder.append('d'); break;
+            	case '\u00f1' : builder.append('n'); break;
+            	case '\u00f2' : builder.append('o'); break;
+            	case '\u00f3' : builder.append('o'); break;
+            	case '\u00f4' : builder.append('o'); break;
+            	case '\u00f5' : builder.append('o'); break;
+            	case '\u00f6' : builder.append("oe"); break;
+            	case '\u00f8' : builder.append("oe"); break;
+            	case '\u00f9' : builder.append('u'); break;
+            	case '\u00fa' : builder.append('u'); break;
+            	case '\u00fb' : builder.append('u'); break;
+            	case '\u00fc' : builder.append("ue"); break;
+            	case '\u00fd' : builder.append('y'); break;
+            	case '\u00ff' : builder.append('y'); break;
+            	}
+            }
+        }
+        return builder.length()>0 ? builder.toString() : sDefault; 
     }
 
     /*

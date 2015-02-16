@@ -4,6 +4,11 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
+[all] The position of message boxes has changed from (0,0) to (200,100)
+
+[w2l] Implementation detail: The dialog library W4LDialogs are now merged into W2LDialogs2. This avoids conflicts with
+  the old Writer4LaTeX extension if this happens to be installed.
+
 [all] *Document the use of soffice --headless --convert-to 
 
 [w2x] *Added EPUB 3 as export format and changed the toolbar to export to EPUB 3
