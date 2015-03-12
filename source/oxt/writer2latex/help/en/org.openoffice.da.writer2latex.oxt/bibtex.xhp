@@ -43,13 +43,13 @@
         the currently selected entry.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXInsert" visibility="hidden">Click to insert a reference to the current entry</ahelp></paragraph>
 
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXRefresh" id="bm_bibtexrefresh"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Refresh</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to reload the BibTeX
-        files and update all references. You should do this if you have edited a BibTeX file. This will ensure that
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXUpdate" id="bm_bibtexupdate"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Update references</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this to update all bibliographic references in the document.
+        You should do this if you have edited a BibTeX file. This will ensure that
         the content of all references is in sync with the current content of the BibTeX files.
-        Writer2LaTeX will display an message to confirm the result.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXRefresh" visibility="hidden">Click to refresh the dialog and all references</ahelp></paragraph>
+        Writer2LaTeX will display a message to confirm the result.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" visibility="hidden">Click to update the content of all references</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXClose" id="bm_bibtexclose"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Close</paragraph>
@@ -68,6 +68,11 @@
         The file will open in your default BibTeX editor. If no default BibTeX editor was found on your system,
         an error message is displayed.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXEdit" visibility="hidden">Click to edit the current file in your BibTeX editor</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXReload" id="bm_bibtexreload"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Reload</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to reload the BibTeX files in the dialog.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXReload" visibility="hidden">Click to reload the BibTeX files</ahelp></paragraph>
 
     </body>      
 </helpdocument>

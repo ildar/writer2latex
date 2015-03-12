@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-02-16)
+ *  Version 1.6 (2015-02-18)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -105,14 +105,14 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
         		String sBibTeXFiles = getFileList(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"),
         				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir"));
-        		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertZoteroCitations")) {
-        			filterHelper.put("zotero_bibtex_files", sBibTeXFiles);
-        		}
-        		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertJabRefCitations")) {
-        			filterHelper.put("jabref_bibtex_files", sBibTeXFiles);
-        		}
         		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles")) {
         			filterHelper.put("external_bibtex_files", sBibTeXFiles);
+            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertZoteroCitations")) {
+            			filterHelper.put("zotero_bibtex_files", sBibTeXFiles);
+            		}
+            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertJabRefCitations")) {
+            			filterHelper.put("jabref_bibtex_files", sBibTeXFiles);
+            		}
         		}
     			filterHelper.put("include_original_citations",
     					Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "IncludeOriginalCitations")));

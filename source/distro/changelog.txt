@@ -4,19 +4,22 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
-[all] The position of message boxes has changed from (0,0) to (200,100)
-
-[w2l] Implementation detail: The dialog library W4LDialogs are now merged into W2LDialogs2. This avoids conflicts with
-  the old Writer4LaTeX extension if this happens to be installed.
-
-[all] *Document the use of soffice --headless --convert-to 
+[all] *Document the use of soffice --headless --convert-to
 
 [w2x] *Added EPUB 3 as export format and changed the toolbar to export to EPUB 3
+
+[all] The position of message boxes has changed from (0,0) to (200,100)
+
+[w2l] Implementation detail: The dialog library W4LDialogs is now merged into W2LDialogs2. This avoids conflicts with
+  the old Writer4LaTeX extension if this happens to be installed.
 
 [all] Fixed typo in export dialogs: The text on the help button was in danish.
 
 [w2x] New boolean option embed_img (default false). If set to true, the binary contents of img elements are included
   directly on the src attribute as base64.
+  
+[w2l] The bibliography configuration is slightly modified: The options to convert Zotero or JabRef citations are now
+  only available if the option to use external BibTeX files is selected 
 
 [w2l] Added new BibTeX dialog to insert a bibliographic reference to a BibTeX file. The BibTeX files are located as
   defined in the configuration, and the reference is inserted as an ordinary reference mark.

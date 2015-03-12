@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-15)
+ *  Version 1.6 (2015-02-18)
  *
  */ 
  
@@ -131,7 +131,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     }
 	
     @Override public void initialize() {
-    	refreshDialog(null);
+    	reload(null);
     }
 	
     @Override public void endDialog() {
@@ -148,10 +148,6 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     		// The user has selected another BibTeX entry
     		entryChange();
     	}
-    	else if (sMethod.equals("InsertReference")) {
-    		// Insert a reference to the current BibTeX entry
-    		insertReference();
-    	}
     	else if (sMethod.equals("New")) {
     		// Create a new BibTeX file
     		newFile();
@@ -160,23 +156,30 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     		// Edit the current BibTeX file
     		edit();
     	}
-    	else if (sMethod.equals("Refresh")) {
-    		// Refresh the dialog and update all bibliographic references
-    		refreshDialog(null);
-    		refreshReferences();
+    	else if (sMethod.equals("Reload")) {
+    		// Reload the BibTeX files in the dialog
+    		reload(null);
+    	}
+    	else if (sMethod.equals("InsertReference")) {
+    		// Insert a reference to the current BibTeX entry
+    		insertReference();
+    	}
+    	else if (sMethod.equals("Update")) {
+    		// Update all reference in the document
+    		update();
     	}
         return true;
     }
 	
     @Override public String[] getSupportedMethodNames() {
-        String[] sNames = { "FileChange", "EntryChange", "InsertReference", "Edit", "Refresh" };
+        String[] sNames = { "FileChange", "EntryChange", "New", "Edit", "Reload", "InsertReference", "Update" };
         return sNames;
     }
     
     // **** Implement the UI functions
     
     // (Re)load the list of BibTeX files
-    private void refreshDialog(String sSelectedFileName) {
+    private void reload(String sSelectedFileName) {
     	String sFile = null;
     	if (sSelectedFileName!=null) {
     		// Select a new file name
@@ -217,6 +220,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	    		setControlEnabled("Entry",true);
 	    		setControlEnabled("Edit",true);
 	    		setControlEnabled("Insert",true);
+	    		setControlEnabled("Update",true);
 
 	    		fileChange();
 	    		
@@ -231,6 +235,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 		setControlEnabled("Entry",false);
 		setControlEnabled("Edit",false);
 		setControlEnabled("Insert",false);
+		setControlEnabled("Update",false);
 		setLabelText("EntryInformation","No BibTeX files were found");
     }
     
@@ -251,6 +256,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			} catch (IOException e) {
 				currentFile = null;
 			} catch (ParseException e) {
+				System.out.println(e.getMessage());
 				currentFile = null;
 			}
     		
@@ -322,15 +328,21 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     private void newFile() {
     	String sFileName = getFileName();
     	if (sFileName!=null) {
-    		File file = new File(bibTeXDirectory,sFileName);
-    		try {
-		    	if (!file.createNewFile() && xFrame!=null) {
-		            MessageBox msgBox = new MessageBox(xContext, xFrame);
-		            msgBox.showMessage("Writer2LaTeX","The file "+sFileName+" already exists");
-		    	}
-				refreshDialog(sFileName);
-			} catch (IOException e) {
-			}
+    		if (!sFileName.equals(".bib")) {
+	    		File file = new File(bibTeXDirectory,sFileName);
+	    		try {
+			    	if (!file.createNewFile() && xFrame!=null) {
+			            MessageBox msgBox = new MessageBox(xContext, xFrame);
+			            msgBox.showMessage("Writer2LaTeX","The file "+sFileName+" already exists");
+			    	}
+					reload(sFileName);
+				} catch (IOException e) {
+				}
+    		}
+    		else if (xFrame!=null) {
+	            MessageBox msgBox = new MessageBox(xContext, xFrame);
+	            msgBox.showMessage("Writer2LaTeX","The file name is empty");
+    		}
 	    }
     }
     
@@ -412,8 +424,8 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         }
     }
     
-    // Refresh all bibliographic fields in the document
-    private void refreshReferences() {
+    // Update all bibliographic fields in the document
+    private void update() {
     	if (xFrame!=null) {
 	    	BibTeXReader[] readers = parseAllBibTeXFiles();
 	    	

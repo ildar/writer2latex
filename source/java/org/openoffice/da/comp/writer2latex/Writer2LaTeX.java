@@ -20,20 +20,25 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-09)
+ *  Version 1.6 (2015-02-18)
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex;
 
+import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;
 import com.sun.star.lib.uno.helper.WeakBase;
 import com.sun.star.ui.dialogs.ExecutableDialogResults;
 import com.sun.star.ui.dialogs.XExecutableDialog;
+import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
+import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
+import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
        
 /** This class implements the ui (dispatch) commands provided by the Writer2LaTeX toolbar.
  *  The actual processing is done by the core classes <code>UNOPublisher</code>,
@@ -175,27 +180,47 @@ public final class Writer2LaTeX extends WeakBase
     }
 	
 	private void insertBibTeX() {
-		createUNOPublisher();
-    	if (unoPublisher.documentSaved()) {
-			// Execute the BibTeX dialog
-	        try {
-	        	// The dialog needs the current frame and the path to the BibTeX directory
-	            Object[] args = new Object[2];
-	            args[0] = m_xFrame;
-	            args[1] = unoPublisher.getBibTeXDirectory().getPath();
-	            Object dialog = m_xContext.getServiceManager()
-	                    .createInstanceWithArgumentsAndContext(
-	                    "org.openoffice.da.writer2latex.BibTeXDialog", args, m_xContext);
-	            XExecutableDialog xDialog = (XExecutableDialog)
-	                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
-	            if (xDialog.execute()==ExecutableDialogResults.OK) {
-	                // Closed with the close button
-	            }
-	        }
-	        catch (com.sun.star.uno.Exception e) {
-	        }
-	    }
+		if (useExternalBibTeXFiles()) {
+			createUNOPublisher();
+	    	if (unoPublisher.documentSaved()) {
+				// Execute the BibTeX dialog
+		        try {
+		        	// The dialog needs the current frame and the path to the BibTeX directory
+		            Object[] args = new Object[2];
+		            args[0] = m_xFrame;
+		            args[1] = unoPublisher.getBibTeXDirectory().getPath();
+		            Object dialog = m_xContext.getServiceManager()
+		                    .createInstanceWithArgumentsAndContext(
+		                    "org.openoffice.da.writer2latex.BibTeXDialog", args, m_xContext);
+		            XExecutableDialog xDialog = (XExecutableDialog)
+		                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
+		            if (xDialog.execute()==ExecutableDialogResults.OK) {
+		                // Closed with the close button
+		            }
+		        }
+		        catch (com.sun.star.uno.Exception e) {
+		        }
+		    }
+		}
+		else {
+            MessageBox msgBox = new MessageBox(m_xContext, m_xFrame);
+            msgBox.showMessage("Writer2LaTeX","Writer2LaTeX is not configured to use external BibTeX files for citations");			
+		}
 	}
+	
+    private boolean useExternalBibTeXFiles() {
+        // Get the BibTeX settings from the registry
+    	RegistryHelper registry = new RegistryHelper(m_xContext);
+		Object view;
+		try {
+			view = registry.getRegistryView(BibliographyDialog.REGISTRY_PATH, false);
+		} catch (Exception e) {
+			// Failed to get registry settings
+			return false;
+		}
+		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
+		return XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles");
+    }
 	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 

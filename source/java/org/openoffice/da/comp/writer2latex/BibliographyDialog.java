@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-29)
+ *  Version 1.6 (2015-02-18)
  *
  */ 
  
@@ -254,16 +254,18 @@ public final class BibliographyDialog
 	}
 
 	private void enableBibTeXSettings(DialogAccess dlg) {
-		boolean bConvertZoteroJabRef = dlg.getCheckBoxStateAsBoolean("ConvertZoteroCitations")
+		boolean bEnableSettings = dlg.getCheckBoxStateAsBoolean("UseExternalBibTeXFiles");
+		boolean bEnableOriginalCitations = dlg.getCheckBoxStateAsBoolean("ConvertZoteroCitations")
 			|| dlg.getCheckBoxStateAsBoolean("ConvertJabRefCitations");
-		boolean bEnableLocation = dlg.getCheckBoxStateAsBoolean("UseExternalBibTeXFiles") || bConvertZoteroJabRef;
 		boolean bEnableDir = dlg.getListBoxSelectedItem("BibTeXLocation")<2;
-		dlg.setControlEnabled("IncludeOriginalCitations", bConvertZoteroJabRef);
-		dlg.setControlEnabled("BibTeXLocationLabel", bEnableLocation);
-		dlg.setControlEnabled("BibTeXLocation", bEnableLocation);
-		dlg.setControlEnabled("BibTeXDirLabel", bEnableLocation && bEnableDir);
-		dlg.setControlEnabled("BibTeXDir",  bEnableLocation && bEnableDir);
-		dlg.setControlEnabled("BibTeXDirButton",  bEnableLocation && bEnableDir);
+		dlg.setControlEnabled("BibTeXLocationLabel", bEnableSettings);
+		dlg.setControlEnabled("BibTeXLocation", bEnableSettings);
+		dlg.setControlEnabled("BibTeXDirLabel", bEnableSettings && bEnableDir);
+		dlg.setControlEnabled("BibTeXDir",  bEnableSettings && bEnableDir);
+		dlg.setControlEnabled("BibTeXDirButton",  bEnableSettings && bEnableDir);
+		dlg.setControlEnabled("ConvertZoteroCitations", bEnableSettings);
+		dlg.setControlEnabled("ConvertJabRefCitations", bEnableSettings);
+		dlg.setControlEnabled("IncludeOriginalCitations", bEnableSettings && bEnableOriginalCitations);
 	}
 	
 	private String getDocumentDirURL() {

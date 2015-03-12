@@ -16,14 +16,17 @@
   <dlg:button dlg:id="Edit" dlg:tab-index="4" dlg:left="205" dlg:top="24" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXEdit" dlg:value="Edit">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Edit" script:language="UNO"/>
   </dlg:button>
+  <dlg:button dlg:id="Reload" dlg:tab-index="5" dlg:left="205" dlg:top="38" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXReload" dlg:value="Reload">
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Reload" script:language="UNO"/>
+  </dlg:button>
   <dlg:text dlg:id="EntryInformation" dlg:tab-index="10" dlg:left="10" dlg:top="40" dlg:width="255" dlg:height="34"/>
-  <dlg:button dlg:id="Insert" dlg:tab-index="5" dlg:left="10" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="Insert reference" dlg:button-type="ok">
+  <dlg:button dlg:id="Insert" dlg:tab-index="6" dlg:left="10" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="Insert reference" dlg:button-type="ok">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:InsertReference" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Refresh" dlg:tab-index="6" dlg:left="75" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXRefresh" dlg:value="Refresh">
-   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Refresh" script:language="UNO"/>
+  <dlg:button dlg:id="Update" dlg:tab-index="7" dlg:left="75" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" dlg:value="Update references">
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Update" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Close" dlg:tab-index="7" dlg:left="140" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="Close" dlg:button-type="cancel"/>
-  <dlg:button dlg:id="Help" dlg:tab-index="8" dlg:left="205" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="Help" dlg:button-type="help"/>
+  <dlg:button dlg:id="Close" dlg:tab-index="8" dlg:left="140" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="Close" dlg:button-type="cancel"/>
+  <dlg:button dlg:id="Help" dlg:tab-index="9" dlg:left="205" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="Help" dlg:button-type="help"/>
  </dlg:bulletinboard>
 </dlg:window>
