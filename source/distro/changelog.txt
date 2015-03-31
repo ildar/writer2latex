@@ -4,6 +4,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
+[all] Implementation detail: Moved descriptions to a separate folder within the extensions
+
 [all] *Document the use of soffice --headless --convert-to
 
 [w2x] *Added EPUB 3 as export format and changed the toolbar to export to EPUB 3

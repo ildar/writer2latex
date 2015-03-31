@@ -43,22 +43,22 @@
   
   
   <extension-description>
-    <src xlink:href="desc_da.txt" lang="da" />
-    <src xlink:href="desc_en.txt" lang="en" />
-    <src xlink:href="desc_ca.txt" lang="ca" />
-    <src xlink:href="desc_de.txt" lang="de" />
-    <src xlink:href="desc_nl.txt" lang="nl" />
-    <src xlink:href="desc_nn.txt" lang="nn" />
-    <src xlink:href="desc_es.txt" lang="es" />
-    <src xlink:href="desc_fi.txt" lang="fi" />
-    <src xlink:href="desc_fr.txt" lang="fr" />
-    <src xlink:href="desc_it.txt" lang="it" />
-    <src xlink:href="desc_pt_BR.txt" lang="pt_BR" />
-    <src xlink:href="desc_cs.txt" lang="cs" />
-    <src xlink:href="desc_pl.txt" lang="pl" />
-    <src xlink:href="desc_ru.txt" lang="ru" />
-    <src xlink:href="desc_uk.txt" lang="uk" />
-    <src xlink:href="desc_tr.txt" lang="tr" />
+    <src xlink:href="descriptions/desc_da.txt" lang="da" />
+    <src xlink:href="descriptions/desc_en.txt" lang="en" />
+    <src xlink:href="descriptions/desc_ca.txt" lang="ca" />
+    <src xlink:href="descriptions/desc_de.txt" lang="de" />
+    <src xlink:href="descriptions/desc_nl.txt" lang="nl" />
+    <src xlink:href="descriptions/desc_nn.txt" lang="nn" />
+    <src xlink:href="descriptions/desc_es.txt" lang="es" />
+    <src xlink:href="descriptions/desc_fi.txt" lang="fi" />
+    <src xlink:href="descriptions/desc_fr.txt" lang="fr" />
+    <src xlink:href="descriptions/desc_it.txt" lang="it" />
+    <src xlink:href="descriptions/desc_pt_BR.txt" lang="pt_BR" />
+    <src xlink:href="descriptions/desc_cs.txt" lang="cs" />
+    <src xlink:href="descriptions/desc_pl.txt" lang="pl" />
+    <src xlink:href="descriptions/desc_ru.txt" lang="ru" />
+    <src xlink:href="descriptions/desc_uk.txt" lang="uk" />
+    <src xlink:href="descriptions/desc_tr.txt" lang="tr" />
   </extension-description>
   
 </description> 
