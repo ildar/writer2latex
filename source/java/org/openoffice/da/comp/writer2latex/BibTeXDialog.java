@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-18)
+ *  Version 1.6 (2015-04-01)
  *
  */ 
  
@@ -42,12 +42,17 @@ import com.sun.star.beans.XPropertySet;
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
+import com.sun.star.container.XIndexAccess;
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.IllegalArgumentException;
+import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
+import com.sun.star.lang.XServiceInfo;
 import com.sun.star.text.XDependentTextField;
+import com.sun.star.text.XDocumentIndex;
+import com.sun.star.text.XDocumentIndexesSupplier;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
@@ -432,7 +437,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	    	// Collect identifiers of fields that were not updated (to inform the user)
 	    	Set<String> notUpdated = new HashSet<String>();
 	    	
-	    	// Traverse all text fields
+	    	// Traverse all text fields and update all bibliography fields
 			XTextFieldsSupplier xSupplier = (XTextFieldsSupplier) UnoRuntime.queryInterface(
 					XTextFieldsSupplier.class, xFrame.getController().getModel());
 			XEnumerationAccess fields = xSupplier.getTextFields();
@@ -443,13 +448,38 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 					if (AnyConverter.isObject(elm)) {
 						XTextField xTextField = (XTextField) AnyConverter.toObject(XTextField.class, elm);
 						if (xTextField!=null) {
-							String sId = updateTextField(xTextField, readers);
-							if (sId!=null) {
-								notUpdated.add(sId);
+							XServiceInfo xInfo = UnoRuntime.queryInterface(XServiceInfo.class, xTextField);
+							if (xInfo.supportsService("com.sun.star.text.TextField.Bibliography")) {
+								String sId = updateBibField(xTextField, readers);
+								if (sId!=null) {
+									notUpdated.add(sId);
+								}
 							}
 						}
 					}
 				} catch (NoSuchElementException e) {
+				} catch (WrappedTargetException e) {
+				}
+			}
+			
+			// Traverse all indexes and update bibliographies
+			XDocumentIndexesSupplier xIndexSupplier = (XDocumentIndexesSupplier) UnoRuntime.queryInterface(
+					XDocumentIndexesSupplier.class, xFrame.getController().getModel());
+			XIndexAccess xIndexAccess = xIndexSupplier.getDocumentIndexes();
+			
+			int nIndexCount = xIndexAccess.getCount();
+			for (int i=0; i<nIndexCount; i++) {
+				try {
+					Object indexElm = xIndexAccess.getByIndex(i);
+					if (AnyConverter.isObject(indexElm)) {
+						XDocumentIndex xDocumentIndex = (XDocumentIndex) AnyConverter.toObject(XDocumentIndex.class, indexElm);
+						if (xDocumentIndex!=null) {
+							if ("com.sun.star.text.Bibliography".equals(xDocumentIndex.getServiceName())) {
+								xDocumentIndex.update();
+							}
+						}
+					}
+				} catch (IndexOutOfBoundsException e) {
 				} catch (WrappedTargetException e) {
 				}
 			}
@@ -482,8 +512,8 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	return readers;
     }
     
-    // Update a text field, returning the identifier on failure and null on success(!)
-    private String updateTextField(XTextField xTextField, BibTeXReader[] readers) {
+    // Update a bibliography field, returning the identifier on failure and null on success(!)
+    private String updateBibField(XTextField xTextField, BibTeXReader[] readers) {
         XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xTextField);
         if (xPropSet!=null) {
 			try {
@@ -511,7 +541,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 					}
 				}
 			} catch (UnknownPropertyException e) {
+				System.out.println(e.getMessage());
 			} catch (WrappedTargetException e) {
+				System.out.println(e.getMessage());
 			}
         }
         return null;
