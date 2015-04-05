@@ -36,6 +36,10 @@
 		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
           name="Export XHTML or EPUB files">EPUB [Writer2xhtml]</link></paragraph>
 			</listitem>
+			<listitem>
+		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
+          name="Export XHTML or EPUB files">EPUB 3 [Writer2xhtml]</link></paragraph>
+			</listitem>
 		</list>
         
         <paragraph role="paragraph" xml-lang="en-US">It further adds a number of entries to the <emph>File - Export</emph> 
@@ -58,7 +62,8 @@
         <paragraph role="heading" level="2" xml-lang="en-US">Using the Writer2xhtml toolbar</paragraph>
 
         <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds a toolbar in Writer and Calc,
-        providing the following commands.</paragraph>
+        providing the following commands. You can <link href="org.openoffice.da.writer2xhtml.oxt/settings.xhp"
+          name="Writer2xhtml toolbar settings">configure</link> the behavior of the toolbar.</paragraph>
 
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
           name="Export XHTML files">Publish to XHTML</link></paragraph>

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-02-18)
+ *  Version 1.6 (2015-04-05)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -140,7 +140,7 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     
 	/** Postprocess the converted document with LaTeX and display the result
 	 */
-    @Override protected void postProcess(String sURL) {
+    @Override protected void postProcess(String sURL, TargetFormat format) {
         if (texify==null) { texify = new TeXify(xContext); }
         File file = new File(Misc.urlToFile(getTargetPath()),getTargetFileName());
         

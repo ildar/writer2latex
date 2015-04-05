@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2lcommon.helper.StreamGobbler;
 //import java.util.Map;
 
 import com.sun.star.beans.XMultiHierarchicalPropertySet;

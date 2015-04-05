@@ -12,7 +12,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Before you can use Writer2LaTeX you must configure it to use your LaTeX
         distribution as well as viewers for the different output formats.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Select <emph>Tools - Options - %PRODUCTNAME Writer - Writer2LaTeX toolbar - Applications</emph>
+        	Select <emph>Tools - Options - Writer2LaTeX toolbar - Applications</emph>
         </section>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Prerequisites</paragraph>

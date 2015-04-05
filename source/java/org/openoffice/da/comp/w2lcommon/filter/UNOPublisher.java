@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-01-09)
+ *  Version 1.6 (2015-04-05)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -85,7 +85,7 @@ public class UNOPublisher {
      *  (5) Post process the document, e.g. displaying the result
      * 
      * @param format the target format
-     * @return true if the publishing was succesful
+     * @return true if the publishing was successful
      */
     public boolean publish(TargetFormat format) {
         if (documentSaved() && updateMediaProperties(format)) {
@@ -131,7 +131,7 @@ public class UNOPublisher {
 			}
 	        xStatus.setValue(7); // Document is converted, that's 70%
 	        
-	        postProcess(getTargetURL(format));
+	        postProcess(getTargetURL(format),format);
 	        
 	        xStatus.setValue(10); // Export is finished (The user will usually not see this...)
 	        xStatus.end();
@@ -161,8 +161,9 @@ public class UNOPublisher {
     /** Post process the document after conversion.
      * 
      *  @param format URL of the converted document
+     *  @param format the target format
      */
-    protected void postProcess(String sTargetURL) {
+    protected void postProcess(String sTargetURL, TargetFormat format) {
     }
     
     /** Check that the document is saved in a location, we can use

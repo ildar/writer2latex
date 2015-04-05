@@ -16,23 +16,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-03-30)
+ *  Version 1.6 (2015-04-05)
  *
  */ 
  
-package org.openoffice.da.comp.writer2latex;
+package org.openoffice.da.comp.w2lcommon.helper;
 
 import java.io.*;
 
-class StreamGobbler extends Thread {
+public class StreamGobbler extends Thread {
     InputStream is;
     String type;
     
-    StreamGobbler(InputStream is, String type) {
+    public StreamGobbler(InputStream is, String type) {
         this.is = is;
         this.type = type;
     }

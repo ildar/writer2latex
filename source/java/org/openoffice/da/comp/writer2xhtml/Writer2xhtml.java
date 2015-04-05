@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-01-09)
+ *  Version 1.6 (2015-04-05)
  *
  */ 
  
@@ -28,6 +28,7 @@ package org.openoffice.da.comp.writer2xhtml;
 
 // TODO: Create common base for dispatcher classes
 
+import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lib.uno.helper.WeakBase;
@@ -36,6 +37,8 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
+import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
        
 /** This class implements the ui (dispatch) commands provided by Writer2xhtml.
  */
@@ -57,10 +60,6 @@ public final class Writer2xhtml extends WeakBase
     public static final String __serviceName = "com.sun.star.frame.ProtocolHandler"; 
     private static final String[] m_serviceNames = { __serviceName };
     
-    // TODO: These should be configurable
-    private TargetFormat xhtmlFormat = TargetFormat.html5;
-    private TargetFormat epubFormat = TargetFormat.epub3;    
-      
     public Writer2xhtml(XComponentContext xContext) {
         m_xContext = xContext;
     }
@@ -129,11 +128,11 @@ public final class Writer2xhtml extends WeakBase
         com.sun.star.beans.PropertyValue[] aArguments ) {
         if ( aURL.Protocol.compareTo(PROTOCOL) == 0 ) {
             if ( aURL.Path.compareTo("PublishAsXHTML") == 0 ) {
-               	publish(xhtmlFormat);
+               	publishAsXhtml();
                 return;
             }
             else if ( aURL.Path.compareTo("PublishAsEPUB") == 0 ) {
-                publish(epubFormat);
+                publishAsEpub();
                 return;
             }
             else if ( aURL.Path.compareTo("EditEPUBDocumentProperties") == 0 ) {
@@ -166,6 +165,39 @@ public final class Writer2xhtml extends WeakBase
 		} catch (Exception e) {
 			// Failed to get dialog
 		}
+    }
+    
+    private void publishAsXhtml() {
+    	RegistryHelper registry = new RegistryHelper(m_xContext);
+		try {
+			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
+			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);			
+			short nXhtmlFormat = XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlFormat");
+			switch (nXhtmlFormat) {
+			case 0: publish(TargetFormat.xhtml); break; 
+			case 1: publish(TargetFormat.xhtml11); break;
+			case 2: publish(TargetFormat.xhtml_mathml); break;
+			case 3: publish(TargetFormat.html5);
+			}
+		} catch (Exception e) {
+    		// Failed to get registry view
+		}
+    }
+    
+    private void publishAsEpub() {
+    	RegistryHelper registry = new RegistryHelper(m_xContext);
+		try {
+			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
+			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);			
+			short nEpubFormat = XPropertySetHelper.getPropertyValueAsShort(xProps, "EpubFormat");
+			switch (nEpubFormat) {
+			case 0: publish(TargetFormat.epub); break;
+			case 1: publish(TargetFormat.epub3);
+			}
+		} catch (Exception e) {
+    		// Failed to get registry view
+		}
+    	
     }
     
     private void publish(TargetFormat format) {

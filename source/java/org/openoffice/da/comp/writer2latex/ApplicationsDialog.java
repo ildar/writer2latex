@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-10)
+ *  Version 1.6 (2015-04-05)
  *
  */ 
  
@@ -32,14 +32,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Vector;
 
-import com.sun.star.awt.XControl;
-import com.sun.star.awt.XControlContainer;
-import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XContainerWindowEventHandler;
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialogProvider2;
 import com.sun.star.awt.XWindow;
-import com.sun.star.beans.XPropertySet;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.uno.AnyConverter;
@@ -50,6 +46,7 @@ import com.sun.star.lib.uno.helper.WeakBase;
 
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
 import org.openoffice.da.comp.w2lcommon.helper.FilePicker;
+import org.openoffice.da.comp.w2lcommon.helper.StreamGobbler;
 
 /** This class provides a uno component which implements the configuration
  *  of applications for the Writer2LaTeX toolbar
@@ -81,24 +78,27 @@ public final class ApplicationsDialog
     // Implement XContainerWindowEventHandler
     public boolean callHandlerMethod(XWindow xWindow, Object event, String sMethod)
         throws com.sun.star.lang.WrappedTargetException {
+		XDialog xDialog = (XDialog)UnoRuntime.queryInterface(XDialog.class, xWindow);
+		DialogAccess dlg = new DialogAccess(xDialog);
+
         try {
             if (sMethod.equals("external_event") ){
-                return handleExternalEvent(xWindow, event);
+                return handleExternalEvent(dlg, event);
             }
             else if (sMethod.equals("ApplicationChange")) {
-                return changeApplication(xWindow);
+                return changeApplication(dlg);
             }
             else if (sMethod.equals("BrowseClick")) {
-                return browseForExecutable(xWindow);
+                return browseForExecutable(dlg);
             }
             else if (sMethod.equals("ExecutableUnfocus")) {
-                return updateApplication(xWindow);
+                return updateApplication(dlg);
             }
             else if (sMethod.equals("OptionsUnfocus")) {
-                return updateApplication(xWindow);
+                return updateApplication(dlg);
             }
             else if (sMethod.equals("AutomaticClick")) {
-                return autoConfigure(xWindow);
+                return autoConfigure(dlg);
             }
         }
         catch (com.sun.star.uno.RuntimeException e) {
@@ -131,7 +131,7 @@ public final class ApplicationsDialog
 	
     // Private stuff
     
-    private boolean handleExternalEvent(com.sun.star.awt.XWindow xWindow, Object aEventObject)
+    private boolean handleExternalEvent(DialogAccess dlg, Object aEventObject)
         throws com.sun.star.uno.Exception {
         try {
             String sMethod = AnyConverter.toString(aEventObject);
@@ -140,7 +140,7 @@ public final class ApplicationsDialog
                 return true;
             } else if (sMethod.equals("back") || sMethod.equals("initialize")) {
                 externalApps.load();
-                return changeApplication(xWindow);
+                return changeApplication(dlg);
             }
         }
         catch (com.sun.star.lang.IllegalArgumentException e) {
@@ -150,35 +150,35 @@ public final class ApplicationsDialog
         return false;
     }
 	
-    private boolean changeApplication(XWindow xWindow) {
-        String sAppName = getSelectedAppName(xWindow);
+    private boolean changeApplication(DialogAccess dlg) {
+        String sAppName = getSelectedAppName(dlg);
         if (sAppName!=null) {
             String[] s = externalApps.getApplication(sAppName);
-            setComboBoxText(xWindow, "Executable", s[0]);
-            setComboBoxText(xWindow, "Options", s[1]);
+            dlg.setComboBoxText("Executable", s[0]);
+            dlg.setComboBoxText("Options", s[1]);
         }
         return true;
     }
 	
-    private boolean browseForExecutable(XWindow xWindow) {
+    private boolean browseForExecutable(DialogAccess dlg) {
     	String sPath = filePicker.getPath();
     	if (sPath!=null) {
     		try {
-				setComboBoxText(xWindow, "Executable", new File(new URI(sPath)).getCanonicalPath());
+				dlg.setComboBoxText("Executable", new File(new URI(sPath)).getCanonicalPath());
 			}
     		catch (IOException e) {
 			}
     		catch (URISyntaxException e) {
 			}
-    		updateApplication(xWindow);
+    		updateApplication(dlg);
     	}     
     	return true;
     }
 	
-    private boolean updateApplication(XWindow xWindow) {
-        String sAppName = getSelectedAppName(xWindow);
+    private boolean updateApplication(DialogAccess dlg) {
+        String sAppName = getSelectedAppName(dlg);
         if (sAppName!=null) {
-            externalApps.setApplication(sAppName, getComboBoxText(xWindow, "Executable"), getComboBoxText(xWindow, "Options"));
+            externalApps.setApplication(sAppName, dlg.getComboBoxText("Executable"), dlg.getComboBoxText("Options"));
         }
         return true;
     }
@@ -281,7 +281,7 @@ public final class ApplicationsDialog
     }
 
     // Configure the applications automatically (OS dependent)
-    private boolean autoConfigure(XWindow xWindow) {
+    private boolean autoConfigure(DialogAccess dlg) {
 		String sOsName = System.getProperty("os.name");
 		String sOsVersion = System.getProperty("os.version");
 		String sOsArch = System.getProperty("os.arch");
@@ -380,12 +380,12 @@ public final class ApplicationsDialog
     	// sudo apt-get install texlive-latex-extra
     	// sudo apt-get install tex4ht
 		displayAutoConfigInfo(info.toString());
-    	changeApplication(xWindow);
+    	changeApplication(dlg);
         return true;
     }
 	
-    private String getSelectedAppName(XWindow xWindow) {
-        short nItem = getListBoxSelectedItem(xWindow, "Application");
+    private String getSelectedAppName(DialogAccess dlg) {
+        short nItem = dlg.getListBoxSelectedItem("Application");
         //String sAppName = null;
         switch (nItem) {
             case 0: return ExternalApps.LATEX;
@@ -417,7 +417,6 @@ public final class ApplicationsDialog
     	}
      }
 
-    
     private void displayAutoConfigInfo(String sText) {
     	XDialog xDialog = getDialog("W2LDialogs2.AutoConfigInfo");
     	if (xDialog!=null) {
@@ -428,57 +427,6 @@ public final class ApplicationsDialog
     	}
     }
     
-    // Some helpers copied from DialogBase
-    private XPropertySet getControlProperties(XWindow xWindow, String sControlName) {
-        XControlContainer xContainer = (XControlContainer)
-            UnoRuntime.queryInterface(XControlContainer.class, xWindow);
-        XControl xControl = xContainer.getControl(sControlName);
-        XControlModel xModel = xControl.getModel();
-        XPropertySet xPropertySet = (XPropertySet)
-            UnoRuntime.queryInterface(XPropertySet.class, xModel);
-        return xPropertySet;
-    }
-
-    private String getComboBoxText(XWindow xWindow, String sControlName) {
-        // Returns the text of a combobox
-        XPropertySet xPropertySet = getControlProperties(xWindow, sControlName);
-        try {
-            return (String) xPropertySet.getPropertyValue("Text");
-        }
-        catch (Exception e) {
-            // Will fail if the control does not exist or is not a combo
-            return "";
-        }
-    }
-	
-    private void setComboBoxText(XWindow xWindow, String sControlName, String sText) {
-        XPropertySet xPropertySet = getControlProperties(xWindow, sControlName);
-        try {
-            xPropertySet.setPropertyValue("Text", sText);
-        }
-        catch (Exception e) {
-            // Will fail if the control does not exist or is not a combo box or
-            // nText is an illegal value
-        }
-    }
-    
-    private short getListBoxSelectedItem(XWindow xWindow, String sControlName) {
-        // Returns the first selected element in case of a multiselection
-        XPropertySet xPropertySet = getControlProperties(xWindow, sControlName);
-        try {
-            short[] selection = (short[]) xPropertySet.getPropertyValue("SelectedItems");
-            return selection[0];
-        }
-        catch (Exception e) {
-            // Will fail if the control does not exist or is not a list box
-            return -1;
-        }
-    }
-	
-
-	
-
-	
 }
 
 
