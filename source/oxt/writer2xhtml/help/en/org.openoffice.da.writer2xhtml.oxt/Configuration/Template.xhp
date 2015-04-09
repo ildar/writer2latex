@@ -39,6 +39,8 @@
 			</listitem>
 		</list>
         <paragraph role="paragraph" xml-lang="en-US">You can change the names of the id attributes at the bottom of this page.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The template must be well-formed XML. If this is not the case, an error message
+        is displayed below the template. A template with errors will be ignored in the export.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">A simple template including a header might look like this:</paragraph>
 		<paragraph role="code" xml-lang="en-US">
 &lt;html&gt;<br/>

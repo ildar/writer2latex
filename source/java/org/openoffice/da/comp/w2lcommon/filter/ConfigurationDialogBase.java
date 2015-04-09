@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2014 by Henrik Just
+*  Copyright: 2002-2015 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.4 (2014-09-16)
+*  Version 1.5 (2015-04-09)
 *
 */ 
 
@@ -329,7 +329,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		public CustomFileHandler() {
 			super();
 			try {
-			sCustomFileName = xPathSub.substituteVariables("$(user)/"+getFileName(), false);
+				sCustomFileName = xPathSub.substituteVariables("$(user)/"+getFileName(), false);
 			}
 			catch (NoSuchElementException e) {
 				sCustomFileName = getFileName();
@@ -392,7 +392,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 			useCustomInner(dlg,bUseCustom);
 		}
 		
-		private void loadCustomClick(DialogAccess dlg) {
+		protected void loadCustomClick(DialogAccess dlg) {
 			String sFileName=filePicker.getPath();
 			if (sFileName!=null) {
 				String sText = loadFile(sFileName);

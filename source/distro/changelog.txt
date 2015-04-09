@@ -4,6 +4,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
+[w2x] The template page in the configuration now displays an error message if the template is not well-formed XML.
+
 [w2x] Added toolbar configuration dialog: Select XHTML and EPUB export format and behavior after export (do nothing,
   display in default viewer or display with custom application) 
 

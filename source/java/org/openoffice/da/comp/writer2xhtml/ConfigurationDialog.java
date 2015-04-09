@@ -20,16 +20,20 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.6 (2015-01-14)
+*  Version 1.6 (2015-04-09)
 *
 */ 
 
 package org.openoffice.da.comp.writer2xhtml;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import org.openoffice.da.comp.w2lcommon.filter.ConfigurationDialogBase;
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
+import writer2latex.api.Converter;
+import writer2latex.api.ConverterFactory;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.lang.XServiceInfo;
@@ -95,7 +99,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     // Implement remaining method from XContainerWindowEventHandler
     public String[] getSupportedMethodNames() {
     	String[] sNames = { "EncodingChange", // General
-    			"CustomTemplateChange", "LoadTemplateClick", // Template
+    			"CustomTemplateChange", "LoadTemplateClick", "TemplateKeyup", // Template
     			"UseCustomStylesheetChange", "IncludeCustomStylesheetClick", "LoadStylesheetClick",
     			"NewResourceClick", "DeleteResourceClick", // Stylesheet
     			"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "LoadDefaultsClick" // Styles1
@@ -170,6 +174,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	}
     	
     	protected void useCustomInner(DialogAccess dlg, boolean bEnable) {
+    		dlg.setControlEnabled("TestTemplateLabel", bEnable);
     		dlg.setControlEnabled("ContentIdLabel", bEnable);
     		dlg.setControlEnabled("ContentId", bEnable);
     		dlg.setControlEnabled("HeaderIdLabel", bEnable);
@@ -181,12 +186,15 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	}
 
     	@Override protected void setControls(DialogAccess dlg) {
+    		System.out.println("set controls");
     		super.setControls(dlg);
+    		System.out.println("done setting controls");
     		String[] sCustomIds = config.getOption("template_ids").split(",");
     		if (sCustomIds.length>0) { dlg.setComboBoxText("ContentId", sCustomIds[0]); }
     		if (sCustomIds.length>1) { dlg.setComboBoxText("HeaderId", sCustomIds[1]); }
     		if (sCustomIds.length>2) { dlg.setComboBoxText("FooterId", sCustomIds[2]); }
     		if (sCustomIds.length>3) { dlg.setComboBoxText("PanelId", sCustomIds[3]); }
+    		testTemplate(dlg);
     	}
 
     	@Override protected void getControls(DialogAccess dlg) {
@@ -198,6 +206,38 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     				dlg.getComboBoxText("PanelId").trim());
     	}
     	
+    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
+    		if (super.handleEvent(dlg, sMethod)) {
+    			return true;
+    		}
+    		if (sMethod.equals("TemplateKeyup")) {
+    			testTemplate(dlg);
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+		@Override protected void loadCustomClick(DialogAccess dlg) {
+			super.loadCustomClick(dlg);
+			testTemplate(dlg);
+		}
+    	
+    	private void testTemplate(DialogAccess dlg) {
+    		Converter converter = ConverterFactory.createConverter("text/html");
+    		String sTemplate = dlg.getTextFieldText("CustomTemplate").trim();
+    		if (sTemplate.length()>0) { // Only display error message if there is content
+	    		try {
+					converter.readTemplate(new ByteArrayInputStream(sTemplate.getBytes()));
+		    		dlg.setLabelText("TestTemplateLabel", "");
+				} catch (IOException e) {
+		    		dlg.setLabelText("TestTemplateLabel", "ERROR: "+e.getMessage());
+				}
+    		}
+    		else {
+	    		dlg.setLabelText("TestTemplateLabel", "");    			
+    		}
+    	}
+
     }
 
     private class StylesheetsHandler extends CustomFileHandler {
