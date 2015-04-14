@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-15)
+ *  Version 1.6 (2015-04-14)
  *
  */
 
@@ -277,7 +277,7 @@ public class HeadingConverter extends ConverterHelper {
         ListStyle outline = ofr.getOutlineStyle();
         String[] sNumFormat = new String[6];
         for (int i=nMaxLevel; i>=1; i--) {
-            sNumFormat[i] = ListStyleConverter.numFormat(outline.getLevelProperty(i,
+            sNumFormat[i] = ListConverter.numFormat(outline.getLevelProperty(i,
                                XMLString.STYLE_NUM_FORMAT));
             if (sNumFormat[i]==null || "".equals(sNumFormat[i])) {
                 nSecnumdepth = i-1;

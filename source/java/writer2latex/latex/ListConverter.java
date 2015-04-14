@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  ListStyleConverter.java
+ *  ListConverter.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -16,37 +16,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-06)
+ *  Version 1.6 (2015-04-14)
  *
  */
-
 package writer2latex.latex;
 
 import java.util.Hashtable;
 
-import writer2latex.util.*;
-import writer2latex.office.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
+import writer2latex.office.ListStyle;
+import writer2latex.office.OfficeReader;
+import writer2latex.office.XMLString;
+import writer2latex.util.Misc;
 
-/* This class creates LaTeX code from OOo list styles
- */
-public class ListStyleConverter extends StyleConverter {
+public class ListConverter extends StyleConverter {
 	boolean bNeedSaveEnumCounter = false;
 	private Hashtable<String, String[]> listStyleLevelNames = new Hashtable<String, String[]>();
 
-	/** <p>Constructs a new <code>ListStyleConverter</code>.</p>
-	 */
-	public ListStyleConverter(OfficeReader ofr, LaTeXConfig config,
-			ConverterPalette palette) {
-		super(ofr,config,palette);
-	}
+	
+    /** Construct a new <code>ListConverter</code>
+     */
+    public ListConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+        super(ofr,config,palette);
+    }
 
-	public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	@Override public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
 		if (config.formatting()>=LaTeXConfig.CONVERT_MOST || !styleNames.isEmpty()) {
 			decl.append("% List styles").nl();
 			// May need an extra counter to handle continued numbering in lists
@@ -66,8 +69,149 @@ public class ListStyleConverter extends StyleConverter {
 		}
 	}
 
+    /** <p> Process a list (text:ordered-lst or text:unordered-list tag)</p>
+     * @param node The element containing the list
+     * @param ldp the <code>LaTeXDocumentPortion</code> to which
+     * LaTeX code should be added
+     * @param oc the current context
+     */
+    public void handleList(Element node, LaTeXDocumentPortion ldp, Context oc) {
+        // Set up new context
+        Context ic = (Context) oc.clone();
+        ic.incListLevel();
+        if ("true".equals(node.getAttribute(XMLString.TEXT_CONTINUE_NUMBERING))) { ic.setInContinuedList(true); }
+
+        // Get the style name, if we don't know it already
+        if (ic.getListStyleName()==null) {
+            ic.setListStyleName(node.getAttribute(XMLString.TEXT_STYLE_NAME));
+        }
+
+        // Use the style to determine the type of list
+        ListStyle style = ofr.getListStyle(ic.getListStyleName());
+        boolean bOrdered = style!=null && style.isNumber(ic.getListLevel());
+
+        // If the list contains headings, ignore it!        
+        if (ic.isIgnoreLists() || listContainsHeadings(node)) {
+            ic.setIgnoreLists(true);
+            traverseList(node,ldp,ic);
+            return;
+        }
+
+        // Apply the style
+        BeforeAfter ba = new BeforeAfter();
+        applyListStyle(bOrdered,ba,ic);
+			
+        // Export the list
+        if (ba.getBefore().length()>0) { ldp.append(ba.getBefore()).nl(); }
+        traverseList(node,ldp,ic);
+        if (ba.getAfter().length()>0) { ldp.append(ba.getAfter()).nl(); }
+    }
+
+    /*
+     * Process the contents of a list
+     */
+    private void traverseList (Element node, LaTeXDocumentPortion ldp, Context oc) {
+        if (node.hasChildNodes()) {
+            NodeList list = node.getChildNodes();
+            int nLen = list.getLength();
+            
+            for (int i = 0; i < nLen; i++) {
+                Node child = list.item(i);
+                
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    String nodeName = child.getNodeName();
+					
+                    palette.getInfo().addDebugInfo((Element)child,ldp);
+                    
+                    if (nodeName.equals(XMLString.TEXT_LIST_ITEM)) {
+                        handleListItem((Element)child,ldp,oc);
+                    }
+                    if (nodeName.equals(XMLString.TEXT_LIST_HEADER)) {
+                        handleListItem((Element)child,ldp,oc);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void handleListItem(Element node, LaTeXDocumentPortion ldp, Context oc) {
+        // Are we ignoring this list?
+        if (oc.isIgnoreLists()) {
+            palette.getBlockCv().traverseBlockText(node,ldp,oc);
+            return;
+        }
+        
+        // Apply the style
+        BeforeAfter ba = new BeforeAfter();
+        applyListItemStyle(
+            oc.getListStyleName(), oc.getListLevel(),
+            node.getNodeName().equals(XMLString.TEXT_LIST_HEADER),
+            "true".equals(node.getAttribute(XMLString.TEXT_RESTART_NUMBERING)),
+            Misc.getPosInteger(node.getAttribute(XMLString.TEXT_START_VALUE),1)-1,
+            ba,oc);
+			
+        // export the list item (note the special treatment of lists in tables)
+        if (ba.getBefore().length()>0) {
+            ldp.append(ba.getBefore());
+            if (config.formatting()>=LaTeXConfig.CONVERT_MOST && !oc.isInTable()) { ldp.nl(); }
+        }
+        palette.getBlockCv().traverseBlockText(node,ldp,oc);
+        if (ba.getAfter().length()>0 || oc.isInTable()) { ldp.append(ba.getAfter()).nl(); }
+    }
+
+    /*
+     * Helper: Check to see, if this list contains headings
+     * (in that case we will ignore the list!)  
+     */
+    private boolean listContainsHeadings (Node node) {
+        if (node.hasChildNodes()) {
+            NodeList nList = node.getChildNodes();
+            int len = nList.getLength();
+            for (int i = 0; i < len; i++) {
+                Node child = nList.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    String nodeName = child.getNodeName();
+                    if (nodeName.equals(XMLString.TEXT_LIST_ITEM)) {
+                        if (listItemContainsHeadings(child)) return true;
+                    }
+                    if (nodeName.equals(XMLString.TEXT_LIST_HEADER)) {
+                        if (listItemContainsHeadings(child)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean listItemContainsHeadings(Node node) {
+        if (node.hasChildNodes()) {
+            NodeList nList = node.getChildNodes();
+            int len = nList.getLength();
+            for (int i = 0; i < len; i++) {
+                Node child = nList.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    String nodeName = child.getNodeName();
+                    if(nodeName.equals(XMLString.TEXT_H)) {
+                        return true;
+                    }
+                    if (nodeName.equals(XMLString.TEXT_LIST)) {
+                        if (listContainsHeadings(child)) return true;
+                    }
+                    if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
+                        if (listContainsHeadings(child)) return true;
+                    }
+                    if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
+                        if (listContainsHeadings(child)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    // Convert style information
 	/** <p>Apply a list style to an ordered or unordered list.</p> */
-	public void applyListStyle(boolean bOrdered, BeforeAfter ba, Context oc) {
+	private void applyListStyle(boolean bOrdered, BeforeAfter ba, Context oc) {
 		// Step 1. We may have a style map, this always takes precedence
 		String sDisplayName = ofr.getListStyles().getDisplayName(oc.getListStyleName());
 		if (config.getListStyleMap().contains(sDisplayName)) {
@@ -134,7 +278,7 @@ public class ListStyleConverter extends StyleConverter {
 	}
 
 	/** <p>Apply a list style to a list item.</p> */
-	public void applyListItemStyle(String sStyleName, int nLevel, boolean bHeader,
+	private void applyListItemStyle(String sStyleName, int nLevel, boolean bHeader,
 			boolean bRestart, int nStartValue, BeforeAfter ba, Context oc) {
 		// Step 1. We may have a style map, this always takes precedence
 		String sDisplayName = ofr.getListStyles().getDisplayName(sStyleName);

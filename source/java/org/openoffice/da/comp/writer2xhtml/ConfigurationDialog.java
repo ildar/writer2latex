@@ -186,9 +186,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	}
 
     	@Override protected void setControls(DialogAccess dlg) {
-    		System.out.println("set controls");
     		super.setControls(dlg);
-    		System.out.println("done setting controls");
     		String[] sCustomIds = config.getOption("template_ids").split(",");
     		if (sCustomIds.length>0) { dlg.setComboBoxText("ContentId", sCustomIds[0]); }
     		if (sCustomIds.length>1) { dlg.setComboBoxText("HeaderId", sCustomIds[1]); }

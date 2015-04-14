@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-19)
+ *  Version 1.6 (2015-04-14)
  *
  */
 
@@ -65,7 +65,6 @@ public final class ConverterPalette extends ConverterBase {
     private I18n i18n;
     private ColorConverter colorCv;
     private CharStyleConverter charSc;
-    private ListStyleConverter listSc;
     private PageStyleConverter pageSc;
     private BlockConverter blockCv;
     private ParConverter parCv;
@@ -74,6 +73,7 @@ public final class ConverterPalette extends ConverterBase {
     private BibConverter bibCv;
     private SectionConverter sectionCv;
     private TableConverter tableCv;
+    private ListConverter listCv;
     private NoteConverter noteCv;
     private CaptionConverter captionCv;
     private InlineConverter inlineCv;
@@ -102,7 +102,6 @@ public final class ConverterPalette extends ConverterBase {
     public I18n getI18n() { return i18n; }
     public ColorConverter getColorCv() { return colorCv; }
     public CharStyleConverter getCharSc() { return charSc; }
-    public ListStyleConverter getListSc() { return listSc; }
     public PageStyleConverter getPageSc() { return pageSc; }
     public BlockConverter getBlockCv() { return blockCv; }
     public ParConverter getParCv() { return parCv; }
@@ -111,6 +110,7 @@ public final class ConverterPalette extends ConverterBase {
     public BibConverter getBibCv() { return bibCv; }
     public SectionConverter getSectionCv() { return sectionCv; }
     public TableConverter getTableCv() { return tableCv; }
+    public ListConverter getListCv() { return listCv; }
     public NoteConverter getNoteCv() { return noteCv; }
     public CaptionConverter getCaptionCv() { return captionCv; }
     public InlineConverter getInlineCv() { return inlineCv; }
@@ -157,7 +157,6 @@ public final class ConverterPalette extends ConverterBase {
         }
         colorCv = new ColorConverter(ofr,config,this);
         charSc = new CharStyleConverter(ofr,config,this);
-        listSc = new ListStyleConverter(ofr,config,this);
         pageSc = new PageStyleConverter(ofr,config,this);
         blockCv = new BlockConverter(ofr,config,this);
         parCv = new ParConverter(ofr,config,this);
@@ -166,6 +165,7 @@ public final class ConverterPalette extends ConverterBase {
         bibCv = new BibConverter(ofr,config,this);
         sectionCv = new SectionConverter(ofr,config,this);
         tableCv = new TableConverter(ofr,config,this);
+        listCv = new ListConverter(ofr,config,this);
         noteCv = new NoteConverter(ofr,config,this);
         captionCv = new CaptionConverter(ofr,config,this);
         inlineCv = new InlineConverter(ofr,config,this);
@@ -211,13 +211,13 @@ public final class ConverterPalette extends ConverterBase {
         charSc.appendDeclarations(packages,declarations);
         headingCv.appendDeclarations(packages,declarations);
         parCv.appendDeclarations(packages,declarations);
-        listSc.appendDeclarations(packages,declarations);
         pageSc.appendDeclarations(packages,declarations);
         blockCv.appendDeclarations(packages,declarations);
         indexCv.appendDeclarations(packages,declarations);
         bibCv.appendDeclarations(packages,declarations);
         sectionCv.appendDeclarations(packages,declarations);
         tableCv.appendDeclarations(packages,declarations);
+        listCv.appendDeclarations(packages,declarations);
         captionCv.appendDeclarations(packages,declarations);
         inlineCv.appendDeclarations(packages,declarations);
         fieldCv.appendDeclarations(packages,declarations);

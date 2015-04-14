@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2015-04-15)
  *  
  */
  
@@ -293,6 +293,9 @@ public class TableFormatter extends ConverterHelper {
         }
 		
     }
+    
+    @Override public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	}
 	
     /** is this a longtable? */
     public boolean isLongtable() { return bIsLongtable; }
@@ -467,4 +470,5 @@ public class TableFormatter extends ConverterHelper {
         palette.getColorCv().applyBgColor("\\cellcolor",sCellColor[nRow][nCol],ba,context);
 
     }
+
 }

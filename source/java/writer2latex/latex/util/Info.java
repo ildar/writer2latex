@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-09-08)
+ *  Version 1.6 (2015-04-15)
  *
  */
 
@@ -42,6 +42,10 @@ import writer2latex.latex.ConverterPalette;
  *  <p>This class creates various information to the user about the conversion.</p>
  */
 public class Info extends ConverterHelper {
+	
+	@Override public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+		// Currently nothing
+	}
 	
     public Info(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
@@ -71,6 +75,5 @@ public class Info extends ConverterHelper {
             ldp.append(" ").append(sAttribute).append("=\"").append(sValue).append("\"");
         }
     }
-
 
 }

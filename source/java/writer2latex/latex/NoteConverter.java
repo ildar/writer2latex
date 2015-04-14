@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-18)
+ *  Version 1.6 (2015-04-15)
  *
  */
 
@@ -298,15 +298,15 @@ public class NoteConverter extends ConverterHelper {
                     }
 					
                     else if (nodeName.equals(XMLString.TEXT_LIST)) { // oasis
-                        palette.getBlockCv().handleList(child,ldp,oc);
+                        palette.getListCv().handleList(child,ldp,oc);
                     }
 
                     if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                        palette.getBlockCv().handleList(child,ldp,oc);
+                        palette.getListCv().handleList(child,ldp,oc);
                     }
                     
                     if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
-                        palette.getBlockCv().handleList(child,ldp,oc);
+                        palette.getListCv().handleList(child,ldp,oc);
                     }
                 }
             }
@@ -343,7 +343,7 @@ public class NoteConverter extends ConverterHelper {
 		String sFormat = notes.getProperty(XMLString.STYLE_NUM_FORMAT);
         if (sFormat!=null) {
             ldp.append("\\renewcommand\\the").append(sType).append("note{")
-               .append(ListStyleConverter.numFormat(sFormat))
+               .append(ListConverter.numFormat(sFormat))
                .append("{").append(sType).append("note}}").nl();
         }
         

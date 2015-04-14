@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-19
+ *  Version 1.6 (2015-04-15)
  *
  */
 
@@ -271,7 +271,7 @@ public class PageStyleConverter extends StyleConverter {
                     String sNumFormat = pageLayout.getProperty(XMLString.STYLE_NUM_FORMAT);
                     if (sNumFormat!=null) {
                     ldp.append("  \\renewcommand\\thepage{")
-                       .append(ListStyleConverter.numFormat(sNumFormat))
+                       .append(ListConverter.numFormat(sNumFormat))
                        .append("{page}}").nl();
                     }
                     String sPageNumber = pageLayout.getProperty(XMLString.STYLE_FIRST_PAGE_NUMBER);

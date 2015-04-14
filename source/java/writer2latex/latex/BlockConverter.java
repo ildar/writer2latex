@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-04-30)
+ *  Version 1.6 (2015-04-15)
  *
  */
 
@@ -30,18 +30,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
-//import writer2latex.latex.util.HeadingMap;
 import writer2latex.latex.util.StyleMap;
-import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
-//import writer2latex.office.TableReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
 /**
- *  <p>This class handles basic block content, including the main text body,
+ *  This class handles basic block content, such as the main text body,
  *  sections, tables, lists, headings and paragraphs.</p>
  */
 public class BlockConverter extends ConverterHelper {
@@ -144,15 +140,15 @@ public class BlockConverter extends ConverterHelper {
                     }
                     
                     else if (sTagName.equals(XMLString.TEXT_LIST)) { // oasis
-                        handleList(child,ldp,ic);
+                        palette.getListCv().handleList(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_UNORDERED_LIST)) {
-                        handleList(child,ldp,ic);
+                    	palette.getListCv().handleList(child,ldp,ic);
                     }
                     
                     else if (sTagName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                        handleList(child,ldp,ic);
+                    	palette.getListCv().handleList(child,ldp,ic);
                     }
                     else if (sTagName.equals(XMLString.TABLE_TABLE)) {
                         // Next node *could* be a caption
@@ -230,148 +226,5 @@ public class BlockConverter extends ConverterHelper {
 
 
     }
-
-
-    /** <p> Process a list (text:ordered-lst or text:unordered-list tag)</p>
-     * @param node The element containing the list
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
-     * @param oc the current context
-     */
-    public void handleList(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        // Set up new context
-        Context ic = (Context) oc.clone();
-        ic.incListLevel();
-        if ("true".equals(node.getAttribute(XMLString.TEXT_CONTINUE_NUMBERING))) { ic.setInContinuedList(true); }
-
-        // Get the style name, if we don't know it already
-        if (ic.getListStyleName()==null) {
-            ic.setListStyleName(node.getAttribute(XMLString.TEXT_STYLE_NAME));
-        }
-
-        // Use the style to determine the type of list
-        ListStyle style = ofr.getListStyle(ic.getListStyleName());
-        boolean bOrdered = style!=null && style.isNumber(ic.getListLevel());
-
-        // If the list contains headings, ignore it!        
-        if (ic.isIgnoreLists() || listContainsHeadings(node)) {
-            ic.setIgnoreLists(true);
-            traverseList(node,ldp,ic);
-            return;
-        }
-
-        // Apply the style
-        BeforeAfter ba = new BeforeAfter();
-        palette.getListSc().applyListStyle(bOrdered,ba,ic);
-			
-        // Export the list
-        if (ba.getBefore().length()>0) { ldp.append(ba.getBefore()).nl(); }
-        traverseList(node,ldp,ic);
-        if (ba.getAfter().length()>0) { ldp.append(ba.getAfter()).nl(); }
-    }
-
-    /*
-     * Process the contents of a list
-     */
-    private void traverseList (Element node, LaTeXDocumentPortion ldp, Context oc) {
-        if (node.hasChildNodes()) {
-            NodeList list = node.getChildNodes();
-            int nLen = list.getLength();
-            
-            for (int i = 0; i < nLen; i++) {
-                Node child = list.item(i);
-                
-                if (child.getNodeType() == Node.ELEMENT_NODE) {
-                    String nodeName = child.getNodeName();
-					
-                    palette.getInfo().addDebugInfo((Element)child,ldp);
-                    
-                    if (nodeName.equals(XMLString.TEXT_LIST_ITEM)) {
-                        handleListItem((Element)child,ldp,oc);
-                    }
-                    if (nodeName.equals(XMLString.TEXT_LIST_HEADER)) {
-                        handleListItem((Element)child,ldp,oc);
-                    }
-                }
-            }
-        }
-    }
-    
-    private void handleListItem(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        // Are we ignoring this list?
-        if (oc.isIgnoreLists()) {
-            traverseBlockText(node,ldp,oc);
-            return;
-        }
-        
-        // Apply the style
-        BeforeAfter ba = new BeforeAfter();
-        palette.getListSc().applyListItemStyle(
-            oc.getListStyleName(), oc.getListLevel(),
-            node.getNodeName().equals(XMLString.TEXT_LIST_HEADER),
-            "true".equals(node.getAttribute(XMLString.TEXT_RESTART_NUMBERING)),
-            Misc.getPosInteger(node.getAttribute(XMLString.TEXT_START_VALUE),1)-1,
-            ba,oc);
-			
-        // export the list item (note the special treatment of lists in tables)
-        if (ba.getBefore().length()>0) {
-            ldp.append(ba.getBefore());
-            if (config.formatting()>=LaTeXConfig.CONVERT_MOST && !oc.isInTable()) { ldp.nl(); }
-        }
-        traverseBlockText(node,ldp,oc);
-        if (ba.getAfter().length()>0 || oc.isInTable()) { ldp.append(ba.getAfter()).nl(); }
-    }
-
-    /*
-     * Helper: Check to see, if this list contains headings
-     * (in that case we will ignore the list!)  
-     */
-    private boolean listContainsHeadings (Node node) {
-        if (node.hasChildNodes()) {
-            NodeList nList = node.getChildNodes();
-            int len = nList.getLength();
-            for (int i = 0; i < len; i++) {
-                Node child = nList.item(i);
-                if (child.getNodeType() == Node.ELEMENT_NODE) {
-                    String nodeName = child.getNodeName();
-                    if (nodeName.equals(XMLString.TEXT_LIST_ITEM)) {
-                        if (listItemContainsHeadings(child)) return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_LIST_HEADER)) {
-                        if (listItemContainsHeadings(child)) return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
-    private boolean listItemContainsHeadings(Node node) {
-        if (node.hasChildNodes()) {
-            NodeList nList = node.getChildNodes();
-            int len = nList.getLength();
-            for (int i = 0; i < len; i++) {
-                Node child = nList.item(i);
-                if (child.getNodeType() == Node.ELEMENT_NODE) {
-                    String nodeName = child.getNodeName();
-                    if(nodeName.equals(XMLString.TEXT_H)) {
-                        return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_LIST)) {
-                        if (listContainsHeadings(child)) return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                        if (listContainsHeadings(child)) return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
-                        if (listContainsHeadings(child)) return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-	
    
 }
