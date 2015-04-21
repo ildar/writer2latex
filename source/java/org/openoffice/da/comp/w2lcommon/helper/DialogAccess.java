@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-10-27)
+ *  Version 1.6 (2015-04-15)
  *
  */ 
 
@@ -39,8 +39,8 @@ import com.sun.star.util.Date;
  */
 public class DialogAccess {
 	
-	/** The XDialog containing the controls. The subclass must override this */
-	private Object xDialog = null;
+	/** The XDialog containing the controls. */
+	private XDialog xDialog = null;
 	
     // State of a checkbox
     
@@ -50,6 +50,14 @@ public class DialogAccess {
     
     public DialogAccess(XDialog xDialog) {
     	this.xDialog = xDialog;
+    }
+    
+    protected void setDialog(XDialog xDialog) {
+    	this.xDialog = xDialog;    	
+    }
+    
+    protected XDialog getDialog() {
+    	return this.xDialog;
     }
 
     //////////////////////////////////////////////////////////////////////////
