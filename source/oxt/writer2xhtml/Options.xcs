@@ -81,6 +81,7 @@
             <!-- Table of contents -->
             <prop oor:name="ExternalTocDepth" oor:type="xs:short" />
             <prop oor:name="IncludeToc" oor:type="xs:boolean" />
+            <prop oor:name="IncludeNCX" oor:type="xs:boolean" />
             <!-- Configurations -->
             <set oor:name="Configurations" oor:node-type="Configuration" />
             <set oor:name="Templates" oor:node-type="Template" />			

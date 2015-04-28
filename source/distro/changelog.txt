@@ -8,8 +8,10 @@ Items marked with * are work in progress
 
 [w2x] Added toolbar configuration dialog: Select XHTML and EPUB export format and behavior after export (do nothing,
   display in default viewer or display with custom application) 
+  
+[w2x] New option include_ncx to include a NCX file even if the export format is EPUB 3 
 
-[w2x] *Added EPUB 3 as export format and changed default export format for toolbar to EPUB 3
+[w2x] *Added EPUB 3 as export format and changed default export format for the toolbar to EPUB 3
 
 [all] Implementation detail: Moved descriptions to a separate folder within the extensions
 

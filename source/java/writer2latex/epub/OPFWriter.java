@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2014 by Henrik Just
+ *  Copyright: 2001-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.4 (2014-08-26)
+ *  version 1.6 (2015-04-21)
  *
  */
 
@@ -51,7 +51,7 @@ import writer2latex.util.Misc;
 public class OPFWriter extends DOMDocument {
 	private String sUID=null;
 
-	public OPFWriter(ConverterResult cr) {
+	public OPFWriter(ConverterResult cr, int nVersion) {
 		super("book", "opf");
 		
         // create DOM
@@ -69,19 +69,34 @@ public class OPFWriter extends DOMDocument {
         
         // Populate the DOM tree
         Element pack = contentDOM.getDocumentElement();
-        pack.setAttribute("version", "2.0");
+        if (nVersion==3) {
+        	pack.setAttribute("version", "3.0");
+        }
+        else {
+        	pack.setAttribute("version", "2.0");
+        }
         pack.setAttribute("xmlns","http://www.idpf.org/2007/opf");
         pack.setAttribute("unique-identifier", "BookId");
         
+        // TODO: http://sketchytech.blogspot.dk/2014/03/epub2-to-epub3-lessons-learnt-in.html
+        
         // Meta data, at least dc:title, dc:language and dc:identifier are required by the specification
+        // For EPUB 3, also dcterms:modified is required
         Element metadata = contentDOM.createElement("metadata");
         metadata.setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
-        metadata.setAttribute("xmlns:opf", "http://www.idpf.org/2007/opf");
+        if (nVersion!=3) {
+        	metadata.setAttribute("xmlns:opf", "http://www.idpf.org/2007/opf");
+        }
         pack.appendChild(metadata);
         
         // Title and language (required)
         appendElement(contentDOM, metadata, "dc:title", cr.getMetaData().getTitle());
         appendElement(contentDOM, metadata, "dc:language", cr.getMetaData().getLanguage());
+        
+        // Modification (required in EPUB 3)
+        
+        appendElement(contentDOM, metadata, "meta", cr.getMetaData().getDate())
+        	.setAttribute("property", "dcterms:modified");
         
         // Subject and keywords in ODF both map to Dublin core subjects
         if (cr.getMetaData().getSubject().length()>0) {
@@ -99,7 +114,7 @@ public class OPFWriter extends DOMDocument {
         
         // User defined meta data
         // The identifier, creator, contributor and date has an optional attribute and there may be multiple instances of
-        // the first three. The key must be in the form name[id][.attribute]
+        // the latter three. The key must be in the form name[id][.attribute]
         // where the id is some unique id amongst the instances with the same name
         // Furthermore the instances will be sorted on the id
         // Thus you can have e.g. creator1.aut="John Doe" and creator2.aut="Jane Doe", and "John Doe" will be the first author
@@ -138,29 +153,72 @@ public class OPFWriter extends DOMDocument {
         			sUID = sValue;
         		}
         		if (sAttributeValue!=null) {
-        			identifier.setAttribute("opf:scheme", sAttributeValue);
+        			if (nVersion==3) {
+        				Element meta = appendElement(contentDOM, metadata, "meta", sAttributeValue);
+        				meta.setAttribute("refines", "#BookId");
+        				meta.setAttribute("property", "identifier-type");
+        			}
+        			else {
+        				identifier.setAttribute("opf:scheme", sAttributeValue);
+        			}
         		}
         		bHasIdentifier = true;
         	}
         	else if (sKey.startsWith("creator")) {
         		Element creator = appendElement(contentDOM, metadata, "dc:creator", sValue);
-        		creator.setAttribute("opf:file-as", fileAs(sValue));
-        		if (sAttributeValue!=null) {
-        			creator.setAttribute("opf:role", sAttributeValue);
+        		creator.setAttribute("id", sKey);
+        		if (nVersion==3) {
+        			Element fileas = appendElement(contentDOM, metadata, "meta", fileAs(sValue));
+        			fileas.setAttribute("refines", "#"+sKey);
+        			fileas.setAttribute("property", "file-as");
+        			if (sAttributeValue!=null) {
+        				Element role = appendElement(contentDOM, metadata, "meta", sAttributeValue);
+        				role.setAttribute("refines", "#"+sKey);
+        				role.setAttribute("property", "role");
+        			}
+        		}
+        		else {
+	        		creator.setAttribute("opf:file-as", fileAs(sValue));
+	        		if (sAttributeValue!=null) {
+	        			creator.setAttribute("opf:role", sAttributeValue);
+	        		}
         		}
         		bHasCreator = true;
         	}
         	else if (sKey.startsWith("contributor")) {
         		Element contributor = appendElement(contentDOM, metadata, "dc:contributor", sValue);
-        		contributor.setAttribute("opf:file-as", fileAs(sValue));
-        		if (sAttributeValue!=null) {
-        			contributor.setAttribute("opf:role", sAttributeValue);
+        		contributor.setAttribute("id", sKey);
+        		if (nVersion==3) {
+        			Element fileas = appendElement(contentDOM, metadata, "meta", fileAs(sValue));
+        			fileas.setAttribute("refines", "#"+sKey);
+        			fileas.setAttribute("property", "file-as");
+        			if (sAttributeValue!=null) {
+        				Element role = appendElement(contentDOM, metadata, "meta", sAttributeValue);
+        				role.setAttribute("refines", "#"+sKey);
+        				role.setAttribute("property", "role");
+        			}
+        		}
+        		else {
+            		contributor.setAttribute("opf:file-as", fileAs(sValue));
+	        		if (sAttributeValue!=null) {
+	        			contributor.setAttribute("opf:role", sAttributeValue);
+	        		}
         		}
         	}
         	else if (sKey.startsWith("date")) {
         		Element date = appendElement(contentDOM, metadata, "dc:date", sValue);
-        		if (sAttributeValue!=null) {
-        			date.setAttribute("opf:event", sAttributeValue);
+        		date.setAttribute("id", sKey);
+        		if (nVersion==3) {
+        			if (sAttributeValue!=null) {
+        				Element event = appendElement(contentDOM, metadata, "meta", sAttributeValue);
+        				event.setAttribute("refines", "#"+sKey);
+        				event.setAttribute("property", "event");
+        			}
+        		}
+        		else {
+	        		if (sAttributeValue!=null) {
+	        			date.setAttribute("opf:event", sAttributeValue);
+	        		}
         		}
         		bHasDate = true;
         	}
@@ -196,11 +254,26 @@ public class OPFWriter extends DOMDocument {
     		sUID = UUID.randomUUID().toString(); 
     		Element identifier = appendElement(contentDOM, metadata, "dc:identifier", sUID);
     		identifier.setAttribute("id", "BookId");
-    		identifier.setAttribute("opf:scheme", "UUID");
+			if (nVersion==3) {
+				Element meta = appendElement(contentDOM, metadata, "meta", "UUID");
+				meta.setAttribute("refines", "#BookId");
+				meta.setAttribute("property", "identifier-type");
+			}
+			else {
+	    		identifier.setAttribute("opf:scheme", "UUID");
+			}
     	}
     	if (!bHasCreator && cr.getMetaData().getCreator().length()>0) {
-    		appendElement(contentDOM, metadata, "dc:creator", cr.getMetaData().getCreator())
-    			.setAttribute("opf:file-as", fileAs(cr.getMetaData().getCreator()));
+    		Element creator = appendElement(contentDOM, metadata, "dc:creator", cr.getMetaData().getCreator());
+    		creator.setAttribute("id", "creator");
+    		if (nVersion==3) {
+    			Element fileas = appendElement(contentDOM, metadata, "meta", fileAs(cr.getMetaData().getCreator()));
+    			fileas.setAttribute("refines", "#creator");
+    			fileas.setAttribute("property", "file-as");    			
+    		}
+    		else {
+    			creator.setAttribute("opf:file-as", fileAs(cr.getMetaData().getCreator()));
+    		}
     	}
     	if (!bHasDate && cr.getMetaData().getDate().length()>0) {
     		// TODO: Support meta:creation-date?
@@ -213,7 +286,9 @@ public class OPFWriter extends DOMDocument {
         pack.appendChild(manifest);
         
         Element spine = contentDOM.createElement("spine");
-        spine.setAttribute("toc", "ncx");
+        if (nVersion!=3) { // Use old NCX file for navigation
+        	spine.setAttribute("toc", "ncx");
+        }
         pack.appendChild(spine);
         
         int nMasterCount = 0;
@@ -255,11 +330,21 @@ public class OPFWriter extends DOMDocument {
         	}
         }
         
-        Element item = contentDOM.createElement("item");
-        item.setAttribute("href", "book.ncx");
-        item.setAttribute("media-type", "application/x-dtbncx+xml");
-        item.setAttribute("id", "ncx");
-        manifest.appendChild(item);
+        if (nVersion==3) { // Include the new Navigation Document
+	        Element item = contentDOM.createElement("item");
+	        item.setAttribute("href", "nav.xhtml");
+	        item.setAttribute("media-type", "application/xhtml+xml");
+	        item.setAttribute("id", "nav");
+	        item.setAttribute("properties", "nav");
+	        manifest.appendChild(item);
+        }
+        else { // Include old NCX file
+	        Element item = contentDOM.createElement("item");
+	        item.setAttribute("href", "book.ncx");
+	        item.setAttribute("media-type", "application/x-dtbncx+xml");
+	        item.setAttribute("id", "ncx");
+	        manifest.appendChild(item);
+        }
         
         // The guide may contain references to some fundamental structural components
         Element guide = contentDOM.createElement("guide");

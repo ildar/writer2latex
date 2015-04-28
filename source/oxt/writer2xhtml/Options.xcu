@@ -130,6 +130,9 @@
         <prop oor:name="IncludeToc" oor:type="xs:boolean">
             <value>true</value>
         </prop>
+        <prop oor:name="IncludeNCX" oor:type="xs:boolean">
+            <value>true</value>
+        </prop>
     </node>
     <node oor:name="XhtmlOptionsCalc">
         <prop oor:name="Config" oor:type="xs:short">

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-01-15)
+ *  version 1.6 (2015-04-21)
  *
  */
 
@@ -49,6 +49,7 @@ public class EPUBWriter implements OutputFile {
 	
 	private ConverterResult xhtmlResult;
 	private String sFileName;
+	private int nVersion;
 	//private XhtmlConfig config;
 	
 	/** Create a new <code>EPUBWriter</code> based on a <code>ConverterResult</code>.
@@ -61,6 +62,7 @@ public class EPUBWriter implements OutputFile {
 	public EPUBWriter(ConverterResult xhtmlResult, String sFileName, int nVersion, XhtmlConfig config) {
 		this.xhtmlResult = xhtmlResult;
 		this.sFileName = Misc.removeExtension(sFileName);
+		this.nVersion = nVersion;
 		//this.config = config;
 	}
 	
@@ -98,18 +100,27 @@ public class EPUBWriter implements OutputFile {
 		zos.closeEntry();
 		
 		// Then manifest
-		OPFWriter manifest = new OPFWriter(xhtmlResult);
+		OPFWriter manifest = new OPFWriter(xhtmlResult,nVersion);
 		ZipEntry manifestEntry = new ZipEntry("OEBPS/book.opf");
 		zos.putNextEntry(manifestEntry);
 		writeZipEntry(manifest,zos);
 		zos.closeEntry();
 		
 		// And content table
-		OutputFile ncx = new NCXWriter(xhtmlResult, manifest.getUid());
-		ZipEntry ncxEntry = new ZipEntry("OEBPS/book.ncx");
-		zos.putNextEntry(ncxEntry);
-		writeZipEntry(ncx,zos);
-		zos.closeEntry();
+		if (nVersion==3) {
+			OutputFile navigation = new NavigationWriter(xhtmlResult);
+			ZipEntry navigationEntry = new ZipEntry("OEBPS/nav.xhtml");
+			zos.putNextEntry(navigationEntry);
+			writeZipEntry(navigation,zos);
+			zos.closeEntry();
+		}
+		else {
+			OutputFile ncx = new NCXWriter(xhtmlResult, manifest.getUid());
+			ZipEntry ncxEntry = new ZipEntry("OEBPS/book.ncx");
+			zos.putNextEntry(ncxEntry);
+			writeZipEntry(ncx,zos);
+			zos.closeEntry();
+		}
 		
 		// Finally XHTML content
 		Iterator<OutputFile> iter = xhtmlResult.iterator();

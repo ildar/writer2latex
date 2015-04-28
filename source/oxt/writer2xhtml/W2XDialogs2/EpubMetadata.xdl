@@ -34,7 +34,6 @@
   <dlg:button dlg:id="DeleteAuthorButton" dlg:tab-index="9" dlg:left="100" dlg:top="100" dlg:width="40" dlg:height="12" dlg:value="Delete...">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:AuthorDeleteClick" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButton1" dlg:tab-index="32" dlg:left="149" dlg:top="-11" dlg:width="8" dlg:height="0" dlg:value="CommandButton1"/>
   <dlg:text dlg:id="DatesLabel" dlg:tab-index="33" dlg:left="5" dlg:top="116" dlg:width="165" dlg:height="12" dlg:value="Dates"/>
   <dlg:menulist dlg:id="Dates" dlg:tab-index="12" dlg:left="10" dlg:top="128" dlg:width="130" dlg:height="36"/>
   <dlg:button dlg:id="AddDateButton" dlg:tab-index="13" dlg:left="10" dlg:top="166" dlg:width="40" dlg:height="12" dlg:value="Add...">

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-25)
+ *  Version 1.6 (2015-04-28)
  *
  */
 
@@ -119,6 +119,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         // Navigation table
         loadListBoxOption(xProps, "ExternalTocDepth");
         loadCheckBoxOption(xProps, "IncludeToc");
+        loadCheckBoxOption(xProps, "IncludeNCX");
 
         updateLockedOptions();
         enableControls();
@@ -204,6 +205,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         short nExternalTocDepth = saveListBoxOption(xProps, "ExternalTocDepth");
         helper.put("external_toc_depth", Integer.toString(nExternalTocDepth+1));
         saveCheckBoxOption(xProps, helper, "IncludeToc", "include_toc");
+        saveCheckBoxOption(xProps, helper, "IncludeNCX", "include_ncx");
     }
 	
 	
@@ -291,6 +293,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         setControlEnabled("ExternalTocDepthLabel", !isLocked("external_toc_depth"));
         setControlEnabled("ExternalTocDepth", !isLocked("external_toc_depth"));
         setControlEnabled("IncludeToc", !isLocked("include_toc"));
+        setControlEnabled("IncludeNCX", (this instanceof Epub3OptionsDialog) && !isLocked("include_ncx"));
     }
 	
     private void relativeFontSizeChange() {

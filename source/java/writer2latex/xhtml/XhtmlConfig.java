@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-01-14)
+ *  Version 1.6 (2015-04-28)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 57; }
+    protected int getOptionCount() { return 58; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -137,26 +137,27 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int FOOTNOTES_HEADING = 34;
     private static final int EXTERNAL_TOC_DEPTH = 35;
     private static final int INCLUDE_TOC = 36;
-    private static final int SPLIT_LEVEL = 37;
-    private static final int REPEAT_LEVELS = 38;
-    private static final int PAGE_BREAK_SPLIT = 39;
-    private static final int SPLIT_AFTER = 40;
-    private static final int IMAGE_SPLIT = 41;
-    private static final int COVER_IMAGE = 42;
-    private static final int EMBED_SVG = 43;
-    private static final int EMBED_IMG = 44;
-    private static final int USE_MATHJAX = 45;
-    private static final int CALC_SPLIT = 46;
-    private static final int DISPLAY_HIDDEN_SHEETS = 47;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 48;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 49;
-    private static final int APPLY_PRINT_RANGES = 50;
-    private static final int USE_TITLE_AS_HEADING = 51;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 52;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 53;
-    private static final int UPLINK = 54;
-    private static final int DIRECTORY_ICON = 55;
-    private static final int DOCUMENT_ICON = 56;
+    private static final int INCLUDE_NCX = 37;
+    private static final int SPLIT_LEVEL = 38;
+    private static final int REPEAT_LEVELS = 39;
+    private static final int PAGE_BREAK_SPLIT = 40;
+    private static final int SPLIT_AFTER = 41;
+    private static final int IMAGE_SPLIT = 42;
+    private static final int COVER_IMAGE = 43;
+    private static final int EMBED_SVG = 44;
+    private static final int EMBED_IMG = 45;
+    private static final int USE_MATHJAX = 46;
+    private static final int CALC_SPLIT = 47;
+    private static final int DISPLAY_HIDDEN_SHEETS = 48;
+    private static final int DISPLAY_HIDDEN_ROWS_COLS = 49;
+    private static final int DISPLAY_FILTERED_ROWS_COLS = 50;
+    private static final int APPLY_PRINT_RANGES = 51;
+    private static final int USE_TITLE_AS_HEADING = 52;
+    private static final int USE_SHEET_NAMES_AS_HEADINGS = 53;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 54;
+    private static final int UPLINK = 55;
+    private static final int DIRECTORY_ICON = 56;
+    private static final int DOCUMENT_ICON = 57;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -245,6 +246,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
             }
         };
         options[INCLUDE_TOC] = new BooleanOption("include_toc","true");
+        options[INCLUDE_NCX] = new BooleanOption("include_ncx","true");
         options[SPLIT_LEVEL] = new IntegerOption("split_level","0") {
         	@Override public void setString(String sValue) {
                 super.setString(sValue);
@@ -408,6 +410,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public int formulas() { return ((IntegerOption) options[FORMULAS]).getValue(); }
     public int externalTocDepth() { return ((IntegerOption) options[EXTERNAL_TOC_DEPTH]).getValue(); }
     public boolean includeToc() { return ((BooleanOption) options[INCLUDE_TOC]).getValue(); }
+    public boolean includeNCX() { return ((BooleanOption) options[INCLUDE_NCX]).getValue(); }
     public int getXhtmlSplitLevel() { return ((IntegerOption) options[SPLIT_LEVEL]).getValue(); }
     public int getXhtmlRepeatLevels() { return ((IntegerOption) options[REPEAT_LEVELS]).getValue(); }
     public int pageBreakSplit() { return ((IntegerOption) options[PAGE_BREAK_SPLIT]).getValue(); }

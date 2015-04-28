@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-03) 
+ *  Version 1.6 (2015-04-28) 
  *
  */ 
  
@@ -102,6 +102,12 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(Epub3OptionsDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Epub3OptionsDialog.class,
+            Epub3OptionsDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         else if (implName.equals(EpubMetadataDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(EpubMetadataDialog.class,
             EpubMetadataDialog.__serviceName,
@@ -148,6 +154,8 @@ public class W2XRegistration {
                 XhtmlOptionsDialogCalc.__serviceName, regKey) & 
             FactoryHelper.writeRegistryServiceInfo(EpubOptionsDialog.__implementationName,
                         EpubOptionsDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Epub3OptionsDialog.__implementationName,
+                        Epub3OptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(EpubMetadataDialog.__implementationName,
                         EpubMetadataDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,

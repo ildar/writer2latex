@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  XhtmlOptionsDialogMath.java
+ *  EpubOptionsDialog.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -16,33 +16,32 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2004 by Henrik Just
+ *  Copyright: 2002-2016 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-18)
+ *  Version 1.6 (2015-04-28)
  *
- */ 
- 
+ */
 package org.openoffice.da.comp.writer2xhtml;
 
 import com.sun.star.uno.XComponentContext;
 
-/** This class provides a uno component which implements a filter ui for the
- *  Xhtml export for the XHTML+MathML and HTML export.
- *  This variant of the dialog has the MathJax setting enabled
+/** This class provides a UNO component which implements a filter UI for the
+ *  EPUB 3 export. In this version the option to include NCX is enabled.
  */
-public class XhtmlOptionsDialogMath extends XhtmlOptionsDialog {
+public class Epub3OptionsDialog extends EpubOptionsDialog {
+
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2xhtml.XhtmlOptionsDialogMath";
+    public static String __serviceName = "org.openoffice.da.writer2xhtml.Epub3OptionsDialog";
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
+    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog3";
 	
-    /** Create a new XhtmlOptionsDialogMath */
-    public XhtmlOptionsDialogMath(XComponentContext xContext) {
+    /** Create a new Epub3OptionsDialog */
+    public Epub3OptionsDialog(XComponentContext xContext) {
         super(xContext);
     }
 

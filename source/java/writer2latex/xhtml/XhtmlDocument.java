@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-23)
+ *  Version 1.6 (2015-04-21)
  *
  */
 
@@ -40,7 +40,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
-import writer2latex.api.MIMETypes;
 import writer2latex.base.DOMDocument;
 import writer2latex.office.XMLString;
 
@@ -294,13 +293,9 @@ public class XhtmlDocument extends DOMDocument {
     }
     
     @Override public String getMIMEType() {
-    	switch (nType) {
-    	case XHTML10: return MIMETypes.XHTML;
-    	case XHTML11: return MIMETypes.XHTML_MATHML; // TODO: Change the constant names in MIMETypes, this is a bit confusing...
-    	case XHTML_MATHML: return MIMETypes.XHTML_MATHML;
-    	case HTML5: return MIMETypes.HTML5;
-    	}
-    	return "";
+    	// Get the real MIME type, not the pseudo ones used by the converter API
+    	// We always produce XHTML, thus
+    	return "application/xhtml+xml";
     }
     
     @Override public boolean isMasterDocument() {
