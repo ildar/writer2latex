@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-04-24)
+ *  Version 1.6 (2015-05-05)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -308,7 +308,7 @@ public class UNOPublisher {
     	case xhtml_mathml:
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
-    	case epub3: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
+    	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog";
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";
     	default: return null;
     	}

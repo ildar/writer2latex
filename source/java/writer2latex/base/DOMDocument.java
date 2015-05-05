@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-26)
+ *  Version 1.6 (2015-05-05)
  *
  */
 
@@ -177,7 +177,7 @@ public class DOMDocument implements OutputFile {
      *
      *  @return  The file name of <code>Document</code>.
      */
-    public String getFileName() {
+    @Override public String getFileName() {
 
         return fileName;
     }
@@ -351,11 +351,15 @@ public class DOMDocument implements OutputFile {
     }
 
     // We need these because we implement OutputFile
-	public String getMIMEType() {
+	@Override public String getMIMEType() {
 		return "";
 	}
 	
-	public boolean isMasterDocument() {
+	@Override public boolean isMasterDocument() {
+		return false;
+	}
+	
+	@Override public boolean containsMath() {
 		return false;
 	}
 

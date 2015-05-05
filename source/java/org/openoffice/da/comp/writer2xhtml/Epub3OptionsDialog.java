@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  EpubOptionsDialog.java
+ *  Epub3OptionsDialog.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-28)
+ *  Version 1.6 (2015-05-05)
  *
  */
 package org.openoffice.da.comp.writer2xhtml;
@@ -38,7 +38,7 @@ public class Epub3OptionsDialog extends EpubOptionsDialog {
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog3";
+    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog";
 	
     /** Create a new Epub3OptionsDialog */
     public Epub3OptionsDialog(XComponentContext xContext) {

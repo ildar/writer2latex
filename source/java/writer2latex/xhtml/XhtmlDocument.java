@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-21)
+ *  Version 1.6 (2015-05-05)
  *
  */
 
@@ -300,6 +300,10 @@ public class XhtmlDocument extends DOMDocument {
     
     @Override public boolean isMasterDocument() {
     	return true;
+    }
+    
+    @Override public boolean containsMath() {
+    	return bodyNode!=null ? containsMath(bodyNode) : false;
     }
     
     public Element getHeadNode() { return headNode; }
@@ -958,6 +962,25 @@ public class XhtmlDocument extends DOMDocument {
 		case '\u226A': return "&Lt;"; // tres inferieur
 	    default: return null;
     	}
+    }
+    
+    private boolean containsMath(Element node) {
+    	// First check the node itself
+    	if (node.getTagName().equals("math")) {
+    		return true;
+    	}
+    	// The check the children
+    	Node child = node.getFirstChild();
+    	while (child!=null) {
+    		if (child.getNodeType()==Node.ELEMENT_NODE) {
+    			if (containsMath((Element)child)) {
+    				return true;
+    			}
+    		}
+    		child = child.getNextSibling();
+    	}
+    	// And then look no further
+    	return false;
     }
 
 

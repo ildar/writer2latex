@@ -20,15 +20,20 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-04-21)
+ *  version 1.6 (2015-05-05)
  *
  */
 
 package writer2latex.epub;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -45,13 +50,14 @@ import writer2latex.api.ConverterResult;
 import writer2latex.api.OutputFile;
 import writer2latex.base.DOMDocument;
 import writer2latex.util.Misc;
+import writer2latex.xhtml.XhtmlConfig;
 
 /** This class writes an OPF-file for an EPUB document (see http://www.idpf.org/2007/opf/OPF_2.0_final_spec.html).
  */
 public class OPFWriter extends DOMDocument {
 	private String sUID=null;
 
-	public OPFWriter(ConverterResult cr, int nVersion) {
+	public OPFWriter(ConverterResult cr, int nVersion, XhtmlConfig config) {
 		super("book", "opf");
 		
         // create DOM
@@ -78,8 +84,6 @@ public class OPFWriter extends DOMDocument {
         pack.setAttribute("xmlns","http://www.idpf.org/2007/opf");
         pack.setAttribute("unique-identifier", "BookId");
         
-        // TODO: http://sketchytech.blogspot.dk/2014/03/epub2-to-epub3-lessons-learnt-in.html
-        
         // Meta data, at least dc:title, dc:language and dc:identifier are required by the specification
         // For EPUB 3, also dcterms:modified is required
         Element metadata = contentDOM.createElement("metadata");
@@ -94,9 +98,10 @@ public class OPFWriter extends DOMDocument {
         appendElement(contentDOM, metadata, "dc:language", cr.getMetaData().getLanguage());
         
         // Modification (required in EPUB 3)
-        
-        appendElement(contentDOM, metadata, "meta", cr.getMetaData().getDate())
-        	.setAttribute("property", "dcterms:modified");
+        if (nVersion==3) {
+        	appendElement(contentDOM, metadata, "meta", getCurrentDateTime())
+        		.setAttribute("property", "dcterms:modified");
+        }
         
         // Subject and keywords in ODF both map to Dublin core subjects
         if (cr.getMetaData().getSubject().length()>0) {
@@ -286,7 +291,7 @@ public class OPFWriter extends DOMDocument {
         pack.appendChild(manifest);
         
         Element spine = contentDOM.createElement("spine");
-        if (nVersion!=3) { // Use old NCX file for navigation
+        if (nVersion!=3 || config.includeNCX()) { // Use old NCX file for navigation
         	spine.setAttribute("toc", "ncx");
         }
         pack.appendChild(spine);
@@ -321,6 +326,10 @@ public class OPFWriter extends DOMDocument {
         		String sId = "text"+(++nMasterCount);
         		item.setAttribute("id", sId);
         		
+        		if (nVersion==3 && file.containsMath()) {
+        			item.setAttribute("properties","mathml");
+        		}
+        		
         		Element itemref = contentDOM.createElement("itemref");
         		itemref.setAttribute("idref", sId);
         		spine.appendChild(itemref);
@@ -338,7 +347,7 @@ public class OPFWriter extends DOMDocument {
 	        item.setAttribute("properties", "nav");
 	        manifest.appendChild(item);
         }
-        else { // Include old NCX file
+        if (nVersion!=3 || config.includeNCX()) { // Include old NCX file
 	        Element item = contentDOM.createElement("item");
 	        item.setAttribute("href", "book.ncx");
 	        item.setAttribute("media-type", "application/x-dtbncx+xml");
@@ -397,6 +406,14 @@ public class OPFWriter extends DOMDocument {
 			reference.setAttribute("href", sHref);
 			guide.appendChild(reference);
 		}
+	}
+	
+	// Get the current date and time in the required format
+	private String getCurrentDateTime() {
+		Date date = Calendar.getInstance().getTime();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return formatter.format(date);
 	}
 
 }

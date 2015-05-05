@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-12-21)
+ *  Version 1.5 (2015-05-05)
  *
  */
  
@@ -33,8 +33,7 @@ import java.io.OutputStream;
 import writer2latex.api.OutputFile;
 import writer2latex.util.Misc;
 
-/**
- *  An implementation of <code>OutputFile</code> for resource documents.
+/** An implementation of <code>OutputFile</code> for resource documents.
  *  (A resource document is an arbitrary binary file to include in the converter result)
  */
 public class ResourceDocument implements OutputFile {
@@ -55,22 +54,33 @@ public class ResourceDocument implements OutputFile {
     	content = new byte[0];
     }
 
-	public String getFileName() {
+    // Implement OutputFile
+    
+	@Override public String getFileName() {
 		return sFileName;
 	}
 
-	public String getMIMEType() {
+	@Override public String getMIMEType() {
 		return sMediaType;
 	}
 
-	public boolean isMasterDocument() {
+	@Override public boolean isMasterDocument() {
+		return false;
+	}
+	
+	@Override public boolean containsMath() {
 		return false;
 	}
 
-	public void write(OutputStream os) throws IOException {
+	@Override public void write(OutputStream os) throws IOException {
 		os.write(content); 
 	}
 	
+	/** Load the resource document bytes from an arbitrary input stream
+	 * 
+	 * @param is the input stream
+	 * @throws IOException if any error occurs reading the input stream
+	 */
 	public void read(InputStream is) throws IOException {
 		content = Misc.inputStreamToByteArray(is);
 	}

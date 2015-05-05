@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-03-28)
+ *  Version 1.6 (2015-05-05)
  *
  */
  
@@ -62,4 +62,10 @@ public interface OutputFile {
      *  @return true if this document is a master document
      */
     public boolean isMasterDocument();
+    
+    /** Test whether this document contains mathematical formulas
+     * 
+     * @return true if the document contains formulas
+     */
+    public boolean containsMath();
 }

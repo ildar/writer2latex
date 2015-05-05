@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-11-24)
+ *  Version 1.6 (2015-05-05)
  *
  */
 
@@ -187,8 +187,8 @@ public class MathConverter extends ConverterHelper {
     	if (onode.hasAttribute("xmlns:math")) {
     		math.setAttribute("xmlns", onode.getAttribute("xmlns:math"));
     	}
-    	else if (onode.hasAttribute("xmlns") && converter.nType!=XhtmlDocument.HTML5) {
-    		// Don't include xmlns attribute in HTML5
+    	else if (onode.hasAttribute("xmlns") && (converter.nType!=XhtmlDocument.HTML5 || converter.isOPS())) {
+    		// Don't include xmlns attribute in HTML5, unless we are creating EPUB 3
     		math.setAttribute("xmlns", onode.getAttribute("xmlns"));
     	}
     	if (bAllowDisplay && onode.hasAttribute("display")) {

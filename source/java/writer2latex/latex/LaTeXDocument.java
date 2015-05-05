@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.6 (2015-05-05)
  *
  */
 
@@ -81,16 +81,21 @@ public class LaTeXDocument implements OutputFile {
      *
      * @return  The <code>Document</code> name with file extension.
      */
-    public String getFileName() {
+    @Override public String getFileName() {
         return new String(sName + FILE_EXTENSION);
     }
     
-	public String getMIMEType() {
+	@Override public String getMIMEType() {
 		return MIMETypes.LATEX;
 	}
 	
-	public boolean isMasterDocument() {
+	@Override public boolean isMasterDocument() {
 		return bIsMaster;
+	}
+	
+	@Override public boolean containsMath() {
+		// We don't use this information currently
+		return true;
 	}
 
     /**

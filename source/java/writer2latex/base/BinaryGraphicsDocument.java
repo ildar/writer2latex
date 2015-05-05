@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 1.6 (2015-05-05)
  *
  */
 
@@ -150,7 +150,7 @@ public class BinaryGraphicsDocument implements OutputFile {
     *
     * @return  The document name or URL
     */
-   public String getFileName() {
+   @Override public String getFileName() {
        return sFileName;
    }
    
@@ -158,7 +158,7 @@ public class BinaryGraphicsDocument implements OutputFile {
      *
      * @return  The MIME type or null if this is unknown
      */
-	public String getMIMEType() {
+	@Override public String getMIMEType() {
 		return sMimeType;
 	}
 	
@@ -166,7 +166,15 @@ public class BinaryGraphicsDocument implements OutputFile {
      * 
      *  @return false - a graphics file is never a master document
      */
-    public boolean isMasterDocument() {
+    @Override public boolean isMasterDocument() {
 		return false;
 	}
+    
+    /** Does this document contain formulas?
+     * 
+     *  @return false - a graphics file does not contain formulas
+     */
+    @Override public boolean containsMath() {
+    	return false;
+    }
 }

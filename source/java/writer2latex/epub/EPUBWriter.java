@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-04-21)
+ *  version 1.6 (2015-05-05)
  *
  */
 
@@ -40,7 +40,8 @@ import writer2latex.xhtml.XhtmlConfig;
 
 /** This class repackages an XHTML document into EPUB format.
  *  Some filenames are hard wired in this implementation: The main directory is OEBPS and
- *  the OPF and NCX files are book.opf and book.ncx respectively 
+ *  the OPF and NCX files are book.opf and book.ncx respectively; finally the EPUB 3 navigation
+ *  document is nav.xhtml 
  */
 public class EPUBWriter implements OutputFile {
 	
@@ -50,7 +51,7 @@ public class EPUBWriter implements OutputFile {
 	private ConverterResult xhtmlResult;
 	private String sFileName;
 	private int nVersion;
-	//private XhtmlConfig config;
+	private XhtmlConfig config;
 	
 	/** Create a new <code>EPUBWriter</code> based on a <code>ConverterResult</code>.
 	 * 
@@ -63,7 +64,7 @@ public class EPUBWriter implements OutputFile {
 		this.xhtmlResult = xhtmlResult;
 		this.sFileName = Misc.removeExtension(sFileName);
 		this.nVersion = nVersion;
-		//this.config = config;
+		this.config = config;
 	}
 	
 	// Implement OutputFile
@@ -78,6 +79,11 @@ public class EPUBWriter implements OutputFile {
 
 	@Override public boolean isMasterDocument() {
 		return true;
+	}
+	
+	@Override public boolean containsMath() {
+		// We don't really care about this
+		return nVersion==3;
 	}
 
 	@Override public void write(OutputStream os) throws IOException {		
@@ -100,7 +106,7 @@ public class EPUBWriter implements OutputFile {
 		zos.closeEntry();
 		
 		// Then manifest
-		OPFWriter manifest = new OPFWriter(xhtmlResult,nVersion);
+		OPFWriter manifest = new OPFWriter(xhtmlResult,nVersion,config);
 		ZipEntry manifestEntry = new ZipEntry("OEBPS/book.opf");
 		zos.putNextEntry(manifestEntry);
 		writeZipEntry(manifest,zos);
@@ -114,7 +120,7 @@ public class EPUBWriter implements OutputFile {
 			writeZipEntry(navigation,zos);
 			zos.closeEntry();
 		}
-		else {
+		if (nVersion!=3 || config.includeNCX()) {
 			OutputFile ncx = new NCXWriter(xhtmlResult, manifest.getUid());
 			ZipEntry ncxEntry = new ZipEntry("OEBPS/book.ncx");
 			zos.putNextEntry(ncxEntry);

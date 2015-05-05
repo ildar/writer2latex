@@ -4,6 +4,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
+[all] API change: The interface OutputFile now defines an additional method containsMath() which returns true if the file
+  contains mathematical formulas (only implemented for XHTML, currently always returns true for LaTeX)
+
 [w2x] The template page in the configuration now displays an error message if the template is not well-formed XML.
 
 [w2x] Added toolbar configuration dialog: Select XHTML and EPUB export format and behavior after export (do nothing,
@@ -11,7 +14,7 @@ Items marked with * are work in progress
   
 [w2x] New option include_ncx to include a NCX file even if the export format is EPUB 3 
 
-[w2x] *Added EPUB 3 as export format and changed default export format for the toolbar to EPUB 3
+[w2x] Added EPUB 3 as export format and changed default export format for the toolbar to EPUB 3
 
 [all] Implementation detail: Moved descriptions to a separate folder within the extensions
 
