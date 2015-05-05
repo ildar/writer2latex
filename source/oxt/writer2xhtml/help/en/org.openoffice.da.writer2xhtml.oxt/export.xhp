@@ -14,7 +14,8 @@
         	Choose <emph>File - Export - XHTML 1.0 strict</emph><br/>
         	or <emph>File - Export - XHTML 1.1</emph><br/>
         	or <emph>File - Export - XHTML 1.1 + MathML 2.0</emph><br/>
-        	or <emph>File - Export - HTML5</emph>
+        	or <emph>File - Export - HTML5</emph><br/>
+        	or click the <emph>HTML5-button</emph> in the toolbar
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Style</paragraph>

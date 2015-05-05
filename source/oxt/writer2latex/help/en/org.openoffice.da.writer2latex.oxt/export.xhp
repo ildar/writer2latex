@@ -12,7 +12,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Exports the current document in LaTeX 2e format. A LaTeX document can be
         typeset with the TeX typesetting system.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>File - Export - LaTeX 2e</emph>
+        	Choose <emph>File - Export - LaTeX 2e</emph> or click the <emph>TeX</emph>-button in the toolbar
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">General</paragraph>

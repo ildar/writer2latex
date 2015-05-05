@@ -11,7 +11,9 @@
         <paragraph role="heading" level="1" xml-lang="en-US">EPUB Export (Writer)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Exports the current document to EPUB format.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>File - Export - EPUB</emph>
+        	Choose <emph>File - Export - EPUB</emph><br/>
+        	or <emph>File - Export - EPUB 3</emph><br/>
+        	or click the <emph>EPUB-button</emph> in the toolbar
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Style</paragraph>
@@ -134,18 +136,6 @@
        	%PRODUCTNAME document are exported as comments in the EPUB document. They will not be directly visible in the reader.
        	If the option is not selected, notes are completely ignored.</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsUseDublinCore" id="bm_options_usedublincore"/>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsUseDublinCore" visibility="hidden">Check this if you want to export all document properties</ahelp></paragraph>
-       	<paragraph role="heading" level="3" xml-lang="en-US">Export optional document properties</paragraph>
-   	    <paragraph role="paragraph" xml-lang="en-US">If you select this option, all the document properties (File – Properties)
-       	are exported, otherwise only the title is exported.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsEditMetadata" id="bm_options_editmetadata"/>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsEditMetadata" visibility="hidden">Clik this to edit the document properties, e.g. author, title, date</ahelp></paragraph>
-        <paragraph role="heading" level="3" xml-lang="en-US">Edit document properties</paragraph>
-       	<paragraph role="paragraph" xml-lang="en-US">Click this button to open the dialog to edit the document properties such as
-       	title, author or date.</paragraph>
-
       	<paragraph role="heading" level="2" xml-lang="en-US">Document division (page breaks)</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US">These settings lets you insert page breaks at various places in the document.
    		It is recommended always to use one or more of these settings. One reason for this is that it enhances the readability of
@@ -231,6 +221,23 @@
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeToc" visibility="hidden">Check this to include the original table of contents in addition to the EPUB content table</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Your document may also include a normal table of contents.
         Check this if you want to include this table of contents in addition to the navigation table.</paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeNCX" id="bm_options_includencx"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Include EPUB 2 navigation (EPUB 3 only)</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeNCX" visibility="hidden">Check this to include navigation information in EPUB 2 format</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">EPUB 3 uses a new format for the navigation information.
+        Check this option if you also want to include navigation information in the old format.
+        This will ensure compatibility with older EPUB readers.</paragraph>
+
+        <paragraph role="heading" level="2" xml-lang="en-US">Document properties</paragraph>        
+        
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsEditMetadata" id="bm_options_editmetadata"/>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsEditMetadata" visibility="hidden">Clik this to edit the document properties, e.g. author, title, date</ahelp></paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Edit document properties</paragraph>
+       	<paragraph role="paragraph" xml-lang="en-US">Click this button to open the dialog to edit the document properties such as
+       	title, author or date.</paragraph>
+
+        
 
 	</body>
 </helpdocument>

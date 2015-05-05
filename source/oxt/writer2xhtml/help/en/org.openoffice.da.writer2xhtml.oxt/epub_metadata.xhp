@@ -11,7 +11,9 @@
         <paragraph role="heading" level="1" xml-lang="en-US">EPUB document properties (Writer)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Edit the document properties for an EPUB document.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>File - Export - EPUB, Click Edit in the dialog</emph>
+        	Choose <emph>File - Export - EPUB</emph> or <emph>File - Export - EPUB 3</emph>,
+        	and click <emph>Edit document properties</emph> in the export dialog<br/>
+        	or click the <emph>EPUB-button</emph> marked with <emph>i</emph> in the toolbar
         </section>
 
     
