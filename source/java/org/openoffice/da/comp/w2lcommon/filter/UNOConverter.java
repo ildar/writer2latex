@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-01-13)
+ *  Version 1.6 (2015-05-06)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -65,7 +65,8 @@ public class UNOConverter {
 	/** Construct a new UNODocumentConverter from an array of arguments
 	 *
 	 * @param xComponentContext the component context used to instantiate new UNO services
-	 * @param lArguments arguments providing FilterName, URL, OutputStream (optional) and FilterData (optional)
+	 * @param lArguments arguments providing FilterName, URL, OutputStream (optional), FilterData (optional)
+	 * and FilterOptions (optional, alternative to FilterData)
 	 */
 	public UNOConverter(PropertyValue[] lArguments, XComponentContext xComponentContext) {
 		this.xComponentContext = xComponentContext;
@@ -86,6 +87,7 @@ public class UNOConverter {
 
 		// Get the arguments
 		Object filterData = null;
+		Object filterOptions = null;
 		PropertyValue[] pValue = lArguments;
 		for  (int  i = 0 ; i < pValue.length; i++) {
 			try {
@@ -107,6 +109,9 @@ public class UNOConverter {
 				if (pValue[i].Name.compareTo("FilterData")==0) {
 					filterData = pValue[i].Value;
 				}
+				if (pValue[i].Name.compareTo("FilterOptions")==0) {
+					filterOptions = pValue[i].Value;
+				}
 			} 
 			catch(com.sun.star.lang.IllegalArgumentException AnyExec){
 				System.err.println("\nIllegalArgumentException "+AnyExec);
@@ -124,6 +129,10 @@ public class UNOConverter {
 		if (filterData!=null) {
 			FilterDataParser fdp = new FilterDataParser(xComponentContext);
 			fdp.applyFilterData(filterData,converter);
+		}
+		else if (filterOptions!=null) {
+			FilterDataParser fdp = new FilterDataParser(xComponentContext);
+			fdp.applyFilterOptions(filterOptions,converter);			
 		}
 		converter.setGraphicConverter(new GraphicConverterImpl(xComponentContext));
 		

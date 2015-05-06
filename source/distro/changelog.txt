@@ -4,6 +4,12 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 Items marked with * are work in progress
 
+[all] Using the filters from the command line with soffice --headless --convert-to is now documented in the user manual
+
+[all] Filter API change: The filters now accepts the FilterOptions property as an alternative to FilterData.
+  This property accepts a comma separated string of option=value items. In particular this allows to pass option
+  from the command line (soffice --headless --convert-to).
+
 [all] API change: The interface OutputFile now defines an additional method containsMath() which returns true if the file
   contains mathematical formulas (only implemented for XHTML, currently always returns true for LaTeX)
 
@@ -17,8 +23,6 @@ Items marked with * are work in progress
 [w2x] Added EPUB 3 as export format and changed default export format for the toolbar to EPUB 3
 
 [all] Implementation detail: Moved descriptions to a separate folder within the extensions
-
-[all] *Document the use of soffice --headless --convert-to
 
 [all] The position of message boxes has changed from (0,0) to (200,100)
 

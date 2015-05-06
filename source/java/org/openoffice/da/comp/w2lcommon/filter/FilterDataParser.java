@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-06-07)
+ *  Version 1.6 (2015-05-06)
  *
  */ 
  
@@ -88,8 +88,35 @@ public class FilterDataParser {
         }     
     }
     
-    /** Apply the given FilterData property to the given converter
-     *  @param data an Any containing the FilterData property
+    /** Apply the given FilterOptions property to the given converter.
+     *  The property must be a comma separated list of name=value items.
+     * @param options an <code>Any</code> containing the FilterOptions property
+     * @param converter a <code>writer2latex.api.Converter</code> implementation
+     */
+    public void applyFilterOptions(Object options, Converter converter) {
+    	// Get the string from the data, if possible
+    	if (AnyConverter.isString(options)) {
+    		String sOptions = AnyConverter.toString(options);
+    		if (sOptions!=null) {
+	    		// Convert to array
+	    		String[] sItems = sOptions.split(",");
+	    		int nItemCount = sItems.length;
+	        	PropertyValue[] filterData = new PropertyValue[nItemCount];
+	        	for (int i=0; i<nItemCount; i++) {
+	        		String[] sItem = sItems[i].split("=");
+	        		filterData[i] = new PropertyValue();
+	        		filterData[i].Name = sItem[0];
+	        		filterData[i].Value = sItem.length>1 ? sItem[1] : "";
+	        		System.out.println(filterData[i].Name+" "+filterData[i].Value);
+	        	}
+	        	applyParsedFilterData(filterData,converter);
+    		}
+    	}
+    }
+    
+    /** Apply the given FilterData property to the given converter.
+     *  The property must be an array of PropertyValue objects.
+     *  @param data an <code>Any</code> containing the FilterData property
      *  @param converter a <code>writer2latex.api.Converter</code> implementation
      */
     public void applyFilterData(Object data, Converter converter) {
@@ -100,14 +127,18 @@ public class FilterDataParser {
                 Object[] arrayData = (Object[]) AnyConverter.toArray(data);
                 if (arrayData instanceof PropertyValue[]) {
                     filterData = (PropertyValue[]) arrayData;
+                    if (filterData!=null) {
+                    	applyParsedFilterData(filterData,converter);
+                    }
                 }
             }
             catch (com.sun.star.lang.IllegalArgumentException e) {
                 // Failed to convert to array; should not happen - ignore   
             }
         }
-        if (filterData==null) { return; }
-        
+    }
+    
+    private void applyParsedFilterData(PropertyValue[] filterData, Converter converter) {
         PropertyHelper props = new PropertyHelper(filterData);
         
         // Get the special properties TemplateURL, StyleSheetURL, ResourceURL, Resources, ConfigURL and AutoCreate
