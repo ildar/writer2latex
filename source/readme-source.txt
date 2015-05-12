@@ -1,4 +1,4 @@
-Writer2LaTeX source version 1.5.2 alpha
+Writer2LaTeX source version 1.5.3 alpha
 =======================================
 
 Writer2LaTeX is (c) 2002-2015 by Henrik Just.
