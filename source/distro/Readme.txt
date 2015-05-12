@@ -14,5 +14,5 @@ Bugs and feature requests should be reported to
   writer2latex (at) gmail.com
   
 
-February 2015
+May 2015
 Henrik Just

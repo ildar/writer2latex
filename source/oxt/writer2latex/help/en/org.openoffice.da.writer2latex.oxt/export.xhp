@@ -118,7 +118,64 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Font</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:Font" visibility="hidden">Select a font scheme to use in the LaTeX document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this option to select a font scheme to use in the LaTeX document.
-        (TODO)</paragraph>
+        </paragraph>
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Default (Computer Modern)</emph> Computer Modern is
+				the original default font for TeX.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>CM Bright</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Concrete</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Concrete + Euler Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Iwona</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Kurier</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Antykwa Toru&#x0144;ska</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Kerkis</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>New Century Schoolbook + Fourier Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Palatino + PXfonts Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Palatino + Pazo Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Palatino + Euler Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Times + TXfonts Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Times + Symbol</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Arev Sans + Arev Math</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Bitstream Charter + Math Design</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Utopia + Math Design</emph> </paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Utopia + Fourier Math</emph> </paragraph>
+			</listitem>
+		</list>        
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsGreekMath" id="bm_options_greekmath"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use greek letters as symbols</paragraph>

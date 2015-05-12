@@ -16,32 +16,32 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-14) 
+ *  Version 1.6 (2015-05-12) 
  * 
  */
 
 package writer2latex.latex.i18n;
 
-import java.io.*;
+import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Stack;
-//import java.util.Vector;
-//import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import writer2latex.util.CSVList;
-import writer2latex.office.*;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
 import writer2latex.latex.util.BeforeAfter;
+import writer2latex.office.OfficeReader;
+import writer2latex.office.StyleWithProperties;
+import writer2latex.office.XMLString;
 
 /** This class (and the helpers in the same package) takes care of i18n in
  *  Writer2LaTeX.  In classic LaTeX, i18n is a mixture of inputencodings, fontencodings
@@ -292,9 +292,9 @@ public class ClassicI18n extends I18n {
      */
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
     	useInputenc(pack);
-    	useBabel(pack);
     	useSymbolFonts(pack);
     	useTextFonts(pack);
+    	useBabel(pack);
     }
     
     private void useInputenc(LaTeXDocumentPortion ldp) {
@@ -428,9 +428,6 @@ public class ClassicI18n extends I18n {
     	else if ("kmath-kerkis".equals(sFont)) { // Kerkis
     		ldp.append("\\usepackage{kmath,kerkis}");
     	}
-    	else if ("millennial".equals(sFont)) { // New Century Schoolbook + Millennial
-    		ldp.append("\\usepackage{millennial}");
-    	}
     	else if ("fouriernc".equals(sFont)) { // New Century Schoolbook + Fourier
     		ldp.append("\\usepackage{fouriernc}");
     	}
@@ -446,23 +443,14 @@ public class ClassicI18n extends I18n {
     	else if ("txfonts".equals(sFont)) { // Times + txfonts math
     		ldp.append("\\usepackage[varg]{txfonts}");
     	}
-    	else if ("mathtime".equals(sFont)) { // Times + Beleek math
-    		ldp.append("\\usepackage{mathtime}");
-    	}
     	else if ("mathptmx".equals(sFont)) { // Times + Symbol
     		ldp.append("\\usepackage{mathptmx}");
-    	}
-    	else if ("mbtimes".equals(sFont)) { // Omega serif + Omega math
-    		ldp.append("\\usepackage{mbtimes}");
     	}
     	else if ("arev".equals(sFont)) { // Arev Sans + Arev math 
     		ldp.append("\\usepackage{arev}");
     	}
     	else if ("charter-mathdesign".equals(sFont)) { // Bitstream Charter + Math Design
     		ldp.append("\\usepackage[charter]{mathdesign}");
-    	}
-    	else if ("garamond-mathdesign".equals(sFont)) { // URW Garamond + Math Design
-    		ldp.append("\\usepackage[garamond]{mathdesign}");
     	}
     	else if ("utopia-mathdesign".equals(sFont)) { // Utopia + Math Design
     		ldp.append("\\usepackage[utopia]{mathdesign}");

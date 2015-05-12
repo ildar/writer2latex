@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2014-11-14)
+ *  Version 1.6 (2015-05-12)
  *  
  */
 
@@ -28,10 +28,6 @@ package org.openoffice.da.comp.writer2latex;
 
 import com.sun.star.awt.XDialog;
 import com.sun.star.beans.XPropertySet;
-//import com.sun.star.frame.XDesktop;
-//import com.sun.star.lang.XComponent;
-//import com.sun.star.text.XTextFieldsSupplier;
-//import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
@@ -56,19 +52,19 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     private static final String[] FONT_VALUES = 
     	{ "default", "cmbright", "ccfonts", "ccfonts-euler",
     		"iwona", "kurier", "anttor", "kmath-kerkis",
-    		"millennial", "fouriernc",
+    		"fouriernc",
     		"pxfonts", "mathpazo", "mathpple",
-    		"txfonts", "mathtime", "mathptmx",
-    		"mbtimes", "arev",
-    		"charter-mathdesign", "garamond-mathdesign", "utopia-mathdesign", "fourier" };
+    		"txfonts", "mathptmx",
+    		"arev",
+    		"charter-mathdesign", "utopia-mathdesign", "fourier" };
     private static final String[] FONT_NAMES = 
     	{ "Default (Computer Modern)", "CM Bright", "Concrete", "Concrete + Euler Math",
     		"Iwona", "Kurier", "Antykwa Toru\u0144ska", "Kerkis",
-    		"New Century Schoolbook + Millennial Math", "New Century Schoolbook + Fourier Math",
+    		"New Century Schoolbook + Fourier Math",
     		"Palatino + PXfonts Math", "Palatino + Pazo Math", "Palatino + Euler Math",
-    		"Times + TXfonts Math", "Times + Belleek Math", "Times + Symbol",
-    		"Omega Serif + Omega Math", "Arev Sans + Arev Math",
-    		"Bitstream Charter + Math Design", "URW Garamond + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };    
+    		"Times + TXfonts Math", "Times + Symbol",
+    		"Arev Sans + Arev Math",
+    		"Bitstream Charter + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };    
     
     /** The component will be registered under this name.
      */
