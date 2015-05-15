@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-05)
+ *  Version 1.6 (2015-05-14)
  *
  */ 
  
@@ -85,6 +85,9 @@ public final class ApplicationsDialog
             if (sMethod.equals("external_event") ){
                 return handleExternalEvent(dlg, event);
             }
+            else if (sMethod.equals("AfterExportChange")) {
+                return changeBehavior(dlg);
+            }
             else if (sMethod.equals("ApplicationChange")) {
                 return changeApplication(dlg);
             }
@@ -111,7 +114,7 @@ public final class ApplicationsDialog
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "external_event", "ApplicationChange", "BrowseClick", "ExecutableUnfocus", "OptionsUnfocus", "AutomaticClick" };
+        String[] sNames = { "external_event", "AfterExportChange", "ApplicationChange", "BrowseClick", "ExecutableUnfocus", "OptionsUnfocus", "AutomaticClick" };
         return sNames;
     }
     
@@ -140,6 +143,7 @@ public final class ApplicationsDialog
                 return true;
             } else if (sMethod.equals("back") || sMethod.equals("initialize")) {
                 externalApps.load();
+                updateBehavior(dlg);
                 return changeApplication(dlg);
             }
         }
@@ -148,6 +152,16 @@ public final class ApplicationsDialog
             "Method external_event requires a string in the event object argument.", this,(short) -1);
         }
         return false;
+    }
+    
+    private boolean changeBehavior(DialogAccess dlg) {
+    	externalApps.setProcessingLevel(dlg.getListBoxSelectedItem("AfterExport"));
+    	return true;
+    }
+    
+    private boolean updateBehavior(DialogAccess dlg) {
+    	dlg.setListBoxSelectedItem("AfterExport", externalApps.getProcessingLevel());
+    	return true;
     }
 	
     private boolean changeApplication(DialogAccess dlg) {

@@ -5,6 +5,9 @@
   xmlns:oor="http://openoffice.org/2001/registry"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="Applications">
+        <prop oor:name="AfterExport" oor:type="xs:short">
+            <value>2</value><!-- compile and preview -->
+        </prop>
         <node oor:name="LaTeX" oor:type="xs:string">
             <prop oor:name="Executable">
                 <value>latex</value>

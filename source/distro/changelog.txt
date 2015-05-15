@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] The Application dialog in the toolbar configuration can now be used to select the behavior after export
+  (do nothing, compile or (default) export, compile and preview)
+
 ---------- version 1.5.2 ----------
 
 [all] Using the filters from the command line with soffice --headless --convert-to is now documented in the user manual

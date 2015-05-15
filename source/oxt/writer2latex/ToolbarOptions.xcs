@@ -13,6 +13,7 @@
     </templates>
     <component>
         <group oor:name="Applications">
+            <prop oor:name="AfterExport" oor:type="xs:short" />
             <node-ref oor:name="LaTeX" oor:node-type="Application" />
             <node-ref oor:name="PdfLaTeX" oor:node-type="Application" />
             <node-ref oor:name="XeLaTeX" oor:node-type="Application" />

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-29)
+ *  Version 1.6 (2015-05-14)
  *
  */ 
  
@@ -36,9 +36,10 @@ import java.util.Vector;
 
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
 import org.openoffice.da.comp.w2lcommon.helper.StreamGobbler;
-//import java.util.Map;
+import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
 import com.sun.star.beans.XMultiHierarchicalPropertySet;
+import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XChangesBatch;
@@ -49,7 +50,11 @@ import com.sun.star.util.XChangesBatch;
  *  The registry is used for persistent storage of the settings.
  */  
 public class ExternalApps {
-
+	
+	public final static short EXPORT = (short)0;
+	public final static short BUILD = (short)1;
+	public final static short PREVIEW = (short)2;
+	
     public final static String LATEX = "LaTeX";
     public final static String PDFLATEX = "PdfLaTeX";
     public final static String XELATEX = "XeLaTeX";
@@ -65,6 +70,8 @@ public class ExternalApps {
 	
     private XComponentContext xContext;
 
+    private short nLevel = (short)2;
+    
     private HashMap<String,String[]> apps;
 	
     /** Construct a new ExternalApps object, with empty definitions */
@@ -74,6 +81,22 @@ public class ExternalApps {
         for (int i=0; i<sApps.length; i++) {
             setApplication(sApps[i], "?", "?");
         }
+    }
+    
+    /** Set the desired processing level (0: export only, 1: export and build, 2: export, build and preview)
+     * 
+     * @param nLevel the desired level
+     */
+    public void setProcessingLevel(short nLevel) {
+    	this.nLevel = nLevel;
+    }
+    
+    /** Get the desired processing level (0: export only, 1: export and build, 2: export, build and preview)
+     * 
+     * @return the level
+     */
+    public short getProcessingLevel() {
+    	return nLevel;
     }
 	
     /** Define an external application
@@ -175,7 +198,10 @@ public class ExternalApps {
             return;
         }
 
-        XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
+		XPropertySet xSimpleProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
+		nLevel = XPropertySetHelper.getPropertyValueAsShort(xSimpleProps,"AfterExport");
+
+		XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
             String[] sNames = new String[2];
@@ -205,6 +231,9 @@ public class ExternalApps {
             // Give up...
             return;
         }
+        
+		XPropertySet xSimpleProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
+		XPropertySetHelper.setPropertyValue(xSimpleProps, "AfterExport", nLevel);
 
         XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);

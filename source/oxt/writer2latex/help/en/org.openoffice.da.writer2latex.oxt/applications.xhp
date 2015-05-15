@@ -67,7 +67,23 @@
 				<paragraph xml-lang="en-US"><emph>Note</emph>: The Writer2LaTeX toolbar is not tested on Mac OS X.</paragraph>
   			</case>
 		</switch>
-
+		
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:AfterExport" id="bm_afterexport"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:AfterExport" visibility="hidden">Choose the desired behavior after export</ahelp></paragraph>
+		<paragraph role="heading" level="2" xml-lang="en-US">After Export</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">After Export, Writer2LaTeX can build the result with LaTeX and display the final document in a viewer. Choose the desired behavior in the list.</paragraph>
+		<list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Do nothing</emph> will only export the document to LaTeX</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Build with LaTeX</emph> will build the converted document with LaTeX to produce the final result in DVI, PDF or PostScript format</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Build with LaTeX and view result</emph> will display the final result in a DVI, PDF or PostScript viewer</paragraph>
+			</listitem>
+		</list>		
+		
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigurationAutoButton" id="bm_configurationautobutton"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Automatic Configuration</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">If you click this button, Writer2LaTeX will try to locate the external programs

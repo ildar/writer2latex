@@ -17,8 +17,8 @@
   <dlg:menulist dlg:id="XhtmlView" dlg:tab-index="4" dlg:left="72" dlg:top="30" dlg:width="120" dlg:height="12" dlg:spin="true" dlg:linecount="3" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:SettingsXhtmlView">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="Do nothing"/>
-    <dlg:menuitem dlg:value="open with default web browser" dlg:selected="true"/>
-    <dlg:menuitem dlg:value="open with custom application"/>
+    <dlg:menuitem dlg:value="Open with default web browser" dlg:selected="true"/>
+    <dlg:menuitem dlg:value="Open with custom application"/>
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:XhtmlViewChange" script:language="UNO"/>
   </dlg:menulist>

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-01-25)
+ *  Version 1.6 (2015-05-14)
  *
  */ 
  
@@ -67,15 +67,15 @@ public final class TeXify {
         ExternalApps.XELATEX, ExternalApps.MAKEINDEX, ExternalApps.XELATEX };
 
     // Global objects
-    //private XComponentContext xContext;
     private ExternalApps externalApps; 
 	
     public TeXify(XComponentContext xContext) {
-        //this.xContext = xContext;
         externalApps = new ExternalApps(xContext);
     }
 	
-    /** Process a document
+    /** Process a document. This will either (depending on the registry settings) do nothing, build with LaTeX
+     *  or build with LaTeX and preview
+     *  
      *  @param file the LaTeX file to process
      *  @param sBibinputs value for the BIBINPUTS environment variable (or null if it should not be extended)
      *  @param nBackend the desired backend format (generic, dvips, pdftex)
@@ -94,45 +94,48 @@ public final class TeXify {
         externalApps.load();
 
         // Process LaTeX document
-        boolean bResult = false;
-        if (nBackend==GENERIC) {
-            bResult = doTeXify(genericTexify, file, sBibinputs);
-            if (!bResult) return false;
-            if (externalApps.execute(ExternalApps.DVIVIEWER,
-                new File(file.getParentFile(),file.getName()+".dvi").getPath(),
-                file.getParentFile(), null, false)>0) {
-                throw new IOException("Error executing dvi viewer");
-            }
+        if (externalApps.getProcessingLevel()>=ExternalApps.BUILD) {
+        	boolean bPreview = externalApps.getProcessingLevel()>=ExternalApps.PREVIEW;
+	        boolean bResult = false;
+	        if (nBackend==GENERIC) {
+	            bResult = doTeXify(genericTexify, file, sBibinputs);
+	            if (!bResult) return false;
+	            if (bPreview && externalApps.execute(ExternalApps.DVIVIEWER,
+	                new File(file.getParentFile(),file.getName()+".dvi").getPath(),
+	                file.getParentFile(), null, false)>0) {
+	                throw new IOException("Error executing dvi viewer");
+	            }
+	        }
+	        else if (nBackend==PDFTEX) {
+	        	bResult = doTeXify(pdfTexify, file, sBibinputs);
+	            if (!bResult) return false;
+	            if (bPreview && externalApps.execute(ExternalApps.PDFVIEWER,
+	                new File(file.getParentFile(),file.getName()+".pdf").getPath(),
+	                file.getParentFile(), null, false)>0) {
+	                throw new IOException("Error executing pdf viewer");
+	            }
+	        }
+	        else if (nBackend==DVIPS) {
+	        	bResult = doTeXify(dvipsTexify, file, sBibinputs);
+	            if (!bResult) return false;
+	            if (bPreview && externalApps.execute(ExternalApps.POSTSCRIPTVIEWER,
+	                new File(file.getParentFile(),file.getName()+".ps").getPath(),
+	                file.getParentFile(), null, false)>0) {
+	                throw new IOException("Error executing postscript viewer");
+	            }
+	        }
+	        else if (nBackend==XETEX) {
+	        	bResult = doTeXify(xeTexify, file, sBibinputs);
+	            if (!bResult) return false;
+	            if (bPreview && externalApps.execute(ExternalApps.PDFVIEWER,
+	                    new File(file.getParentFile(),file.getName()+".pdf").getPath(),
+	                    file.getParentFile(), null, false)>0) {
+	                    throw new IOException("Error executing pdf viewer");
+	                }
+	        }
+	        return bResult;
         }
-        else if (nBackend==PDFTEX) {
-        	bResult = doTeXify(pdfTexify, file, sBibinputs);
-            if (!bResult) return false;
-            if (externalApps.execute(ExternalApps.PDFVIEWER,
-                new File(file.getParentFile(),file.getName()+".pdf").getPath(),
-                file.getParentFile(), null, false)>0) {
-                throw new IOException("Error executing pdf viewer");
-            }
-        }
-        else if (nBackend==DVIPS) {
-        	bResult = doTeXify(dvipsTexify, file, sBibinputs);
-            if (!bResult) return false;
-            if (externalApps.execute(ExternalApps.POSTSCRIPTVIEWER,
-                new File(file.getParentFile(),file.getName()+".ps").getPath(),
-                file.getParentFile(), null, false)>0) {
-                throw new IOException("Error executing postscript viewer");
-            }
-        }
-        else if (nBackend==XETEX) {
-        	bResult = doTeXify(xeTexify, file, sBibinputs);
-            if (!bResult) return false;
-            if (externalApps.execute(ExternalApps.PDFVIEWER,
-                    new File(file.getParentFile(),file.getName()+".pdf").getPath(),
-                    file.getParentFile(), null, false)>0) {
-                    throw new IOException("Error executing pdf viewer");
-                }
-        }
-        return bResult;
-
+        return true;
     }
 	
     private boolean doTeXify(String[] sAppList, File file, String sBibinputs) throws IOException {
