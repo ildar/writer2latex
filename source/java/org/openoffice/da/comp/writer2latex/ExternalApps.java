@@ -20,18 +20,21 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-14)
+ *  Version 1.6 (2015-05-19)
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Process;
 import java.lang.ProcessBuilder;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
@@ -72,14 +75,17 @@ public class ExternalApps {
 
     private short nLevel = (short)2;
     
-    private HashMap<String,String[]> apps;
+    private Map<String,String[]> apps;
+    private Set<String> defaultApps;
 	
-    /** Construct a new ExternalApps object, with empty definitions */
+    /** Construct a new ExternalApps object with empty content */
     public ExternalApps(XComponentContext xContext) {
         this.xContext = xContext;
         apps = new HashMap<String,String[]>();
+        defaultApps = new HashSet<String>();
         for (int i=0; i<sApps.length; i++) {
-            setApplication(sApps[i], "?", "?");
+            setApplication(sApps[i], "", "");
+           	setUseDefaultApplication(sApps[i],true);
         }
     }
     
@@ -98,6 +104,10 @@ public class ExternalApps {
     public short getProcessingLevel() {
     	return nLevel;
     }
+    
+    public boolean isViewer(String sAppName) {
+    	return sAppName!=null && sAppName.endsWith("Viewer");
+    }
 	
     /** Define an external application
      *  @param sAppName the name of the application to define
@@ -109,28 +119,71 @@ public class ExternalApps {
         String[] sValue = { sExecutable, sOptions };
         apps.put(sAppName, sValue);
     }
-	
+    
     /** Get the definition for an external application
      *  @param sAppName the name of the application to get
      *  @return a String array containing the system dependent path to the
-     *  executable file as entry 0, and the parameters as entry 1
+     *  executable file as entry 0 and the parameters as entry 1
      *  returns null if the application is unknown
      */
     public String[] getApplication(String sAppName) {
         return apps.get(sAppName);
     } 
     
+    /** Define to use the system's default for an external application. This is only possible if the application is a viewer,
+     *  otherwise setting the value to true will be ignored
+     *  @param sAppName the name of the application
+     *  @param sUseDefault flag defining whether or not to use the default
+     */
+    public void setUseDefaultApplication(String sAppName, boolean bUseDefault) {
+    	if (bUseDefault && isViewer(sAppName)) {
+    		defaultApps.add(sAppName);
+    	}
+    	else if (defaultApps.contains(sAppName)) {
+    		defaultApps.remove(sAppName);
+    	}
+    }
+	
+    /** Get the setting to use the system's default application
+     * 
+     * @param sAppName the name of the application
+     * @return true if the system's default should be used, false if not or if the application is unknown
+     */
+    public boolean getUseDefaultApplication(String sAppName) {
+    	return defaultApps.contains(sAppName);
+    }
+    
     /** Execute an external application
-     *  @param sAppName the name of the application to execute
+     *  @param sAppName the name of the application to execute (ignored for default apps)
      *  @param sFileName the file name to use
      *  @param workDir the working directory to use
-     *  @param env map of environment variables to set (or null if no variables needs to be set)
-     *  @param bWaitFor true if the method should wait for the execution to finish
+     *  @param env map of environment variables to set (or null if no variables needs to be set, ignored for default apps)
+     *  @param bWaitFor true if the method should wait for the execution to finish (ignored for default apps)
      *  @return error code 
      */
     public int execute(String sAppName, String sFileName, File workDir, Map<String,String> env, boolean bWaitFor) {
-    	return execute(sAppName, "", sFileName, workDir, env, bWaitFor);
+    	if (defaultApps.contains(sAppName)) {
+    		return openWithDefaultApplication(new File(sFileName)) ? 0 : 1;
+    	}
+    	else {
+    		return execute(sAppName, "", sFileName, workDir, env, bWaitFor);
+    	}
     }
+    
+    // Open the file in the default application on this system (if any)
+    private boolean openWithDefaultApplication(File file) {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+				desktop.open(file);
+				return true;
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+			}
+        }
+        return false;
+    }
+
 	
     /** Execute an external application
      *  @param sAppName the name of the application to execute
@@ -204,12 +257,14 @@ public class ExternalApps {
 		XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
-            String[] sNames = new String[2];
+            String[] sNames = new String[3];
             sNames[0] = sApps[i]+"/Executable";
             sNames[1] = sApps[i]+"/Options";
+            sNames[2] = sApps[i]+"/UseDefault";
             try {
                 Object[] values = xProps.getHierarchicalPropertyValues(sNames);
                 setApplication(sApps[i], (String) values[0], (String) values[1]);
+                setUseDefaultApplication(sApps[i], ((Boolean) values[2]).booleanValue());
             }
             catch (com.sun.star.uno.Exception e) {
                 // Ignore...
@@ -238,12 +293,15 @@ public class ExternalApps {
         XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
-            String[] sNames = new String[2];
+            String[] sNames = new String[3];
             sNames[0] = sApps[i]+"/Executable";
             sNames[1] = sApps[i]+"/Options";
-            String[] sValues = getApplication(sApps[i]);
+            sNames[2] = sApps[i]+"/UseDefault";
+            String[] sApp = getApplication(sApps[i]);
+            boolean bUseDefault = getUseDefaultApplication(sApps[i]);
+            Object[] values = { sApp[0], sApp[1], new Boolean(bUseDefault) }; 
             try {
-                xProps.setHierarchicalPropertyValues(sNames, sValues);
+                xProps.setHierarchicalPropertyValues(sNames, values);
             }
             catch (com.sun.star.uno.Exception e) {
                 // Ignore...

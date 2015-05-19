@@ -9,8 +9,8 @@
     <body>
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigurationDialog" id="bm_configurationdialog"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Configuration of applications</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Before you can use Writer2LaTeX you must configure it to use your LaTeX
-        distribution as well as viewers for the different output formats.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">On this page you can configure the interaction between Writer2LaTeX
+        and your LaTeX distribution as well as viewers for the different output formats.</paragraph>
         <section id="howtoget" xml-lang="en-US">
         	Select <emph>Tools - Options - Writer2LaTeX toolbar - Applications</emph>
         </section>
@@ -88,7 +88,7 @@
 		<paragraph role="heading" level="2" xml-lang="en-US">Automatic Configuration</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">If you click this button, Writer2LaTeX will try to locate the external programs
 		and configure them. You will be presented with a short report of the results. Any applications that Writer2LaTeX cannot find for
-		you must be configured manually.</paragraph>
+		you should be configured manually.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ConfigurationAutoButton" visibility="hidden">Click here to let Writer2LaTeX configure your external applications automatically</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigurationApplication" id="bm_configurationapplication"/>
@@ -122,6 +122,12 @@
 			</listitem>
 		</list>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ConfigurationApplication" visibility="hidden">Select the external application you wish to configure here</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:UseDefault" id="bm_configurationusedefault"/>
+		<paragraph role="heading" level="2" xml-lang="en-US">Use the system's default application</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Select this if you wish to use the default application to view files
+		of the selected type.</paragraph>	
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:UseDefault" visibility="hidden">Select this to use the default application to view files of the selected type</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigurationExecutable" id="bm_configurationexecutable"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Executable</paragraph>

@@ -28,18 +28,23 @@
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ApplicationChange" script:language="UNO"/>
   </dlg:menulist>
-  <dlg:text dlg:id="ExecutableLabel" dlg:tab-index="5" dlg:left="12" dlg:top="46" dlg:width="55" dlg:height="12" dlg:value="Executable"/>
-  <dlg:textfield dlg:id="Executable" dlg:tab-index="6" dlg:left="72" dlg:top="44" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationExecutable">
+  
+  <dlg:checkbox dlg:id="UseDefault" dlg:tab-index="5" dlg:left="12" dlg:top="46" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:UseDefault" dlg:value="Use the system's default application" dlg:checked="false">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseDefaultChange" script:language="UNO"/>
+  </dlg:checkbox>
+
+  <dlg:text dlg:id="ExecutableLabel" dlg:tab-index="6" dlg:left="12" dlg:top="60" dlg:width="55" dlg:height="12" dlg:value="Executable"/>
+  <dlg:textfield dlg:id="Executable" dlg:tab-index="7" dlg:left="72" dlg:top="58" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationExecutable">
    <script:event script:event-name="on-blur" script:macro-name="vnd.sun.star.UNO:ExecutableUnfocus" script:language="UNO"/>
   </dlg:textfield>
-  <dlg:button dlg:id="BrowseButton" dlg:tab-index="7" dlg:left="200" dlg:top="44" dlg:width="55" dlg:height="14" dlg:value="Browse...">
+  <dlg:button dlg:id="BrowseButton" dlg:tab-index="8" dlg:left="200" dlg:top="58" dlg:width="55" dlg:height="14" dlg:value="Browse...">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:BrowseClick" script:language="UNO"/>
   </dlg:button>
-  <dlg:text dlg:id="OptionsLabel" dlg:tab-index="8" dlg:left="12" dlg:top="60" dlg:width="55" dlg:height="12" dlg:value="Options"/>
-  <dlg:textfield dlg:id="Options" dlg:tab-index="9" dlg:left="72" dlg:top="58" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationOptions">
+  <dlg:text dlg:id="OptionsLabel" dlg:tab-index="9" dlg:left="12" dlg:top="74" dlg:width="55" dlg:height="12" dlg:value="Options"/>
+  <dlg:textfield dlg:id="Options" dlg:tab-index="10" dlg:left="72" dlg:top="72" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationOptions">
    <script:event script:event-name="on-blur" script:macro-name="vnd.sun.star.UNO:OptionsUnfocus" script:language="UNO"/>
   </dlg:textfield>
-  <dlg:button dlg:id="AutoButton" dlg:tab-index="10" dlg:left="72" dlg:top="78" dlg:width="120" dlg:height="14" dlg:value="Automatic configuration" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationAutoButton">
+  <dlg:button dlg:id="AutoButton" dlg:tab-index="11" dlg:left="72" dlg:top="92" dlg:width="120" dlg:height="14" dlg:value="Automatic configuration" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationAutoButton">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:AutomaticClick" script:language="UNO"/>
   </dlg:button>
  </dlg:bulletinboard>

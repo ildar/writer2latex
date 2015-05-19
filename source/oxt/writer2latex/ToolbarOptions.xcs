@@ -7,6 +7,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <templates>
         <group oor:name="Application">
+        	<prop oor:name="UseDefault" oor:type="xs:boolean" />
             <prop oor:name="Executable" oor:type="xs:string" />
             <prop oor:name="Options" oor:type="xs:string" />
         </group>

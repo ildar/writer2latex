@@ -2,6 +2,11 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] In the Application dialog in the toolbar configuration it is now possible to select the systems's default
+  application for the viewers. This is now the default, and in most cases this will imply that the toolbar works
+  without configuration. The automatic configuration has been changed to use the default application if it fails
+  to find the dedicated applications.
+
 [w2l] The Application dialog in the toolbar configuration can now be used to select the behavior after export
   (do nothing, compile or (default) export, compile and preview)
 

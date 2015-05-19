@@ -9,6 +9,9 @@
             <value>2</value><!-- compile and preview -->
         </prop>
         <node oor:name="LaTeX" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>latex</value>
             </prop>
@@ -17,6 +20,9 @@
             </prop>
         </node>
         <node oor:name="PdfLaTeX" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>pdflatex</value>
             </prop>
@@ -25,6 +31,9 @@
             </prop>
         </node>
         <node oor:name="XeLaTeX" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>xelatex</value>
             </prop>
@@ -33,6 +42,9 @@
             </prop>
         </node>
         <node oor:name="BibTeX" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>bibtex</value>
             </prop>
@@ -41,6 +53,9 @@
             </prop>
         </node>
         <node oor:name="Makeindex" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>makeindex</value>
             </prop>
@@ -49,6 +64,9 @@
             </prop>
         </node>
         <node oor:name="Mk4ht" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>false</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>mk4ht</value>
             </prop>
@@ -57,6 +75,9 @@
             </prop>
         </node>
         <node oor:name="Dvips" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>true</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>dvips</value>
             </prop>
@@ -65,6 +86,9 @@
             </prop>
         </node>
         <node oor:name="DVIViewer" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>true</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>evince</value>
             </prop>
@@ -73,6 +97,9 @@
             </prop>
         </node>
         <node oor:name="PostscriptViewer" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>true</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>evince</value>
             </prop>
@@ -81,6 +108,9 @@
             </prop>
         </node>
         <node oor:name="PdfViewer" oor:type="xs:string">
+            <prop oor:name="UseDefault">
+                <value>true</value>
+            </prop>
             <prop oor:name="Executable">
                 <value>evince</value>
             </prop>
