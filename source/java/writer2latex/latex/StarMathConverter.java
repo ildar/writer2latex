@@ -16,9 +16,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *  
- *  Version 1.4 (2014-09-19)
+ *  Version 1.6 (2015-05-22)
  *
  *  All Rights Reserved.
  */
@@ -60,7 +60,7 @@ import writer2latex.latex.LaTeXDocumentPortion;
  * not used. More info in the documentation on ooomath.sty.
  */ 
 
-//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // Helper Classes
 
 // Some Character classifications 
@@ -263,6 +263,14 @@ class Token{
     public static final Token CYAN=new Token();
     public static final Token MAGENTA=new Token();
     public static final Token YELLOW=new Token();
+    public static final Token GRAY=new Token();
+    public static final Token LIME=new Token();
+    public static final Token MAROON=new Token();
+    public static final Token NAVY=new Token();
+    public static final Token OLIVE=new Token();
+    public static final Token PURPLE=new Token();
+    public static final Token SILVER=new Token();
+    public static final Token TEAL=new Token();
     public static final Token FIXED=new Token();
     public static final Token SANS=new Token();
     public static final Token SERIF=new Token();
@@ -412,6 +420,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "alignr", Token.ALIGNR, "", TGroup.ALIGN, 0),
          new SmTokenTableEntry( "and", Token.AND, "\\wedge ", TGroup.PRODUCT, 0),
          new SmTokenTableEntry( "approx", Token.APPROX, "\\approx ", TGroup.RELATION, 0),
+         new SmTokenTableEntry( "aqua", Token.CYAN, "\\textcolor{cyan}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "arccos", Token.ACOS, "\\arccos ", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "arccot", Token.ACOT, "\\arccot ", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "arcsin", Token.ASIN, "\\arcsin ", TGroup.FUNCTION, 5),
@@ -422,7 +431,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "bar", Token.BAR, "\\bar", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "binom", Token.BINOM, "" , 5 ),
          new SmTokenTableEntry( "black", Token.BLACK, "\\textcolor{black}", TGroup.COLOR, 0),
-         new SmTokenTableEntry( "blue", Token.BLUE, "\\textcolor[rgb]{0,0,0.5}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "blue", Token.BLUE, "\\textcolor{blue}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "bold", Token.BOLD, "\\boldsubformula", TGroup.FONTATTR, 5),
          new SmTokenTableEntry( "boper", Token.BOPER, "", TGroup.PRODUCT, 0),
          new SmTokenTableEntry( "breve", Token.BREVE, "\\breve", TGroup.ATTRIBUT, 5),
@@ -439,7 +448,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "coth", Token.COTH, "\\coth ", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "csub", Token.CSUB, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "csup", Token.CSUP, "", TGroup.POWER, 0),
-         new SmTokenTableEntry( "cyan", Token.CYAN, "\\textcolor[rgb]{0,0.5,0.5}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "cyan", Token.CYAN, "\\textcolor{cyan}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "dddot", Token.DDDOT, "\\dddot", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "ddot", Token.DDOT, "\\ddot", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "def", Token.DEF, "\\defeq ", TGroup.RELATION, 0),
@@ -466,11 +475,13 @@ class SmTokenTable{
          new SmTokenTableEntry( "font", Token.FONT, "", TGroup.FONTATTR, 5),
          new SmTokenTableEntry( "forall", Token.FORALL, "\\forall ", TGroup.STANDALONE, 5),
          new SmTokenTableEntry( "from", Token.FROM, "", TGroup.LIMIT, 0),
+         new SmTokenTableEntry( "fuchsia", Token.MAGENTA, "\\textcolor{magenta}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "func", Token.FUNC, "", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "ge", Token.GE, "\\geq ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "geslant", Token.GESLANT, "\\geqslant ", TGroup.RELATION, 0 ),
          new SmTokenTableEntry( "gg", Token.GG, "\\gg ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "grave", Token.GRAVE, "\\grave", TGroup.ATTRIBUT, 5),
+         new SmTokenTableEntry( "gray", Token.GRAY, "\\textcolor[gray]{0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "green", Token.GREEN, "\\textcolor[rgb]{0,0.5,0}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "gt", Token.GT, ">", TGroup.RELATION, 0),
          new SmTokenTableEntry( "hat", Token.HAT, "\\hat", TGroup.ATTRIBUT, 5),
@@ -496,6 +507,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "leslant", Token.LESLANT, "\\leqslant ", TGroup.RELATION, 0 ),
          new SmTokenTableEntry( "lfloor", Token.LFLOOR, "\\lfloor ", TGroup.LBRACES, 5),
          new SmTokenTableEntry( "lim", Token.LIM, "\\lim ", TGroup.OPER, 5),
+         new SmTokenTableEntry( "lime", Token.LIME, "\\textcolor{green}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "liminf", Token.LIMINF, "\\liminf ", TGroup.OPER, 5),
          new SmTokenTableEntry( "limsup", Token.LIMSUP, "\\limsup ", TGroup.OPER, 5),
          new SmTokenTableEntry( "lint", Token.LINT, "\\oint ", TGroup.OPER, 5),
@@ -508,11 +520,13 @@ class SmTokenTable{
          new SmTokenTableEntry( "lsub", Token.LSUB, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "lsup", Token.LSUP, "", TGroup.POWER, 0),
          new SmTokenTableEntry( "lt", Token.LT, "<", TGroup.RELATION, 0),
-         new SmTokenTableEntry( "magenta", Token.MAGENTA, "\\textcolor[rgb]{0.5,0,0.5}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "magenta", Token.MAGENTA, "\\textcolor{magenta}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "maroon", Token.MAROON, "\\textcolor[rgb]{0.5,0,0}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "matrix", Token.MATRIX, "", 5),
          new SmTokenTableEntry( "minusplus", Token.MINUSPLUS, "\\mp ", TGroup.UNOPER, TGroup.SUM, 5),
          new SmTokenTableEntry( "mline", Token.MLINE, "", 0),
          new SmTokenTableEntry( "nabla", Token.NABLA, "\\nabla ", TGroup.STANDALONE, 5),
+         new SmTokenTableEntry( "navy", Token.NAVY, "\\textcolor[rgb]{0,0,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "nbold", Token.NBOLD, "\\normalsubformula", TGroup.FONTATTR, 5),
          new SmTokenTableEntry( "ndivides", Token.NDIVIDES, "\\nmid ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "neg", Token.NEG, "\\neg ", TGroup.UNOPER, 5 ),
@@ -529,6 +543,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "nroot", Token.NROOT, "", TGroup.UNOPER, 5),
          new SmTokenTableEntry( "odivide", Token.ODIVIDE, "\\oslash ", TGroup.PRODUCT, 0),
          new SmTokenTableEntry( "odot", Token.ODOT, "\\odot ", TGroup.PRODUCT, 0),
+         new SmTokenTableEntry( "olive", Token.OLIVE, "\\textcolor[rgb]{0.5,0.5,0}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "ominus", Token.OMINUS, "\\ominus ", TGroup.SUM, 0),
          new SmTokenTableEntry( "oper", Token.OPER, "", TGroup.OPER, 5),
          new SmTokenTableEntry( "oplus", Token.OPLUS, "\\oplus ", TGroup.SUM, 0),
@@ -546,12 +561,13 @@ class SmTokenTable{
          new SmTokenTableEntry( "plusminus", Token.PLUSMINUS, "\\pm ", TGroup.UNOPER, TGroup.SUM, 5),
          new SmTokenTableEntry( "prod", Token.PROD, "\\prod ", TGroup.OPER, 5),
          new SmTokenTableEntry( "prop", Token.PROP, "\\propto ", TGroup.RELATION, 0),
+         new SmTokenTableEntry( "purple", Token.PURPLE, "\\textcolor[rgb]{0.5,0,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "rangle", Token.RANGLE, "\\rangle ", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rbrace", Token.RBRACE, "\\}", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rceil", Token.RCEIL, "\\rceil ", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rdbracket", Token.RDBRACKET, "\\rrbracket ", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "rdline", Token.RDLINE, "\\|", TGroup.RBRACES, 0),
-         new SmTokenTableEntry( "red", Token.RED, "\\textcolor[rgb]{0.5,0,0}", TGroup.COLOR, 0),
+         new SmTokenTableEntry( "red", Token.RED, "\\textcolor{red}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "rfloor", Token.RFLOOR, "\\rfloor", TGroup.RBRACES, 0),
          new SmTokenTableEntry( "right", Token.RIGHT, "", 0),
          new SmTokenTableEntry( "rightarrow" , Token.RIGHTARROW, "\\rightarrow ", TGroup.STANDALONE, 5),
@@ -566,6 +582,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "setR" , Token.SETR, "\\mathbb{R}", TGroup.STANDALONE, 5),
          new SmTokenTableEntry( "setZ" , Token.SETZ, "\\mathbb{Z}", TGroup.STANDALONE, 5),
          new SmTokenTableEntry( "setminus", Token.BACKSLASH, "\\setminus ", TGroup.PRODUCT, 0 ),
+         new SmTokenTableEntry( "silver", Token.SILVER, "\\textcolor[gray]{0.75}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "sim", Token.SIM, "\\sim ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "simeq", Token.SIMEQ, "\\simeq ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "sin", Token.SIN, "\\sin ", TGroup.FUNCTION, 5),
@@ -583,6 +600,7 @@ class SmTokenTable{
          new SmTokenTableEntry( "supseteq", Token.SUPSETEQ, "\\supseteq ", TGroup.RELATION, 0),
          new SmTokenTableEntry( "tan", Token.TAN, "\\tan ", TGroup.FUNCTION, 5),
          new SmTokenTableEntry( "tanh", Token.TANH, "\\tanh ", TGroup.FUNCTION, 5),
+         new SmTokenTableEntry( "teal", Token.TEAL, "\\textcolor[rgb]{0,0.5,0.5}", TGroup.COLOR, 0),
          new SmTokenTableEntry( "tilde", Token.TILDE, "\\tilde ", TGroup.ATTRIBUT, 5),
          new SmTokenTableEntry( "times", Token.TIMES, "\\times ", TGroup.PRODUCT, 0),
          new SmTokenTableEntry( "to", Token.TO, "", TGroup.LIMIT, 0),
@@ -1439,12 +1457,29 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         else if (curToken.eType==Token.COLOR){
             nextToken();
             if (tokenInGroup(TGroup.COLOR)){
+            	Token tokenType = curToken.eType;
                 sAttribute=curToken.sLaTeX; // the color name
                 nextToken();
                 if (bUseColor) {
                     // The attribute contains the appropriate \textcolor command
-                	// Note: 5 of the 8 colors are in a dark variant
+                	// Note: Since LO 4.4 and AOO 4.1+, StarMath supports the 16 basic HTML colors
+                	// This means that the definition of red, blue, cyan and magenta has changed
+                	// The compatibility option old_math_colors is used to apply the old (dark) variants
                 	// Note: despite the name, \textcolor also works in math mode!
+                	if (config.oldMathColors()) {
+                		if (tokenType==Token.RED) {
+                			sAttribute="\\textcolor[rgb]{0.5,0,0}";
+                		}
+                		if (tokenType==Token.BLUE) {
+                			sAttribute="\\textcolor[rgb]{0,0,0.5}";
+                		}
+                		if (tokenType==Token.CYAN) {
+                			sAttribute="\\textcolor[rgb]{0,0.5,0.5}";
+                		}
+                		if (tokenType==Token.MAGENTA) {
+                			sAttribute="\\textcolor[rgb]{0.5,0,0.5}";	
+                		}
+                	}
                     return sAttribute+group(term(fSize,eAlign));
                 }
                 else {

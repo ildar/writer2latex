@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] Color support in StarMath have changed with LO 4.4 and will with (probably) AOO 4.2
+  (https://bz.apache.org/ooo/show_bug.cgi?id=118191). Now the 16 basic HTML colors are used. This is an incompatible
+  change because StarMath used to apply dark versions of red, blue, cyan and magenta.
+  The new colors are now supported, and a boolean option old_math_colors (default false) has been added to allow the
+  user to apply the old colors. 
+
 [w2l] In the Application dialog in the toolbar configuration it is now possible to select the systems's default
   application for the viewers. This is now the default, and in most cases this will imply that the toolbar works
   without configuration. The automatic configuration has been changed to use the default application if it fails

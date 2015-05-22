@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-06)
+ *  Version 1.6 (2015-05-22)
  *
  */
 
@@ -49,7 +49,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 72; }
+    protected int getOptionCount() { return 73; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int SPLIT_LINKED_SECTIONS = 68;
     private static final int SPLIT_TOPLEVEL_SECTIONS = 69;
     private static final int SAVE_IMAGES_IN_SUBDIR = 70;
-    private static final int DEBUG = 71;
+    private static final int OLD_MATH_COLORS = 71;
+    private static final int DEBUG = 72;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -328,6 +329,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[SPLIT_LINKED_SECTIONS] = new BooleanOption("split_linked_sections","false");
         options[SPLIT_TOPLEVEL_SECTIONS] = new BooleanOption("split_toplevel_sections","false");
         options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
+        options[OLD_MATH_COLORS] = new BooleanOption("old_math_colors","false");
         options[DEBUG] = new BooleanOption("debug","false");
 
         // Complex options - heading map
@@ -737,5 +739,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean splitToplevelSections() { return ((BooleanOption) options[SPLIT_TOPLEVEL_SECTIONS]).getValue(); }
     public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
 	
+    // Compatibility options
+    public boolean oldMathColors() { return ((BooleanOption) options[OLD_MATH_COLORS]).getValue(); }
 }
 
