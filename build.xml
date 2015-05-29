@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2015-05-12)
+  # version 1.6 (2015-05-28)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -137,6 +137,7 @@
                     <exclude name="**/AllTests.class"/>
 		    		<include name="**/*.xml"/>
                 	<include name="**/*.class"/>
+		    		<include name="**/*.properties"/>
                     <exclude name="writer2latex/Application.class"/>
                     <exclude name="writer2latex/xhtml/**/*"/>
                 	<exclude name="org/openoffice/da/comp/writer2xhtml/**/*"/>
@@ -176,6 +177,7 @@
                     <exclude name="**/*Test.class"/>
                     <exclude name="**/AllTests.class"/>
                 	<include name="org/openoffice/da/comp/w2lcommon/**/*.class"/>
+                	<include name="org/openoffice/da/comp/w2lcommon/**/*.properties"/>
                 	<include name="org/openoffice/da/comp/writer2xhtml/**/*.class"/>
                 	<include name="writer2latex/api/**/*.class"/>
                 	<include name="writer2latex/base/**/*.class"/>

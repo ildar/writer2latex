@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-04-05)
+ *  Version 1.6 (2015-05-29)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -49,7 +49,7 @@ public class LaTeXUNOPublisher extends UNOPublisher {
 	// The TeXifier and associated data
     private TeXify texify = null;
 	private String sBibinputs=null;
-	private String sBackend = "generic";
+	private String sBackend = "generic"; //$NON-NLS-1$
 	
     public LaTeXUNOPublisher(XComponentContext xContext, XFrame xFrame, String sAppName) {
     	super(xContext, xFrame, sAppName);
@@ -70,30 +70,30 @@ public class LaTeXUNOPublisher extends UNOPublisher {
 			return null;
 		}
 		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-		return getDirectory(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"),
-				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir"));
+		return getDirectory(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"), //$NON-NLS-1$
+				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir")); //$NON-NLS-1$
     }
     
     /** Make a file name LaTeX friendly
      */
     @Override protected String filterFileName(String sFileName) {
-    	return Misc.makeTeXFriendly(sFileName,"writer2latex");
+    	return Misc.makeTeXFriendly(sFileName,"writer2latex"); //$NON-NLS-1$
     }
 
     /** Post process the filter data: Set bibliography options and
      *  determine the backend and the BIBINPUTS directory
      */
     @Override protected PropertyValue[] postProcessMediaProps(PropertyValue[] mediaProps) {
-        sBackend = "generic";
+        sBackend = "generic"; //$NON-NLS-1$
         sBibinputs = null;
 
         PropertyHelper mediaHelper = new PropertyHelper(mediaProps);
-        Object filterData = mediaHelper.get("FilterData");
+        Object filterData = mediaHelper.get("FilterData"); //$NON-NLS-1$
         if (filterData instanceof PropertyValue[]) {
         	PropertyHelper filterHelper = new PropertyHelper((PropertyValue[])filterData);
         	
             // Get the backend
-            Object backend = filterHelper.get("backend");
+            Object backend = filterHelper.get("backend"); //$NON-NLS-1$
             if (backend instanceof String) {
                 sBackend = (String) backend;
             }
@@ -103,28 +103,28 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         	try {
         		Object view = registry.getRegistryView(BibliographyDialog.REGISTRY_PATH, false);
         		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-        		String sBibTeXFiles = getFileList(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"),
-        				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir"));
-        		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles")) {
-        			filterHelper.put("external_bibtex_files", sBibTeXFiles);
-            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertZoteroCitations")) {
-            			filterHelper.put("zotero_bibtex_files", sBibTeXFiles);
+        		String sBibTeXFiles = getFileList(XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation"), //$NON-NLS-1$
+        				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir")); //$NON-NLS-1$
+        		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles")) { //$NON-NLS-1$
+        			filterHelper.put("external_bibtex_files", sBibTeXFiles); //$NON-NLS-1$
+            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertZoteroCitations")) { //$NON-NLS-1$
+            			filterHelper.put("zotero_bibtex_files", sBibTeXFiles); //$NON-NLS-1$
             		}
-            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertJabRefCitations")) {
-            			filterHelper.put("jabref_bibtex_files", sBibTeXFiles);
+            		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertJabRefCitations")) { //$NON-NLS-1$
+            			filterHelper.put("jabref_bibtex_files", sBibTeXFiles); //$NON-NLS-1$
             		}
         		}
-    			filterHelper.put("include_original_citations",
-    					Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "IncludeOriginalCitations")));
-        		String sBibTeXDir = XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir");
+    			filterHelper.put("include_original_citations", //$NON-NLS-1$
+    					Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "IncludeOriginalCitations"))); //$NON-NLS-1$
+        		String sBibTeXDir = XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir"); //$NON-NLS-1$
         		if (sBibTeXDir.length()>0) {
         			// The separator character in BIBINPUTS is OS specific
         			sBibinputs = sBibTeXDir+File.pathSeparatorChar;
         		}
-    			filterHelper.put("use_natbib", Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseNatbib")));
-    			filterHelper.put("natbib_options", XPropertySetHelper.getPropertyValueAsString(xProps, "NatbibOptions"));
+    			filterHelper.put("use_natbib", Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseNatbib"))); //$NON-NLS-1$ //$NON-NLS-2$
+    			filterHelper.put("natbib_options", XPropertySetHelper.getPropertyValueAsString(xProps, "NatbibOptions")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        		mediaHelper.put("FilterData",filterHelper.toArray());
+        		mediaHelper.put("FilterData",filterHelper.toArray()); //$NON-NLS-1$
                 PropertyValue[] newMediaProps = mediaHelper.toArray();
             	registry.disposeRegistryView(view);
             	return newMediaProps;
@@ -147,27 +147,27 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         boolean bResult = true;
         
         try {
-            if (sBackend=="pdftex") {
+            if (sBackend=="pdftex") { //$NON-NLS-1$
                 bResult = texify.process(file, sBibinputs, TeXify.PDFTEX, true);
             }
-            else if (sBackend=="dvips") {
+            else if (sBackend=="dvips") { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.DVIPS, true);
             }
-            else if (sBackend=="xetex") {
+            else if (sBackend=="xetex") { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.XETEX, true);
             }
-            else if (sBackend=="generic") {
+            else if (sBackend=="generic") { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.GENERIC, true);
             }
         }
         catch (IOException e) {
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage("Writer2LaTeX","Error: "+e.getMessage());
+            msgBox.showMessage("Writer2LaTeX",Messages.getString("LaTeXUNOPublisher.error")+": "+e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         
         if (!bResult) {
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage("Writer2LaTeX","Error: Failed to execute LaTeX - see log for details");        	
+            msgBox.showMessage("Writer2LaTeX",Messages.getString("LaTeXUNOPublisher.error")+": "+Messages.getString("LaTeXUNOPublisher.failedlatex"));        	 //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
     
@@ -191,10 +191,10 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     	else {
     		return null;
     	}
-    	CSVList filelist = new CSVList(",");
+    	CSVList filelist = new CSVList(","); //$NON-NLS-1$
     	if (files!=null) {
     		for (File file : files) {
-    			if (file.isFile() && file.getName().endsWith(".bib")) {
+    			if (file.isFile() && file.getName().endsWith(".bib")) { //$NON-NLS-1$
     				filelist.addValue(Misc.removeExtension(file.getName()));
     			}
     		}

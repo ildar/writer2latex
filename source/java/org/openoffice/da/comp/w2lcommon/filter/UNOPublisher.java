@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-05-05)
+ *  Version 1.6 (2015-05-28)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -107,7 +107,7 @@ public class UNOPublisher {
 				XSimpleFileAccess2 sfa2 = null;
 				try {
 					Object sfaObject = xContext.getServiceManager().createInstanceWithContext(
-							"com.sun.star.ucb.SimpleFileAccess", xContext);
+							"com.sun.star.ucb.SimpleFileAccess", xContext); //$NON-NLS-1$
 					sfa2 = (XSimpleFileAccess2) UnoRuntime.queryInterface(XSimpleFileAccess2.class, sfaObject);
 				}
 				catch (com.sun.star.uno.Exception e) {
@@ -120,13 +120,13 @@ public class UNOPublisher {
 	        catch (IOException e) {
 	            xStatus.end();
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            msgBox.showMessage(sAppName,"Error: Failed to export document");
+	            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
 	            return false;
 	        }
 	        catch (com.sun.star.uno.Exception e) {
 	            xStatus.end();
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            msgBox.showMessage(sAppName,"Error: Failed to export document");
+	            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
 	            return false;
 			}
 	        xStatus.setValue(7); // Document is converted, that's 70%
@@ -174,26 +174,26 @@ public class UNOPublisher {
         String sDocumentUrl = xModel.getURL();
         if (sDocumentUrl.length()==0) { // The document has no location
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,"Please save the document first");
+            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.savedocument")); //$NON-NLS-1$
             return false;
         }
-        else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl)) && !".ods".equals(Misc.getFileExtension(sDocumentUrl)) && !".fods".equals(Misc.getFileExtension(sDocumentUrl))) {
+        else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl)) && !".ods".equals(Misc.getFileExtension(sDocumentUrl)) && !".fods".equals(Misc.getFileExtension(sDocumentUrl))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,"Please save the document in OpenDocument format (.odt)");
+            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.saveodt")); //$NON-NLS-1$
             return false;        	        	
         }
-        else if (!sDocumentUrl.startsWith("file:")) {
+        else if (!sDocumentUrl.startsWith("file:")) { //$NON-NLS-1$
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,"Please save the document in the local file system");
+            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.savefilesystem")); //$NON-NLS-1$
             return false;        	
         }
-        else if (System.getProperty("os.name").startsWith("Windows")) {
+        else if (System.getProperty("os.name").startsWith("Windows")) { //$NON-NLS-1$ //$NON-NLS-2$
         	// Avoid UNC paths (LaTeX does not like them)
-    		Pattern windowsPattern = Pattern.compile("^file:///[A-Za-z][|:].*");
+    		Pattern windowsPattern = Pattern.compile("^file:///[A-Za-z][|:].*"); //$NON-NLS-1$
     		if (!windowsPattern.matcher(sDocumentUrl).matches()) {
                 MessageBox msgBox = new MessageBox(xContext, xFrame);
                 msgBox.showMessage(sAppName,
-                		"Please save the document on a location with a drive name");
+                		Messages.getString("UNOPublisher.savedrivename")); //$NON-NLS-1$
                 return false;        		
     		}
 		}
@@ -247,17 +247,17 @@ public class UNOPublisher {
         // Create inital media properties
         mediaProps = new PropertyValue[2];
         mediaProps[0] = new PropertyValue();
-        mediaProps[0].Name = "FilterName";
+        mediaProps[0].Name = "FilterName"; //$NON-NLS-1$
         mediaProps[0].Value = getFilterName(format);
         mediaProps[1] = new PropertyValue();
-        mediaProps[1].Name = "URL";
+        mediaProps[1].Name = "URL"; //$NON-NLS-1$
         mediaProps[1].Value = getTargetURL(format);
     }
     
     private boolean updateMediaProperties(TargetFormat format) {
     	prepareMediaProperties(format);
     	
-    	String sDialogName = xModel.getURL().endsWith(".odt") || xModel.getURL().endsWith(".fodt") ?
+    	String sDialogName = xModel.getURL().endsWith(".odt") || xModel.getURL().endsWith(".fodt") ? //$NON-NLS-1$ //$NON-NLS-2$
     			getDialogName(format) : getDialogNameCalc(format);
     	if (sDialogName!=null) {
 	    	try {
@@ -290,26 +290,26 @@ public class UNOPublisher {
     
     private static String getTargetExtension(TargetFormat format) {
     	switch (format) {
-    	case xhtml: return ".html";
-    	case xhtml11: return ".xhtml";
-    	case xhtml_mathml: return ".xhtml";
-    	case html5: return ".html";
-    	case epub: return ".epub";
-    	case epub3: return ".epub";
-    	case latex: return ".tex";
-    	default: return "";
+    	case xhtml: return ".html"; //$NON-NLS-1$
+    	case xhtml11: return ".xhtml"; //$NON-NLS-1$
+    	case xhtml_mathml: return ".xhtml"; //$NON-NLS-1$
+    	case html5: return ".html"; //$NON-NLS-1$
+    	case epub: return ".epub"; //$NON-NLS-1$
+    	case epub3: return ".epub"; //$NON-NLS-1$
+    	case latex: return ".tex"; //$NON-NLS-1$
+    	default: return ""; //$NON-NLS-1$
     	}
     }
       
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
     	case xhtml: 
-    	case xhtml11: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog";
+    	case xhtml11: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
     	case xhtml_mathml:
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath";
-    	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog";
-    	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog";
-    	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath"; //$NON-NLS-1$
+    	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog"; //$NON-NLS-1$
+    	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog"; //$NON-NLS-1$
+    	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$
     	default: return null;
     	}
     }
@@ -319,7 +319,7 @@ public class UNOPublisher {
     	case xhtml: 
     	case xhtml11: 
     	case xhtml_mathml:
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc"; 
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc";  //$NON-NLS-1$
     	case epub: 
     	case epub3: 
     	case latex:
@@ -329,14 +329,14 @@ public class UNOPublisher {
       
     private static String getFilterName(TargetFormat format) {
     	switch (format) {
-    	case xhtml: return "org.openoffice.da.writer2xhtml";
-    	case xhtml11: return "org.openoffice.da.writer2xhtml11";
-    	case xhtml_mathml: return "org.openoffice.da.writer2xhtml.mathml";
-    	case html5: return "org.openoffice.da.writer2xhtml5";
-    	case epub: return "org.openoffice.da.writer2xhtml.epub";
-    	case epub3: return "org.openoffice.da.writer2xhtml.epub3";
-    	case latex: return "org.openoffice.da.writer2latex";
-    	default: return "";
+    	case xhtml: return "org.openoffice.da.writer2xhtml"; //$NON-NLS-1$
+    	case xhtml11: return "org.openoffice.da.writer2xhtml11"; //$NON-NLS-1$
+    	case xhtml_mathml: return "org.openoffice.da.writer2xhtml.mathml"; //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.writer2xhtml5"; //$NON-NLS-1$
+    	case epub: return "org.openoffice.da.writer2xhtml.epub"; //$NON-NLS-1$
+    	case epub3: return "org.openoffice.da.writer2xhtml.epub3"; //$NON-NLS-1$
+    	case latex: return "org.openoffice.da.writer2latex"; //$NON-NLS-1$
+    	default: return ""; //$NON-NLS-1$
     	}
     }
 

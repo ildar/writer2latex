@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-19)
+ *  Version 1.6 (2015-05-29)
  *
  */ 
  
@@ -62,11 +62,11 @@ public final class ApplicationsDialog
     
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2latex.ApplicationsDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.ApplicationsDialog"; //$NON-NLS-1$
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.ApplicationsDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.ApplicationsDialog"; //$NON-NLS-1$
 
     /** Create a new ApplicationsDialog */
     public ApplicationsDialog(XComponentContext xContext) {
@@ -83,28 +83,28 @@ public final class ApplicationsDialog
 		DialogAccess dlg = new DialogAccess(xDialog);
 
         try {
-            if (sMethod.equals("external_event") ){
+            if (sMethod.equals("external_event") ){ //$NON-NLS-1$
                 return handleExternalEvent(dlg, event);
             }
-            else if (sMethod.equals("AfterExportChange")) {
+            else if (sMethod.equals("AfterExportChange")) { //$NON-NLS-1$
                 return changeProcessingLevel(dlg);
             }
-            else if (sMethod.equals("ApplicationChange")) {
+            else if (sMethod.equals("ApplicationChange")) { //$NON-NLS-1$
                 return changeApplication(dlg);
             }
-            else if (sMethod.equals("UseDefaultChange")) {
+            else if (sMethod.equals("UseDefaultChange")) { //$NON-NLS-1$
             	return useDefaultChange(dlg) && updateApplication(dlg);
             }
-            else if (sMethod.equals("BrowseClick")) {
+            else if (sMethod.equals("BrowseClick")) { //$NON-NLS-1$
                 return browseForExecutable(dlg);
             }
-            else if (sMethod.equals("ExecutableUnfocus")) {
+            else if (sMethod.equals("ExecutableUnfocus")) { //$NON-NLS-1$
                 return updateApplication(dlg);
             }
-            else if (sMethod.equals("OptionsUnfocus")) {
+            else if (sMethod.equals("OptionsUnfocus")) { //$NON-NLS-1$
                 return updateApplication(dlg);
             }
-            else if (sMethod.equals("AutomaticClick")) {
+            else if (sMethod.equals("AutomaticClick")) { //$NON-NLS-1$
                 return autoConfigure(dlg);
             }
         }
@@ -118,7 +118,7 @@ public final class ApplicationsDialog
     }
 	
     @Override public String[] getSupportedMethodNames() {
-        String[] sNames = { "external_event", "AfterExportChange", "ApplicationChange", "BrowseClick", "ExecutableUnfocus", "OptionsUnfocus", "AutomaticClick" };
+        String[] sNames = { "external_event", "AfterExportChange", "ApplicationChange", "BrowseClick", "ExecutableUnfocus", "OptionsUnfocus", "AutomaticClick" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         return sNames;
     }
     
@@ -143,10 +143,10 @@ public final class ApplicationsDialog
         throws com.sun.star.uno.Exception {
         try {
             String sMethod = AnyConverter.toString(aEventObject);
-            if (sMethod.equals("ok")) {
+            if (sMethod.equals("ok")) { //$NON-NLS-1$
                 externalApps.save();
                 return true;
-            } else if (sMethod.equals("back") || sMethod.equals("initialize")) {
+            } else if (sMethod.equals("back") || sMethod.equals("initialize")) { //$NON-NLS-1$ //$NON-NLS-2$
                 externalApps.load();
                 updateProcessingLevel(dlg);
                 return changeApplication(dlg);
@@ -154,18 +154,18 @@ public final class ApplicationsDialog
         }
         catch (com.sun.star.lang.IllegalArgumentException e) {
             throw new com.sun.star.lang.IllegalArgumentException(
-            "Method external_event requires a string in the event object argument.", this,(short) -1);
+            "Method external_event requires a string in the event object argument.", this,(short) -1); //$NON-NLS-1$
         }
         return false;
     }
     
     private boolean changeProcessingLevel(DialogAccess dlg) {
-    	externalApps.setProcessingLevel(dlg.getListBoxSelectedItem("AfterExport"));
+    	externalApps.setProcessingLevel(dlg.getListBoxSelectedItem("AfterExport")); //$NON-NLS-1$
     	return true;
     }
     
     private boolean updateProcessingLevel(DialogAccess dlg) {
-    	dlg.setListBoxSelectedItem("AfterExport", externalApps.getProcessingLevel());
+    	dlg.setListBoxSelectedItem("AfterExport", externalApps.getProcessingLevel()); //$NON-NLS-1$
     	return true;
     }
 	
@@ -173,22 +173,22 @@ public final class ApplicationsDialog
         String sAppName = getSelectedAppName(dlg);
         if (sAppName!=null) {
             String[] s = externalApps.getApplication(sAppName);
-            dlg.setComboBoxText("Executable", s[0]);
-            dlg.setComboBoxText("Options", s[1]);
-            dlg.setCheckBoxStateAsBoolean("UseDefault", externalApps.getUseDefaultApplication(sAppName));
-        	dlg.setControlEnabled("UseDefault", externalApps.isViewer(sAppName));
+            dlg.setComboBoxText("Executable", s[0]); //$NON-NLS-1$
+            dlg.setComboBoxText("Options", s[1]); //$NON-NLS-1$
+            dlg.setCheckBoxStateAsBoolean("UseDefault", externalApps.getUseDefaultApplication(sAppName)); //$NON-NLS-1$
+        	dlg.setControlEnabled("UseDefault", externalApps.isViewer(sAppName)); //$NON-NLS-1$
         	useDefaultChange(dlg);
         }
         return true;
     }
     
     private boolean useDefaultChange(DialogAccess dlg) {
-        boolean bCustomApp = !dlg.getCheckBoxStateAsBoolean("UseDefault");
-    	dlg.setControlEnabled("ExecutableLabel", bCustomApp);
-    	dlg.setControlEnabled("Executable", bCustomApp);
-    	dlg.setControlEnabled("OptionsLabel", bCustomApp);
-    	dlg.setControlEnabled("Options", bCustomApp);
-    	dlg.setControlEnabled("BrowseButton", bCustomApp);
+        boolean bCustomApp = !dlg.getCheckBoxStateAsBoolean("UseDefault"); //$NON-NLS-1$
+    	dlg.setControlEnabled("ExecutableLabel", bCustomApp); //$NON-NLS-1$
+    	dlg.setControlEnabled("Executable", bCustomApp); //$NON-NLS-1$
+    	dlg.setControlEnabled("OptionsLabel", bCustomApp); //$NON-NLS-1$
+    	dlg.setControlEnabled("Options", bCustomApp); //$NON-NLS-1$
+    	dlg.setControlEnabled("BrowseButton", bCustomApp); //$NON-NLS-1$
     	return true;
     }
 	
@@ -196,7 +196,7 @@ public final class ApplicationsDialog
     	String sPath = filePicker.getPath();
     	if (sPath!=null) {
     		try {
-				dlg.setComboBoxText("Executable", new File(new URI(sPath)).getCanonicalPath());
+				dlg.setComboBoxText("Executable", new File(new URI(sPath)).getCanonicalPath()); //$NON-NLS-1$
 			}
     		catch (IOException e) {
 			}
@@ -210,20 +210,20 @@ public final class ApplicationsDialog
     private boolean updateApplication(DialogAccess dlg) {
         String sAppName = getSelectedAppName(dlg);
         if (sAppName!=null) {
-            externalApps.setApplication(sAppName, dlg.getComboBoxText("Executable"), dlg.getComboBoxText("Options"));
-            externalApps.setUseDefaultApplication(sAppName, dlg.getCheckBoxStateAsBoolean("UseDefault"));
+            externalApps.setApplication(sAppName, dlg.getComboBoxText("Executable"), dlg.getComboBoxText("Options")); //$NON-NLS-1$ //$NON-NLS-2$
+            externalApps.setUseDefaultApplication(sAppName, dlg.getCheckBoxStateAsBoolean("UseDefault")); //$NON-NLS-1$
         }
         return true;
     }
     
     private boolean autoConfigure(DialogAccess dlg) {
-		String sOsName = System.getProperty("os.name");
-		String sOsVersion = System.getProperty("os.version");
-		String sOsArch = System.getProperty("os.arch");
+		String sOsName = System.getProperty("os.name"); //$NON-NLS-1$
+		String sOsVersion = System.getProperty("os.version"); //$NON-NLS-1$
+		String sOsArch = System.getProperty("os.arch"); //$NON-NLS-1$
 		StringBuilder info = new StringBuilder();
-		info.append("Results of configuration:\n\n");
-		info.append("Your system identifies itself as "+sOsName+" version "+sOsVersion+ " (" + sOsArch +")\n\n");
-    	if (sOsName.startsWith("Windows")) {
+		info.append(Messages.getString("ApplicationsDialog.configresults")+":\n\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		info.append(Messages.getString("ApplicationsDialog.systemident")+" "+sOsName+" "+Messages.getString("ApplicationsDialog.version")+" "+sOsVersion+ " (" + sOsArch +")\n\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+    	if (sOsName.startsWith("Windows")) { //$NON-NLS-1$
     		autoConfigureWindows(dlg, info);
     	}
     	else {
@@ -235,10 +235,10 @@ public final class ApplicationsDialog
     }
     
     private void displayAutoConfigInfo(String sText) {
-    	XDialog xDialog = getDialog("W2LDialogs2.AutoConfigInfo");
+    	XDialog xDialog = getDialog("W2LDialogs2.AutoConfigInfo"); //$NON-NLS-1$
     	if (xDialog!=null) {
     		DialogAccess info = new DialogAccess(xDialog);
-    		info.setTextFieldText("Info", sText);
+    		info.setTextFieldText("Info", sText); //$NON-NLS-1$
     		xDialog.execute();
     		xDialog.endExecute();
     	}
@@ -248,10 +248,10 @@ public final class ApplicationsDialog
     	XMultiComponentFactory xMCF = xContext.getServiceManager();
     	try {
     		Object provider = xMCF.createInstanceWithContext(
-    				"com.sun.star.awt.DialogProvider2", xContext);
+    				"com.sun.star.awt.DialogProvider2", xContext); //$NON-NLS-1$
     		XDialogProvider2 xDialogProvider = (XDialogProvider2)
     		UnoRuntime.queryInterface(XDialogProvider2.class, provider);
-    		String sDialogUrl = "vnd.sun.star.script:"+sDialogName+"?location=application";
+    		String sDialogUrl = "vnd.sun.star.script:"+sDialogName+"?location=application"; //$NON-NLS-1$ //$NON-NLS-2$
     		return xDialogProvider.createDialogWithHandler(sDialogUrl, this);
     	}
     	catch (Exception e) {
@@ -260,7 +260,7 @@ public final class ApplicationsDialog
      }
     
     private String getSelectedAppName(DialogAccess dlg) {
-        short nItem = dlg.getListBoxSelectedItem("Application");
+        short nItem = dlg.getListBoxSelectedItem("Application"); //$NON-NLS-1$
         //String sAppName = null;
         switch (nItem) {
             case 0: return ExternalApps.LATEX;
@@ -274,7 +274,7 @@ public final class ApplicationsDialog
             case 7: return ExternalApps.PDFVIEWER;
             case 8: return ExternalApps.POSTSCRIPTVIEWER;
         }
-        return "???";
+        return "???"; //$NON-NLS-1$
     }
     
     // **** Automatic configuration of applications for Windows systems (assuming MikTeX)
@@ -285,63 +285,63 @@ public final class ApplicationsDialog
 		// Configure TeX and friends + yap (DVi viewer) + TeXworks (PDF viewer)
 		boolean bFoundTexworks = false;
 		if (sMikTeXPath!=null) {
-			info.append("Found MikTeX\n");
-			configureMikTeX(sMikTeXPath, ExternalApps.LATEX, "latex", "--interaction=batchmode %s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.DVIPS, "dvips", "%s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.BIBTEX, "bibtex", "%s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.MAKEINDEX, "makeindex", "%s", info, true);
+			info.append(Messages.getString("ApplicationsDialog.foundmiktex")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.LATEX, "latex", "--interaction=batchmode %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.DVIPS, "dvips", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.BIBTEX, "bibtex", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.MAKEINDEX, "makeindex", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			//configureMikTeX(sMikTeXPath, ExternalApps.MK4HT, "mk4ht", "%c %s", info, true);
-			configureMikTeX(sMikTeXPath, ExternalApps.DVIVIEWER, "yap", "--single-instance %s", info, true);
+			configureMikTeX(sMikTeXPath, ExternalApps.DVIVIEWER, "yap", "--single-instance %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			externalApps.setUseDefaultApplication(ExternalApps.DVIVIEWER, false);
 			// MikTeX 2.8 provides texworks for pdf viewing
-			bFoundTexworks = configureMikTeX(sMikTeXPath, ExternalApps.PDFVIEWER, "texworks", "%s", info, true);
+			bFoundTexworks = configureMikTeX(sMikTeXPath, ExternalApps.PDFVIEWER, "texworks", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		else {
-			info.append("Failed to find MikTeX\n");
-			info.append("Writer2LaTeX has been configured to work if MikTeX is added to your path\n");
-			externalApps.setApplication(ExternalApps.LATEX, "latex", "--interaction=batchmode %s");
-			externalApps.setApplication(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s");
-			externalApps.setApplication(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s");
-			externalApps.setApplication(ExternalApps.DVIPS, "dvips", "%s");
-			externalApps.setApplication(ExternalApps.BIBTEX, "bibtex", "%s");
-			externalApps.setApplication(ExternalApps.MAKEINDEX, "makeindex", "%s");
+			info.append(Messages.getString("ApplicationsDialog.failedtofindmiktex")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			info.append(Messages.getString("ApplicationsDialog.miktexdefaultconfig")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.LATEX, "latex", "--interaction=batchmode %s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.DVIPS, "dvips", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.BIBTEX, "bibtex", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.MAKEINDEX, "makeindex", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
 			//externalApps.setApplication(ExternalApps.MK4HT, "mk4ht", "%c %s");
 			externalApps.setUseDefaultApplication(ExternalApps.DVIVIEWER, true);
 		}
 		externalApps.setUseDefaultApplication(ExternalApps.PDFVIEWER, !bFoundTexworks);
-		info.append("\n");
+		info.append("\n"); //$NON-NLS-1$
 		
 		// Configure gsview (PostScript viewer and fall back viewer for PDF)
 		String sGsview = getGsviewPath();		
 		if (sGsview!=null) {
-			info.append("Found gsview - OK\n");
-    		externalApps.setApplication(ExternalApps.POSTSCRIPTVIEWER, sGsview, "-e \"%s\"");  
+			info.append(Messages.getString("ApplicationsDialog.foundgsview")+" - "+Messages.getString("ApplicationsDialog.ok")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    		externalApps.setApplication(ExternalApps.POSTSCRIPTVIEWER, sGsview, "-e \"%s\"");   //$NON-NLS-1$
     		if (!bFoundTexworks) {
-    			externalApps.setApplication(ExternalApps.PDFVIEWER, sGsview, "-e \"%s\"");
+    			externalApps.setApplication(ExternalApps.PDFVIEWER, sGsview, "-e \"%s\""); //$NON-NLS-1$
     			externalApps.setUseDefaultApplication(ExternalApps.PDFVIEWER, false);
     		}
 		}
 		else {
 			if (!bFoundTexworks) {				
-				info.append("Using default application for PDF\n");
+				info.append(Messages.getString("ApplicationsDialog.pdfdefaultviewer")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			info.append("Using default application for PostScript\n");			
+			info.append(Messages.getString("ApplicationsDialog.psdefaultviewer")+"\n");			 //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		externalApps.setUseDefaultApplication(ExternalApps.POSTSCRIPTVIEWER, sGsview!=null);
 	}
     
     // Windows: Get the path to the MikTeX bin directory
     private String getMikTeXPath() {
-	    String[] sPaths = System.getenv("PATH").split(";");
+	    String[] sPaths = System.getenv("PATH").split(";"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (String s : sPaths) {
-			if (s.toLowerCase().indexOf("miktex")>-1 && containsExecutable(s,"latex.exe")) {
+			if (s.toLowerCase().indexOf("miktex")>-1 && containsExecutable(s,"latex.exe")) { //$NON-NLS-1$ //$NON-NLS-2$
 				return s;
 			}
 		}
 		for (String s : sPaths) {
-			if (containsExecutable(s,"latex.exe")) {
+			if (containsExecutable(s,"latex.exe")) { //$NON-NLS-1$
 				return s;
 			}
 		}
@@ -350,10 +350,10 @@ public final class ApplicationsDialog
     
     // Windows: Get the path to the gsview executable
     private String getGsviewPath() {
-		String sProgramFiles = System.getenv("ProgramFiles");
+		String sProgramFiles = System.getenv("ProgramFiles"); //$NON-NLS-1$
 		if (sProgramFiles!=null) {
-			if (containsExecutable(sProgramFiles+"\\ghostgum\\gsview","gsview32.exe")) {
-				return sProgramFiles+"\\ghostgum\\gsview\\gsview32.exe";
+			if (containsExecutable(sProgramFiles+"\\ghostgum\\gsview","gsview32.exe")) { //$NON-NLS-1$ //$NON-NLS-2$
+				return sProgramFiles+"\\ghostgum\\gsview\\gsview32.exe"; //$NON-NLS-1$
 			}
 		}
 		return null;
@@ -371,15 +371,15 @@ public final class ApplicationsDialog
 	
     // Windows: Configure a certain MikTeX application
     private boolean configureMikTeX(String sPath, String sName, String sAppName, String sArguments, StringBuilder info, boolean bRequired) {
-    	File app = new File(new File(sPath),sAppName+".exe");
+    	File app = new File(new File(sPath),sAppName+".exe"); //$NON-NLS-1$
     	if (app.exists()) {
     		externalApps.setApplication(sName, sAppName, sArguments);
-			info.append("  Found "+sName+": "+sAppName+" - OK\n");
+			info.append("  "+Messages.getString("ApplicationsDialog.found")+" "+sName+": "+sAppName+" - "+Messages.getString("ApplicationsDialog.ok")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 			return true;
     	}
     	else if (bRequired) {
-    		externalApps.setApplication(sName, "???", "???");
-			info.append("  Failed to find "+sName+"\n");    		
+    		externalApps.setApplication(sName, "???", "???"); //$NON-NLS-1$ //$NON-NLS-2$
+			info.append("  "+Messages.getString("ApplicationsDialog.failedtofind")+" "+sName+"\n");    		 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     	}
     	return false;
     }
@@ -388,20 +388,20 @@ public final class ApplicationsDialog
 
     private void autoConfigureUnix(DialogAccess dlg, StringBuilder info) {
     	// Assume that the "which" command is supported
-		configureApp(ExternalApps.LATEX, "latex", "--interaction=batchmode %s",info);
-		configureApp(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s",info);
-		configureApp(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s",info);
-		configureApp(ExternalApps.DVIPS, "dvips", "%s",info);
-		configureApp(ExternalApps.BIBTEX, "bibtex", "%s",info);
-		configureApp(ExternalApps.MAKEINDEX, "makeindex", "%s",info);
+		configureApp(ExternalApps.LATEX, "latex", "--interaction=batchmode %s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.DVIPS, "dvips", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.BIBTEX, "bibtex", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.MAKEINDEX, "makeindex", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
 		//configureApp(ExternalApps.MK4HT, "mk4ht", "%c %s",info);    		
 		// We have several possible viewers
-		String[] sDviViewers = {"evince", "okular", "xdvi"};
-		configureViewer(ExternalApps.DVIVIEWER, sDviViewers, "%s",info);
-		String[] sPdfViewers =  {"evince", "okular", "xpdf"};
-		configureViewer(ExternalApps.PDFVIEWER, sPdfViewers, "%s",info);
-		String[] sPsViewers =  {"evince", "okular", "ghostview"};
-		configureViewer(ExternalApps.POSTSCRIPTVIEWER, sPsViewers, "%s",info);
+		String[] sDviViewers = {"evince", "okular", "xdvi"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		configureViewer(ExternalApps.DVIVIEWER, sDviViewers, "%s",info); //$NON-NLS-1$
+		String[] sPdfViewers =  {"evince", "okular", "xpdf"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		configureViewer(ExternalApps.PDFVIEWER, sPdfViewers, "%s",info); //$NON-NLS-1$
+		String[] sPsViewers =  {"evince", "okular", "ghostview"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		configureViewer(ExternalApps.POSTSCRIPTVIEWER, sPsViewers, "%s",info); //$NON-NLS-1$
 		
     	// Maybe add some info for Debian/Ubuntu users, e.g.
     	// sudo apt-get install texlive
@@ -415,7 +415,7 @@ public final class ApplicationsDialog
     private boolean hasApp(String sAppName) {
         try {
 			Vector<String> command = new Vector<String>();
-			command.add("which");
+			command.add("which"); //$NON-NLS-1$
 			command.add(sAppName);
 			
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -423,11 +423,11 @@ public final class ApplicationsDialog
 
             // Gobble the error stream of the application
             StreamGobbler errorGobbler = new 
-                StreamGobbler(proc.getErrorStream(), "ERROR");            
+                StreamGobbler(proc.getErrorStream(), "ERROR");             //$NON-NLS-1$
             
             // Gobble the output stream of the application
             StreamGobbler outputGobbler = new 
-                StreamGobbler(proc.getInputStream(), "OUTPUT");
+                StreamGobbler(proc.getInputStream(), "OUTPUT"); //$NON-NLS-1$
                 
             errorGobbler.start();
             outputGobbler.start();
@@ -449,15 +449,15 @@ public final class ApplicationsDialog
     		externalApps.setApplication(sName, sAppName, sArguments);
     		externalApps.setUseDefaultApplication(sName, false);
     		if (info!=null) {
-    			info.append("Found "+sAppName+" - OK\n");
+    			info.append(Messages.getString("ApplicationsDialog.found")+" "+sAppName+" - "+Messages.getString("ApplicationsDialog.ok")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     		}
     		return true;
     	}
     	else {
-    		externalApps.setApplication(sName, "???", "???");
+    		externalApps.setApplication(sName, "???", "???"); //$NON-NLS-1$ //$NON-NLS-2$
     		externalApps.setUseDefaultApplication(sName, false);
     		if (info!=null) {
-    			info.append("Failed to find "+sAppName+"\n");
+    			info.append(Messages.getString("ApplicationsDialog.failedtofind")+" "+sAppName+"\n"); //$NON-NLS-1$ //$NON-NLS-2$
     		}
     		return false;
     	}
@@ -468,12 +468,12 @@ public final class ApplicationsDialog
     private boolean configureViewer(String sName, String[] sAppNames, String sArguments, StringBuilder info) {
     	for (String sAppName : sAppNames) {
     		if (configureApp(sName, sAppName, sArguments, null)) {
-    			info.append("Found "+sName+": "+sAppName+" - OK\n");
+    			info.append(Messages.getString("ApplicationsDialog.found")+" "+ExternalApps.getUIAppName(sName)+": "+sAppName+" - "+Messages.getString("ApplicationsDialog.ok")+"\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     			return true;
     		}
     	}
     	externalApps.setUseDefaultApplication(sName, true);
-    	info.append("Using default application as "+sName+"\n");
+    	info.append(Messages.getString("ApplicationsDialog.usingdefaultapp")+" "+ExternalApps.getUIAppName(sName)+"\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     	return true;
     }
     

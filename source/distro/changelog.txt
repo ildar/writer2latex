@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] UI strings in the code are now externalized for localization
+
 [w2l] Color support in StarMath have changed with LO 4.4 and will with (probably) AOO 4.2
   (https://bz.apache.org/ooo/show_bug.cgi?id=118191). Now the 16 basic HTML colors are used. This is an incompatible
   change because StarMath used to apply dark versions of red, blue, cyan and magenta.

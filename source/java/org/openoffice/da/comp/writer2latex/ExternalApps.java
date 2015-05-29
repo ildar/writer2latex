@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-19)
+ *  Version 1.6 (2015-05-29)
  *
  */ 
  
@@ -58,16 +58,16 @@ public class ExternalApps {
 	public final static short BUILD = (short)1;
 	public final static short PREVIEW = (short)2;
 	
-    public final static String LATEX = "LaTeX";
-    public final static String PDFLATEX = "PdfLaTeX";
-    public final static String XELATEX = "XeLaTeX";
-    public final static String BIBTEX = "BibTeX";
-    public final static String MAKEINDEX = "Makeindex";
-    public final static String MK4HT = "Mk4ht";
-    public final static String DVIPS = "Dvips";
-    public final static String DVIVIEWER = "DVIViewer";
-    public final static String POSTSCRIPTVIEWER = "PostscriptViewer";
-    public final static String PDFVIEWER = "PdfViewer";
+    public final static String LATEX = "LaTeX"; //$NON-NLS-1$
+    public final static String PDFLATEX = "PdfLaTeX"; //$NON-NLS-1$
+    public final static String XELATEX = "XeLaTeX"; //$NON-NLS-1$
+    public final static String BIBTEX = "BibTeX"; //$NON-NLS-1$
+    public final static String MAKEINDEX = "Makeindex"; //$NON-NLS-1$
+    public final static String MK4HT = "Mk4ht"; //$NON-NLS-1$
+    public final static String DVIPS = "Dvips"; //$NON-NLS-1$
+    public final static String DVIVIEWER = "DVIViewer"; //$NON-NLS-1$
+    public final static String POSTSCRIPTVIEWER = "PostscriptViewer"; //$NON-NLS-1$
+    public final static String PDFVIEWER = "PdfViewer"; //$NON-NLS-1$
 	
     private final static String[] sApps = { LATEX, PDFLATEX, XELATEX, BIBTEX, MAKEINDEX, MK4HT, DVIPS, DVIVIEWER, POSTSCRIPTVIEWER, PDFVIEWER };
 	
@@ -84,9 +84,27 @@ public class ExternalApps {
         apps = new HashMap<String,String[]>();
         defaultApps = new HashSet<String>();
         for (int i=0; i<sApps.length; i++) {
-            setApplication(sApps[i], "", "");
+            setApplication(sApps[i], "", ""); //$NON-NLS-1$ //$NON-NLS-2$
            	setUseDefaultApplication(sApps[i],true);
         }
+    }
+    
+    /** Return the localized name for an external app to use in the UI (only the viewers has a separate UI name)
+     * 
+     * @param sName the app name
+     * @return the UI name
+     */
+    public static String getUIAppName(String sName) {
+    	if (DVIVIEWER.equals(sName)) {
+    		return Messages.getString("ExternalApps.dviviewer"); //$NON-NLS-1$
+    	}
+    	else if (PDFVIEWER.equals(sName)) {
+    		return Messages.getString("ExternalApps.pdfviewer"); //$NON-NLS-1$
+    	}
+    	else if (POSTSCRIPTVIEWER.equals(sName)) {
+    		return Messages.getString("ExternalApps.psviewer"); //$NON-NLS-1$
+    	}
+    	return sName;
     }
     
     /** Set the desired processing level (0: export only, 1: export and build, 2: export, build and preview)
@@ -106,7 +124,7 @@ public class ExternalApps {
     }
     
     public boolean isViewer(String sAppName) {
-    	return sAppName!=null && sAppName.endsWith("Viewer");
+    	return sAppName!=null && sAppName.endsWith("Viewer"); //$NON-NLS-1$
     }
 	
     /** Define an external application
@@ -166,7 +184,7 @@ public class ExternalApps {
     		return openWithDefaultApplication(new File(sFileName)) ? 0 : 1;
     	}
     	else {
-    		return execute(sAppName, "", sFileName, workDir, env, bWaitFor);
+    		return execute(sAppName, "", sFileName, workDir, env, bWaitFor); //$NON-NLS-1$
     	}
     }
     
@@ -202,9 +220,9 @@ public class ExternalApps {
         try {
 			Vector<String> command = new Vector<String>();
 			command.add(sApp[0]);
-			String[] sArguments = sApp[1].split(" ");
+			String[] sArguments = sApp[1].split(" "); //$NON-NLS-1$
 			for (String s : sArguments) {
-				command.add(s.replace("%c",sCommand).replace("%s",sFileName));
+				command.add(s.replace("%c",sCommand).replace("%s",sFileName)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -216,11 +234,11 @@ public class ExternalApps {
         
             // Gobble the error stream of the application
             StreamGobbler errorGobbler = new 
-                StreamGobbler(proc.getErrorStream(), "ERROR");            
+                StreamGobbler(proc.getErrorStream(), "ERROR");             //$NON-NLS-1$
             
             // Gobble the output stream of the application
             StreamGobbler outputGobbler = new 
-                StreamGobbler(proc.getInputStream(), "OUTPUT");
+                StreamGobbler(proc.getInputStream(), "OUTPUT"); //$NON-NLS-1$
                 
             // Kick them off
             errorGobbler.start();
@@ -244,7 +262,7 @@ public class ExternalApps {
     	Object view;
     	try {
     		// Prepare registry view
-    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",false);
+    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",false); //$NON-NLS-1$
     	}
         catch (com.sun.star.uno.Exception e) {
             // Give up...
@@ -252,15 +270,15 @@ public class ExternalApps {
         }
 
 		XPropertySet xSimpleProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-		nLevel = XPropertySetHelper.getPropertyValueAsShort(xSimpleProps,"AfterExport");
+		nLevel = XPropertySetHelper.getPropertyValueAsShort(xSimpleProps,"AfterExport"); //$NON-NLS-1$
 
 		XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
             String[] sNames = new String[3];
-            sNames[0] = sApps[i]+"/Executable";
-            sNames[1] = sApps[i]+"/Options";
-            sNames[2] = sApps[i]+"/UseDefault";
+            sNames[0] = sApps[i]+"/Executable"; //$NON-NLS-1$
+            sNames[1] = sApps[i]+"/Options"; //$NON-NLS-1$
+            sNames[2] = sApps[i]+"/UseDefault"; //$NON-NLS-1$
             try {
                 Object[] values = xProps.getHierarchicalPropertyValues(sNames);
                 setApplication(sApps[i], (String) values[0], (String) values[1]);
@@ -280,7 +298,7 @@ public class ExternalApps {
     	RegistryHelper registry = new RegistryHelper(xContext);
         Object view;
         try {
-    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",true);
+    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",true); //$NON-NLS-1$
         }
         catch (com.sun.star.uno.Exception e) {
             // Give up...
@@ -288,15 +306,15 @@ public class ExternalApps {
         }
         
 		XPropertySet xSimpleProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-		XPropertySetHelper.setPropertyValue(xSimpleProps, "AfterExport", nLevel);
+		XPropertySetHelper.setPropertyValue(xSimpleProps, "AfterExport", nLevel); //$NON-NLS-1$
 
         XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
             String[] sNames = new String[3];
-            sNames[0] = sApps[i]+"/Executable";
-            sNames[1] = sApps[i]+"/Options";
-            sNames[2] = sApps[i]+"/UseDefault";
+            sNames[0] = sApps[i]+"/Executable"; //$NON-NLS-1$
+            sNames[1] = sApps[i]+"/Options"; //$NON-NLS-1$
+            sNames[2] = sApps[i]+"/UseDefault"; //$NON-NLS-1$
             String[] sApp = getApplication(sApps[i]);
             boolean bUseDefault = getUseDefaultApplication(sApps[i]);
             Object[] values = { sApp[0], sApp[1], new Boolean(bUseDefault) }; 

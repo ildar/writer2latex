@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-18)
+ *  Version 1.6 (2015-05-29)
  *
  */ 
  
@@ -50,7 +50,7 @@ public final class Writer2LaTeX extends WeakBase
     com.sun.star.lang.XInitialization,
     com.sun.star.frame.XDispatch {
 	
-    private static final String PROTOCOL = "org.openoffice.da.writer2latex:";
+    private static final String PROTOCOL = "org.openoffice.da.writer2latex:"; //$NON-NLS-1$
     
     // From constructor+initialization
     private final XComponentContext m_xContext;
@@ -58,7 +58,7 @@ public final class Writer2LaTeX extends WeakBase
     private LaTeXUNOPublisher unoPublisher = null;
 	
     public static final String __implementationName = Writer2LaTeX.class.getName();
-    public static final String __serviceName = "com.sun.star.frame.ProtocolHandler"; 
+    public static final String __serviceName = "com.sun.star.frame.ProtocolHandler";  //$NON-NLS-1$
     private static final String[] m_serviceNames = { __serviceName };
       
     public Writer2LaTeX( XComponentContext xContext ) {
@@ -99,11 +99,11 @@ public final class Writer2LaTeX extends WeakBase
     public com.sun.star.frame.XDispatch queryDispatch( com.sun.star.util.URL aURL,
         String sTargetFrameName, int iSearchFlags ) {
         if ( aURL.Protocol.compareTo(PROTOCOL) == 0 ) {
-            if ( aURL.Path.compareTo("ProcessDocument") == 0 )
+            if ( aURL.Path.compareTo("ProcessDocument") == 0 ) //$NON-NLS-1$
                 return this;
-            else if ( aURL.Path.compareTo("ViewLog") == 0 )
+            else if ( aURL.Path.compareTo("ViewLog") == 0 ) //$NON-NLS-1$
                 return this;
-            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 )
+            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) //$NON-NLS-1$
                 return this;
         }
         return null;
@@ -128,15 +128,15 @@ public final class Writer2LaTeX extends WeakBase
     public void dispatch( com.sun.star.util.URL aURL,
         com.sun.star.beans.PropertyValue[] aArguments ) {
         if ( aURL.Protocol.compareTo(PROTOCOL) == 0 ) {
-            if ( aURL.Path.compareTo("ProcessDocument") == 0 ) {
+            if ( aURL.Path.compareTo("ProcessDocument") == 0 ) { //$NON-NLS-1$
                	process();
                 return;
             }
-            else if ( aURL.Path.compareTo("ViewLog") == 0 ) {
+            else if ( aURL.Path.compareTo("ViewLog") == 0 ) { //$NON-NLS-1$
                 viewLog();
                 return;
             }
-            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) {
+            else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) { //$NON-NLS-1$
                 insertBibTeX();
                 return;
             }
@@ -167,7 +167,7 @@ public final class Writer2LaTeX extends WeakBase
                 args[0] = unoPublisher.getTargetPath()+unoPublisher.getTargetFileName();
                 Object dialog = m_xContext.getServiceManager()
                     .createInstanceWithArgumentsAndContext(
-                    "org.openoffice.da.writer2latex.LogViewerDialog", args, m_xContext);
+                    "org.openoffice.da.writer2latex.LogViewerDialog", args, m_xContext); //$NON-NLS-1$
                 XExecutableDialog xDialog = (XExecutableDialog)
                     UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
                 if (xDialog.execute()==ExecutableDialogResults.OK) {
@@ -191,7 +191,7 @@ public final class Writer2LaTeX extends WeakBase
 		            args[1] = unoPublisher.getBibTeXDirectory().getPath();
 		            Object dialog = m_xContext.getServiceManager()
 		                    .createInstanceWithArgumentsAndContext(
-		                    "org.openoffice.da.writer2latex.BibTeXDialog", args, m_xContext);
+		                    "org.openoffice.da.writer2latex.BibTeXDialog", args, m_xContext); //$NON-NLS-1$
 		            XExecutableDialog xDialog = (XExecutableDialog)
 		                UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
 		            if (xDialog.execute()==ExecutableDialogResults.OK) {
@@ -204,7 +204,7 @@ public final class Writer2LaTeX extends WeakBase
 		}
 		else {
             MessageBox msgBox = new MessageBox(m_xContext, m_xFrame);
-            msgBox.showMessage("Writer2LaTeX","Writer2LaTeX is not configured to use external BibTeX files for citations");			
+            msgBox.showMessage("Writer2LaTeX",Messages.getString("Writer2LaTeX.bibtexnotenabled"));			 //$NON-NLS-1$
 		}
 	}
 	
@@ -219,12 +219,12 @@ public final class Writer2LaTeX extends WeakBase
 			return false;
 		}
 		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-		return XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles");
+		return XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles"); //$NON-NLS-1$
     }
 	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 
-    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX");
+    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX"); //$NON-NLS-1$
     	}		
 	}
     	

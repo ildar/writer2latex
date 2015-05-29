@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-14)
+ *  Version 1.6 (2015-05-29)
  *
  */ 
  
@@ -85,7 +85,7 @@ public final class TeXify {
      */
     public boolean process(File file, String sBibinputs, short nBackend, boolean bView) throws IOException {
         // Remove extension from file
-        if (file.getName().endsWith(".tex")) {
+        if (file.getName().endsWith(".tex")) { //$NON-NLS-1$
             file = new File(file.getParentFile(),
                    file.getName().substring(0,file.getName().length()-4));
         }
@@ -101,36 +101,36 @@ public final class TeXify {
 	            bResult = doTeXify(genericTexify, file, sBibinputs);
 	            if (!bResult) return false;
 	            if (bPreview && externalApps.execute(ExternalApps.DVIVIEWER,
-	                new File(file.getParentFile(),file.getName()+".dvi").getPath(),
+	                new File(file.getParentFile(),file.getName()+".dvi").getPath(), //$NON-NLS-1$
 	                file.getParentFile(), null, false)>0) {
-	                throw new IOException("Error executing dvi viewer");
+	                throw new IOException(Messages.getString("TeXify.dviviewerror")); //$NON-NLS-1$
 	            }
 	        }
 	        else if (nBackend==PDFTEX) {
 	        	bResult = doTeXify(pdfTexify, file, sBibinputs);
 	            if (!bResult) return false;
 	            if (bPreview && externalApps.execute(ExternalApps.PDFVIEWER,
-	                new File(file.getParentFile(),file.getName()+".pdf").getPath(),
+	                new File(file.getParentFile(),file.getName()+".pdf").getPath(), //$NON-NLS-1$
 	                file.getParentFile(), null, false)>0) {
-	                throw new IOException("Error executing pdf viewer");
+	                throw new IOException(Messages.getString("TeXify.pdfviewerror")); //$NON-NLS-1$
 	            }
 	        }
 	        else if (nBackend==DVIPS) {
 	        	bResult = doTeXify(dvipsTexify, file, sBibinputs);
 	            if (!bResult) return false;
 	            if (bPreview && externalApps.execute(ExternalApps.POSTSCRIPTVIEWER,
-	                new File(file.getParentFile(),file.getName()+".ps").getPath(),
+	                new File(file.getParentFile(),file.getName()+".ps").getPath(), //$NON-NLS-1$
 	                file.getParentFile(), null, false)>0) {
-	                throw new IOException("Error executing postscript viewer");
+	                throw new IOException(Messages.getString("TeXify.psviewerror")); //$NON-NLS-1$
 	            }
 	        }
 	        else if (nBackend==XETEX) {
 	        	bResult = doTeXify(xeTexify, file, sBibinputs);
 	            if (!bResult) return false;
 	            if (bPreview && externalApps.execute(ExternalApps.PDFVIEWER,
-	                    new File(file.getParentFile(),file.getName()+".pdf").getPath(),
+	                    new File(file.getParentFile(),file.getName()+".pdf").getPath(), //$NON-NLS-1$
 	                    file.getParentFile(), null, false)>0) {
-	                    throw new IOException("Error executing pdf viewer");
+	                    throw new IOException(Messages.getString("TeXify.pdfviewerror")); //$NON-NLS-1$
 	                }
 	        }
 	        return bResult;
@@ -140,14 +140,14 @@ public final class TeXify {
 	
     private boolean doTeXify(String[] sAppList, File file, String sBibinputs) throws IOException {
     	// Remove the .aux file first (to avoid potential error messages)
-        File aux = new File(file.getParentFile(), file.getName()+".aux");
+        File aux = new File(file.getParentFile(), file.getName()+".aux"); //$NON-NLS-1$
         aux.delete();
         for (int i=0; i<sAppList.length; i++) {
             // Execute external application
         	Map<String,String> env =null;
         	if (ExternalApps.BIBTEX.equals(sAppList[i]) && sBibinputs!=null) {
         		env = new HashMap<String,String>();
-        		env.put("BIBINPUTS", sBibinputs);
+        		env.put("BIBINPUTS", sBibinputs); //$NON-NLS-1$
         	}
             int nReturnCode = externalApps.execute(
                 sAppList[i], file.getName(), file.getParentFile(), env, true);

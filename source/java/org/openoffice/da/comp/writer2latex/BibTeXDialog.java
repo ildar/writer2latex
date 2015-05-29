@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-01)
+ *  Version 1.6 (2015-05-29)
  *
  */ 
  
@@ -81,11 +81,11 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 
     /** The component will be registered under this service name
      */
-    public static String __serviceName = "org.openoffice.da.writer2latex.BibTeXDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.BibTeXDialog"; //$NON-NLS-1$
 
     /** The implementation name of the component
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.BibTeXDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.BibTeXDialog"; //$NON-NLS-1$
 
     // **** Member variables
     
@@ -126,13 +126,13 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     /** Return the name of the library containing the dialog
      */
     @Override public String getDialogLibraryName() {
-        return "W2LDialogs2";
+        return "W2LDialogs2"; //$NON-NLS-1$
     }
     
     /** Return the name of the dialog within the library
      */
     @Override public String getDialogName() {
-        return "BibTeXEntry";
+        return "BibTeXEntry"; //$NON-NLS-1$
     }
 	
     @Override public void initialize() {
@@ -145,31 +145,31 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
    // **** Implement XDialogEventHandler
     
     @Override public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
-    	if (sMethod.equals("FileChange")) {
+    	if (sMethod.equals("FileChange")) { //$NON-NLS-1$
     		// The user has selected another BibTeX file
     		fileChange();
     	}
-    	else if (sMethod.equals("EntryChange")) {
+    	else if (sMethod.equals("EntryChange")) { //$NON-NLS-1$
     		// The user has selected another BibTeX entry
     		entryChange();
     	}
-    	else if (sMethod.equals("New")) {
+    	else if (sMethod.equals("New")) { //$NON-NLS-1$
     		// Create a new BibTeX file
     		newFile();
     	}
-    	else if (sMethod.equals("Edit")) {
+    	else if (sMethod.equals("Edit")) { //$NON-NLS-1$
     		// Edit the current BibTeX file
     		edit();
     	}
-    	else if (sMethod.equals("Reload")) {
+    	else if (sMethod.equals("Reload")) { //$NON-NLS-1$
     		// Reload the BibTeX files in the dialog
     		reload(null);
     	}
-    	else if (sMethod.equals("InsertReference")) {
+    	else if (sMethod.equals("InsertReference")) { //$NON-NLS-1$
     		// Insert a reference to the current BibTeX entry
     		insertReference();
     	}
-    	else if (sMethod.equals("Update")) {
+    	else if (sMethod.equals("Update")) { //$NON-NLS-1$
     		// Update all reference in the document
     		update();
     	}
@@ -177,7 +177,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     }
 	
     @Override public String[] getSupportedMethodNames() {
-        String[] sNames = { "FileChange", "EntryChange", "New", "Edit", "Reload", "InsertReference", "Update" };
+        String[] sNames = { "FileChange", "EntryChange", "New", "Edit", "Reload", "InsertReference", "Update" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         return sNames;
     }
     
@@ -192,9 +192,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	}
     	else {
     		// Remember the previous selection, if any
-	    	short nSelectedFile = getListBoxSelectedItem("File");
+	    	short nSelectedFile = getListBoxSelectedItem("File"); //$NON-NLS-1$
 	    	if (nSelectedFile>=0 && files[nSelectedFile]!=null) {
-	    		sFile = getListBoxStringItemList("File")[nSelectedFile];
+	    		sFile = getListBoxStringItemList("File")[nSelectedFile]; //$NON-NLS-1$
 	    	}
     	}
     	
@@ -202,7 +202,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         	// Populate the file list based on the BibTeX directory
     		files = bibTeXDirectory.listFiles(
     				new FilenameFilter() {
-    					public boolean accept(File file, String sName) { return sName!=null && sName.endsWith(".bib"); }
+    					public boolean accept(File file, String sName) { return sName!=null && sName.endsWith(".bib"); } //$NON-NLS-1$
     				}
     		);
     		int nFileCount = files.length;
@@ -215,17 +215,17 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     			if (sFileNames[i].equals(sFile)) { nFile = i; }
     		}
 
-    		setListBoxStringItemList("File", sFileNames);
-    		setListBoxSelectedItem("File",(short)nFile);
+    		setListBoxStringItemList("File", sFileNames); //$NON-NLS-1$
+    		setListBoxSelectedItem("File",(short)nFile); //$NON-NLS-1$
     		
     		if (nFileCount>0) {
-	    		setControlEnabled("FileLabel",true);
-	    		setControlEnabled("File",true);
-	    		setControlEnabled("EntryLabel",true);
-	    		setControlEnabled("Entry",true);
-	    		setControlEnabled("Edit",true);
-	    		setControlEnabled("Insert",true);
-	    		setControlEnabled("Update",true);
+	    		setControlEnabled("FileLabel",true); //$NON-NLS-1$
+	    		setControlEnabled("File",true); //$NON-NLS-1$
+	    		setControlEnabled("EntryLabel",true); //$NON-NLS-1$
+	    		setControlEnabled("Entry",true); //$NON-NLS-1$
+	    		setControlEnabled("Edit",true); //$NON-NLS-1$
+	    		setControlEnabled("Insert",true); //$NON-NLS-1$
+	    		setControlEnabled("Update",true); //$NON-NLS-1$
 
 	    		fileChange();
 	    		
@@ -234,27 +234,27 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	}
     	
     	// The directory did not contain any BibTeX files
-    	setControlEnabled("FileLabel",false);
-		setControlEnabled("File",false);
-		setControlEnabled("EntryLabel",false);
-		setControlEnabled("Entry",false);
-		setControlEnabled("Edit",false);
-		setControlEnabled("Insert",false);
-		setControlEnabled("Update",false);
-		setLabelText("EntryInformation","No BibTeX files were found");
+    	setControlEnabled("FileLabel",false); //$NON-NLS-1$
+		setControlEnabled("File",false); //$NON-NLS-1$
+		setControlEnabled("EntryLabel",false); //$NON-NLS-1$
+		setControlEnabled("Entry",false); //$NON-NLS-1$
+		setControlEnabled("Edit",false); //$NON-NLS-1$
+		setControlEnabled("Insert",false); //$NON-NLS-1$
+		setControlEnabled("Update",false); //$NON-NLS-1$
+		setLabelText("EntryInformation",Messages.getString("BibTeXDialog.nobibtexfiles")); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     // Update the list of entries based on the current selection in the file list
     private void fileChange() {
     	// Remember current entry selection, if any
     	String sEntry = null;
-    	short nEntry = getListBoxSelectedItem("Entry");
+    	short nEntry = getListBoxSelectedItem("Entry"); //$NON-NLS-1$
     	if (nEntry>=0) {
-    		sEntry = getListBoxStringItemList("Entry")[nEntry];
+    		sEntry = getListBoxStringItemList("Entry")[nEntry]; //$NON-NLS-1$
     	}
 
     	// Parse the selected file
-    	int nFile = getListBoxSelectedItem("File");
+    	int nFile = getListBoxSelectedItem("File"); //$NON-NLS-1$
     	if (nFile>=0) {
     		try {
 				currentFile = new BibTeXReader(files[nFile]);
@@ -268,7 +268,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     		if (currentFile!=null) {
 		    	// Populate the entry list with the keys from the current file, if any
 				String[] sCurrentKeys = currentFile.getEntries().keySet().toArray(new String[0]);
-				setListBoxStringItemList("Entry", sCurrentKeys);
+				setListBoxStringItemList("Entry", sCurrentKeys); //$NON-NLS-1$
 				if (sCurrentKeys.length>0) {
 					// Select either the first or the previous entry
 					nEntry = 0;
@@ -280,27 +280,27 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			    			}
 			    		}
 					}
-					setListBoxSelectedItem("Entry",nEntry);
-					setControlEnabled("EntryLabel",true);
-					setControlEnabled("Entry",true);
-		    		setControlEnabled("Insert",true);
+					setListBoxSelectedItem("Entry",nEntry); //$NON-NLS-1$
+					setControlEnabled("EntryLabel",true); //$NON-NLS-1$
+					setControlEnabled("Entry",true); //$NON-NLS-1$
+		    		setControlEnabled("Insert",true); //$NON-NLS-1$
 					entryChange();
 				}
 				else { // No entries, disable controls
-		    		setControlEnabled("EntryLabel",false);
-		    		setControlEnabled("Entry",false);
-		    		setControlEnabled("Insert",false);
-		    		setLabelText("EntryInformation","This file does not contain any entries");
+		    		setControlEnabled("EntryLabel",false); //$NON-NLS-1$
+		    		setControlEnabled("Entry",false); //$NON-NLS-1$
+		    		setControlEnabled("Insert",false); //$NON-NLS-1$
+		    		setLabelText("EntryInformation",Messages.getString("BibTeXDialog.noentries")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				setControlEnabled("Edit",true);
+				setControlEnabled("Edit",true); //$NON-NLS-1$
 			}
 			else { // Failed to parse, disable controls
-				setListBoxStringItemList("Entry", new String[0]);
-				setControlEnabled("EntryLabel",false);
-				setControlEnabled("Entry",false);
-				setControlEnabled("Edit",false);
-				setControlEnabled("Insert",false);
-				setLabelText("EntryInformation","There was an error reading this file");
+				setListBoxStringItemList("Entry", new String[0]); //$NON-NLS-1$
+				setControlEnabled("EntryLabel",false); //$NON-NLS-1$
+				setControlEnabled("Entry",false); //$NON-NLS-1$
+				setControlEnabled("Edit",false); //$NON-NLS-1$
+				setControlEnabled("Insert",false); //$NON-NLS-1$
+				setLabelText("EntryInformation",Messages.getString("BibTeXDialog.errorreadingfile")); //$NON-NLS-1$ //$NON-NLS-2$
 		    }
     	}
     }
@@ -310,17 +310,17 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	BibMark bibMark = getCurrentEntry();
     	if (bibMark!=null) {
     		String sAuthor = bibMark.getField(EntryType.author);
-    		if (sAuthor==null) { sAuthor = ""; }
+    		if (sAuthor==null) { sAuthor = ""; } //$NON-NLS-1$
     		String sTitle = bibMark.getField(EntryType.title);
-    		if (sTitle==null) { sTitle = ""; }
+    		if (sTitle==null) { sTitle = ""; } //$NON-NLS-1$
     		String sPublisher = bibMark.getField(EntryType.publisher);
-    		if (sPublisher==null) { sPublisher = ""; }
+    		if (sPublisher==null) { sPublisher = ""; } //$NON-NLS-1$
     		String sYear = bibMark.getField(EntryType.year);
-    		if (sYear==null) { sYear = ""; }
-    		setLabelText("EntryInformation", sAuthor+"\n"+sTitle+"\n"+sPublisher+"\n"+sYear);
+    		if (sYear==null) { sYear = ""; } //$NON-NLS-1$
+    		setLabelText("EntryInformation", sAuthor+"\n"+sTitle+"\n"+sPublisher+"\n"+sYear); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     	}
     	else {
-    		setLabelText("EntryInformation", "No information");    		
+    		setLabelText("EntryInformation", Messages.getString("BibTeXDialog.noinformation"));    		 //$NON-NLS-1$ //$NON-NLS-2$
     	}
     }
     
@@ -333,12 +333,12 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     private void newFile() {
     	String sFileName = getFileName();
     	if (sFileName!=null) {
-    		if (!sFileName.equals(".bib")) {
+    		if (!sFileName.equals(".bib")) { //$NON-NLS-1$
 	    		File file = new File(bibTeXDirectory,sFileName);
 	    		try {
 			    	if (!file.createNewFile() && xFrame!=null) {
 			            MessageBox msgBox = new MessageBox(xContext, xFrame);
-			            msgBox.showMessage("Writer2LaTeX","The file "+sFileName+" already exists");
+			            msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.thefile")+" "+sFileName+" "+Messages.getString("BibTeXDialog.alreadyexists")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			    	}
 					reload(sFileName);
 				} catch (IOException e) {
@@ -346,7 +346,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     		}
     		else if (xFrame!=null) {
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            msgBox.showMessage("Writer2LaTeX","The file name is empty");
+	            msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.filenameempty")); //$NON-NLS-1$ //$NON-NLS-2$
     		}
 	    }
     }
@@ -356,17 +356,17 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	   	XDialog xDialog=getNewDialog();
 	   	if (xDialog!=null) {
 	   		DialogAccess ndlg = new DialogAccess(xDialog);
-	   		ndlg.setListBoxStringItemList("Name", new String[0]);
+	   		ndlg.setListBoxStringItemList("Name", new String[0]); //$NON-NLS-1$
 	   		String sResult = null;
 	   		if (xDialog.execute()==ExecutableDialogResults.OK) {
 	   			DialogAccess dlg = new DialogAccess(xDialog);
-	   			sResult = dlg.getTextFieldText("Name");
+	   			sResult = dlg.getTextFieldText("Name"); //$NON-NLS-1$
 	   		}
 	   		xDialog.endExecute();
-	   		if (sResult!=null && !sResult.toLowerCase().endsWith(".bib")) {
-	   			sResult = sResult+".bib";
+	   		if (sResult!=null && !sResult.toLowerCase().endsWith(".bib")) { //$NON-NLS-1$
+	   			sResult = sResult+".bib"; //$NON-NLS-1$
 	   		}
-	   		return Misc.makeTeXFriendly(sResult,"bibliography");
+	   		return Misc.makeTeXFriendly(sResult,"bibliography"); //$NON-NLS-1$
 	   	}
 	   	return null;
 	}
@@ -375,10 +375,10 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	protected XDialog getNewDialog() {
 		XMultiComponentFactory xMCF = xContext.getServiceManager();
 	   	try {
-	   		Object provider = xMCF.createInstanceWithContext("com.sun.star.awt.DialogProvider2", xContext);
+	   		Object provider = xMCF.createInstanceWithContext("com.sun.star.awt.DialogProvider2", xContext); //$NON-NLS-1$
 	   		XDialogProvider2 xDialogProvider = (XDialogProvider2)
 	   		UnoRuntime.queryInterface(XDialogProvider2.class, provider);
-	   		String sDialogUrl = "vnd.sun.star.script:"+getDialogLibraryName()+".NewDialog?location=application";
+	   		String sDialogUrl = "vnd.sun.star.script:"+getDialogLibraryName()+".NewDialog?location=application"; //$NON-NLS-1$ //$NON-NLS-2$
 	   		return xDialogProvider.createDialog(sDialogUrl);
 	   	}
 	   	catch (Exception e) {
@@ -388,7 +388,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 
     // Edit the currently selected BibTeX file, if any
     private void edit() {
-    	int nFile = getListBoxSelectedItem("File");
+    	int nFile = getListBoxSelectedItem("File"); //$NON-NLS-1$
     	if (nFile>=0) {
 	        if (files[nFile].exists()) {
 	        	edit(files[nFile]);
@@ -399,9 +399,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     // Helper function: Get the currently selected entry, or null if none is selected
     private BibMark getCurrentEntry() {
     	BibMark bibMark = null;
-    	int nEntry = getListBoxSelectedItem("Entry");
+    	int nEntry = getListBoxSelectedItem("Entry"); //$NON-NLS-1$
     	if (nEntry>=0) {
-    		String[] sCurrentKeys = getListBoxStringItemList("Entry");
+    		String[] sCurrentKeys = getListBoxStringItemList("Entry"); //$NON-NLS-1$
     		String sKey = sCurrentKeys[nEntry];
     		bibMark = currentFile.getEntries().get(sKey);
     	}
@@ -419,13 +419,13 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			} catch (IOException e) {
 		        if (xFrame!=null) {        	
 		            MessageBox msgBox = new MessageBox(xContext, xFrame);
-		            msgBox.showMessage("Writer2LaTeX","Error: Failed to open file with BibTeX editor");
+		            msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.failedbibtexeditor")); //$NON-NLS-1$ //$NON-NLS-2$
 		        }				
 			}
         }        
         else if (xFrame!=null) {        	
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage("Writer2LaTeX","Error: No BibTeX editor was found");
+            msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.nobibtexeditor")); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
     
@@ -449,7 +449,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 						XTextField xTextField = (XTextField) AnyConverter.toObject(XTextField.class, elm);
 						if (xTextField!=null) {
 							XServiceInfo xInfo = UnoRuntime.queryInterface(XServiceInfo.class, xTextField);
-							if (xInfo.supportsService("com.sun.star.text.TextField.Bibliography")) {
+							if (xInfo.supportsService("com.sun.star.text.TextField.Bibliography")) { //$NON-NLS-1$
 								String sId = updateBibField(xTextField, readers);
 								if (sId!=null) {
 									notUpdated.add(sId);
@@ -474,7 +474,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 					if (AnyConverter.isObject(indexElm)) {
 						XDocumentIndex xDocumentIndex = (XDocumentIndex) AnyConverter.toObject(XDocumentIndex.class, indexElm);
 						if (xDocumentIndex!=null) {
-							if ("com.sun.star.text.Bibliography".equals(xDocumentIndex.getServiceName())) {
+							if ("com.sun.star.text.Bibliography".equals(xDocumentIndex.getServiceName())) { //$NON-NLS-1$
 								xDocumentIndex.update();
 							}
 						}
@@ -488,10 +488,10 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			if (xFrame!=null) {        	
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
 	            if (notUpdated.isEmpty()) {
-	            	msgBox.showMessage("Writer2LaTeX","All bibliography fields were updated");
+	            	msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
 	            }
 	            else {
-	            	msgBox.showMessage("Writer2LaTeX","The following bibliography fields were not updated:\n"+notUpdated.toString());
+	            	msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 	            }
 	        }				
     	}
@@ -517,18 +517,18 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xTextField);
         if (xPropSet!=null) {
 			try {
-				Object fieldsObj = xPropSet.getPropertyValue("Fields");
+				Object fieldsObj = xPropSet.getPropertyValue("Fields"); 
 				if (fieldsObj!=null && fieldsObj instanceof PropertyValue[]) {
 					PropertyValue[] props = (PropertyValue[]) fieldsObj;
 					for (PropertyValue prop : props) {
-						if ("Identifier".equals(prop.Name)) {
+						if ("Identifier".equals(prop.Name)) { 
 							if (prop.Value instanceof String) {
 								String sIdentifier = (String)prop.Value;
 								for (BibTeXReader reader : readers) {
 									if (reader.getEntries().keySet().contains(sIdentifier)) {
 										BibMark bibMark = reader.getEntries().get(sIdentifier);
 										try {
-											xPropSet.setPropertyValue("Fields", createBibliographyFields(bibMark));
+											xPropSet.setPropertyValue("Fields", createBibliographyFields(bibMark)); 
 											return null;
 										} catch (IllegalArgumentException e) {
 										} catch (PropertyVetoException e) {
@@ -569,17 +569,17 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	   
 	            // Use the service factory to create a bibliography field
 	            XDependentTextField xBibField = UnoRuntime.queryInterface (
-	                XDependentTextField.class, xDocFactory.createInstance("com.sun.star.text.textfield.Bibliography"));
+	                XDependentTextField.class, xDocFactory.createInstance("com.sun.star.text.textfield.Bibliography")); 
 	            
 	            // Create a field master for the field
 	            XPropertySet xMasterPropSet = UnoRuntime.queryInterface(
-	                XPropertySet.class, xDocFactory.createInstance("com.sun.star.text.fieldmaster.Bibliography"));
+	                XPropertySet.class, xDocFactory.createInstance("com.sun.star.text.fieldmaster.Bibliography")); 
 	            
 	            // Populate the bibliography field
 	            XPropertySet xPropSet = UnoRuntime.queryInterface(
 	                    XPropertySet.class, xBibField);
 	            PropertyValue[] fields = createBibliographyFields(bibMark);
-	            xPropSet.setPropertyValue("Fields", fields);
+	            xPropSet.setPropertyValue("Fields", fields); 
 	            
 	            // Attach the field master to the bibliography field
 	            xBibField.attachTextFieldMaster(xMasterPropSet);
@@ -597,10 +597,10 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         PropertyValue[] fields = new PropertyValue[entryTypes.length+2];
         
         fields[0] = new PropertyValue();
-        fields[0].Name="Identifier";
+        fields[0].Name="Identifier"; 
         fields[0].Value=bibMark.getIdentifier();
         fields[1] = new PropertyValue();
-        fields[1].Name="BibiliographicType"; // sic! (API typo)
+        fields[1].Name="BibiliographicType"; // sic! (API typo) 
         fields[1].Value=new Short(getBibliographicType(bibMark.getEntryType()));
         
         int i=1;
@@ -608,7 +608,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         	fields[++i] = new PropertyValue();
         	fields[i].Name = getFieldName(entryType);
         	String sValue = bibMark.getField(entryType);
-        	fields[i].Value = sValue!=null ? bibMark.getField(entryType) : "";
+        	fields[i].Value = sValue!=null ? bibMark.getField(entryType) : ""; 
         }
         
         return fields;
@@ -617,35 +617,35 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     // Translate entry type to field name
     private String getFieldName(EntryType entryType) {
     	switch(entryType) {
-    	case address: return "Address";
-    	case annote: return "Annote";
-    	case author: return "Author";
-    	case booktitle: return "Booktitle";
-    	case chapter : return "Chapter";
-    	case edition: return "Edition";
-    	case editor: return "Editor";
-    	case howpublished: return "Howpublished";
-    	case institution: return "Institution";
-		case journal: return "Journal";
-    	case month: return "Month";
-    	case note: return "Note";
-    	case number: return "Number";
-    	case organizations: return "Organizations";
-    	case pages: return "Pages";
-    	case publisher: return "Publisher";
-    	case school: return "School";
-    	case series: return "Series";
-    	case title: return "Title";
-    	case report_type: return "Report_Type";
-    	case volume: return "Volume";
-    	case year: return "Year";
-    	case url: return "URL";
-    	case custom1: return "Custom1";
-    	case custom2: return "Custom2";
-    	case custom3: return "Custom3";
-    	case custom4: return "Custom4";
-    	case custom5: return "Custom5";
-    	case isbn: return "ISBN";
+    	case address: return "Address"; 
+    	case annote: return "Annote"; 
+    	case author: return "Author"; 
+    	case booktitle: return "Booktitle"; 
+    	case chapter : return "Chapter"; 
+    	case edition: return "Edition"; 
+    	case editor: return "Editor"; 
+    	case howpublished: return "Howpublished"; 
+    	case institution: return "Institution"; 
+		case journal: return "Journal"; 
+    	case month: return "Month"; 
+    	case note: return "Note"; 
+    	case number: return "Number"; 
+    	case organizations: return "Organizations"; 
+    	case pages: return "Pages"; 
+    	case publisher: return "Publisher"; 
+    	case school: return "School"; 
+    	case series: return "Series"; 
+    	case title: return "Title"; 
+    	case report_type: return "Report_Type"; 
+    	case volume: return "Volume"; 
+    	case year: return "Year"; 
+    	case url: return "URL"; 
+    	case custom1: return "Custom1"; 
+    	case custom2: return "Custom2"; 
+    	case custom3: return "Custom3"; 
+    	case custom4: return "Custom4"; 
+    	case custom5: return "Custom5"; 
+    	case isbn: return "ISBN"; 
     	default: return null;
     	}
     }
@@ -653,70 +653,70 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     // Translate bibliographic type to internal code
     private short getBibliographicType(String sBibType) {
     	String s = sBibType.toUpperCase();
-    	if ("ARTICLE".equals(s)) {
+    	if ("ARTICLE".equals(s)) { 
     		return (short)0;
     	}
-    	else if ("BOOK".equals(s)) {
+    	else if ("BOOK".equals(s)) { 
     		return (short)1;
     	}
-    	else if ("BOOKLET".equals(s)) {
+    	else if ("BOOKLET".equals(s)) { 
     		return (short)2;
     	}
-    	else if ("CONFERENCE".equals(s)) {
+    	else if ("CONFERENCE".equals(s)) { 
     		return (short)3;
     	}
-    	else if ("INBOOK".equals(s)) {
+    	else if ("INBOOK".equals(s)) { 
     		return (short)4;
     	}
-    	else if ("INCOLLECTION".equals(s)) {
+    	else if ("INCOLLECTION".equals(s)) { 
     		return (short)5;
     	}
-    	else if ("INPROCEEDINGS".equals(s)) {
+    	else if ("INPROCEEDINGS".equals(s)) { 
     		return (short)6;
     	}
-    	else if ("JOURNAL".equals(s)) {
+    	else if ("JOURNAL".equals(s)) { 
     		return (short)7;
     	}
-    	else if ("MANUAL".equals(s)) {
+    	else if ("MANUAL".equals(s)) { 
     		return (short)8;
     	}
-    	else if ("MASTERSTHESIS".equals(s)) {
+    	else if ("MASTERSTHESIS".equals(s)) { 
     		return (short)9;
     	}
-    	else if ("MISC".equals(s)) {
+    	else if ("MISC".equals(s)) { 
     		return (short)10;
     	}
-    	else if ("PHDTHESIS".equals(s)) {
+    	else if ("PHDTHESIS".equals(s)) { 
     		return (short)11;
     	}
-    	else if ("PROCEEDINGS".equals(s)) {
+    	else if ("PROCEEDINGS".equals(s)) { 
     		return (short)12;
     	}
-    	else if ("TECHREPORT".equals(s)) {
+    	else if ("TECHREPORT".equals(s)) { 
     		return (short)13;
     	}
-    	else if ("UNPUBLISHED".equals(s)) {
+    	else if ("UNPUBLISHED".equals(s)) { 
     		return (short)14;
     	}
-    	else if ("EMAIL".equals(s)) {
+    	else if ("EMAIL".equals(s)) { 
     		return (short)15;
     	}
-    	else if ("WWW".equals(s)) {
+    	else if ("WWW".equals(s)) { 
     		return (short)16;
     	}
-    	else if ("CUSTOM1".equals(s)) {
+    	else if ("CUSTOM1".equals(s)) { 
     		return (short)17;
     	}
-    	else if ("CUSTOM2".equals(s)) {
+    	else if ("CUSTOM2".equals(s)) { 
     		return (short)18;
     	}
-    	else if ("CUSTOM3".equals(s)) {
+    	else if ("CUSTOM3".equals(s)) { 
     		return (short)19;
     	}
-    	else if ("CUSTOM4".equals(s)) {
+    	else if ("CUSTOM4".equals(s)) { 
     		return (short)20;
     	}
-    	else if ("CUSTOM5".equals(s)) {
+    	else if ("CUSTOM5".equals(s)) { 
     		return (short)21;
     	}
     	else {
