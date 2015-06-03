@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2x] Bugfix: Export of list-style-type now uses the correct values disc, circle, square (in that order)
+
 [w2l] UI strings in the code are now externalized for localization
 
 [w2l] Color support in StarMath have changed with LO 4.4 and will with (probably) AOO 4.2

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-24)
+ *  Version 1.6 (2015-06-03)
  *
  */
 
@@ -156,7 +156,7 @@ public class ListStyleConverter extends StyleConverterHelper {
         		// Bullet. We can only choose from disc, bullet and square
         		switch (nLevel % 3) {
         		case 1: props.addValue("list-style-type","disc"); break;
-        		case 2: props.addValue("list-style-type","bullet"); break;
+        		case 2: props.addValue("list-style-type","circle"); break;
         		case 0: props.addValue("list-style-type","square"); break;
         		}
         	}
