@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-18)
+ *  Version 1.6 (2015-06-11)
  *
  */
 
@@ -192,6 +192,8 @@ public class Converter extends ConverterBase {
     protected MathConverter getMathCv() { return mathCv; }
 	
     protected int getType() { return nType; }
+    
+    public boolean isHTML5() { return nType==XhtmlDocument.HTML5; }
 	
     protected int getOutFileIndex() { return nOutFileIndex; }
     
@@ -236,7 +238,7 @@ public class Converter extends ConverterBase {
     public void setOPS(boolean b) { bOPS = true; }
     
     public boolean isOPS() { return bOPS; }
-	
+    
     @Override public void convertInner() throws IOException {      
         sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));
 		
@@ -643,6 +645,7 @@ public class Converter extends ConverterBase {
         htmlDOM = htmlDoc.getContentDOM();
         Element rootElement = htmlDOM.getDocumentElement();
         styleCv.applyDefaultLanguage(rootElement);
+        addEpubNs(rootElement);
         rootElement.insertBefore(htmlDOM.createComment(
              "This file was converted to xhtml by "
              + (ofr.isText() ? "Writer" : (ofr.isSpreadsheet() ? "Calc" : "Impress"))
@@ -775,6 +778,20 @@ public class Converter extends ConverterBase {
         }
         
         return htmlDoc.getContentNode();
+    }
+    
+    // Add epub namespace for the purpose of semantic inflection in EPUB 3
+    public void addEpubNs(Element elm) {
+    	if (bOPS && nType==XhtmlDocument.HTML5) {
+           	elm.setAttribute("xmlns:epub", "http://www.idpf.org/2007/ops");
+    	}    	
+    }
+    
+	// Add a type from the structural semantics vocabulary of EPUB 3
+    public void addEpubType(Element elm, String sType) {
+    	if (bOPS && nType==XhtmlDocument.HTML5 && sType!=null) {
+    		elm.setAttribute("epub:type", sType);
+    	}
     }
 	
     // create a target

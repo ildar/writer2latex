@@ -16,13 +16,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-24)
+ *  Version 1.6 (2015-06-10)
  *
- */package writer2latex.xhtml;
+ */
+package writer2latex.xhtml;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import writer2latex.office.OfficeReader;
 import writer2latex.office.OfficeStyleFamily;
@@ -30,6 +36,9 @@ import writer2latex.office.StyleWithProperties;
 import writer2latex.util.CSVList;
 
 public class HeadingStyleConverter extends StyleConverterHelper {
+	
+	// Sets of additional styles (other than the main heading style for the level)
+	private List<Set<String>> otherLevelStyles;
 
 	public HeadingStyleConverter(OfficeReader ofr, XhtmlConfig config,
 			Converter converter, int nType) {
@@ -37,6 +46,10 @@ public class HeadingStyleConverter extends StyleConverterHelper {
         this.styleMap = config.getXHeadingStyleMap();
         this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
         this.bConvertHard = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.otherLevelStyles = new ArrayList<Set<String>>();
+        for (int i=0; i<=6; i++) {
+        	otherLevelStyles.add(new HashSet<String>());
+        }
 	}
 
 	@Override
@@ -44,11 +57,22 @@ public class HeadingStyleConverter extends StyleConverterHelper {
         if (bConvertStyles) {
         	StringBuilder buf = new StringBuilder();
         	for (int i=1; i<=6; i++) {
+        		// Convert main style for this level
         		if (ofr.getHeadingStyle(i)!=null) {
         			CSVList props = new CSVList(";");
         			getParSc().applyProperties(ofr.getHeadingStyle(i),props,true);
         			props.addValue("clear","left");
         			buf.append(sIndent).append("h").append(i)
+        			.append(" {").append(props.toString()).append("}").append(config.prettyPrint() ? "\n" : " ");
+        		}
+        		// Convert other styles for this level
+        		for (String sDisplayName : otherLevelStyles.get(i)) {
+                    StyleWithProperties style = (StyleWithProperties)
+                            getStyles().getStyleByDisplayName(sDisplayName);
+                    CSVList props = new CSVList(";");
+                    getParSc().applyProperties(style,props,true);
+        			props.addValue("clear","left");
+        			buf.append(sIndent).append("h").append(i).append(".").append(styleNames.getExportName(sDisplayName))
         			.append(" {").append(props.toString()).append("}").append(config.prettyPrint() ? "\n" : " ");
         		}
             }
@@ -88,8 +112,12 @@ public class HeadingStyleConverter extends StyleConverterHelper {
                         info.sClass = map.sBlockCss;
                     }
                 }
-                else {
-                	// TODO: Apply style if different from main style for this level
+                else if (style!=ofr.getHeadingStyle(nLevel)) {
+                	// This is not the main style for this level, add class and remember
+                    info.sClass = styleNames.getExportName(sDisplayName);
+                    if (1<=nLevel && nLevel<=6) {
+                    	otherLevelStyles.get(nLevel).add(sDisplayName);
+                    }
                 }
             }
         }

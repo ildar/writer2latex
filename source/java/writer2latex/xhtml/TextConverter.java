@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-26)
+ *  Version 1.6 (2015-06-11)
  *
  */
 
@@ -28,54 +28,21 @@ package writer2latex.xhtml;
 
 import java.util.Hashtable;
 import java.util.Stack;
-import java.util.Vector;
 import java.util.LinkedList;
-import java.util.Locale;
-
-import java.text.Collator;
-
-//import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 
 import writer2latex.util.Misc;
-import writer2latex.xhtml.l10n.L10n;
 import writer2latex.office.FontDeclaration;
 import writer2latex.office.OfficeStyle;
 import writer2latex.office.XMLString;
-import writer2latex.office.IndexMark;
 import writer2latex.office.ListCounter;
 import writer2latex.office.ListStyle;
 import writer2latex.office.PropertySet;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.OfficeReader;
-import writer2latex.office.TocReader;
 
-// Helper class (a struct) to contain information about an alphabetical
-// index entry.
-final class AlphabeticalEntry {
-    String sWord; // the word for the index
-    int nIndex; // the original index of this entry
-}
-
-// Helper class (a struct) to contain information about a toc entry
-// (ie. a heading, other paragraph or toc-mark)
-final class TocEntry {
-    Element onode; // the original node
-    String sLabel = null; // generated label for the entry
-    int nFileIndex; // the file index for the generated content
-    int nOutlineLevel; // the outline level for this heading
-    int[] nOutlineNumber; // the natural outline number for this heading
-}
-
-// Helper class (a struct) to point back to indexes that should be processed
-final class IndexData {
-    int nOutFileIndex; // the index of the out file containing the index
-    Element onode; // the original node
-    Element chapter; // the chapter containing this toc
-    Element hnode; // a div node where the index should be added
-}
 
 /** This class handles text content
  */
@@ -90,7 +57,6 @@ public class TextConverter extends ConverterHelper {
 	private int nPageBreakSplit = XhtmlConfig.NONE; // Should we split at page breaks?
 	// TODO: Collect soft page breaks between table rows
 	private boolean bPendingPageBreak = false; // We have encountered a page break which should be inserted asap
-	private int nExternalTocDepth = 1; // The number of levels to include in the "external" table of contents
     private int nSplit = 0;  // The outline level at which to split files (0=no split)
     private int nRepeatLevels = 5; // The number of levels to repeat when splitting (0=no repeat)
     private int nLastSplitLevel = 1; // The outline level at which the last split occurred
@@ -110,20 +76,12 @@ public class TextConverter extends ConverterHelper {
     // Mode used to handle floats (depends on source doc type and config)
     private int nFloatMode; 
 	
-    // Data used for index bookkeeping
-    private Vector<IndexData> indexes = new Vector<IndexData>();
-
-    // Data used to handle Alphabetical Index
-    Vector<AlphabeticalEntry> index = new Vector<AlphabeticalEntry>(); // All words for the index
-    private int nIndexIndex = -1; // Current index used for id's (of form idxN) 
-    private int nAlphabeticalIndex = -1; // File containing alphabetical index
-
-    // Data used to handle Table of Contents
-    private Vector<TocEntry> tocEntries = new Vector<TocEntry>(); // All potential(!) toc items
-    private int nTocFileIndex = -1; // file index for main toc
-    private Element currentChapter = null; // Node for the current chapter (level 1) heading
-    private int nTocIndex = -1; // Current index for id's (of form tocN)
-    private ListCounter naturalOutline = new ListCounter(); // Current "natural" outline number 
+    // Data used to handle all sorts of indexes
+    private TOCConverter tocCv;
+    private LOFConverter lofCv;
+    private LOTConverter lotCv;
+    private AlphabeticalIndexConverter indexCv;
+    private BibliographyConverter bibCv;
 
     // Style names for foot- and endnotes
     private String sFntCitBodyStyle = null;
@@ -148,17 +106,18 @@ public class TextConverter extends ConverterHelper {
     
     // Display hidden text?
     private boolean bDisplayHiddenText = false;
-
+    
     public TextConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
+        tocCv = new TOCConverter(ofr, config, converter);
+        lofCv = new LOFConverter(ofr, config, converter);
+        lotCv = new LOTConverter(ofr, config, converter);
+        bibCv = new BibliographyConverter(ofr, config, converter);
+        indexCv = new AlphabeticalIndexConverter(ofr, config, converter);
         nSplitAfter = 1000*config.splitAfter();
         nPageBreakSplit = config.pageBreakSplit();
         nSplit = config.getXhtmlSplitLevel();
         nRepeatLevels = converter.isOPS() ? 0 : config.getXhtmlRepeatLevels(); // never repeat headings in EPUB
-        nExternalTocDepth = config.externalTocDepth();
-        if (nExternalTocDepth==0) { // A value of zero means auto (i.e. determine from split level)
-        	nExternalTocDepth = Math.max(nSplit,1);
-        }
         nFloatMode = ofr.isText() && config.xhtmlFloatObjects() ? 
             DrawConverter.FLOATING : DrawConverter.ABSOLUTE;
         outlineNumbering = new ListCounter(ofr.getOutlineStyle());
@@ -204,20 +163,21 @@ public class TextConverter extends ConverterHelper {
         insertEndnotes(hnode);
 
         // Generate all indexes
-        int nIndexCount = indexes.size();
-        for (int i=0; i<nIndexCount; i++) {
-            generateToc(indexes.get(i));
-        }
+        bInToc = true;
+        tocCv.generate();
+        bInToc = false;
 		
         // Generate navigation links
         generateHeaders();
         generateFooters();
-        generatePanels();
+        bInToc = true;
+        tocCv.generatePanels(nSplit);
+        bInToc = false;
     }
 	
-    protected int getTocIndex() { return nTocFileIndex; }
+    protected int getTocIndex() { return tocCv.getFileIndex(); }
 	
-    protected int getAlphabeticalIndex() { return nAlphabeticalIndex; }
+    protected int getAlphabeticalIndex() { return indexCv.getFileIndex(); }
 	
     ////////////////////////////////////////////////////////////////////////
     // NAVIGATION (fill header, footer and panel with navigation links)
@@ -229,137 +189,7 @@ public class TextConverter extends ConverterHelper {
     // The footer is populated with prev/next navigation
     private void generateFooters() { }
 
-    // The panel is populated with a minitoc
-    // TODO: Include link to toc and index in appropriate places..
-    private void generatePanels() {
-        int nLastIndex = converter.getOutFileIndex();
-
-        bInToc = true;
-		
-        boolean bHasFrontMatter = false;
-
-        TocEntry fakeEntry = new TocEntry();
-        fakeEntry.nOutlineLevel = 0;
-        fakeEntry.nOutlineNumber = new int[11];
-
-        int nLen = tocEntries.size();
-
-        for (int nIndex=0; nIndex<=nLastIndex; nIndex++) {
-            converter.changeOutFile(nIndex);
-            Element panel = converter.getPanelNode();
-            if (panel!=null) {
-                // Get the last heading of level <= split level for this file
-                TocEntry entryCurrent = null;				
-                for (int i=nLen-1; i>=0; i--) {
-                    TocEntry entry = tocEntries.get(i);
-                    if (XMLString.TEXT_H.equals(entry.onode.getTagName()) && entry.nFileIndex==nIndex && entry.nOutlineLevel<=nSplit) {
-                        entryCurrent = entry; break;
-                    }
-                }
-				
-                if (entryCurrent==null) {
-                    entryCurrent = fakeEntry;
-                    if (nIndex==0) { bHasFrontMatter=true; }
-                }
-				
-                // Determine the maximum outline level to include
-                int nMaxLevel = entryCurrent.nOutlineLevel;
-                if (nMaxLevel<nSplit) { nMaxLevel++; }
-
-                // Create minitoc with relevant entries
-                if (bHasFrontMatter) {
-                    Element inline = createPanelLink(panel, nIndex, 0, 1);
-                    inline.appendChild(converter.createTextNode(converter.getL10n().get(L10n.HOME)));
-                }
-				
-                int nPrevFileIndex = 0;
-                for (int i=0; i<nLen; i++) {
-                    TocEntry entry = tocEntries.get(i);
-
-                    if (entry.nFileIndex>nPrevFileIndex+1) {
-                        // Skipping a file index means we have passed an index
-                        for (int k=nPrevFileIndex+1; k<entry.nFileIndex; k++) {
-                            createIndexLink(panel,nIndex,k);
-                        }
-                    }
-                    nPrevFileIndex = entry.nFileIndex;
-					
-                    String sNodeName = entry.onode.getTagName();
-                    if (XMLString.TEXT_H.equals(sNodeName)) {
-
-                        // Determine wether or not to include this heading
-                        // Note that this condition misses the case where
-                        // a heading of level n is followed by a heading of
-                        // level n+2. This is considered a bug in the document!
-                        boolean bInclude = entry.nOutlineLevel<=nMaxLevel;
-                        if (bInclude) {
-                            // Check that this heading matches the current
-                            int nCompareLevels = entry.nOutlineLevel;
-                            for (int j=1; j<nCompareLevels; j++) {
-                                if (entry.nOutlineNumber[j]!=entryCurrent.nOutlineNumber[j]) {
-                                    bInclude = false;
-                                }
-                            }
-                        }
-                        
-                        if (bInclude) {
-                            Element inline = createPanelLink(panel, nIndex, entry.nFileIndex, entry.nOutlineLevel);
-
-                            // Add content of heading
-                            if (entry.sLabel!=null && entry.sLabel.length()>0) {
-                                inline.appendChild(converter.createTextNode(entry.sLabel));
-                                if (!entry.sLabel.endsWith(" ")) {
-                                    inline.appendChild(converter.createTextNode(" "));
-                                }
-                            }
-                            traverseInlineText(entry.onode,inline);
-                        }
-                    }
-                }
-                if (nPrevFileIndex<nLastIndex) {
-                    // Trailing index
-                    for (int k=nPrevFileIndex+1; k<=nLastIndex; k++) {
-                        createIndexLink(panel,nIndex,k);
-                    }
-                }
-            }
-        }
-        
-        bInToc = false;
-		
-        converter.changeOutFile(nLastIndex);
-
-    }
 	
-    private void createIndexLink(Element panel, int nIndex, int nFileIndex) {
-        if (nFileIndex==nTocFileIndex) {
-            Element inline = createPanelLink(panel, nIndex, nTocFileIndex, 1);
-            inline.appendChild(converter.createTextNode(converter.getL10n().get(L10n.CONTENTS)));
-        }
-        else if (nFileIndex==nAlphabeticalIndex) {
-            Element inline = createPanelLink(panel, nIndex, nAlphabeticalIndex, 1);
-            inline.appendChild(converter.createTextNode(converter.getL10n().get(L10n.INDEX)));
-        }
-    }
-
-    private Element createPanelLink(Element panel, int nCurrentFile, int nLinkFile, int nOutlineLevel) {
-        // Create a link
-        Element p = converter.createElement("p");
-        p.setAttribute("class","level"+nOutlineLevel);
-        panel.appendChild(p);
-        Element inline;
-        if (nCurrentFile!=nLinkFile) {
-            inline = converter.createElement("a");
-            inline.setAttribute("href",converter.getOutFileName(nLinkFile,true));
-        }
-        else {
-            inline = converter.createElement("span");
-            inline.setAttribute("class","nolink");
-        }
-        p.appendChild(inline);
-        return inline;
-    }
-    
     ////////////////////////////////////////////////////////////////////////
     // BLOCK TEXT (returns current html node at end of block)
     ////////////////////////////////////////////////////////////////////////
@@ -437,7 +267,7 @@ public class TextConverter extends ConverterHelper {
                     Node rememberNode = hnode;
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
                 	nCharacterCount+=OfficeReader.getCharacterCount(child);
-                    handleHeading((Element)child,hnode,rememberNode!=hnode);
+                    handleHeading((Element)child,(Element)hnode,rememberNode!=hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_LIST) || // oasis
                          nodeName.equals(XMLString.TEXT_UNORDERED_LIST) || // old
@@ -471,27 +301,27 @@ public class TextConverter extends ConverterHelper {
                     if (!ofr.getTocReader((Element)child).isByChapter()) {
                         hnode = maybeSplit(hnode,null,1);
                     }
-                    handleTOC(child,hnode);
+                    tocCv.handleIndex((Element)child,(Element)hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_ILLUSTRATION_INDEX)) {
-                    handleLOF(child,hnode);
+                    lofCv.handleLOF(child,hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_TABLE_INDEX)) {
-                    handleLOT(child,hnode);
+                    lotCv.handleLOT(child,hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_OBJECT_INDEX)) {
-                    handleObjectIndex(child,hnode);
+                    // TODO
                 }
                 else if (nodeName.equals(XMLString.TEXT_USER_INDEX)) {
-                    handleUserIndex(child,hnode);
+                    // TODO
                 }
                 else if (nodeName.equals(XMLString.TEXT_ALPHABETICAL_INDEX)) {
                     hnode = maybeSplit(hnode,null,1);
-                    handleAlphabeticalIndex(child,hnode);
+                    indexCv.handleIndex((Element)child,(Element)hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_BIBLIOGRAPHY)) {
                     hnode = maybeSplit(hnode,null,1);
-                    handleBibliography(child,hnode);
+                    bibCv.handleBibliography(child,hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                 	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }
@@ -604,7 +434,7 @@ public class TextConverter extends ConverterHelper {
         return newhnode.getParentNode();
     }
 	
-    private void handleHeading(Element onode, Node hnode, boolean bAfterSplit) {
+    private void handleHeading(Element onode, Element hnode, boolean bAfterSplit) {
         int nListLevel = getOutlineLevel((Element)onode);
         boolean bUnNumbered = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_IS_LIST_HEADER));
         boolean bRestart = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_RESTART_NUMBERING));
@@ -616,7 +446,7 @@ public class TextConverter extends ConverterHelper {
     /*
      * Process a text:h tag
      */
-    private void handleHeading(Element onode, Node hnode, boolean bAfterSplit,
+    private void handleHeading(Element onode, Element hnode, boolean bAfterSplit,
         ListStyle listStyle, int nListLevel, boolean bUnNumbered,
         boolean bRestart, int nStartValue) {
 
@@ -665,7 +495,6 @@ public class TextConverter extends ConverterHelper {
 
         	// Export the heading
         	if (!bTocOnly) {
-        		if (nLevel==1) { currentChapter = onode; }
         		// If split output, add headings of higher levels
         		if (bAfterSplit && nSplit>0) {
         			int nFirst = nLevel-nRepeatLevels;
@@ -706,24 +535,7 @@ public class TextConverter extends ConverterHelper {
         		
         		// Add to toc
         		if (!bInToc) {
-        			String sTarget = "toc"+(++nTocIndex);
-        			converter.addTarget(heading,sTarget);
-
-        			// Add in external content. For single file output we include all level 1 headings + their target
-        			// Targets are added only when the toc level is deeper than the split level 
-        			if (nLevel<=nExternalTocDepth) {
-        				converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel,
-        						nLevel>nSplit ? sTarget : null);
-        			}
-
-        			// Add to real toc
-        			TocEntry entry = new TocEntry();
-        			entry.onode = onode;
-        			entry.sLabel = sLabel;
-        			entry.nFileIndex = converter.getOutFileIndex();
-        			entry.nOutlineLevel = nLevel; 
-        			entry.nOutlineNumber = naturalOutline.step(nLevel).getValues();
-        			tocEntries.add(entry);
+        			tocCv.handleHeading(onode,heading,sLabel);
         		}
 
         		// Convert content
@@ -748,19 +560,7 @@ public class TextConverter extends ConverterHelper {
         	}
         	else {
         		if (!bInToc) {
-        			// Add in external content. For single file output we include all level 1 headings + their target
-        			// Targets are added only when the toc level is deeper than the split level 
-        			if (nLevel<=nExternalTocDepth) {
-                		// Add an empty div to use as target, if required
-        				String sTarget = null;
-        				if (nLevel>nSplit) {
-        					Element div = converter.createElement("div");        			
-        					hnode.appendChild(div);
-        					sTarget = "toc"+(++nTocIndex);
-        					converter.addTarget(div,sTarget);
-        				}
-        				converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel, sTarget);
-        			}
+        			tocCv.handleHeadingExternal(onode, hnode, sLabel);
         		}
                 // Keep track of current headings for split output
                 currentHeading[nLevel] = null;
@@ -799,15 +599,8 @@ public class TextConverter extends ConverterHelper {
         }
 
         // Maybe add to toc
-        if (ofr.isIndexSourceStyle(getParSc().getRealParStyleName(sStyleName))) {
-            converter.addTarget(par,"toc"+(++nTocIndex));
-            TocEntry entry = new TocEntry();
-            entry.onode = (Element) onode;
-            entry.sLabel = sCurrentListLabel;  
-            entry.nFileIndex = converter.getOutFileIndex();
-            tocEntries.add(entry);
-        }
-		
+        tocCv.handleParagraph((Element)onode, par, sCurrentListLabel);
+
         if (!bIsEmpty) {
             par = createTextBackground(par, sStyleName);
             if (config.listFormatting()==XhtmlConfig.HARD_LABELS) {
@@ -1205,7 +998,7 @@ public class TextConverter extends ConverterHelper {
                     Node rememberNode = hnode;
                     StyleWithProperties style = ofr.getParStyle(Misc.getAttribute(child, XMLString.TEXT_STYLE_NAME));
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
-                    handleHeading((Element)child, hnode, rememberNode!=hnode,
+                    handleHeading((Element)child, (Element)hnode, rememberNode!=hnode,
                         ofr.getListStyle(sStyleName), nLevel,
                         bUnNumbered, bRestart, nStartValue);
                     nDontSplitLevel--;
@@ -1228,284 +1021,7 @@ public class TextConverter extends ConverterHelper {
         }
         return hnode;
     }
-
 	
-    //////////////////////////////////////////////////////////////////////////
-    // INDEXES
-    //////////////////////////////////////////////////////////////////////////
-		    
-    /* Process table of contents
-     */
-    private void handleTOC(Node onode, Node hnode) {
-    	if (!config.includeToc()) { return; }
-
-    	if (!ofr.getTocReader((Element)onode).isByChapter()) { 
-    		nTocFileIndex = converter.getOutFileIndex(); 
-    	}
-
-    	converter.setTocFile(null);
-
-    	Element div = converter.createElement("div");
-    	hnode.appendChild(div);
-
-    	IndexData data = new IndexData();
-    	data.nOutFileIndex = converter.getOutFileIndex();
-    	data.onode = (Element) onode;
-    	data.chapter = currentChapter;
-    	data.hnode = (Element) div;
-    	indexes.add(data); // to be processed later with generateTOC
-    }
-
-    private void generateToc(IndexData data) {
-    	if (!config.includeToc()) { return; }
-
-    	Element onode = data.onode;
-        Element chapter = data.chapter;
-        Element div = data.hnode;
-
-        int nSaveOutFileIndex = converter.getOutFileIndex();
-        converter.changeOutFile(data.nOutFileIndex);
- 
-        bInToc = true;
-        TocReader tocReader = ofr.getTocReader(onode);
-
-        StyleInfo sectionInfo = new StyleInfo();
-        getSectionSc().applyStyle(tocReader.getStyleName(),sectionInfo);
-        applyStyle(sectionInfo,div);
-
-        if (tocReader.getName()!=null) { converter.addTarget(div,tocReader.getName()); }
-        // Generate title
-        Element title = tocReader.getIndexTitleTemplate();
-        if (title!=null) {
-            String sStyleName = Misc.getAttribute(title,XMLString.TEXT_STYLE_NAME);
-            Element p = createParagraph(div,sStyleName);
-            traversePCDATA(title,p);
-        }
-			
-        // TODO: Read the entire content of the entry templates!
-        String[] sEntryStyleName = new String[11];
-        for (int i=1; i<=10; i++) {
-            Element entryTemplate = tocReader.getTocEntryTemplate(i);
-            if (entryTemplate!=null) {
-                sEntryStyleName[i] = Misc.getAttribute(entryTemplate,XMLString.TEXT_STYLE_NAME);
-            }
-        }
-
-        int nStart = 0;
-        int nLen = tocEntries.size();
-
-        // Find the chapter
-        if (tocReader.isByChapter() && chapter!=null) {
-            for (int i=0; i<nLen; i++) {
-                TocEntry entry = tocEntries.get(i);
-                if (entry.onode==chapter) { nStart=i; break; }
-            }
-            
-        }
-
-        // Generate entries
-        for (int i=nStart; i<nLen; i++) {
-            TocEntry entry = tocEntries.get(i);
-            String sNodeName = entry.onode.getTagName();
-            if (XMLString.TEXT_H.equals(sNodeName)) {
-                int nLevel = getOutlineLevel(entry.onode);
-
-                if (nLevel==1 && tocReader.isByChapter() && entry.onode!=chapter) { break; }
-                if (tocReader.useOutlineLevel() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = createParagraph(div,sEntryStyleName[nLevel]);
-                    if (entry.sLabel!=null) {
-                        Element span = converter.createElement("span");
-                        p.appendChild(span);
-                        span.setAttribute("class","SectionNumber");
-                        span.appendChild(converter.createTextNode(entry.sLabel));
-                    }
-                    Element a = converter.createLink("toc"+i);
-                    p.appendChild(a);
-                    traverseInlineText(entry.onode,a);
-                }
-                else {
-                    String sStyleName = getParSc().getRealParStyleName(entry.onode.getAttribute(XMLString.TEXT_STYLE_NAME));
-                    nLevel = tocReader.getIndexSourceStyleLevel(sStyleName);
-                    if (tocReader.useIndexSourceStyles() && 1<=nLevel && nLevel<=tocReader.getOutlineLevel()) {
-                        Element p = createParagraph(div,sEntryStyleName[nLevel]);
-                        if (entry.sLabel!=null) {
-                            p.appendChild(converter.createTextNode(entry.sLabel));
-                        }
-                        Element a = converter.createLink("toc"+i);
-                        p.appendChild(a);
-                        traverseInlineText(entry.onode,a);
-                    }
-                }
-            }
-            else if (XMLString.TEXT_P.equals(sNodeName)) {
-                String sStyleName = getParSc().getRealParStyleName(entry.onode.getAttribute(XMLString.TEXT_STYLE_NAME));
-                int nLevel = tocReader.getIndexSourceStyleLevel(sStyleName);
-                if (tocReader.useIndexSourceStyles() && 1<=nLevel && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = createParagraph(div,sEntryStyleName[nLevel]);
-                    if (entry.sLabel!=null) {
-                        p.appendChild(converter.createTextNode(entry.sLabel));
-                    }
-                    Element a = converter.createLink("toc"+i);
-                    p.appendChild(a);
-                    traverseInlineText(entry.onode,a);
-                }
-            }
-            else if (XMLString.TEXT_TOC_MARK.equals(sNodeName)) {
-                int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
-                if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = createParagraph(div,sEntryStyleName[nLevel]);
-                    Element a = converter.createLink("toc"+i);
-                    p.appendChild(a);
-                    a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
-                }
-            }
-            else if (XMLString.TEXT_TOC_MARK_START.equals(sNodeName)) {
-                int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
-                if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = createParagraph(div,sEntryStyleName[nLevel]);
-                    Element a = converter.createLink("toc"+i);
-                    p.appendChild(a);
-                    a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
-                }
-            }
-        }
-        bInToc = false;
-		
-        converter.changeOutFile(nSaveOutFileIndex);
-    }
-
-    /*
-     * Process list of illustrations
-     */
-    private void handleLOF (Node onode, Node hnode) {
-        // later
-    }
-
-    /*
-     * Process list of tables
-     */
-    private void handleLOT (Node onode, Node hnode) {
-        // later
-    }
-
-    /*
-     * Process Object index
-     */
-    private void handleObjectIndex (Node onode, Node hnode) {
-        // later
-    }
-
-    /*
-     * Process User index
-     */
-    private void handleUserIndex (Node onode, Node hnode) {
-        // later
-    }
-
-    /*
-     * Process Alphabetical index
-     */
-    private void handleAlphabeticalIndex (Node onode, Node hnode) {
-        nAlphabeticalIndex = converter.getOutFileIndex();
-        converter.setIndexFile(null);
-        
-        Node source = Misc.getChildByTagName(onode,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE);
-        if (source!=null) {
-            Element div = converter.createElement("div");
-            converter.addTarget(div,"alphabeticalindex");
-            hnode.appendChild(div);
-            // Generate title
-            Node title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
-            if (title!=null) {
-                String sStyleName = Misc.getAttribute(title,XMLString.TEXT_STYLE_NAME);
-                Element p = createParagraph(div,sStyleName);
-                traversePCDATA(title,p);
-            }
-            // Collect style name for entries
-            // TODO: Should read the entire template
-            String sEntryStyleName = null;
-            if (source.hasChildNodes()) {
-                NodeList nl = source.getChildNodes();
-                int nLen = nl.getLength();
-                for (int i = 0; i < nLen; i++) {
-                    Node child = nl.item(i);
-                    if (child.getNodeType() == Node.ELEMENT_NODE
-                        && child.getNodeName().equals(XMLString.TEXT_ALPHABETICAL_INDEX_ENTRY_TEMPLATE)) {
-		                // Note: There are actually three outline-levels: separator, 1, 2 and 3
-                        int nLevel = Misc.getPosInteger(Misc.getAttribute(child,XMLString.TEXT_OUTLINE_LEVEL),1);
-                        if (nLevel==1) {
-                            sEntryStyleName = Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
-                        }
-                    }	                        
-                }
-            }
-            // Sort the index entries
-            Collator collator;
-            String sLanguage = Misc.getAttribute(source,XMLString.FO_LANGUAGE);
-            if (sLanguage==null) { // use default locale
-                collator = Collator.getInstance();
-            }
-            else {
-                String sCountry = Misc.getAttribute(source,XMLString.FO_COUNTRY);
-                if (sCountry==null) { sCountry=""; }
-                collator = Collator.getInstance(new Locale(sLanguage,sCountry));
-            }
-            for (int i = 0; i<=nIndexIndex; i++) {
-                for (int j = i+1; j<=nIndexIndex ; j++) {
-                    AlphabeticalEntry entryi = index.get(i);
-                    AlphabeticalEntry entryj = index.get(j);
-                    if (collator.compare(entryi.sWord, entryj.sWord) > 0) {
-                        index.set(i,entryj);
-                        index.set(j,entryi);
-                    }
-                }
-            }
-            // Generate the index
-            Element table = converter.createElement("table");
-            table.setAttribute("style","width:100%");
-            div.appendChild(table);
-            Element tr = converter.createElement("tr");
-            table.appendChild(tr);
-            Element[] td = new Element[4];
-            for (int i=0; i<4; i++) {
-                td[i] = converter.createElement("td");
-                td[i].setAttribute("style","vertical-align:top");
-                tr.appendChild(td[i]);
-            }
-            int nColEntries = nIndexIndex/4+1;
-            int nColIndex = -1;
-            for (int i=0; i<=nIndexIndex; i++) {
-                if (i%nColEntries==0) { nColIndex++; } 
-                AlphabeticalEntry entry = index.get(i);
-                Element p = createParagraph(td[nColIndex],sEntryStyleName);
-                Element a = converter.createLink("idx"+entry.nIndex);
-                p.appendChild(a);
-                a.appendChild(converter.createTextNode(entry.sWord));
-            }
-        }
-        
-    }
-
-    /*
-     * Process Bibliography
-     */
-    private void handleBibliography (Node onode, Node hnode) {
-        // Use the content, not the template
-        // This is a temp. solution. Later we want to be able to create
-        // hyperlinks from the bib-item to the actual entry in the bibliography,
-        // so we have to recreate the bibliography from the template.
-        Node body = Misc.getChildByTagName(onode,XMLString.TEXT_INDEX_BODY);
-        if (body!=null) {
-            Element div = converter.createElement("div");
-            converter.addTarget(div,"bibliography");
-            hnode.appendChild(div);
-            //asapNode = converter.createTarget("bibliography");
-            Node title = Misc.getChildByTagName(body,XMLString.TEXT_INDEX_TITLE);
-            if (title!=null) { traverseBlockText(title,div); }
-            traverseBlockText(body,div);
-        }     
-    }
-
     ////////////////////////////////////////////////////////////////////////
     // INLINE TEXT
     ////////////////////////////////////////////////////////////////////////
@@ -1549,7 +1065,7 @@ public class TextConverter extends ConverterHelper {
     /*
      * Process inline text
      */
-    private void traverseInlineText (Node onode,Node hnode) {        
+    protected void traverseInlineText (Node onode,Node hnode) {        
         //String styleName = Misc.getAttribute(onode, XMLString.TEXT_STYLE_NAME);
                               
         if (onode.hasChildNodes()) {
@@ -1662,16 +1178,16 @@ public class TextConverter extends ConverterHelper {
 	                        handleBookmarkRef(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK)) {
-	                        handleAlphabeticalIndexMark(child,hnode);
+	                        if (!bInToc) { indexCv.handleIndexMark(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK_START)) {
-	                        handleAlphabeticalIndexMarkStart(child,hnode);
+                        	if (!bInToc) { indexCv.handleIndexMarkStart(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_TOC_MARK)) {
-	                        handleTocMark(child,hnode);
+	                        tocCv.handleTocMark(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_TOC_MARK_START)) {
-	                        handleTocMark(child,hnode);
+	                        tocCv.handleTocMark(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
 	                        handleBibliographyMark(child,hnode);
@@ -1722,7 +1238,7 @@ public class TextConverter extends ConverterHelper {
     	}
     }
 
-    private void traversePCDATA(Node onode, Node hnode) {
+    protected void traversePCDATA(Node onode, Node hnode) {
         if (onode.hasChildNodes()) {
             NodeList nl = onode.getChildNodes();
             int nLen = nl.getLength();
@@ -1946,42 +1462,12 @@ public class TextConverter extends ConverterHelper {
         createReference(onode,hnode,"bkm");
     } 
 	
-    private void handleAlphabeticalIndexMark(Node onode, Node hnode) {
-        if (bInToc) { return; }
-        String sWord = Misc.getAttribute(onode,XMLString.TEXT_STRING_VALUE);
-        if (sWord==null) { return; }
-        AlphabeticalEntry entry = new AlphabeticalEntry();
-        entry.sWord = sWord; entry.nIndex = ++nIndexIndex; 
-        index.add(entry);
-        hnode.appendChild(converter.createTarget("idx"+nIndexIndex));
-    }
-
-    private void handleAlphabeticalIndexMarkStart(Node onode, Node hnode) {
-        if (bInToc) { return; }
-        String sWord = IndexMark.getIndexValue(onode);
-        if (sWord==null) { return; }
-        AlphabeticalEntry entry = new AlphabeticalEntry();
-        entry.sWord = sWord; entry.nIndex = ++nIndexIndex; 
-        index.add(entry);
-        hnode.appendChild(converter.createTarget("idx"+nIndexIndex));
-    }
-	
-    private void handleTocMark(Node onode, Node hnode) {
-        hnode.appendChild(converter.createTarget("toc"+(++nTocIndex)));
-        TocEntry entry = new TocEntry();
-        entry.onode = (Element) onode;
-        entry.nFileIndex = converter.getOutFileIndex();
-        tocEntries.add(entry);
-    }
-	
     private void handleBibliographyMark(Node onode, Node hnode) {
         if (bInToc) {
             traversePCDATA(onode,hnode);
         }
         else {
-            Element anchor = converter.createLink("bibliography");
-            hnode.appendChild(anchor);
-            traversePCDATA(onode,anchor);
+        	bibCv.handleBibliographyMark(onode, hnode);
         }
     }
 	
@@ -2123,7 +1609,7 @@ public class TextConverter extends ConverterHelper {
     }
 	
     /* Create a styled paragraph node */
-    private Element createParagraph(Element node, String sStyleName) {
+    protected Element createParagraph(Element node, String sStyleName) {
         StyleInfo info = new StyleInfo();
         getParSc().applyStyle(sStyleName,info);
         Element par = converter.createElement(info.sTagName);
@@ -2182,7 +1668,7 @@ public class TextConverter extends ConverterHelper {
        return applyAttributes(newNode,ofr.getTextStyle(sStyleName));
     }
 
-    private int getOutlineLevel(Element node) {
+    protected int getOutlineLevel(Element node) {
         return ofr.isOpenDocument() ?
             Misc.getPosInteger(node.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1):
             Misc.getPosInteger(node.getAttribute(XMLString.TEXT_LEVEL),1);
