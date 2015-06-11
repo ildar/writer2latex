@@ -28,7 +28,6 @@ package writer2latex.xhtml;
 
 import java.util.Hashtable;
 import java.util.Stack;
-import java.util.LinkedList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -39,7 +38,6 @@ import writer2latex.office.OfficeStyle;
 import writer2latex.office.XMLString;
 import writer2latex.office.ListCounter;
 import writer2latex.office.ListStyle;
-import writer2latex.office.PropertySet;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.OfficeReader;
 
@@ -76,26 +74,17 @@ public class TextConverter extends ConverterHelper {
     // Mode used to handle floats (depends on source doc type and config)
     private int nFloatMode; 
 	
-    // Data used to handle all sorts of indexes
+    // Converter helpers used to handle all sorts of indexes
     private TOCConverter tocCv;
     private LOFConverter lofCv;
     private LOTConverter lotCv;
     private AlphabeticalIndexConverter indexCv;
     private BibliographyConverter bibCv;
 
-    // Style names for foot- and endnotes
-    private String sFntCitBodyStyle = null;
-    private String sFntCitStyle = null;
-    private String sEntCitBodyStyle = null;
-    private String sEntCitStyle = null;
+    // Converter helpers used to handle footnotes and endnotes
+    private FootnoteConverter footCv;
+    private EndnoteConverter endCv;
     
-    // Footnote position (can be page or document)
-    private boolean bFootnotesAtPage = true;
-
-    // Gather the footnotes and endnotes
-    private LinkedList<Node> footnotes = new LinkedList<Node>();
-    private LinkedList<Node> endnotes = new LinkedList<Node>();
-
     // Sometimes we have to create an inlinenode in a block context
     // (labels for footnotes and endnotes)
     // We put it here and insert it in the first paragraph/heading to come:
@@ -114,6 +103,8 @@ public class TextConverter extends ConverterHelper {
         lotCv = new LOTConverter(ofr, config, converter);
         bibCv = new BibliographyConverter(ofr, config, converter);
         indexCv = new AlphabeticalIndexConverter(ofr, config, converter);
+        footCv = new FootnoteConverter(ofr, config, converter);
+        endCv = new EndnoteConverter(ofr, config, converter);
         nSplitAfter = 1000*config.splitAfter();
         nPageBreakSplit = config.pageBreakSplit();
         nSplit = config.getXhtmlSplitLevel();
@@ -121,18 +112,6 @@ public class TextConverter extends ConverterHelper {
         nFloatMode = ofr.isText() && config.xhtmlFloatObjects() ? 
             DrawConverter.FLOATING : DrawConverter.ABSOLUTE;
         outlineNumbering = new ListCounter(ofr.getOutlineStyle());
-        // Styles for footnotes and endnotes
-        PropertySet notes = ofr.getFootnotesConfiguration();
-        if (notes!=null) {
-            sFntCitBodyStyle = notes.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
-            sFntCitStyle = notes.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
-            bFootnotesAtPage = !"document".equals(notes.getProperty(XMLString.TEXT_FOOTNOTES_POSITION));
-        }
-        notes = ofr.getEndnotesConfiguration();
-        if (notes!=null) {
-            sEntCitBodyStyle = notes.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
-            sEntCitStyle = notes.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
-        }
         bDisplayHiddenText = config.displayHiddenText();
     }
 	
@@ -159,8 +138,8 @@ public class TextConverter extends ConverterHelper {
         hnode = (Element)traverseBlockText(onode,hnode);
         
         // Add footnotes and endnotes
-        insertFootnotes(hnode,true);
-        insertEndnotes(hnode);
+        footCv.insertFootnotes(hnode,true);
+        endCv.insertEndnotes(hnode);
 
         // Generate all indexes
         bInToc = true;
@@ -178,6 +157,10 @@ public class TextConverter extends ConverterHelper {
     protected int getTocIndex() { return tocCv.getFileIndex(); }
 	
     protected int getAlphabeticalIndex() { return indexCv.getFileIndex(); }
+    
+    protected void setAsapNode(Element node) {
+    	asapNode = node;
+    }
 	
     ////////////////////////////////////////////////////////////////////////
     // NAVIGATION (fill header, footer and panel with navigation links)
@@ -410,7 +393,7 @@ public class TextConverter extends ConverterHelper {
             // No objections, this is a level that causes splitting
         	nCharacterCount = 0;
         	bPendingPageBreak = false;
-            if (converter.getOutFileIndex()>=0) { insertFootnotes(node,false); }
+            if (converter.getOutFileIndex()>=0) { footCv.insertFootnotes(node,false); }
             return converter.nextOutFile();
         }
         return (Element) node;
@@ -1125,17 +1108,17 @@ public class TextConverter extends ConverterHelper {
                             handleAnchor(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
-                            handleFootnote(child,hnode);
+                            footCv.handleNote(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
-                            handleEndnote(child,hnode);
+                            endCv.handleNote(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_NOTE)) { // oasis
                             if ("endnote".equals(Misc.getAttribute(child,XMLString.TEXT_NOTE_CLASS))) {
-                                handleEndnote(child,hnode);
+                                endCv.handleNote(child,hnode);
                             }
                             else {
-                                handleFootnote(child,hnode);
+                                footCv.handleNote(child,hnode);
                             }
                         }
                         else if (sName.equals(XMLString.TEXT_SEQUENCE)) {
@@ -1255,142 +1238,7 @@ public class TextConverter extends ConverterHelper {
         hnode.appendChild(anchor);
         traverseInlineText(onode,anchor);
     }
-
-    /* Process a footnote */
-    private void handleFootnote(Node onode, Node hnode) {
-        String sId = Misc.getAttribute(onode,XMLString.TEXT_ID);
-		Element span = createInline((Element) hnode,sFntCitBodyStyle);
-        // Create target and back-link
-        Element link = converter.createLink(sId);
-        converter.addTarget(link,"body"+sId);
-		span.appendChild(link);
-        Node citation = Misc.getChildByTagName(onode,XMLString.TEXT_FOOTNOTE_CITATION);
-        if (citation==null) { // try oasis
-            citation = Misc.getChildByTagName(onode,XMLString.TEXT_NOTE_CITATION);
-        }
-        traversePCDATA(citation,link);
-        footnotes.add(onode);
-	} 
-	
-    private void insertFootnotes(Node hnode, boolean bFinal) {
-        int n = footnotes.size();
-        
-        if (n>0) {
-        	if (bFootnotesAtPage) { // Add footnote rule
-        		Element rule = converter.createElement("hr");
-        		StyleInfo info = new StyleInfo();
-        		getPageSc().applyFootnoteRuleStyle(info);
-        		getPageSc().applyStyle(info, rule);
-        		hnode.appendChild(rule);
-        	}
-        	else if (bFinal) { // New page if required for footnotes as endnotes
-        		if (nSplit>0) { hnode = converter.nextOutFile(); }
-        		insertNoteHeading(hnode, config.getFootnotesHeading(), "footnotes");        	
-        	}
-
-        	if (bFinal || bFootnotesAtPage) { // Insert the footnotes
-        		for (int i=0; i<n; i++) {
-        			Node footnote = footnotes.get(i);
-        			String sId = Misc.getAttribute(footnote,XMLString.TEXT_ID); 
-        			Node citation = Misc.getChildByTagName(footnote,XMLString.TEXT_FOOTNOTE_CITATION);
-        			if (citation==null) { // try oasis
-        				citation = Misc.getChildByTagName(footnote,XMLString.TEXT_NOTE_CITATION);
-        			}
-        			Node body = Misc.getChildByTagName(footnote,XMLString.TEXT_FOOTNOTE_BODY);
-        			if (body==null) { // try oasis
-        				body = Misc.getChildByTagName(footnote,XMLString.TEXT_NOTE_BODY);
-        			}
-        			traverseNoteBody(sId,sFntCitStyle,citation,body,hnode,ofr.getFootnotesConfiguration());
-        		}
-        		footnotes.clear();
-        	}
-        }
-    }
-
-    /* Process an endnote */
-    private void handleEndnote(Node onode, Node hnode) {
-        String sId = Misc.getAttribute(onode,XMLString.TEXT_ID);
-		Element span = createInline((Element) hnode,sEntCitBodyStyle);
-        // Create target and back-link
-        Element link = converter.createLink(sId);
-        converter.addTarget(link,"body"+sId);
-		span.appendChild(link);
-        Node citation = Misc.getChildByTagName(onode,XMLString.TEXT_ENDNOTE_CITATION);
-        if (citation==null) { // try oasis
-            citation = Misc.getChildByTagName(onode,XMLString.TEXT_NOTE_CITATION);
-        }
-        traversePCDATA(citation,link);
-        endnotes.add(onode);
-	} 
-
-    private void insertEndnotes(Node hnode) {
-        int n = endnotes.size();
-        if (n>0) {
-        	if (nSplit>0) { hnode = converter.nextOutFile(); }
-        	insertNoteHeading(hnode, config.getEndnotesHeading(), "endnotes");
-        	for (int i=0; i<n; i++) {
-        		Node endnote = endnotes.get(i);
-        		String sId = Misc.getAttribute(endnote,XMLString.TEXT_ID); 
-        		Node citation = Misc.getChildByTagName(endnote,XMLString.TEXT_ENDNOTE_CITATION);
-        		if (citation==null) { // try oasis
-        			citation = Misc.getChildByTagName(endnote,XMLString.TEXT_NOTE_CITATION);
-        		}
-        		Node body = Misc.getChildByTagName(endnote,XMLString.TEXT_ENDNOTE_BODY);
-        		if (body==null) { // try oasis
-        			body = Misc.getChildByTagName(endnote,XMLString.TEXT_NOTE_BODY);
-        		}
-        		traverseNoteBody(sId,sEntCitStyle,citation,body,hnode,ofr.getEndnotesConfiguration());
-        	}
-        }
-    }
     
-    private void insertNoteHeading(Node hnode, String sHeading, String sTarget) {
-    	if (sHeading.length()>0) {
-    		Element heading = converter.createElement("h1");
-    		hnode.appendChild(heading);
-    		heading.appendChild(converter.createTextNode(sHeading));
-
-    		// Add to external content.
-    		if (nSplit>0) {
-            	converter.addContentEntry(sHeading, 1, null);        			
-    		}
-    		else {
-    			//For single output file we need a target
-                converter.addTarget(heading,sTarget);                
-            	converter.addContentEntry(sHeading, 1, sTarget);        			
-    		}
-    	}
-    }
-
-	/*
-     * Process the contents of a footnote or endnote
-     */
-    private void traverseNoteBody (String sId, String sCitStyle, Node citation, Node onode, Node hnode, PropertySet noteConfig) {
-        // Create the anchor/footnote symbol:
-        // Create target and link
-        Element link = converter.createLink("body"+sId);
-        converter.addTarget(link,sId);
-        StyleInfo linkInfo = new StyleInfo();
-        getTextSc().applyStyle(sCitStyle,linkInfo);
-        applyStyle(linkInfo,link);
-        String sPrefix = noteConfig.getProperty(XMLString.STYLE_NUM_PREFIX);
-        if (sPrefix!=null) {
-        	link.appendChild(converter.createTextNode(sPrefix));
-        }
-        traversePCDATA(citation,link);
-        String sSuffix = noteConfig.getProperty(XMLString.STYLE_NUM_SUFFIX);
-        if (sSuffix!=null) {
-        	link.appendChild(converter.createTextNode(sSuffix));        	
-        }
-        // Add a space and save it for later insertion 
-        Element span = converter.createElement("span");
-        span.appendChild(link);
-        span.appendChild(converter.createTextNode(" "));
-        asapNode = span;
-		
-        traverseBlockText(onode,hnode);
-    }
-
     private void handlePageNumber(Node onode, Node hnode) {
         // doesn't make any sense...
         hnode.appendChild( converter.createTextNode("(Page number)") );
@@ -1642,7 +1490,7 @@ public class TextConverter extends ConverterHelper {
     }
 		
     /* Create a styled inline node */
-    private Element createInline(Element node, String sStyleName) {
+    protected Element createInline(Element node, String sStyleName) {
         StyleInfo info = new StyleInfo();
         getTextSc().applyStyle(sStyleName,info);
         Element newNode = node;
