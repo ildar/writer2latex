@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-12)
  *
  */
 package writer2latex.xhtml;
@@ -51,20 +51,21 @@ public class BibliographyConverter extends ConverterHelper {
         // so we have to recreate the bibliography from the template.
         Node body = Misc.getChildByTagName(onode,XMLString.TEXT_INDEX_BODY);
         if (body!=null) {
-            Element div = converter.createElement("div");
+            Element container = converter.createElement(converter.isHTML5() ? "section" : "div");
     		String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
     		if (sStyleName!=null) {
     	        StyleInfo sectionInfo = new StyleInfo();
     	        getSectionSc().applyStyle(sStyleName,sectionInfo);
-    	        applyStyle(sectionInfo,div);
+    	        applyStyle(sectionInfo,container);
     		}
             
-            converter.addTarget(div,"bibliography");
-            hnode.appendChild(div);
+            converter.addTarget(container,"bibliography");
+            converter.addEpubType(container, "bibliography");
+            hnode.appendChild(container);
             //asapNode = converter.createTarget("bibliography");
             Node title = Misc.getChildByTagName(body,XMLString.TEXT_INDEX_TITLE);
-            if (title!=null) { getTextCv().traverseBlockText(title,div); }
-            getTextCv().traverseBlockText(body,div);
+            if (title!=null) { getTextCv().traverseBlockText(title,container); }
+            getTextCv().traverseBlockText(body,container);
         }     
     }
 

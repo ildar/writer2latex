@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-12)
  *
  */
 package writer2latex.xhtml;
@@ -53,20 +53,24 @@ public class FootnoteConverter extends NoteConverter {
      */
     public void insertFootnotes(Node hnode, boolean bFinal) {
         if (hasNotes()) {
-        	if (bFootnotesAtPage) { // Add footnote rule
+        	if (bFootnotesAtPage) {
+        		Element section = createNoteSection(hnode, "footnotes");
+
+        		// Add footnote rule
         		Element rule = converter.createElement("hr");
         		StyleInfo info = new StyleInfo();
         		getPageSc().applyFootnoteRuleStyle(info);
         		getPageSc().applyStyle(info, rule);
-        		hnode.appendChild(rule);
-        	}
-        	else if (bFinal) { // New page if required for footnotes as endnotes
-        		if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
-        		insertNoteHeading(hnode, config.getFootnotesHeading(), "footnotes");        	
-        	}
+        		section.appendChild(rule);
 
-        	if (bFinal || bFootnotesAtPage) { // Insert the footnotes
-        		insertNotes(hnode);
+        		flushNotes(section,"footnote");
+        	}
+        	else if (bFinal) {
+        		// New page if required for footnotes as endnotes
+        		if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
+        		Element section = createNoteSection(hnode, "footnotes");
+        		insertNoteHeading(section, config.getFootnotesHeading(), "footnotes");        	
+        		flushNotes(section,"footnote");
         	}
         }
     }

@@ -2,11 +2,12 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
-[w2x] Added support for semantic inflection in EPUB 3 export for the types toc, index
+[w2x] Added support for semantic inflection in EPUB 3 export for the types footnote(s), endnote(s), toc, index
+  and bibliography
   (http://www.idpf.org/epub/30/spec/epub30-contentdocs.html#sec-xhtml-semantic-inflection).
   
-[w2x] Improved the semantic markup of the table of contents and the alphabetical index in HTML export using sections,
-  headings and lists
+[w2x] Improved the semantic markup of footnotes, endnotes, table of contents and alphabetical index in HTML export
+  using sections, asides, headings and lists
   
 [w2x] Added support for background color of alphabetical index and bibliography
 

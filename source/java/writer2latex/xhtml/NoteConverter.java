@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-12)
  *
  */
 package writer2latex.xhtml;
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 public class NoteConverter extends ConverterHelper {
 	
 	// The notes configuration
-	private PropertySet configuration;
+	private PropertySet noteConfig;
 	
 	// The collection of notes
 	private List<Node> notes = new ArrayList<Node>();
@@ -55,7 +55,7 @@ public class NoteConverter extends ConverterHelper {
 	 */
     public NoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, PropertySet noteConfig) {
         super(ofr,config,converter);
-        this.configuration = noteConfig;
+        this.noteConfig = noteConfig;
     }
     
     /** Handle a footnote or endnote. This method inserts the citation and stores the actual note for later processing
@@ -65,12 +65,13 @@ public class NoteConverter extends ConverterHelper {
      */
     public void handleNote(Node onode, Node hnode) {
     	// Create a style span for the citation
-        String sCitBodyStyle = configuration.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
+        String sCitBodyStyle = noteConfig.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
 		Element span = getTextCv().createInline((Element) hnode,sCitBodyStyle);
         // Add target and back-link to the span
         String sId = Misc.getAttribute(onode,XMLString.TEXT_ID);
         Element link = converter.createLink(sId);
         converter.addTarget(link,"body"+sId);
+        converter.addEpubType(link, "noteref");
 		span.appendChild(link);
 		// Get the citation
         Element citation = Misc.getChildByTagName(onode,XMLString.TEXT_NOTE_CITATION);
@@ -90,6 +91,13 @@ public class NoteConverter extends ConverterHelper {
     
     protected boolean hasNotes() {
     	return notes.size()>0;
+    }
+    
+    protected Element createNoteSection(Node hnode, String sEpubType) {
+    	Element section = converter.createElement(converter.isHTML5() ? "section" : "div");
+    	hnode.appendChild(section);
+    	converter.addEpubType(section, sEpubType);
+    	return section;
     }
      
     protected void insertNoteHeading(Node hnode, String sHeading, String sTarget) {
@@ -111,10 +119,14 @@ public class NoteConverter extends ConverterHelper {
     	}
     }
     
-    protected void insertNotes(Node hnode) {
+    protected void flushNotes(Node hnode, String sEpubType) {
     	int nSize = notes.size();
 		for (int i=0; i<nSize; i++) {
 			Node note = notes.get(i);
+			// Create container
+			Element aside = converter.createElement(converter.isHTML5() ? "aside" : "div");
+			hnode.appendChild(aside);
+			converter.addEpubType(aside, sEpubType);
 			// Get the citation
 			Node citation = Misc.getChildByTagName(note,XMLString.TEXT_NOTE_CITATION);
 			if (citation==null) { // try old format
@@ -134,7 +146,7 @@ public class NoteConverter extends ConverterHelper {
 			// Export the note
 			String sId = Misc.getAttribute(note,XMLString.TEXT_ID); 
 			createAnchor(sId,citation);
-	        getTextCv().traverseBlockText(body,hnode);
+	        getTextCv().traverseBlockText(body,aside);
 		}
 		notes.clear();
     }
@@ -145,13 +157,13 @@ public class NoteConverter extends ConverterHelper {
         converter.addTarget(link,sId);
 
         // Style it
-        String sCitStyle = configuration.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
+        String sCitStyle = noteConfig.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
         StyleInfo linkInfo = new StyleInfo();
         getTextSc().applyStyle(sCitStyle,linkInfo);
         applyStyle(linkInfo,link);
 
         // Add prefix
-        String sPrefix = configuration.getProperty(XMLString.STYLE_NUM_PREFIX);
+        String sPrefix = noteConfig.getProperty(XMLString.STYLE_NUM_PREFIX);
         if (sPrefix!=null) {
         	link.appendChild(converter.createTextNode(sPrefix));
         }
@@ -160,7 +172,7 @@ public class NoteConverter extends ConverterHelper {
         getTextCv().traversePCDATA(citation,link);
 
         // Add suffix
-        String sSuffix = configuration.getProperty(XMLString.STYLE_NUM_SUFFIX);
+        String sSuffix = noteConfig.getProperty(XMLString.STYLE_NUM_SUFFIX);
         if (sSuffix!=null) {
         	link.appendChild(converter.createTextNode(sSuffix));        	
         }

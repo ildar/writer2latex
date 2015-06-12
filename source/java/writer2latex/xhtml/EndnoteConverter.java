@@ -20,11 +20,12 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-12)
  *
  */
 package writer2latex.xhtml;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import writer2latex.office.OfficeReader;
@@ -42,8 +43,9 @@ public class EndnoteConverter extends NoteConverter {
     public void insertEndnotes(Node hnode) {
         if (hasNotes()) {
         	if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
-        	insertNoteHeading(hnode, config.getEndnotesHeading(), "endnotes");
-        	insertNotes(hnode);
+        	Element section = createNoteSection(hnode, "rearnotes");
+        	insertNoteHeading(section, config.getEndnotesHeading(), "endnotes");
+        	flushNotes(section,"rearnote");
         }
     }
 }
