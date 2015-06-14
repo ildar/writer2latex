@@ -30,9 +30,9 @@ import org.w3c.dom.Node;
 
 import writer2latex.office.OfficeReader;
 
-public class EndnoteConverter extends NoteConverter {
+class EndnoteConverter extends NoteConverter {
 	
-    public EndnoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+    EndnoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter,ofr.getEndnotesConfiguration());
     }
     
@@ -40,7 +40,7 @@ public class EndnoteConverter extends NoteConverter {
      * 
      * @param hnode a block HTML element to contain the endnotes
      */
-    public void insertEndnotes(Node hnode) {
+    void insertEndnotes(Node hnode) {
         if (hasNotes()) {
         	if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
         	Element section = createNoteSection(hnode, "rearnotes");

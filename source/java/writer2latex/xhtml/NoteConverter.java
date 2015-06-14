@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-12)
+ *  Version 1.6 (2015-06-14)
  *
  */
 package writer2latex.xhtml;
@@ -38,7 +38,7 @@ import writer2latex.util.Misc;
 
 /** This is a base class handles the conversion of footnotes and endnotes
  */
-public class NoteConverter extends ConverterHelper {
+class NoteConverter extends ConverterHelper {
 	
 	// The notes configuration
 	private PropertySet noteConfig;
@@ -53,7 +53,7 @@ public class NoteConverter extends ConverterHelper {
 	 * @param converter the converter
 	 * @param noteConfig the configuration of the notes
 	 */
-    public NoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, PropertySet noteConfig) {
+    NoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, PropertySet noteConfig) {
         super(ofr,config,converter);
         this.noteConfig = noteConfig;
     }
@@ -63,7 +63,7 @@ public class NoteConverter extends ConverterHelper {
      * @param onode a text:note element
      * @param hnode the inline HTML element to contain the citation
      */
-    public void handleNote(Node onode, Node hnode) {
+    void handleNote(Node onode, Node hnode) {
     	// Create a style span for the citation
         String sCitBodyStyle = noteConfig.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
 		Element span = getTextCv().createInline((Element) hnode,sCitBodyStyle);
@@ -89,18 +89,18 @@ public class NoteConverter extends ConverterHelper {
         notes.add(onode);
 	}
     
-    protected boolean hasNotes() {
+    boolean hasNotes() {
     	return notes.size()>0;
     }
     
-    protected Element createNoteSection(Node hnode, String sEpubType) {
+    Element createNoteSection(Node hnode, String sEpubType) {
     	Element section = converter.createElement(converter.isHTML5() ? "section" : "div");
     	hnode.appendChild(section);
     	converter.addEpubType(section, sEpubType);
     	return section;
     }
      
-    protected void insertNoteHeading(Node hnode, String sHeading, String sTarget) {
+    void insertNoteHeading(Node hnode, String sHeading, String sTarget) {
     	if (sHeading.length()>0) {
     		// Create heading
     		Element heading = converter.createElement("h1");
@@ -119,7 +119,7 @@ public class NoteConverter extends ConverterHelper {
     	}
     }
     
-    protected void flushNotes(Node hnode, String sEpubType) {
+    void flushNotes(Node hnode, String sEpubType) {
     	int nSize = notes.size();
 		for (int i=0; i<nSize; i++) {
 			Node note = notes.get(i);
@@ -145,6 +145,7 @@ public class NoteConverter extends ConverterHelper {
 			}
 			// Export the note
 			String sId = Misc.getAttribute(note,XMLString.TEXT_ID); 
+	        converter.addTarget(aside,sId);
 			createAnchor(sId,citation);
 	        getTextCv().traverseBlockText(body,aside);
 		}
@@ -154,7 +155,6 @@ public class NoteConverter extends ConverterHelper {
     private void createAnchor(String sId, Node citation) {
         // Create target and link
         Element link = converter.createLink("body"+sId);
-        converter.addTarget(link,sId);
 
         // Style it
         String sCitStyle = noteConfig.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-12)
+ *  Version 1.6 (2015-06-14)
  *
  */
 package writer2latex.xhtml;
@@ -32,12 +32,12 @@ import writer2latex.office.OfficeReader;
 import writer2latex.office.PropertySet;
 import writer2latex.office.XMLString;
 
-public class FootnoteConverter extends NoteConverter {
+class FootnoteConverter extends NoteConverter {
 	
     // Footnote position (can be page or document)
     private boolean bFootnotesAtPage = true;
 
-    public FootnoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+    FootnoteConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter,ofr.getFootnotesConfiguration());
         PropertySet configuration=ofr.getFootnotesConfiguration();
         if (configuration!=null) {
@@ -51,7 +51,7 @@ public class FootnoteConverter extends NoteConverter {
      * @param hnode a block HTML element to contain the footnotes
      * @param bFinal true if this is the final call
      */
-    public void insertFootnotes(Node hnode, boolean bFinal) {
+    void insertFootnotes(Node hnode, boolean bFinal) {
         if (hasNotes()) {
         	if (bFootnotesAtPage) {
         		Element section = createNoteSection(hnode, "footnotes");
@@ -76,5 +76,3 @@ public class FootnoteConverter extends NoteConverter {
     }
 
 }
-
-
