@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.6 (2015-04-09)
+*  Version 1.6 (2015-06-16)
 *
 */ 
 
@@ -522,9 +522,10 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		checkBoxFromConfig(dlg, "IgnoreTableDimensions", "ignore_table_dimensions");
     		
     		listBoxFromConfig(dlg, "ListFormatting", "list_formatting", sListExportValues, (short) 0);
-    		//TODO: These have been postponed
-    		//checkBoxFromConfig(dlg, "ConvertToPx", "convert_to_px");
-    		//checkBoxFromConfig(dlg, "SeparateStylesheet", "separate_stylesheet");
+
+    		textFieldFromConfig(dlg, "MaxWidth", "max_width");
+
+    		checkBoxFromConfig(dlg, "SeparateStylesheet", "separate_stylesheet");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
@@ -537,9 +538,10 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		checkBoxToConfig(dlg, "IgnoreTableDimensions", "ignore_table_dimensions");
 
     		listBoxToConfig(dlg, "ListFormatting", "list_formatting", sListExportValues);
-    		//TODO: These have been postponed
-    		//checkBoxToConfig(dlg, "ConvertToPx", "convert_to_px");
-    		//checkBoxToConfig(dlg, "SeparateStylesheet", "separate_stylesheet");
+
+    		textFieldToConfig(dlg, "MaxWidth", "max_width");
+
+    		checkBoxToConfig(dlg, "SeparateStylesheet", "separate_stylesheet");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {

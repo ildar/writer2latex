@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-28)
+ *  Version 1.6 (2015-06-15)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 58; }
+    protected int getOptionCount() { return 59; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -120,44 +120,45 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int TABLE_FORMATTING = 17;
     private static final int TABLE_SIZE = 18;
     private static final int LIST_FORMATTING = 19;
-    private static final int USE_DEFAULT_FONT = 20;
-    private static final int DEFAULT_FONT_NAME = 21;
-    private static final int USE_DUBLIN_CORE = 22;
-    private static final int NOTES = 23;
-    private static final int DISPLAY_HIDDEN_TEXT = 24;
-    private static final int CONVERT_TO_PX = 25;
-    private static final int SCALING = 26;
-    private static final int COLUMN_SCALING = 27;
-    private static final int RELATIVE_FONT_SIZE = 28;
-    private static final int FONT_SCALING = 29;
-    private static final int FLOAT_OBJECTS = 30;
-    private static final int TABSTOP_STYLE = 31;
-    private static final int FORMULAS = 32;
-    private static final int ENDNOTES_HEADING = 33;
-    private static final int FOOTNOTES_HEADING = 34;
-    private static final int EXTERNAL_TOC_DEPTH = 35;
-    private static final int INCLUDE_TOC = 36;
-    private static final int INCLUDE_NCX = 37;
-    private static final int SPLIT_LEVEL = 38;
-    private static final int REPEAT_LEVELS = 39;
-    private static final int PAGE_BREAK_SPLIT = 40;
-    private static final int SPLIT_AFTER = 41;
-    private static final int IMAGE_SPLIT = 42;
-    private static final int COVER_IMAGE = 43;
-    private static final int EMBED_SVG = 44;
-    private static final int EMBED_IMG = 45;
-    private static final int USE_MATHJAX = 46;
-    private static final int CALC_SPLIT = 47;
-    private static final int DISPLAY_HIDDEN_SHEETS = 48;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 49;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 50;
-    private static final int APPLY_PRINT_RANGES = 51;
-    private static final int USE_TITLE_AS_HEADING = 52;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 53;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 54;
-    private static final int UPLINK = 55;
-    private static final int DIRECTORY_ICON = 56;
-    private static final int DOCUMENT_ICON = 57;
+    private static final int MAX_WIDTH = 20;
+    private static final int USE_DEFAULT_FONT = 21;
+    private static final int DEFAULT_FONT_NAME = 22;
+    private static final int USE_DUBLIN_CORE = 23;
+    private static final int NOTES = 24;
+    private static final int DISPLAY_HIDDEN_TEXT = 25;
+    private static final int CONVERT_TO_PX = 26;
+    private static final int SCALING = 27;
+    private static final int COLUMN_SCALING = 28;
+    private static final int RELATIVE_FONT_SIZE = 29;
+    private static final int FONT_SCALING = 30;
+    private static final int FLOAT_OBJECTS = 31;
+    private static final int TABSTOP_STYLE = 32;
+    private static final int FORMULAS = 33;
+    private static final int ENDNOTES_HEADING = 34;
+    private static final int FOOTNOTES_HEADING = 35;
+    private static final int EXTERNAL_TOC_DEPTH = 36;
+    private static final int INCLUDE_TOC = 37;
+    private static final int INCLUDE_NCX = 38;
+    private static final int SPLIT_LEVEL = 39;
+    private static final int REPEAT_LEVELS = 40;
+    private static final int PAGE_BREAK_SPLIT = 41;
+    private static final int SPLIT_AFTER = 42;
+    private static final int IMAGE_SPLIT = 43;
+    private static final int COVER_IMAGE = 44;
+    private static final int EMBED_SVG = 45;
+    private static final int EMBED_IMG = 46;
+    private static final int USE_MATHJAX = 47;
+    private static final int CALC_SPLIT = 48;
+    private static final int DISPLAY_HIDDEN_SHEETS = 49;
+    private static final int DISPLAY_HIDDEN_ROWS_COLS = 50;
+    private static final int DISPLAY_FILTERED_ROWS_COLS = 51;
+    private static final int APPLY_PRINT_RANGES = 52;
+    private static final int USE_TITLE_AS_HEADING = 53;
+    private static final int USE_SHEET_NAMES_AS_HEADINGS = 54;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 55;
+    private static final int UPLINK = 56;
+    private static final int DIRECTORY_ICON = 57;
+    private static final int DOCUMENT_ICON = 58;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -211,6 +212,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         		else { nValue = CSS1; }
         	}
         };
+        options[MAX_WIDTH] = new Option("max_width","800px");
         options[USE_DEFAULT_FONT] = new BooleanOption("use_default_font","false");
         options[DEFAULT_FONT_NAME] = new BooleanOption("default_font_name","");
         options[USE_DUBLIN_CORE] = new BooleanOption("use_dublin_core","true");
@@ -393,6 +395,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public int xhtmlTableFormatting() { return ((XhtmlFormatOption) options[TABLE_FORMATTING]).getValue(); }
     public int tableSize() { return ((IntegerOption) options[TABLE_SIZE]).getValue(); }
     public int listFormatting() { return ((IntegerOption) options[LIST_FORMATTING]).getValue(); }
+    public String getMaxWidth() { return options[MAX_WIDTH].getString(); }
     public boolean useDefaultFont() { return ((BooleanOption) options[USE_DEFAULT_FONT]).getValue(); }
     public String defaultFontName() { return options[DEFAULT_FONT_NAME].getString(); }
     public boolean xhtmlUseDublinCore() { return ((BooleanOption) options[USE_DUBLIN_CORE]).getValue(); }

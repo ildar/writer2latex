@@ -81,5 +81,17 @@
 		        values indentations of the list are exported as well.</paragraph>
         	</listitem>
         </list>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:MaxWidth" id="bm_configmaxwidth"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Maximum text width</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">In this field you can give a maximum width (like e.g. 800px)
+        for the exported text, which may enhance the readability. You can use any unit defined in CSS.
+        If the browser window is wider than this, the text will be centered with suitable margins. 
+        Leave the field blank if you want the text to occupy the full width of the browser window.</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SeparateStylesheet" id="bm_configseparatestylesheet"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Create separate style sheet</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to create a separate CSS file in the export.
+        Otherwise the CSS code will be exported embedded in the XHTML document(s).</paragraph>
     </body>
 </helpdocument>

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2015-06-15)
  *
  */
 
@@ -33,14 +33,11 @@ import org.w3c.dom.Node;
 import writer2latex.office.*;
 import writer2latex.util.*;
 
-/**
- * <p>This class converts OpenDocument styles to CSS2 styles.</p>
- * <p>Note that some elements in OpenDocument has attributes that also maps
- * to CSS2 properties. Example: the width of a text box.</p>
- * <p>Also note, that some OpenDocument style properties cannot be mapped to
- * CSS2 without creating an additional inline element.</p>
- * <p>The class uses one helper class per OpenDocument style family
- * (paragraph, frame etc.)</p>
+/** This class converts OpenDocument styles to CSS2 styles.
+ * Note that some elements in OpenDocument has attributes that also maps to CSS2 properties.
+ * Example: the width of a text box.
+ * Also note, that some OpenDocument style properties cannot be mapped to CSS2 without creating an additional inline element.
+ * The class uses one helper class per OpenDocument style family (paragraph, frame etc.)
  */
 class StyleConverter extends ConverterHelper {
 
@@ -63,9 +60,14 @@ class StyleConverter extends ConverterHelper {
     // Helper for page styles
     private PageStyleConverter pageSc;
     
-    /** <p>Create a new <code>StyleConverter</code></p>
+    /** Create a new <code>StyleConverter</code>
+     * 
+     * @param ofr the office reader used to access the source document
+     * @param config the configuration to use
+     * @param converter the main converter
+     * @param nType the XHTML type
      */
-    public StyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
+    StyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
         super(ofr,config,converter);
         // Create the helpers
         textSc = new TextStyleConverter(ofr,config,converter,nType);
@@ -81,37 +83,35 @@ class StyleConverter extends ConverterHelper {
         pageSc = new PageStyleConverter(ofr,config,converter,nType);
     }
 	
-    // Accessor methods for helpers
-    protected TextStyleConverter getTextSc() { return textSc; }
+    // Accessor methods for helpers: We need to override the style helper accessors
+    
+    TextStyleConverter getTextSc() { return textSc; }
 
-    protected ParStyleConverter getParSc() { return parSc; }
+    ParStyleConverter getParSc() { return parSc; }
 
-    protected HeadingStyleConverter getHeadingSc() { return headingSc; }
+    HeadingStyleConverter getHeadingSc() { return headingSc; }
 
-    protected ListStyleConverter getListSc() { return listSc; }
+    ListStyleConverter getListSc() { return listSc; }
 
-    protected SectionStyleConverter getSectionSc() { return sectionSc; }
+    SectionStyleConverter getSectionSc() { return sectionSc; }
 
-    protected TableStyleConverter getTableSc() { return tableSc; }
+    TableStyleConverter getTableSc() { return tableSc; }
 
-    protected RowStyleConverter getRowSc() { return rowSc; }
+    RowStyleConverter getRowSc() { return rowSc; }
 
-    protected CellStyleConverter getCellSc() { return cellSc; }
+    CellStyleConverter getCellSc() { return cellSc; }
 
-    protected FrameStyleConverter getFrameSc() { return frameSc; }
+    FrameStyleConverter getFrameSc() { return frameSc; }
 
-    protected PresentationStyleConverter getPresentationSc() { return presentationSc; }
+    PresentationStyleConverter getPresentationSc() { return presentationSc; }
 
-    protected PageStyleConverter getPageSc() { return pageSc; }
+    PageStyleConverter getPageSc() { return pageSc; }
 	
-    private StyleWithProperties getDefaultStyle() {
-        if (ofr.isSpreadsheet()) return ofr.getDefaultCellStyle();
-        else if (ofr.isPresentation()) return ofr.getDefaultFrameStyle();
-        else return ofr.getDefaultParStyle();
-    }
-	
-    // Apply the default language
-    public void applyDefaultLanguage(Element node) {
+    /** Apply the default language of the source document on an XHTML element
+     * 
+     * @param node the XHTML element
+     */
+    void applyDefaultLanguage(Element node) {
         StyleWithProperties style = getDefaultStyle();
         if (style!=null) {
             StyleInfo info = new StyleInfo();
@@ -120,29 +120,16 @@ class StyleConverter extends ConverterHelper {
         }
     }
     
-    public String exportStyles(boolean bIndent) {
+    /** Export style information as a string of plain CSS code
+     * 
+     * @param bIndent true if the CSS code should be indented
+     * @return the CSS code
+     */
+    String exportStyles(boolean bIndent) {
     	String sIndent = bIndent ? "      " : "";
-    	
         StringBuilder buf = new StringBuilder();
         
-        // Export default style
-        if (config.xhtmlCustomStylesheet().length()==0 &&
-            (config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL ||
-            config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD)) {
-            // Default paragraph/cell/frame style is applied to the body element
-            StyleWithProperties defaultStyle = getDefaultStyle();
-            if (defaultStyle!=null) {
-                CSVList props = new CSVList(";");
-                // text properties only!
-                getTextSc().cssTextCommon(defaultStyle,props,true);
-                if (config.useDefaultFont() && config.defaultFontName().length()>0) {
-                	props.addValue("font-family", "'"+config.defaultFontName()+"'");
-                }
-                buf.append(sIndent)
-                   .append("body {").append(props.toString()).append("}").append(config.prettyPrint() ? "\n" : " ");
-            }
-
-        }
+        exportDefaultStyle(buf,sIndent);
 		
         // Export declarations from helpers
         // For OpenDocument documents created with OOo only some will generate content:
@@ -162,9 +149,13 @@ class StyleConverter extends ConverterHelper {
         buf.append(getPageSc().getStyleDeclarations(sIndent));
         return buf.toString();
     }
-	
-    // Export used styles to CSS
-    public Node exportStyles(Document htmlDOM) {
+    
+    /** Export style information as an XHTML style element
+     * 
+     * @param htmlDOM the XHTML DOM to which the generated element belongs
+     * @return the style element
+     */
+    Node exportStyles(Document htmlDOM) {
         String sStyles = exportStyles(config.prettyPrint());
 		
         // Create node
@@ -181,5 +172,48 @@ class StyleConverter extends ConverterHelper {
             return null;
         }
     }
-		
+    
+    // Private helper methods
+    
+    private void exportDefaultStyle(StringBuilder buf, String sIndent) {
+        // Export default style
+        if (config.xhtmlCustomStylesheet().length()==0 &&
+            (config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL ||
+            config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD)) {
+            CSVList props = new CSVList(";");
+        
+            // Default paragraph/cell/frame style is applied to the body element
+            StyleWithProperties defaultStyle = getDefaultStyle();
+            if (defaultStyle!=null) {
+                // text properties only!
+                getTextSc().cssTextCommon(defaultStyle,props,true);
+                if (config.useDefaultFont() && config.defaultFontName().length()>0) {
+                	props.addValue("font-family", "'"+config.defaultFontName()+"'");
+                }
+            }
+            
+            // For text documents (XHTML only), also set maximum width
+            if (ofr.isText() && !converter.isOPS()) {
+            	String sMaxWidth = config.getMaxWidth().trim();
+            	if (sMaxWidth.length()>0) {
+		            props.addValue("max-width", sMaxWidth);
+		            props.addValue("margin-left","auto");
+		            props.addValue("margin-right","auto");
+            	}
+            }
+            
+            // Apply properties to body
+            if (!props.isEmpty()) {
+	            buf.append(sIndent)
+	               .append("body {").append(props.toString()).append("}").append(config.prettyPrint() ? "\n" : " ");
+            }
+        }
+    }
+	
+    private StyleWithProperties getDefaultStyle() {
+        if (ofr.isSpreadsheet()) return ofr.getDefaultCellStyle();
+        else if (ofr.isPresentation()) return ofr.getDefaultFrameStyle();
+        else return ofr.getDefaultParStyle();
+    }
+
 }

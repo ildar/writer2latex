@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-13)
+ *  Version 1.6 (2015-06-15)
  *
  */
 
@@ -30,45 +30,67 @@ import org.w3c.dom.Element;
 
 import writer2latex.office.OfficeReader;
 
-public class ConverterHelper {
-    protected OfficeReader ofr;
-    protected XhtmlConfig config;
-    protected Converter converter;
+/** A <code>ConverterHelper</code> is responsible for conversion of some specific content into XHTML. 
+ */
+class ConverterHelper {
 	
-    protected StyleConverter getStyleCv() { return converter.getStyleCv(); }
-
-    protected TextStyleConverter getTextSc() { return converter.getStyleCv().getTextSc(); }
+	// Member variables providing our content (set in constructor)
+	OfficeReader ofr;
+    XhtmlConfig config;
+    Converter converter;
 	
-    protected ParStyleConverter getParSc() { return converter.getStyleCv().getParSc(); }
-	
-    protected HeadingStyleConverter getHeadingSc() { return converter.getStyleCv().getHeadingSc(); }
-	
-    protected ListStyleConverter getListSc() { return converter.getStyleCv().getListSc(); }
-	
-    protected SectionStyleConverter getSectionSc() { return converter.getStyleCv().getSectionSc(); }
-	
-    protected TableStyleConverter getTableSc() { return converter.getStyleCv().getTableSc(); }
-	
-    protected RowStyleConverter getRowSc() { return converter.getStyleCv().getRowSc(); }
-	
-    protected CellStyleConverter getCellSc() { return converter.getStyleCv().getCellSc(); }
-	
-    protected FrameStyleConverter getFrameSc() { return converter.getStyleCv().getFrameSc(); }
-	
-    protected PresentationStyleConverter getPresentationSc() { return converter.getStyleCv().getPresentationSc(); }
-	
-    protected PageStyleConverter getPageSc() { return converter.getStyleCv().getPageSc(); }
+    /** Construct a new converter helper based on a 
+     * 
+     * @param ofr the office reader used to access the source document
+     * @param config the configuration to use
+     * @param converter the main converter to which the helper belongs
+     */
+    ConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+        this.ofr = ofr;
+        this.config = config;
+        this.converter = converter;
+    }
     
-    protected TextConverter getTextCv() { return converter.getTextCv(); }
-	
-    protected TableConverter getTableCv() { return converter.getTableCv(); }
+    // Convenience accessor methods to other converter helpers (only needed to save some typing)
 
-    protected DrawConverter getDrawCv() { return converter.getDrawCv(); }
+    StyleConverter getStyleCv() { return converter.getStyleCv(); }
 
-    protected MathConverter getMathCv() { return converter.getMathCv(); }
+    TextStyleConverter getTextSc() { return converter.getStyleCv().getTextSc(); }
 	
-    // TODO: Move to StyleInfo!
-    protected void applyStyle(StyleInfo info, Element hnode) {
+    ParStyleConverter getParSc() { return converter.getStyleCv().getParSc(); }
+	
+    HeadingStyleConverter getHeadingSc() { return converter.getStyleCv().getHeadingSc(); }
+	
+    ListStyleConverter getListSc() { return converter.getStyleCv().getListSc(); }
+	
+    SectionStyleConverter getSectionSc() { return converter.getStyleCv().getSectionSc(); }
+	
+    TableStyleConverter getTableSc() { return converter.getStyleCv().getTableSc(); }
+	
+    RowStyleConverter getRowSc() { return converter.getStyleCv().getRowSc(); }
+	
+    CellStyleConverter getCellSc() { return converter.getStyleCv().getCellSc(); }
+	
+    FrameStyleConverter getFrameSc() { return converter.getStyleCv().getFrameSc(); }
+	
+    PresentationStyleConverter getPresentationSc() { return converter.getStyleCv().getPresentationSc(); }
+	
+    PageStyleConverter getPageSc() { return converter.getStyleCv().getPageSc(); }
+    
+    TextConverter getTextCv() { return converter.getTextCv(); }
+	
+    TableConverter getTableCv() { return converter.getTableCv(); }
+
+    DrawConverter getDrawCv() { return converter.getDrawCv(); }
+
+    MathConverter getMathCv() { return converter.getMathCv(); }
+	
+    /** Apply style information to an XHTML node
+     * 
+     * @param info the style to apply
+     * @param hnode the XHTML node
+     */
+    void applyStyle(StyleInfo info, Element hnode) {
         if (info.sClass!=null) {
             hnode.setAttribute("class",info.sClass);
         }
@@ -86,9 +108,4 @@ public class ConverterHelper {
         }
     }
 
-    public ConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-        this.ofr = ofr;
-        this.config = config;
-        this.converter = converter;
-    }
 }
