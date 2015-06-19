@@ -2,13 +2,16 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2x] The bibliography is now regenerated from the template. This implies that bibliographic citations now link
+  directly to the cited work rather than to the bibliography as a whole.
+
 [w2x] The option separate_stylesheet can now be set in the configuration UI, on the Formatting page.
 
 [w2x] New option max_width (default value 800px) used to define the max-width on the body element (XHTML and text
   documents only). In the custom configuration UI, this setting is found on the Formatting page.
 
-[w2x] Added support for semantic inflection in EPUB 3 export for the types footnote(s), endnote(s), toc, index
-  and bibliography
+[w2x] Added support for semantic inflection in EPUB 3 export for the types footnote(s), endnote(s), toc, index,
+  bibliography and biblioentry
   (http://www.idpf.org/epub/30/spec/epub30-contentdocs.html#sec-xhtml-semantic-inflection).
   
 [w2x] Improved the semantic markup of footnotes, endnotes, table of contents and alphabetical index in HTML export

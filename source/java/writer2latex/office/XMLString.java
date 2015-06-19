@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-08)
+ *  Version 1.6 (2015-06-18)
  *
  */
 
@@ -249,6 +249,8 @@ public class XMLString {
 	public static final String TEXT_FOOTNOTES_CONFIGURATION="text:footnotes-configuration";
 	public static final String TEXT_ENDNOTES_CONFIGURATION="text:endnotes-configuration";
 	public static final String TEXT_NOTES_CONFIGURATION="text:notes-configuration"; // oasis
+	public static final String TEXT_BIBLIOGRAPHY_CONFIGURATION="text:bibliography-configuration";
+	public static final String TEXT_SORT_KEY="text:sort-key";
     public static final String TEXT_SECTION_SOURCE="text:section-source";
     public static final String TEXT_SEQUENCE_DECLS="text:sequence-decls";
     public static final String TEXT_SEQUENCE_DECL="text:sequence-decl";
@@ -284,6 +286,10 @@ public class XMLString {
 	public static final String TEXT_OBJECT_INDEX="text:object-index";
 	public static final String TEXT_USER_INDEX="text:user-index";
 	public static final String TEXT_BIBLIOGRAPHY="text:bibliography";
+	public static final String TEXT_BIBLIOGRAPHY_SOURCE="text:bibliography-source";
+    public static final String TEXT_BIBLIOGRAPHY_ENTRY_TEMPLATE="text:bibliography-entry-template";
+    public static final String TEXT_INDEX_ENTRY_BIBLIOGRAPHY="text:index-entry-bibliography";
+    public static final String TEXT_INDEX_ENTRY_SPAN="text:index-entry-span";
     public static final String TEXT_INDEX_TITLE_TEMPLATE="text:index-title-template";
     public static final String TEXT_INDEX_BODY="text:index-body";
     public static final String TEXT_INDEX_TITLE="text:index-title";
@@ -372,10 +378,18 @@ public class XMLString {
     public static final String TEXT_LIST_LEVEL_POSITION_AND_SPACE_MODE="text:list-level-position-and-space-mode"; // oasis 1.2
     public static final String TEXT_LABEL_FOLLOWED_BY="text:label-followed-by"; // oasis 1.2
     public static final String TEXT_LIST_TAB_STOP_POSITION="text:list-tab-stop-position"; // oasis 1.2
-    
+
+    public static final String TEXT_PREFIX="text:prefix";
+    public static final String TEXT_SUFFIX="text:suffix";
+    public static final String TEXT_NUMBERED_ENTRIES="text:numbered-entries";
+    public static final String TEXT_SORT_BY_POSITION="text:sort-by-position";
+    public static final String TEXT_SORT_ALGORITHM="text:sort-algorithm";
+    public static final String TEXT_KEY="text:key";
+    public static final String TEXT_SORT_ASCENDING="text:sort-ascending";
     public static final String TEXT_IDENTIFIER="text:identifier";
     public static final String TEXT_BIBLIOGRAPHY_TYPE="text:bibliography-type";
     public static final String TEXT_BIBILIOGRAPHIC_TYPE="text:bibiliographic-type"; // bug in OOo 1.0
+    public static final String TEXT_BIBLIOGRAPHY_DATA_FIELD="text:bibliography-data-field";
     public static final String TEXT_ADDRESS="text:address";
     public static final String TEXT_ANNOTE="text:annote";
     public static final String TEXT_AUTHOR="text:author";

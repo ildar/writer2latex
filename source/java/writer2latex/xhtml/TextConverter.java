@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-16)
  *
  */
 
@@ -304,7 +304,7 @@ public class TextConverter extends ConverterHelper {
                 }
                 else if (nodeName.equals(XMLString.TEXT_BIBLIOGRAPHY)) {
                     hnode = maybeSplit(hnode,null,1);
-                    bibCv.handleBibliography(child,hnode);
+                    bibCv.handleIndex((Element)child,(Element)hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                 	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }

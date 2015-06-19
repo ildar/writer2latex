@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-16)
  *
  */
 package writer2latex.xhtml;
@@ -59,7 +59,7 @@ final class IndexData {
 
 /** This class processes table of content index marks and the associated table of content
  */
-public class TOCConverter extends IndexConverterBase {
+class TOCConverter extends IndexConverterHelper {
 	
     private List<IndexData> indexes = new ArrayList<IndexData>(); // All tables of content
 	private List<TocEntry> tocEntries = new ArrayList<TocEntry>(); // All potential(!) toc items
@@ -70,7 +70,7 @@ public class TOCConverter extends IndexConverterBase {
 
 	private int nExternalTocDepth = 1; // The number of levels to include in the "external" table of contents
 
-	public TOCConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+	TOCConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
 		super(ofr,config,converter,XMLString.TEXT_TABLE_OF_CONTENT_SOURCE,"toc");
         nExternalTocDepth = config.externalTocDepth();
         if (nExternalTocDepth==0) { // A value of zero means auto (i.e. determine from split level)
@@ -82,7 +82,7 @@ public class TOCConverter extends IndexConverterBase {
 	* 
 	* @return the file id
 	*/
-	public int getFileIndex() {
+	int getFileIndex() {
 		return nTocFileIndex;
 	}
 	
@@ -92,7 +92,7 @@ public class TOCConverter extends IndexConverterBase {
      * @param heading the link target will be added to this inline HTML node
 	 * @param sLabel the numbering label of this heading
 	 */
-	public void handleHeading(Element onode, Element heading, String sLabel) {
+	void handleHeading(Element onode, Element heading, String sLabel) {
 		int nLevel = getTextCv().getOutlineLevel(onode);
 		String sTarget = "toc"+(++nTocIndex);
 		converter.addTarget(heading,sTarget);
@@ -118,7 +118,7 @@ public class TOCConverter extends IndexConverterBase {
 	
 	// Add in external content. For single file output we include all level 1 headings + their target
 	// Targets are added only when the toc level is deeper than the split level
-	public void handleHeadingExternal(Element onode, Element hnode, String sLabel) {
+	void handleHeadingExternal(Element onode, Element hnode, String sLabel) {
 		int nLevel = getTextCv().getOutlineLevel(onode);
 		if (nLevel<=nExternalTocDepth) {
 			// Add an empty div to use as target, if required
@@ -133,7 +133,7 @@ public class TOCConverter extends IndexConverterBase {
 		}
 	}
 	
-	public void handleParagraph(Element onode, Element par, String sCurrentListLabel) {
+	void handleParagraph(Element onode, Element par, String sCurrentListLabel) {
         String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
 		if (ofr.isIndexSourceStyle(getParSc().getRealParStyleName(sStyleName))) {
 	        converter.addTarget(par,"toc"+(++nTocIndex));
@@ -150,7 +150,7 @@ public class TOCConverter extends IndexConverterBase {
      * @param onode a text:toc-mark or text:toc-mark-start node
      * @param hnode the link target will be added to this inline HTML node
      */
-    public void handleTocMark(Node onode, Node hnode) {
+    void handleTocMark(Node onode, Node hnode) {
         hnode.appendChild(converter.createTarget("toc"+(++nTocIndex)));
         TocEntry entry = new TocEntry();
         entry.onode = (Element) onode;
@@ -163,7 +163,7 @@ public class TOCConverter extends IndexConverterBase {
      * @param onode a text:alphabetical-index node
      * @param hnode the index will be added to this block HTML node
      */
-    @Override public void handleIndex(Element onode, Element hnode) {
+    @Override void handleIndex(Element onode, Element hnode) {
     	if (config.includeToc()) {
 	    	if (!ofr.getTocReader((Element)onode).isByChapter()) { 
 	    		nTocFileIndex = converter.getOutFileIndex(); 
@@ -173,7 +173,7 @@ public class TOCConverter extends IndexConverterBase {
     	}
     }
 
-    @Override protected void populateIndex(Element source, Element container) {
+    @Override void populateIndex(Element source, Element container) {
     	// Actually we are not populating the index, but collects information to generate it later
     	IndexData data = new IndexData();
     	data.nOutFileIndex = converter.getOutFileIndex();
@@ -186,7 +186,7 @@ public class TOCConverter extends IndexConverterBase {
     /** Generate the content of all tables of content
      * 
      */
-    public void generate() {
+    void generate() {
 	    int nIndexCount = indexes.size();
 	    for (int i=0; i<nIndexCount; i++) {
 	        generateToc(indexes.get(i));
@@ -298,7 +298,7 @@ public class TOCConverter extends IndexConverterBase {
     }
     
     // The panel is populated with a minitoc
-    public void generatePanels(int nSplit) {
+    void generatePanels(int nSplit) {
         // TODO: Include link to toc and index in appropriate places..
         int nLastIndex = converter.getOutFileIndex();
 

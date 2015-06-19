@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-16)
  *
  */
 
@@ -36,7 +36,7 @@ import writer2latex.util.Misc;
 /** This is a base class for conversion of indexes (table of contents, bibliography, alphabetical index,
  *  list of tables, list of figures)
  */
-public abstract class IndexConverterBase extends ConverterHelper {
+abstract class IndexConverterHelper extends ConverterHelper {
 	
 	private String sEpubType;
 	private String sSourceName;
@@ -47,9 +47,9 @@ public abstract class IndexConverterBase extends ConverterHelper {
 	 * @param config the configuration
 	 * @param converter the converter
 	 * @param sSourceName the name of the source data element in the index
-	 * @param sEpubType the EPUB 3 semantic type
+	 * @param sEpubType the EPUB 3 semantic type of the index
 	 */
-	public IndexConverterBase(OfficeReader ofr, XhtmlConfig config, Converter converter,
+	IndexConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter,
 			String sSourceName, String sEpubType) {
         super(ofr,config,converter);
 		this.sSourceName = sSourceName;
@@ -61,14 +61,14 @@ public abstract class IndexConverterBase extends ConverterHelper {
      * @param source the index source
      * @param container an ul element to populate with list items
      */
-    protected abstract void populateIndex(Element source, Element container);
+    abstract void populateIndex(Element source, Element container);
 	
-    /** Handle an alphabetical index
+    /** Handle an index
      * 
-     * @param onode a text:alphabetical-index node
+     * @param onode an index node
      * @param hnode the index will be added to this block HTML node
      */
-    public void handleIndex(Element onode, Element hnode) {
+    void handleIndex(Element onode, Element hnode) {
         Element source = Misc.getChildByTagName(onode,sSourceName);
         if (source!=null) {
             Element container = createContainer(onode, hnode); 

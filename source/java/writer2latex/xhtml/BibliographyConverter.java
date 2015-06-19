@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-12)
+ *  Version 1.6 (2015-06-16)
  *
  */
 package writer2latex.xhtml;
@@ -32,41 +32,29 @@ import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
-public class BibliographyConverter extends ConverterHelper {
+/** This class handles the export of the bibliography. Most of the work is delegated to the
+ *  {@link XhtmlBibliographyGenerator} 
+ */
+class BibliographyConverter extends IndexConverterHelper {
+	
+	private XhtmlBibliographyGenerator bibGenerator;
 
-    public BibliographyConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-        super(ofr,config,converter);
+    BibliographyConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+        super(ofr,config,converter,XMLString.TEXT_BIBLIOGRAPHY_SOURCE,"bibliography");
+        bibGenerator = new XhtmlBibliographyGenerator(ofr,converter);
     }
     
-    public void handleBibliographyMark(Node onode, Node hnode) {
-        Element anchor = converter.createLink("bibliography");
-        hnode.appendChild(anchor);
-        getTextCv().traversePCDATA(onode,anchor);
+    void handleBibliographyMark(Node onode, Node hnode) {
+    	String sKey = Misc.getAttribute(onode, XMLString.TEXT_IDENTIFIER);
+    	if (sKey!=null) {
+	        Element anchor = converter.createLink("bib"+sKey);
+	        hnode.appendChild(anchor);
+	        anchor.appendChild(converter.createTextNode(bibGenerator.generateCitation(sKey)));
+    	}
     }
     
-    public void handleBibliography (Node onode, Node hnode) {
-        // Use the content, not the template
-        // This is a temp. solution. Later we want to be able to create
-        // hyperlinks from the bib-item to the actual entry in the bibliography,
-        // so we have to recreate the bibliography from the template.
-        Node body = Misc.getChildByTagName(onode,XMLString.TEXT_INDEX_BODY);
-        if (body!=null) {
-            Element container = converter.createElement(converter.isHTML5() ? "section" : "div");
-    		String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
-    		if (sStyleName!=null) {
-    	        StyleInfo sectionInfo = new StyleInfo();
-    	        getSectionSc().applyStyle(sStyleName,sectionInfo);
-    	        applyStyle(sectionInfo,container);
-    		}
-            
-            converter.addTarget(container,"bibliography");
-            converter.addEpubType(container, "bibliography");
-            hnode.appendChild(container);
-            //asapNode = converter.createTarget("bibliography");
-            Node title = Misc.getChildByTagName(body,XMLString.TEXT_INDEX_TITLE);
-            if (title!=null) { getTextCv().traverseBlockText(title,container); }
-            getTextCv().traverseBlockText(body,container);
-        }     
+    @Override void populateIndex(Element source, Element container) {
+    	bibGenerator.populateBibliography(source, container);
     }
 
 }

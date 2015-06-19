@@ -16,20 +16,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.6 (2015-06-16)
  *
  */
 
 package writer2latex.office;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -308,6 +310,10 @@ public class OfficeReader {
     private ListStyle outline = new ListStyle();
     private PropertySet footnotes = null;
     private PropertySet endnotes = null;
+    
+    // Bibliographic data
+    private Element bibliographyConfiguration = null;
+    private List<Element> bibliographyMarks = new ArrayList<Element>();
 	
     // Special styles
     private StyleWithProperties[] heading = new StyleWithProperties[11];
@@ -582,6 +588,14 @@ public class OfficeReader {
     public boolean isIndexSourceStyle(String sStyleName) {
         return indexSourceStyles.contains(sStyleName);
     }
+    
+    /** Get the text:bibliography-configuration element
+     * 
+     * @return the bibliography configuration
+     */
+    public Element getBibliographyConfiguration() {
+    	return bibliographyConfiguration;
+    }
 	
     /** <p>Does this sequence name belong to a lof?</p>
      *  @param sName the name of the sequence
@@ -737,6 +751,15 @@ public class OfficeReader {
      */
     public boolean hasBookmarkRefTo(String sName) {
         return bookmarkRef.contains(sName);
+    }
+    
+    /** Get the raw list of all text:bibliography-mark elements. The marks are returned in document order and
+     *  includes any duplicates
+     * 
+     * @return the list
+     */
+    public List<Element> getBibliographyMarks() {
+    	return bibliographyMarks;
     }
 
     /** <p>Is there a reference to this sequence field?
@@ -1037,7 +1060,17 @@ public class OfficeReader {
                 }
             }
        }
-		
+        
+        // bibliography configuration:
+        if (stylesDOM==null) {
+            list = contentDOM.getElementsByTagName(XMLString.TEXT_BIBLIOGRAPHY_CONFIGURATION);
+        }
+        else {
+            list = stylesDOM.getElementsByTagName(XMLString.TEXT_BIBLIOGRAPHY_CONFIGURATION);
+        }
+        if (list.getLength()!=0) {
+            bibliographyConfiguration = (Element) list.item(0);
+        }
 
     }
 	
@@ -1199,6 +1232,9 @@ public class OfficeReader {
         }
         else if (sName.equals(XMLString.TEXT_BOOKMARK_REF)) {
             collectRefName(bookmarkRef,node);
+        }
+        else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
+        	bibliographyMarks.add(node);
         }
         else if (sName.equals(XMLString.TEXT_SEQUENCE_REF)) {
             collectRefName(sequenceRef,node);

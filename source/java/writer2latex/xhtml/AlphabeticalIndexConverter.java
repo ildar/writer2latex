@@ -20,21 +20,22 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2015-06-19)
  *
  */
 package writer2latex.xhtml;
 
-import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import writer2latex.office.IndexMark;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
+import writer2latex.util.StringComparator;
 
 // Helper class (a struct) to contain information about an alphabetical index entry.
 final class AlphabeticalEntry {
@@ -44,13 +45,13 @@ final class AlphabeticalEntry {
 
 /** This class processes alphabetical index marks and the associated index table
  */
-public class AlphabeticalIndexConverter extends IndexConverterBase {
+class AlphabeticalIndexConverter extends IndexConverterHelper {
 	
     private List<AlphabeticalEntry> index = new ArrayList<AlphabeticalEntry>(); // All words for the index
     private int nIndexIndex = -1; // Current index used for id's (of form idxN) 
     private int nAlphabeticalIndex = -1; // File containing alphabetical index
 
-    public AlphabeticalIndexConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+    AlphabeticalIndexConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE,"index");
     }
     
@@ -58,7 +59,7 @@ public class AlphabeticalIndexConverter extends IndexConverterBase {
      * 
      * @return the file id
      */
-    public int getFileIndex() {
+    int getFileIndex() {
     	return nAlphabeticalIndex;
     }
     
@@ -67,7 +68,7 @@ public class AlphabeticalIndexConverter extends IndexConverterBase {
      * @param onode a text:alphabetical-index-mark node
      * @param hnode the link target will be added to this inline HTML node
      */
-    public void handleIndexMark(Node onode, Node hnode) {
+    void handleIndexMark(Node onode, Node hnode) {
         handleIndexMark(Misc.getAttribute(onode,XMLString.TEXT_STRING_VALUE),hnode);
     }
 
@@ -76,12 +77,12 @@ public class AlphabeticalIndexConverter extends IndexConverterBase {
      * @param onode a text:alphabetical-index-mark-start node
      * @param hnode the link target will be added to this inline HTML node
      */
-    public void handleIndexMarkStart(Node onode, Node hnode) {
+    void handleIndexMarkStart(Node onode, Node hnode) {
         handleIndexMark(IndexMark.getIndexValue(onode),hnode);
     }
     
     // Create an entry for an index mark
-    private void handleIndexMark(String sWord, Node hnode) {
+    void handleIndexMark(String sWord, Node hnode) {
         if (sWord!=null) {
 	        AlphabeticalEntry entry = new AlphabeticalEntry();
 	        entry.sWord = sWord;
@@ -96,14 +97,14 @@ public class AlphabeticalIndexConverter extends IndexConverterBase {
      * @param onode a text:alphabetical-index node
      * @param hnode the index will be added to this block HTML node
      */
-    @Override public void handleIndex(Element onode, Element hnode) {
+    @Override void handleIndex(Element onode, Element hnode) {
     	// Register the file index (we assume that there is only one alphabetical index)
         nAlphabeticalIndex = converter.getOutFileIndex();
         converter.setIndexFile(null);
         super.handleIndex(onode, hnode);
     }
     
-    @Override protected void populateIndex(Element source, Element container) {
+    @Override void populateIndex(Element source, Element container) {
        	sortEntries(source);
         String sEntryStyleName = getEntryStyleName(source);
         for (int i=0; i<=nIndexIndex; i++) {
@@ -117,30 +118,17 @@ public class AlphabeticalIndexConverter extends IndexConverterBase {
         }
     }
     
-    // Sort the list of words
+    // Sort the list of words based on the language defined by the index source
     private void sortEntries(Element source) {
-    	// The index source may define a language to use for sorting
-        Collator collator;
-        String sLanguage = Misc.getAttribute(source,XMLString.FO_LANGUAGE);
-        if (sLanguage==null) { // use default locale
-            collator = Collator.getInstance();
-        }
-        else {
-            String sCountry = Misc.getAttribute(source,XMLString.FO_COUNTRY);
-            if (sCountry==null) { sCountry=""; }
-            collator = Collator.getInstance(new Locale(sLanguage,sCountry));
-        }
-        // Sort the list of words using the collator
-        for (int i = 0; i<=nIndexIndex; i++) {
-            for (int j = i+1; j<=nIndexIndex ; j++) {
-                AlphabeticalEntry entryi = index.get(i);
-                AlphabeticalEntry entryj = index.get(j);
-                if (collator.compare(entryi.sWord, entryj.sWord) > 0) {
-                    index.set(i,entryj);
-                    index.set(j,entryi);
-                }
-            }
-        }
+		Comparator<AlphabeticalEntry> comparator = new StringComparator<AlphabeticalEntry>(
+				Misc.getAttribute(source,XMLString.FO_LANGUAGE),
+        		Misc.getAttribute(source, XMLString.FO_COUNTRY)) {
+
+			@Override public int compare(AlphabeticalEntry a, AlphabeticalEntry b) {
+				return getCollator().compare(a.sWord, b.sWord);
+			}
+		};
+		Collections.sort(index,comparator);
     }
     
     // Get the style name to use for the individual words
