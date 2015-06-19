@@ -33,7 +33,7 @@ import writer2latex.office.OfficeStyleFamily;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
-import writer2latex.util.Misc;
+import writer2latex.util.Calc;
 //import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
@@ -275,7 +275,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
             if ('0'<=in.peekChar() && in.peekChar()<='9') {
                 String sDim = scale(in.getNumber()+in.getIdentifier());
                 // Do not output a border less than 1px wide - some browsers will render it invisible
-                out.append(Misc.isLessThan(sDim, "1px") ? "1px" : sDim);
+                out.append(Calc.isLessThan(sDim, "1px") ? "1px" : sDim);
             }
             // skip other characters
             while (in.peekChar()!=' ' && in.peekChar()!='\0') {

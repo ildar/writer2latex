@@ -36,6 +36,7 @@ import writer2latex.latex.util.Context;
 import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 
 public class ListConverter extends StyleConverter {
@@ -405,7 +406,7 @@ public class ListConverter extends StyleConverter {
 						// This defines the position of an additional tab stop, which really means the start position of the text *after* the label
 						String sTabPos = style.getLevelStyleProperty(i, XMLString.TEXT_LIST_TAB_STOP_POSITION);
 						if (sTabPos==null) { sTabPos = "0cm"; }
-						sTheLabel += "\\hspace{"+Misc.sub(sTabPos, Misc.add(sMarginLeft, sTextIndent))+"}";
+						sTheLabel += "\\hspace{"+Calc.sub(sTabPos, Calc.add(sMarginLeft, sTextIndent))+"}";
 					}
 				}
 
@@ -433,7 +434,7 @@ public class ListConverter extends StyleConverter {
 				.append("\\newenvironment{")
 				.append(sLevelName[i]).append("}{")
 				.append("\\def\\writerlistleftskip{\\addtolength\\leftskip{")
-				.append(Misc.add(sSpaceBefore,sLabelWidth)).append("}}")
+				.append(Calc.add(sSpaceBefore,sLabelWidth)).append("}}")
 				.append("\\def\\writerlistparindent{}")
 				.append("\\def\\writerlistlabel{}");
 				// Redefine \item

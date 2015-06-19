@@ -35,7 +35,7 @@ import writer2latex.latex.util.StyleMap;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
-import writer2latex.util.Misc;
+import writer2latex.util.Calc;
 
 /* <p>This class converts OpenDocument paragraphs (<code>text:p</code>) and
  * paragraph styles/formatting into LaTeX</p>
@@ -493,7 +493,7 @@ public class ParConverter extends StyleConverter {
         if (style==null) { return; }
         String sLineHeight = style.getProperty(XMLString.FO_LINE_HEIGHT);
         if (sLineHeight==null || !sLineHeight.endsWith("%")) { return; }
-        float fPercent=Misc.getFloat(sLineHeight.substring(0,sLineHeight.length()-1),100);
+        float fPercent=Calc.getFloat(sLineHeight.substring(0,sLineHeight.length()-1),100);
         // Do not allow less that 120% (LaTeX default)
         if (fPercent<120) { fPercent = 120; }
         ba.add("\\renewcommand\\baselinestretch{"+fPercent/120+"}","");
@@ -552,10 +552,10 @@ public class ParConverter extends StyleConverter {
             bParFill = true; // justified paragraph with ragged last line
         }
         // Create formatting:
-        String sRubberMarginTop = Misc.multiply("10%",sMarginTop);
-        if (Misc.length2px(sRubberMarginTop).equals("0")) { sRubberMarginTop="1pt"; }
-        String sRubberMarginBottom = Misc.multiply("10%",sMarginBottom);
-        if (Misc.length2px(sRubberMarginBottom).equals("0")) { sRubberMarginBottom="1pt"; }
+        String sRubberMarginTop = Calc.multiply("10%",sMarginTop);
+        if (Calc.length2px(sRubberMarginTop).equals("0")) { sRubberMarginTop="1pt"; }
+        String sRubberMarginBottom = Calc.multiply("10%",sMarginBottom);
+        if (Calc.length2px(sRubberMarginBottom).equals("0")) { sRubberMarginBottom="1pt"; }
         ba.add("\\setlength\\leftskip{"+sMarginLeft+(bRaggedLeft?" plus 1fil":"")+"}","");
         ba.add("\\setlength\\rightskip{"+sMarginRight+(bRaggedRight?" plus 1fil":"")+"}","");
         ba.add("\\setlength\\parindent{"+sTextIndent+"}","");

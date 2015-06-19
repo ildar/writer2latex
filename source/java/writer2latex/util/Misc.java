@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.Math;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -142,28 +141,6 @@ public class Misc{
         return int2alph(number,bLetterSync).toUpperCase();
     }
     
-    public static final int getPosInteger(String sInteger, int nDefault){
-        int n;
-        try {
-            n=Integer.parseInt(sInteger);
-        }
-        catch (NumberFormatException e) {
-            return nDefault;
-        }
-        return n>0 ? n : nDefault;
-    }
-    
-    public static final float getFloat(String sFloat, float fDefault){
-        float f;
-        try {
-            f=Float.parseFloat(sFloat);
-        }
-        catch (NumberFormatException e) {
-            return fDefault;
-        }
-        return f;
-    }
-    
     public static final int getIntegerFromHex(String sHex, int nDefault){
         int n;
         try {
@@ -175,109 +152,6 @@ public class Misc{
         return n;
     }
 	
-    public static String truncateLength(String sValue) {
-        if (sValue.endsWith("inch")) {
-            // Cut of inch to in
-            return sValue.substring(0,sValue.length()-2);
-        }
-        else {
-            return sValue;
-        }
-    }
-	
-    public static boolean isZero(String sValue) {
-    	return Math.abs(getFloat(sValue.substring(0, sValue.length()-2),0))<0.001;
-    }
-    
-    // Return units per inch for some unit
-    private static final float getUpi(String sUnit) {
-        if ("in".equals(sUnit)) { return 1.0F; }
-        else if ("mm".equals(sUnit)) { return 25.4F; }
-        else if ("cm".equals(sUnit)) { return 2.54F; }
-        else if ("pc".equals(sUnit)) { return 6F; }
-        else { return 72; } // pt or unknown
-    }
-	
-    // Convert a length to px assuming 96ppi (cf. css spec)
-    // Exception: Never return less than 1px
-    public static final String length2px(String sLength) {
-        if (sLength.equals("0")) { return "0"; }
-        float fLength=getFloat(sLength.substring(0,sLength.length()-2),1);
-        String sUnit=sLength.substring(sLength.length()-2);
-        float fPixels = 96.0F/getUpi(sUnit)*fLength;
-        if (Math.abs(fPixels)<0.01) {
-            // Very small, treat as zero
-            return "0";
-        }
-        else if (fPixels>0) {
-            // Never return less that 1px
-            return Float.toString(fPixels<1 ? 1 : fPixels)+"px";
-        }
-        else {
-            // Or above -1px
-            return Float.toString(fPixels>-1 ? -1 : fPixels)+"px";
-        }
-    }
-    
-    // Divide dividend by divisor and return the quotient as an integer percentage
-    // (never below 1% except if the dividend is zero)
-    public static final String divide(String sDividend, String sDivisor) {
-    	return divide(sDividend,sDivisor,false);
-    }
-
-    // Divide dividend by divisor and return the quotient as an integer percentage
-    // (never below 1% except if the dividend is zero, and never above 100% if last parameter is true)
-    public static final String divide(String sDividend, String sDivisor, boolean bMax100) {
-        if (sDividend.equals("0")) { return "0%"; }
-        if (sDivisor.equals("0")) { return "100%"; }
-
-        float fDividend=getFloat(sDividend.substring(0,sDividend.length()-2),1);
-        String sDividendUnit=sDividend.substring(sDividend.length()-2);
-        float fDivisor=getFloat(sDivisor.substring(0,sDivisor.length()-2),1);
-        String sDivisorUnit=sDivisor.substring(sDivisor.length()-2);
-        int nPercent = Math.round(100*fDividend*getUpi(sDivisorUnit)/fDivisor/getUpi(sDividendUnit));
-        if (bMax100 && nPercent>100) {
-        	return "100%";
-        }
-        else if (nPercent>0) {
-        	return Integer.toString(nPercent)+"%";
-        }
-        else {
-        	return "1%";
-        }
-    }
-    
-    public static final String multiply(String sPercent, String sLength){
-        if (sLength.equals("0")) { return "0"; }
-        float fPercent=getFloat(sPercent.substring(0,sPercent.length()-1),1);
-        float fLength=getFloat(sLength.substring(0,sLength.length()-2),1);
-        String sUnit=sLength.substring(sLength.length()-2);
-        return Float.toString(fPercent*fLength/100)+sUnit;
-    }
-
-    public static final String add(String sLength1, String sLength2){
-        if (sLength1.equals("0")) { return sLength2; }
-        if (sLength2.equals("0")) { return sLength1; }
-        float fLength1=getFloat(sLength1.substring(0,sLength1.length()-2),1);
-        String sUnit1=sLength1.substring(sLength1.length()-2);
-        float fLength2=getFloat(sLength2.substring(0,sLength2.length()-2),1);
-        String sUnit2=sLength2.substring(sLength2.length()-2);
-        // Use unit from sLength1:
-        return Float.toString(fLength1+getUpi(sUnit1)/getUpi(sUnit2)*fLength2)+sUnit1;
-    }
-
-    public static final String sub(String sLength1, String sLength2){
-        return add(sLength1,multiply("-100%",sLength2));
-    }
-
-    public static boolean isLessThan(String sThis, String sThat) {
-        return sub(sThis,sThat).startsWith("-");
-    }	
-    
-    public static String abs(String sLength) {
-        return sLength.startsWith("-") ? sLength.substring(1) : sLength;
-    }
-    
     /** Make a file name TeX friendly, replacing offending characters
      * 
      * @param sFileName the file name
@@ -587,6 +461,17 @@ public class Misc{
         }
         return baos.toByteArray();
     }
+
+	public static final int getPosInteger(String sInteger, int nDefault){
+	    int n;
+	    try {
+	        n=Integer.parseInt(sInteger);
+	    }
+	    catch (NumberFormatException e) {
+	        return nDefault;
+	    }
+	    return n>0 ? n : nDefault;
+	}
 	
 
 

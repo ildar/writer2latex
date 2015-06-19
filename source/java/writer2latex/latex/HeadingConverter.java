@@ -37,6 +37,7 @@ import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 
 /* This class converts OpenDocument headings (<code>text:h</code>) and
@@ -246,12 +247,12 @@ public class HeadingConverter extends ConverterHelper {
                         // Note: Use first line as left indent (cannot have separate first line indent)
                         ldp.append("\\renewcommand\\").append(sSecName)
                            .append("{\\@startsection{").append(sSecName).append("}{"+hm.getLevel(i))
-                           .append("}{"+Misc.add(sMarginLeft,sTextIndent)+"}{");
+                           .append("}{"+Calc.add(sMarginLeft,sTextIndent)+"}{");
                         // Suppress indentation after heading? currently not..
                         // ldp.append("-"); 
                         ldp.append(sMarginTop)
                            .append("}{")
-                           .append(Misc.isZero(sMarginBottom) ? "0.1mm" : sMarginBottom)
+                           .append(Calc.isZero(sMarginBottom) ? "0.1mm" : sMarginBottom)
                            .append("}{");
                         // Note: decl.getAfter() may include a page break after, which we ignore
 	                    ldp.append(decl.getBefore());
@@ -319,7 +320,7 @@ public class HeadingConverter extends ConverterHelper {
             				if (sTextIndent==null) { sTextIndent = "0cm"; }*/
     						String sTabPos = outline.getLevelStyleProperty(i, XMLString.TEXT_LIST_TAB_STOP_POSITION);
     						if (sTabPos==null) { sTabPos = "0cm"; }
-    						sDistance = Misc.sub(sTabPos, Misc.add(sMarginLeft, sTextIndent));
+    						sDistance = Calc.sub(sTabPos, Calc.add(sMarginLeft, sTextIndent));
     					}
     					else if ("space".equals(sFormat)) {
     						sSpaceChar="\\ ";

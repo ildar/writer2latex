@@ -30,8 +30,8 @@ import writer2latex.office.OfficeReader;
 import writer2latex.office.OfficeStyleFamily;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.Calc;
 import writer2latex.util.ExportNameCollection;
-import writer2latex.util.Misc;
 
 /**
  * <p>This is an abstract base class to convert an OpenDocument style family to
@@ -73,15 +73,15 @@ public abstract class StyleConverterHelper extends ConverterHelper {
 
     protected String scale(String s) {
         if (bConvertToPx) {
-            return Misc.length2px(Misc.multiply(sScale,s));
+            return Calc.length2px(Calc.multiply(sScale,s));
         }
         else {
-            return Misc.multiply(sScale,s);
+            return Calc.multiply(sScale,s);
         }
     }
 	
     protected String colScale(String s) {
-        return scale(Misc.multiply(sColScale,s));
+        return scale(Calc.multiply(sColScale,s));
     }
 	
     /** Apply the writing direction (ltr or rtl) attribute from a style

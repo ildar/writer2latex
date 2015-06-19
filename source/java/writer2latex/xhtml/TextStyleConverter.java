@@ -35,8 +35,8 @@ import writer2latex.office.OfficeStyleFamily;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
+import writer2latex.util.Calc;
 import writer2latex.util.ExportNameCollection;
-import writer2latex.util.Misc;
 
 /**
  * This class converts OpenDocument text styles to CSS2 styles.
@@ -319,11 +319,11 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
                 }
                 if (s!=null) {
                 	if (bRelativeFontSize) {
-                		String sFontSize = Misc.divide(Misc.multiply(sFontScaling, Misc.multiply(s4,s)), sBaseFontSize);
+                		String sFontSize = Calc.divide(Calc.multiply(sFontScaling, Calc.multiply(s4,s)), sBaseFontSize);
                 		if (!"100%".equals(sFontSize)) props.addValue("font-size", sFontSize);
                 	}
                 	else {
-                		props.addValue("font-size",Misc.multiply(s4,scale(s)));
+                		props.addValue("font-size",Calc.multiply(s4,scale(s)));
                 	}
                 }
                 else {
@@ -335,7 +335,7 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
             }
             else if (s!=null) {
             	if (bRelativeFontSize) {
-            		String sFontSize = Misc.divide(Misc.multiply(sFontScaling, s),sBaseFontSize);
+            		String sFontSize = Calc.divide(Calc.multiply(sFontScaling, s),sBaseFontSize);
             		if (!"100%".equals(sFontSize)) props.addValue("font-size", sFontSize);
             	}
             	else {

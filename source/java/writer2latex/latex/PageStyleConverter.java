@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import writer2latex.util.CSVList;
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.office.*;
 import writer2latex.latex.util.BeforeAfter;
@@ -393,22 +394,22 @@ public class PageStyleConverter extends StyleConverter {
                 if (layout!=null) {
                     if (layout.hasHeaderStyle()) {
                         String sThisHeadHeight = layout.getHeaderProperty(XMLString.FO_MIN_HEIGHT);
-                        if (sThisHeadHeight!=null && Misc.isLessThan(sHeadHeight,sThisHeadHeight)) {
+                        if (sThisHeadHeight!=null && Calc.isLessThan(sHeadHeight,sThisHeadHeight)) {
                             sHeadHeight = sThisHeadHeight;
                         }
                         String sThisHeadSep = layout.getHeaderProperty(XMLString.FO_MARGIN_BOTTOM);
-                        if (sThisHeadSep!=null && Misc.isLessThan(sHeadSep,sThisHeadSep)) {
+                        if (sThisHeadSep!=null && Calc.isLessThan(sHeadSep,sThisHeadSep)) {
                             sHeadSep = sThisHeadSep;
                         }
                         bIncludeHead = true;
                     }
                     if (layout.hasFooterStyle()) {
                         String sThisFootHeight = layout.getFooterProperty(XMLString.FO_MIN_HEIGHT);
-                        if (sThisFootHeight!=null && Misc.isLessThan(sFootHeight,sThisFootHeight)) {
+                        if (sThisFootHeight!=null && Calc.isLessThan(sFootHeight,sThisFootHeight)) {
                             sFootHeight = sThisFootHeight;
                         }
                         String sThisFootSep = layout.getFooterProperty(XMLString.FO_MARGIN_TOP);
-                        if (sThisFootSep!=null && Misc.isLessThan(sFootSep,sThisFootSep)) {
+                        if (sThisFootSep!=null && Calc.isLessThan(sFootSep,sThisFootSep)) {
                             sFootSep = sThisFootSep;
                         }
                         bIncludeFoot = true;
@@ -417,14 +418,14 @@ public class PageStyleConverter extends StyleConverter {
             }
         }
         // Define 12pt as minimum height (the source may specify 0pt..)
-        if (bIncludeHead && Misc.isLessThan(sHeadHeight,"12pt")) {
+        if (bIncludeHead && Calc.isLessThan(sHeadHeight,"12pt")) {
             sHeadHeight = "12pt";
         }
-        if (bIncludeFoot && Misc.isLessThan(sFootHeight,"12pt")) {
+        if (bIncludeFoot && Calc.isLessThan(sFootHeight,"12pt")) {
             sFootHeight = "12pt";
         }
            
-        String sFootSkip = Misc.add(sFootHeight,sFootSep);
+        String sFootSkip = Calc.add(sFootHeight,sFootSep);
 		
         if (config.useGeometry()) {
             // Set up options for geometry.sty
@@ -459,13 +460,13 @@ public class PageStyleConverter extends StyleConverter {
         }
         else {
             // Calculate text height and text width
-            String sTextHeight = Misc.sub(sPaperHeight,sMarginTop);
-            sTextHeight = Misc.sub(sTextHeight,sHeadHeight);
-            sTextHeight = Misc.sub(sTextHeight,sHeadSep);
-            sTextHeight = Misc.sub(sTextHeight,sFootSkip);
-            sTextHeight = Misc.sub(sTextHeight,sMarginBottom);
-            String sTextWidth = Misc.sub(sPaperWidth,sMarginLeft);
-            sTextWidth = Misc.sub(sTextWidth,sMarginRight);
+            String sTextHeight = Calc.sub(sPaperHeight,sMarginTop);
+            sTextHeight = Calc.sub(sTextHeight,sHeadHeight);
+            sTextHeight = Calc.sub(sTextHeight,sHeadSep);
+            sTextHeight = Calc.sub(sTextHeight,sFootSkip);
+            sTextHeight = Calc.sub(sTextHeight,sMarginBottom);
+            String sTextWidth = Calc.sub(sPaperWidth,sMarginLeft);
+            sTextWidth = Calc.sub(sTextWidth,sMarginRight);
 
             ldp.append("% Page layout (geometry)").nl();
 
@@ -514,12 +515,12 @@ public class PageStyleConverter extends StyleConverter {
         if (sHeight==null) { sHeight = "0.2mm"; }
         String sWidth = mainPageLayout.getFootnoteProperty(XMLString.STYLE_REL_WIDTH);
         if (sWidth==null) { sWidth = "25%"; }
-        sWidth=Float.toString(Misc.getFloat(sWidth.substring(0,sWidth.length()-1),1)/100);
+        sWidth=Float.toString(Calc.getFloat(sWidth.substring(0,sWidth.length()-1),1)/100);
         BeforeAfter baColor = new BeforeAfter();
         String sColor = mainPageLayout.getFootnoteProperty(XMLString.STYLE_COLOR);
         palette.getColorCv().applyColor(sColor,false,baColor,new Context());
 		
-        String sSkipFootins = Misc.add(sBefore,sHeight);
+        String sSkipFootins = Calc.add(sBefore,sHeight);
  
         ldp.append("% Footnote rule").nl()
            .append("\\setlength{\\skip\\footins}{").append(sSkipFootins).append("}").nl()
@@ -582,7 +583,7 @@ public class PageStyleConverter extends StyleConverter {
     }
 	
     private boolean compare(String sLength1, String sLength2, String sTolerance) {
-        return Misc.isLessThan(Misc.abs(Misc.sub(sLength1,sLength2)),sTolerance);
+        return Calc.isLessThan(Calc.abs(Calc.sub(sLength1,sLength2)),sTolerance);
     }
 
     /* Helper: Get display name, or original name if it doesn't exist */

@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 
 /**
@@ -137,7 +138,7 @@ public class TableReader {
             else if (sTableWidth!=null){
             	// Calculate the relative column width from the absolute column widths
             	// This may not add up to exactly 100%, but we will live with that
-                sRelColWidth[nCol] = Misc.divide(sColWidth[nCol], sTableWidth, true);
+                sRelColWidth[nCol] = Calc.divide(sColWidth[nCol], sTableWidth, true);
             }
             else {
             	// The table has not width, distribute the columns evenly
@@ -471,7 +472,7 @@ public class TableReader {
         int nCols = Misc.getPosInteger(cell.getAttribute(XMLString.TABLE_NUMBER_COLUMNS_SPANNED),1);
         String sWidth = sColWidth[nCol];
         for (int i=nCol+1; i<nCol+nCols; i++) {
-            sWidth = Misc.add(sWidth,sColWidth[i]);
+            sWidth = Calc.add(sWidth,sColWidth[i]);
         }
         return sWidth;
     }

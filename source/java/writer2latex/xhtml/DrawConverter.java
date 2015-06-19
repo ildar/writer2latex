@@ -56,6 +56,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.util.CSVList;
 import writer2latex.util.SimpleXMLParser;
@@ -459,9 +460,9 @@ public class DrawConverter extends ConverterHelper {
         		// It is if the image width exceeds a certain percentage of the current text width and the height is
         		// greater than 1.33*the width (recommended by Michel "Coolmicro")
         		if (sWidth!=null && sHeight!=null &&
-        				Misc.sub(Misc.multiply("133%",sWidth), sHeight).startsWith("-") &&
-        				Misc.sub(Misc.multiply(sImageSplit,converter.getContentWidth()),
-        						Misc.multiply(sScale,Misc.truncateLength(sWidth))).startsWith("-")) {
+        				Calc.sub(Calc.multiply("133%",sWidth), sHeight).startsWith("-") &&
+        				Calc.sub(Calc.multiply(sImageSplit,converter.getContentWidth()),
+        						Calc.multiply(sScale,Calc.truncateLength(sWidth))).startsWith("-")) {
         			fullscreenFrames.add(onode);
         			return;
         		}
@@ -942,18 +943,18 @@ public class DrawConverter extends ConverterHelper {
     		if (style!=null) {
     			// Subtract padding
     			String s = style.getProperty(XMLString.FO_PADDING_LEFT);
-    			if (s!=null) sWidth = Misc.sub(sWidth, s);
+    			if (s!=null) sWidth = Calc.sub(sWidth, s);
     			s = style.getProperty(XMLString.FO_PADDING_RIGHT);
-    			if (s!=null) sWidth = Misc.sub(sWidth, s);
+    			if (s!=null) sWidth = Calc.sub(sWidth, s);
     			s = style.getProperty(XMLString.FO_PADDING);
-    			if (s!=null) sWidth = Misc.sub(sWidth, Misc.multiply("200%", s));
+    			if (s!=null) sWidth = Calc.sub(sWidth, Calc.multiply("200%", s));
     			// Subtract border
     			s = style.getProperty(XMLString.FO_BORDER_LEFT);
-    			if (s!=null) sWidth = Misc.sub(sWidth, getTableCv().borderWidth(s));
+    			if (s!=null) sWidth = Calc.sub(sWidth, getTableCv().borderWidth(s));
     			s = style.getProperty(XMLString.FO_BORDER_RIGHT);
-    			if (s!=null) sWidth = Misc.sub(sWidth, getTableCv().borderWidth(s));
+    			if (s!=null) sWidth = Calc.sub(sWidth, getTableCv().borderWidth(s));
     			s = style.getProperty(XMLString.FO_BORDER);
-    			if (s!=null) sWidth = Misc.sub(sWidth, Misc.multiply("200%", getTableCv().borderWidth(s)));
+    			if (s!=null) sWidth = Calc.sub(sWidth, Calc.multiply("200%", getTableCv().borderWidth(s)));
     		}
 			return sWidth;
     	}
@@ -967,18 +968,18 @@ public class DrawConverter extends ConverterHelper {
         	if (style!=null) {
         		// Subtract padding
                 String s = style.getProperty(XMLString.FO_PADDING_TOP);
-                if (s!=null) sHeight = Misc.sub(sHeight, s);
+                if (s!=null) sHeight = Calc.sub(sHeight, s);
                 s = style.getProperty(XMLString.FO_PADDING_BOTTOM);
-                if (s!=null) sHeight = Misc.sub(sHeight, s);
+                if (s!=null) sHeight = Calc.sub(sHeight, s);
                 s = style.getProperty(XMLString.FO_PADDING);
-                if (s!=null) sHeight = Misc.sub(sHeight, Misc.multiply("200%", s));
+                if (s!=null) sHeight = Calc.sub(sHeight, Calc.multiply("200%", s));
                 // Subtract border
                 s = style.getProperty(XMLString.FO_BORDER_TOP);
-                if (s!=null) sHeight = Misc.sub(sHeight, getTableCv().borderWidth(s));
+                if (s!=null) sHeight = Calc.sub(sHeight, getTableCv().borderWidth(s));
                 s = style.getProperty(XMLString.FO_BORDER_BOTTOM);
-                if (s!=null) sHeight = Misc.sub(sHeight, getTableCv().borderWidth(s));
+                if (s!=null) sHeight = Calc.sub(sHeight, getTableCv().borderWidth(s));
                 s = style.getProperty(XMLString.FO_BORDER);
-                if (s!=null) sHeight = Misc.sub(sHeight, Misc.multiply("200%", getTableCv().borderWidth(s)));
+                if (s!=null) sHeight = Calc.sub(sHeight, Calc.multiply("200%", getTableCv().borderWidth(s)));
             }
         	return sHeight;
         }
@@ -1018,7 +1019,7 @@ public class DrawConverter extends ConverterHelper {
     		else {
     			String sWidth = getFrameWidth(node, ofr.getFrameStyle(node.getAttribute(XMLString.DRAW_STYLE_NAME)));			
     			if (sWidth!=null) {    
-    				props.addValue("width", Misc.divide(Misc.multiply(sScale,Misc.truncateLength(sWidth)),converter.getContentWidth()));
+    				props.addValue("width", Calc.divide(Calc.multiply(sScale,Calc.truncateLength(sWidth)),converter.getContentWidth()));
     			}
     			return sWidth;
     		}
@@ -1039,9 +1040,9 @@ public class DrawConverter extends ConverterHelper {
     	StyleWithProperties style = ofr.getFrameStyle(node.getAttribute(XMLString.DRAW_STYLE_NAME));
     	if (style!=null) {
     		String s = style.getProperty(XMLString.FO_MARGIN_TOP);
-    		if (s!=null) sX=Misc.sub(sX,s);
+    		if (s!=null) sX=Calc.sub(sX,s);
     		s = style.getProperty(XMLString.FO_MARGIN_LEFT);
-    		if (s!=null) sY=Misc.sub(sY,s);
+    		if (s!=null) sY=Calc.sub(sY,s);
     	}
     	
         props.addValue("position","absolute");
@@ -1159,10 +1160,10 @@ public class DrawConverter extends ConverterHelper {
     // TODO: Move to ConverterHelper.java
     private String scale(String s) {
         if (bConvertToPx) {
-            return Misc.length2px(Misc.multiply(sScale,Misc.truncateLength(s)));
+            return Calc.length2px(Calc.multiply(sScale,Calc.truncateLength(s)));
         }
         else {
-            return Misc.multiply(sScale,Misc.truncateLength(s));
+            return Calc.multiply(sScale,Calc.truncateLength(s));
         }
     }
 }

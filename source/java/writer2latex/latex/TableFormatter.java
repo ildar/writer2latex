@@ -381,7 +381,7 @@ public class TableFormatter extends ConverterHelper {
             }
             else if (!bIsTabulary) {
                 // note: The column width in OOo includes padding, which we subtract
-                ba.add("m{"+Misc.add(sColumnWidth[nCol],"-0.2cm")+"}","");
+                ba.add("m{"+Calc.add(sColumnWidth[nCol],"-0.2cm")+"}","");
             }
             else {
                 ba.add("J","");
@@ -450,9 +450,9 @@ public class TableFormatter extends ConverterHelper {
         // calculate column width
         String sTotalColumnWidth = sColumnWidth[nCol];
         for (int i=nCol+1; i<nCol+nColSpan; i++) {
-             sTotalColumnWidth = Misc.add(sTotalColumnWidth,sColumnWidth[i]);
+             sTotalColumnWidth = Calc.add(sTotalColumnWidth,sColumnWidth[i]);
         }
-        sTotalColumnWidth = Misc.add(sTotalColumnWidth,"-0.2cm");
+        sTotalColumnWidth = Calc.add(sTotalColumnWidth,"-0.2cm");
 
         if (bNeedAlign || bNeedLeft || bNeedRight || nColSpan>1) {
             ba.add("\\multicolumn{"+nColSpan+"}{","");

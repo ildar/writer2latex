@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 import writer2latex.office.XMLString;
@@ -348,7 +349,7 @@ public class TableConverter extends ConverterHelper {
                     if (sWidth!=null) {
                         if (config.tableSize()==XhtmlConfig.RELATIVE){
                         	// Force relative width
-                        	sWidth=Misc.divide(sWidth, converter.getContentWidth(), true);
+                        	sWidth=Calc.divide(sWidth, converter.getContentWidth(), true);
                         	info.props.addValue("width",sWidth);
                         }
                         else {
@@ -413,31 +414,31 @@ public class TableConverter extends ConverterHelper {
                 // "total cell width" - "border" - "padding"
                 String s = style.getProperty(XMLString.FO_PADDING_LEFT);
                 if (s!=null) {
-                    sEdge=Misc.add(sEdge,getTableSc().colScale(s));
+                    sEdge=Calc.add(sEdge,getTableSc().colScale(s));
                 }
                 s = style.getProperty(XMLString.FO_PADDING_RIGHT);
                 if (s!=null) { 
-                    sEdge=Misc.add(sEdge,getTableSc().colScale(s));
+                    sEdge=Calc.add(sEdge,getTableSc().colScale(s));
                 }
                 s = style.getProperty(XMLString.FO_PADDING);
                 if (s!=null) {
-                    sEdge=Misc.add(sEdge,Misc.multiply("200%",getTableSc().colScale(s)));
+                    sEdge=Calc.add(sEdge,Calc.multiply("200%",getTableSc().colScale(s)));
                 }
                 s = style.getProperty(XMLString.FO_BORDER_LEFT);
                 if (s!=null) {
-                    sEdge=Misc.add(sEdge,getTableSc().colScale(borderWidth(s)));
+                    sEdge=Calc.add(sEdge,getTableSc().colScale(borderWidth(s)));
                 }
                 s = style.getProperty(XMLString.FO_BORDER_RIGHT);
                 if (s!=null) { 
-                    sEdge=Misc.add(sEdge,getTableSc().colScale(borderWidth(s)));
+                    sEdge=Calc.add(sEdge,getTableSc().colScale(borderWidth(s)));
                 }
                 s = style.getProperty(XMLString.FO_BORDER);
                 if (s!=null) {
-                    sEdge=Misc.add(sEdge,Misc.multiply("200%",getTableSc().colScale(borderWidth(s))));
+                    sEdge=Calc.add(sEdge,Calc.multiply("200%",getTableSc().colScale(borderWidth(s))));
                 }
 
                 if (sTotalWidth!=null) {
-                    info.props.addValue("width",Misc.sub(getTableSc().colScale(sTotalWidth),sEdge));
+                    info.props.addValue("width",Calc.sub(getTableSc().colScale(sTotalWidth),sEdge));
                 }
             }
 

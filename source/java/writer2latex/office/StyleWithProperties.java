@@ -27,6 +27,7 @@ package writer2latex.office;
 
 //import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import writer2latex.util.Calc;
 //import org.w3c.dom.NamedNodeMap;
 //import java.util.Hashtable;
 import writer2latex.util.Misc;
@@ -139,7 +140,7 @@ public class StyleWithProperties extends OfficeStyle {
         int nRealIndex = bIsOldProps ? OLDPROPS : nIndex;
         if (properties[nRealIndex].containsProperty(sName)) {
             String sValue = properties[nRealIndex].getProperty(sName);
-            return Misc.truncateLength(sValue);
+            return Calc.truncateLength(sValue);
         }
         else if (bInherit && getParentName()!=null) {
             StyleWithProperties parentStyle = (StyleWithProperties) family.getStyle(getParentName());
@@ -206,16 +207,16 @@ public class StyleWithProperties extends OfficeStyle {
 	                = (StyleWithProperties) family.getStyle(getParentName());
                 if (parentStyle!=null) {
                     String sParentValue = parentStyle.getAbsoluteProperty(nIndex,sProperty);
-                    if (sParentValue!=null) { return Misc.multiply(sValue,sParentValue); }
+                    if (sParentValue!=null) { return Calc.multiply(sValue,sParentValue); }
                 }
                 else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
                     StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
                     String sDefaultValue=(String) style.getProperty(nIndex,sProperty,false);
-                    if (sValue !=null) { return Misc.multiply(sValue,sDefaultValue); }
+                    if (sValue !=null) { return Calc.multiply(sValue,sDefaultValue); }
                 }
             }
             else {
-                return Misc.truncateLength(sValue);
+                return Calc.truncateLength(sValue);
             }
         }
         else if (getParentName()!=null){

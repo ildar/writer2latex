@@ -470,7 +470,7 @@ public class CharStyleConverter extends StyleConverter {
     
     private static final String nfssSize(String sFontSize){
         if (sFontSize==null) return null;
-        return "\\fontsize{"+sFontSize+"}{"+Misc.multiply("120%",sFontSize)+"}\\selectfont";
+        return "\\fontsize{"+sFontSize+"}{"+Calc.multiply("120%",sFontSize)+"}\\selectfont";
     }
     
     // other character formatting

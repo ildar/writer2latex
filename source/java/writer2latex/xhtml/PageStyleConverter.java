@@ -35,7 +35,7 @@ import writer2latex.office.PageLayout;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
-import writer2latex.util.Misc;
+import writer2latex.util.Calc;
 
 /**
  * This class converts OpenDocument page styles to CSS2 styles.
@@ -74,11 +74,11 @@ public class PageStyleConverter extends StyleConverterHelper {
                 if (sWidth!=null) {
                 	String sMarginLeft = pageLayout.getProperty(XMLString.FO_MARGIN_LEFT);
                 	if (sMarginLeft!=null) {
-                		sWidth = Misc.sub(sWidth, sMarginLeft);
+                		sWidth = Calc.sub(sWidth, sMarginLeft);
                 	}
                 	String sMarginRight = pageLayout.getProperty(XMLString.FO_MARGIN_RIGHT);
                 	if (sMarginRight!=null) {
-                		sWidth = Misc.sub(sWidth, sMarginRight);
+                		sWidth = Calc.sub(sWidth, sMarginRight);
                 	}
                 	return sWidth;
                 }

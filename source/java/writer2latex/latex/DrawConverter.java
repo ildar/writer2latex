@@ -41,6 +41,7 @@ import writer2latex.office.MIMETypes;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 
 /**
@@ -355,8 +356,8 @@ public class DrawConverter extends ConverterHelper {
         CSVList options = new CSVList(',');
         if (!config.originalImageSize()) {
             Element frame = getFrame(node);
-            String sWidth = Misc.truncateLength(frame.getAttribute(XMLString.SVG_WIDTH));
-            String sHeight = Misc.truncateLength(frame.getAttribute(XMLString.SVG_HEIGHT));
+            String sWidth = Calc.truncateLength(frame.getAttribute(XMLString.SVG_WIDTH));
+            String sHeight = Calc.truncateLength(frame.getAttribute(XMLString.SVG_HEIGHT));
             if (sWidth!=null) { options.addValue("width="+sWidth); }
             if (sHeight!=null) { options.addValue("height="+sHeight); }
         }
@@ -415,7 +416,7 @@ public class DrawConverter extends ConverterHelper {
             if (ofr.isFigureSequenceName(sSeqName)) { bIsCaption = true; }
         }
 
-        String sWidth = Misc.truncateLength(getFrame(node).getAttribute(XMLString.SVG_WIDTH));
+        String sWidth = Calc.truncateLength(getFrame(node).getAttribute(XMLString.SVG_WIDTH));
         if (!bIsCaption) {
             ldp.append("\\begin{minipage}{").append(sWidth).append("}").nl();
         }

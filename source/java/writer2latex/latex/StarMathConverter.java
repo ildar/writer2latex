@@ -1495,34 +1495,34 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
             if (curToken.eType==Token.PLUS){
                 nextToken();
                 if (curToken.eType==Token.NUMBER){
-                    fSize+=Misc.getFloat(curToken.sLaTeX,0);
+                    fSize+=Calc.getFloat(curToken.sLaTeX,0);
                     nextToken();
                 } // else error in formula: ignore
             }
             else if(curToken.eType==Token.MINUS){
                 nextToken();
                 if (curToken.eType==Token.NUMBER){
-                    fSize-=Misc.getFloat(curToken.sLaTeX,0);
+                    fSize-=Calc.getFloat(curToken.sLaTeX,0);
                     nextToken();
                 } // else error in formula: ignore
             }
             else if(curToken.eType==Token.MULTIPLY){
                 nextToken();
                 if (curToken.eType==Token.NUMBER){
-                    fSize*=Misc.getFloat(curToken.sLaTeX,1);
+                    fSize*=Calc.getFloat(curToken.sLaTeX,1);
                     nextToken();
                 } // else error in formula: ignore
             }
             else if(curToken.eType==Token.DIVIDEBY){
                 nextToken();
                 if (curToken.eType==Token.NUMBER){
-                    float f=Misc.getFloat(curToken.sLaTeX,1);
+                    float f=Calc.getFloat(curToken.sLaTeX,1);
                     if (f!=0) {fSize/=f;}
                     nextToken();
                 } // else error in formula: ignore
             }
             else if (curToken.eType==Token.NUMBER){ 
-                fSize=Misc.getFloat(curToken.sLaTeX,fSize);
+                fSize=Calc.getFloat(curToken.sLaTeX,fSize);
                 nextToken();
             } // else error in formula: ignore
             return term(fSize,eAlign);
