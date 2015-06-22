@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-18)
+ *  Version 1.6 (2015-06-20)
  *
  */
 
@@ -38,7 +38,7 @@ class XhtmlBibliographyGenerator extends BibliographyGenerator {
 	private Element currentPar; // The paragraph of the current item
 	
 	XhtmlBibliographyGenerator(OfficeReader ofr, Converter converter) {
-		super(ofr);
+		super(ofr,false);
 		this.converter = converter;
 	}
 	

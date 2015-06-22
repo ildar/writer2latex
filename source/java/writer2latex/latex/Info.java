@@ -20,38 +20,33 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-15)
+ *  Version 1.6 (2015-06-21)
  *
  */
 
-package writer2latex.latex.util;
+package writer2latex.latex;
 
 import org.w3c.dom.Element;
 
-import writer2latex.latex.LaTeXConfig;
 import writer2latex.util.Misc;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
-import writer2latex.latex.LaTeXDocumentPortion;
-import writer2latex.latex.ConverterHelper;
-import writer2latex.latex.ConverterPalette;
 
 
-/**
- *  <p>This class creates various information to the user about the conversion.</p>
+/** This class creates various information to the user about the conversion.
  */
-public class Info extends ConverterHelper {
+class Info extends ConverterHelper {
 	
 	@Override public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
 		// Currently nothing
 	}
 	
-    public Info(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+    Info(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
     }
 
-    public void addDebugInfo(Element node, LaTeXDocumentPortion ldp) {	
+    void addDebugInfo(Element node, LaTeXDocumentPortion ldp) {	
         if (config.debug()) {
             ldp.append("% ").append(node.getNodeName());
             addDebugInfo(node,ldp,XMLString.TEXT_ID);
@@ -69,7 +64,7 @@ public class Info extends ConverterHelper {
         }
     }
 
-    private void addDebugInfo(Element node, LaTeXDocumentPortion ldp, String sAttribute) {
+    void addDebugInfo(Element node, LaTeXDocumentPortion ldp, String sAttribute) {
         String sValue = Misc.getAttribute(node,sAttribute);
         if (sValue!=null) {
             ldp.append(" ").append(sAttribute).append("=\"").append(sValue).append("\"");

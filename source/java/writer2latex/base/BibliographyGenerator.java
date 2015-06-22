@@ -20,13 +20,14 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-19)
+ *  Version 1.6 (2015-06-20)
  *
  */
 
 package writer2latex.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -57,13 +58,22 @@ public abstract class BibliographyGenerator {
 	private List<Element> bibMarkList = new ArrayList<Element>();
 	
 	// Map from key to label
-	private Map<String,String> bibMarkCitation = new HashMap<String,String>();
+	private Map<String,String> bibMarkLabel = new HashMap<String,String>();
+	
+	// Flag to identify numbering
+	private boolean bNumberedEntries = false;
+	
+	// Flag to identify truncation of templates
+	private boolean bSkipKey = false;
 		
 	/** Create a new bibliography generator based on a bibliography configuration and a list of bibliography marks
 	 * 
 	 *  @param ofr the office reader used to access the source document
+	 *  @param bSkipKey set to true if the key should be excluded when applying templates
 	 */
-	protected BibliographyGenerator(OfficeReader ofr) {
+	protected BibliographyGenerator(OfficeReader ofr, boolean bSkipKey) {
+		this.bSkipKey = bSkipKey;
+		
 		Element bibConfig = ofr.getBibliographyConfiguration();
 		if (bibConfig!=null) {
 			if (bibConfig.hasAttribute(XMLString.TEXT_PREFIX)) {
@@ -122,7 +132,7 @@ public abstract class BibliographyGenerator {
 				private List<String> sortKeys = null;
 				private List<Boolean> sortAscending = null;
 				
-				public Comparator<Element> setSortKeys(List<String> sortKeys, List<Boolean> sortAscending) {
+				Comparator<Element> setSortKeys(List<String> sortKeys, List<Boolean> sortAscending) {
 					this.sortKeys = sortKeys;
 					this.sortAscending = sortAscending;
 					return this;
@@ -145,18 +155,34 @@ public abstract class BibliographyGenerator {
 	}
 	
 	private void createLabels(Element bibConfig) {
-		boolean bNumberedEntries = bibConfig!=null && "true".equals(bibConfig.getAttribute(XMLString.TEXT_NUMBERED_ENTRIES));
+		bNumberedEntries = bibConfig!=null && "true".equals(bibConfig.getAttribute(XMLString.TEXT_NUMBERED_ENTRIES));
 		int nCount = bibMarkList.size();
 		for (int i=0; i<nCount; i++) {
 			Element item = bibMarkList.get(i);
 			String sKey = item.getAttribute(XMLString.TEXT_IDENTIFIER);
  			if (bNumberedEntries) {
-				bibMarkCitation.put(sKey, Integer.toString(i+1));
+				bibMarkLabel.put(sKey, Integer.toString(i+1));
 			}
 			else {
-				bibMarkCitation.put(sKey, sKey);
+				bibMarkLabel.put(sKey, sKey);
 			}	
 		}		
+	}
+	
+	/** Get all labels used in the bibliography
+	 * 
+	 * @return the set of labels
+	 */
+	protected Collection<String> getLabels() {
+		return bibMarkLabel.values();
+	}
+	
+	/** Check whether entries are numbered rather than labeled with the key
+	 * 
+	 *  @return true if the entries are numbered
+	 */
+	protected boolean isNumberedEntries() {
+		return bNumberedEntries;
 	}
 	
 	/** Get citation text for a reference to the bibliography
@@ -165,14 +191,14 @@ public abstract class BibliographyGenerator {
 	 * @return the citation text to be shown in the document
 	 */
 	public String generateCitation(String sKey) {
-		return sPrefix+bibMarkCitation.get(sKey)+sSuffix;
+		return sPrefix+bibMarkLabel.get(sKey)+sSuffix;
 	}
 	
 	/** Generate a bibliography
 	 * 
 	 * @param bibliography a text:bibliography-source element
 	 */
-	public void generateBibliography(Element bibSource) {
+	protected void generateBibliography(Element bibSource) {
 		Map<String,Element> bibEntryTemplate = collectTemplates(bibSource);
 		for (Element bibMark : bibMarkList) {
 			String sKey = bibMark.getAttribute(XMLString.TEXT_IDENTIFIER);
@@ -188,8 +214,10 @@ public abstract class BibliographyGenerator {
 				String sTitle = bibMark.getAttribute(XMLString.TEXT_TITLE);
 				String sYear = bibMark.getAttribute(XMLString.TEXT_YEAR);
 				insertBibliographyItem(null,sKey);
-				insertBibliographyItemElement(null,bibMarkCitation.get(sKey));
-				insertBibliographyItemElement(null,": ");
+				if (!bSkipKey) {
+					insertBibliographyItemElement(null,bibMarkLabel.get(sKey));
+					insertBibliographyItemElement(null,": ");
+				}
 				insertBibliographyItemElement(null,sAuthor);
 				insertBibliographyItemElement(null,", ");
 				insertBibliographyItemElement(null,sTitle);
@@ -216,24 +244,32 @@ public abstract class BibliographyGenerator {
 	}
 	
 	private void applyTemplate(Element template, Element bibMark) {
+		boolean bSkip = bSkipKey;
 		Node child = template.getFirstChild();
 		while (child!=null) {
 			if (child.getNodeType()==Node.ELEMENT_NODE) {
 				if (child.getNodeName().equals(XMLString.TEXT_INDEX_ENTRY_BIBLIOGRAPHY)) {
 					String sField = Misc.getAttribute(child, XMLString.TEXT_BIBLIOGRAPHY_DATA_FIELD);
 					if (sField!=null) {
-						String sElementStyleName = Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
 						String sValue = bibMark.getAttribute("text:"+sField);
 						if (sField.equals("identifier")) {
-							sValue = bibMarkCitation.get(sValue);
+							sValue = bibMarkLabel.get(sValue);
 						}
-						insertBibliographyItemElement(sElementStyleName,sValue);
+						else {
+							bSkip = false;
+						}
+						if (!bSkip) {
+							String sElementStyleName = Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
+							insertBibliographyItemElement(sElementStyleName,sValue);
+						}
 					}
 				}
 				else if (child.getNodeName().equals(XMLString.TEXT_INDEX_ENTRY_SPAN)) {
-					String sElementStyleName = Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
-					String sValue = Misc.getPCDATA(child);
-					insertBibliographyItemElement(sElementStyleName,sValue);
+					if (!bSkip) {
+						String sValue = Misc.getPCDATA(child);
+						String sElementStyleName = Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
+						insertBibliographyItemElement(sElementStyleName,sValue);
+					}
 				}
 			}
 			child = child.getNextSibling();

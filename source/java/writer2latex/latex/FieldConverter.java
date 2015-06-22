@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-15)
+ *  Version 1.6 (2015-06-22)
  *
  */
 
@@ -104,6 +104,14 @@ public class FieldConverter extends ConverterHelper {
      * other declarations should be added.
      */
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+        // Use natbib
+        if (config.useBibtex() && config.useNatbib()) {
+        	pack.append("\\usepackage");
+        	if (config.getNatbibOptions().length()>0) {
+        		pack.append("[").append(config.getNatbibOptions()).append("]");
+        	}
+        	pack.append("{natbib}").nl();
+        }
         // use lastpage.sty
         if (bUsesPageCount) {
             pack.append("\\usepackage{lastpage}").nl();

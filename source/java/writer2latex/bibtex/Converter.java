@@ -16,75 +16,52 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2010 by Henrik Just
+ *  Copyright: 2001-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.2 (2010-03-28)
+ *  Version 1.6 (2015-06-22)
  *
  */
 
 package writer2latex.bibtex;
 
 import writer2latex.api.Config;
-//import writer2latex.api.ConverterResult;
 import writer2latex.base.ConverterBase;
 import writer2latex.latex.LaTeXConfig;
-import writer2latex.office.BibMark;
-import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
-
-//import writer2latex.xmerge.ConvertData;
-//import writer2latex.xmerge.OfficeDocument;
 
 import java.io.IOException;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-/**
- * <p>BibTeX export</p>
- *
- * <p>This class extracts bibliographic information from an OpenDocument text file to a BibTeX data file.</p>
- *
+/** This class exports bibliographic information from an OpenDocument text file to a BibTeX data file
  */
 public final class Converter extends ConverterBase {
                         
-    // Configuration - TODO: Doesn't really use it - should use some fake config
+    // Implement converter API
+
+	// TODO: Doesn't really use the configuration - should use some fake config
     private LaTeXConfig config;
-	
-    public Config getConfig() { return config; }
-	
-    // Constructor
+    
     public Converter() {
         super();
         config = new LaTeXConfig();
     }
+
+    @Override public Config getConfig() {
+    	return config;
+    }
 	
-    /**
-     *  <p>Convert the data passed into the <code>InputStream</code>
-     *  into BibTeX format.</p>
+	// Extend converter base
+    
+    /** Convert the document into BibTeX format.</p>
      *
-     *  @throws  IOException       If any I/O error occurs.
+     *  @throws IOException If any I/O error occurs.
      */
-    public void convertInner() throws IOException {      
+    @Override public void convertInner() throws IOException {      
         sTargetFileName = Misc.trimDocumentName(sTargetFileName,".bib");
 
-        BibTeXDocument bibDoc = new BibTeXDocument(sTargetFileName,true);
-
-        // Collect all text:bibliography-mark elements from the content
-        Element doc = ofr.getContent();
-        NodeList list;
-        list = doc.getElementsByTagName(XMLString.TEXT_BIBLIOGRAPHY_MARK);
-        int nLen = list.getLength();
-        for (int i=0; i<nLen; i++) {
-            String sIdentifier = Misc.getAttribute(list.item(i),XMLString.TEXT_IDENTIFIER);
-            if (sIdentifier!=null && !bibDoc.containsKey(sIdentifier)) {
-                bibDoc.put(new BibMark(list.item(i)));
-            }            
-        }
+        BibTeXDocument bibDoc = new BibTeXDocument(sTargetFileName,true,ofr);
       
-        // Add result
         converterResult.addDocument(bibDoc);
     }
 

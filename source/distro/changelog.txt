@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] If use_bibtex is false, the bibliography is now exported using a thebibliography environment rather than as
+  plain text
+  TODO: Debugging and test
+
 [w2x] The bibliography is now regenerated from the template. This implies that bibliographic citations now link
   directly to the cited work rather than to the bibliography as a whole.
 

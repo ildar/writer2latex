@@ -37,7 +37,6 @@ import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.I18n;
 import writer2latex.latex.i18n.XeTeXI18n;
 import writer2latex.latex.util.Context;
-import writer2latex.latex.util.Info;
 import writer2latex.util.CSVList;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.util.Misc;

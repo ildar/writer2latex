@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-15)
+ *  Version 1.6 (2015-06-20)
  *
  */
 
@@ -31,18 +31,18 @@ import writer2latex.office.OfficeReader;
 /**
  *  <p>This is an abstract superclass for converter helpers.</p>
  */
-public abstract class ConverterHelper {
+abstract class ConverterHelper {
     
-    protected OfficeReader ofr;
-    protected LaTeXConfig config;
-    protected ConverterPalette palette;
+    OfficeReader ofr;
+    LaTeXConfig config;
+    ConverterPalette palette;
 	
-    protected ConverterHelper(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+    ConverterHelper(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         this.ofr = ofr;
         this.config = config;
         this.palette = palette;
     }
 	
-    public abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
+    abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
     
 }

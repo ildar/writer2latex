@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-05)
+ *  Version 1.6 (2015-06-22)
  *
  */
 
@@ -28,9 +28,12 @@ package writer2latex.bibtex;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.List;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
+import org.w3c.dom.Element;
 
 import writer2latex.api.ConverterFactory;
 import writer2latex.api.MIMETypes;
@@ -40,11 +43,10 @@ import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.I18n;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.office.BibMark;
-import writer2latex.office.BibMark.EntryType;;
+import writer2latex.office.BibMark.EntryType;
+import writer2latex.office.OfficeReader;
 
-/**
- * <p>Class representing a BibTeX document.</p>
- *
+/** Class representing a BibTeX document
  */
 public class BibTeXDocument implements OutputFile {
     private static final String FILE_EXTENSION = ".bib";
@@ -56,36 +58,57 @@ public class BibTeXDocument implements OutputFile {
     
     private boolean bIsMaster;
 
-    /**
-     * <p>Constructs a new BibTeX Document.</p>
+    /** Constructs a new BibTeX Document based on an office document 
      *
-     * <p>This new document is empty. Bibliographic data must added
-     *    using the <code>put</code> method.</p>
-     *
-     * @param   sName    The name of the <code>BibTeXDocument</code>.
+     * @param sName The name of the document
+     * @param bIsMaster is this a master document?
+     * @param ofr the office document
      */
-    public BibTeXDocument(String sName, boolean bIsMaster) {
-        this.sName = trimDocumentName(sName);
+    public BibTeXDocument(String sName, boolean bIsMaster, OfficeReader ofr) {
         this.bIsMaster = bIsMaster;
+        loadEntries(ofr);
         // Use default config (only ascii, no extra font packages)
         i18n = new ClassicI18n(new LaTeXConfig());
     }
     
-    /**
-     * <p>Returns the <code>Document</code> name with no file extension.</p>
+    private void loadEntries(OfficeReader ofr) {
+    	List<Element> bibMarks = ofr.getBibliographyMarks();
+    	for (Element bibMark : bibMarks) {
+    		BibMark entry = new BibMark(bibMark);
+            entries.put(entry.getIdentifier(),entry);
+            exportNames.addName(entry.getIdentifier());    		
+    	}
+    }
+    
+    // Methods to query the content
+    
+    /** Test whether or not this BibTeX document contains any entries
+     * 
+     * @return true if there is one or more entries in the document
+     */
+    public boolean isEmpty() {
+    	return entries.size()>0;
+    }
+    
+    /** Get export name for an identifier
+     * 
+     *  @param sIdentifier the identifier
+     *  @return the export name
+     */
+    public String getExportName(String sIdentifier) {
+        return exportNames.getExportName(sIdentifier);
+    }
+    
+    /** Returns the document name without file extension
      *
-     * @return  The <code>Document</code> name with no file extension.
+     * @return the document name without file extension
      */
     public String getName() {
         return sName;
     }
     
+    // Implement writer2latex.api.OutputFile
     
-    /**
-     * <p>Returns the <code>Document</code> name with file extension.</p>
-     *
-     * @return  The <code>Document</code> name with file extension.
-     */
     @Override public String getFileName() {
         return new String(sName + FILE_EXTENSION);
     }
@@ -102,21 +125,7 @@ public class BibTeXDocument implements OutputFile {
 		return false;
 	}
 
-    /**
-     * <p>Writes out the <code>Document</code> content to the specified
-     * <code>OutputStream</code>.</p>
-     *
-     * <p>This method may not be thread-safe.
-     * Implementations may or may not synchronize this
-     * method.  User code (i.e. caller) must make sure that
-     * calls to this method are thread-safe.</p>
-     *
-     * @param  os  <code>OutputStream</code> to write out the
-     *             <code>Document</code> content.
-     *
-     * @throws  IOException  If any I/O error occurs.
-     */
-    public void write(OutputStream os) throws IOException {
+    @Override public void write(OutputStream os) throws IOException {
         // BibTeX files are plain ascii
         OutputStreamWriter osw = new OutputStreamWriter(os,"ASCII");
         osw.write("%% This file was converted to BibTeX by Writer2BibTeX ver. "+ConverterFactory.getVersion()+".\n");
@@ -154,44 +163,5 @@ public class BibTeXDocument implements OutputFile {
         osw.flush();
         osw.close();
     }	
-
-    /*
-     * <p>Check if this entry exists</p>
-     */
-    public boolean containsKey(String sIdentifier) {
-        return entries.containsKey(sIdentifier);
-    }
-
-    /*
-     * <p>Add an entry</p>
-     */
-    public void put(BibMark entry) {
-        entries.put(entry.getIdentifier(),entry);
-        exportNames.addName(entry.getIdentifier());
-    }
-
-    /*
-     * <p>Get export name for an identifier</p>
-     */
-    public String getExportName(String sIdentifier) {
-        return exportNames.getExportName(sIdentifier);
-    }
-
-    /*
-     * Utility method to make sure the document name is stripped of any file
-     * extensions before use.
-     */
-    private String trimDocumentName(String name) {
-        String temp = name.toLowerCase();
-        
-        if (temp.endsWith(FILE_EXTENSION)) {
-            // strip the extension
-            int nlen = name.length();
-            int endIndex = nlen - FILE_EXTENSION.length();
-            name = name.substring(0,endIndex);
-        }
-
-        return name;
-    }
 
 }
