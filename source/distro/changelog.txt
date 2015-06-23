@@ -2,9 +2,12 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2x] Bugfix: writer2latex.xhtml.TableConverter.borderWidth ran into an infinite loop if border shorthand properties
+  didn't begin with width, but e.g. with colour (e.g. "#000000 0.035cm solid").  
+  See bug tracker #4 fix for infinite loop in writer2latex.xhtml.TableConverter.borderWidth
+
 [w2l] If use_bibtex is false, the bibliography is now exported using a thebibliography environment rather than as
   plain text
-  TODO: Debugging and test
 
 [w2x] The bibliography is now regenerated from the template. This implies that bibliographic citations now link
   directly to the cited work rather than to the bibliography as a whole.
