@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-22)
+ *  Version 1.6 (2015-06-23)
  *
  */
 
@@ -43,14 +43,13 @@ import writer2latex.latex.util.HeadingMap;
 import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
-import writer2latex.util.CSVList;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
 /**
  *  This class handles text fields and links in the document.
- *  Packages: lastpage, hyperref, titleref, oooref (all optional)
+ *  Packages: lastpage, hyperref, titleref (all optional)
  *  TODO: Need proper treatment of "caption" and "text" for sequence
  *  references not to figures and tables (should be fairly rare, though)
 
@@ -80,7 +79,6 @@ public class FieldConverter extends ConverterHelper {
     private boolean bUseHyperref = false;
     private boolean bUsesPageCount = false;
     private boolean bUsesTitleref = false;
-    private boolean bUsesOooref = false;
     private boolean bConvertZotero = false;
     private boolean bConvertJabRef = false;
     private boolean bIncludeOriginalCitations = false;
@@ -88,8 +86,8 @@ public class FieldConverter extends ConverterHelper {
 	
     public FieldConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
-        // hyperref.sty is not compatible with titleref.sty and oooref.sty:
-        bUseHyperref = config.useHyperref() && !config.useTitleref() && !config.useOooref();
+        // hyperref.sty is not compatible with titleref.sty:
+        bUseHyperref = config.useHyperref() && !config.useTitleref();
         bConvertZotero = config.useBibtex() && config.zoteroBibtexFiles().length()>0;
         bConvertJabRef = config.useBibtex() && config.jabrefBibtexFiles().length()>0;
         bIncludeOriginalCitations = config.includeOriginalCitations();
@@ -120,15 +118,6 @@ public class FieldConverter extends ConverterHelper {
         // use titleref.sty
         if (bUsesTitleref) {
             pack.append("\\usepackage{titleref}").nl();
-        } 
-
-        // use oooref.sty
-        if (bUsesOooref) {
-            pack.append("\\usepackage[");
-            HeadingMap hm = config.getHeadingMap();
-            CSVList opt = new CSVList(",");
-            for (int i=0; i<=hm.getMaxLevel(); i++) { opt.addValue(hm.getName(i)); }
-            pack.append(opt.toString()).append("]{oooref}").nl();
         } 
 
         // use hyperref.sty
@@ -413,12 +402,6 @@ public class FieldConverter extends ConverterHelper {
                 ldp.append("\\ref{seq:")
                    .append(seqrefnames.getExportName(sRefName))
                    .append("}");
-            }
-            else if ("chapter".equals(sFormat) && config.useOooref()) {
-                ldp.append("\\chapterref{seq:")
-                   .append(seqrefnames.getExportName(sRefName))
-                   .append("}");
-                bUsesOooref = true;
             }
             else if ("caption".equals(sFormat) && config.useTitleref() &&
                     (ofr.isFigureSequenceName(sName) || ofr.isTableSequenceName(sName))) {

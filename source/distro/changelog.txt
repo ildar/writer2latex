@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] Removed old experimental option use_oooref
+
 [w2x] Bugfix: writer2latex.xhtml.TableConverter.borderWidth ran into an infinite loop if border shorthand properties
   didn't begin with width, but e.g. with colour (e.g. "#000000 0.035cm solid").  
   See bug tracker #4 fix for infinite loop in writer2latex.xhtml.TableConverter.borderWidth
