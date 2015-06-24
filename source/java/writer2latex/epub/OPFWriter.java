@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-05-05)
+ *  version 1.6 (2015-06-24)
  *
  */
 
@@ -57,7 +57,7 @@ import writer2latex.xhtml.XhtmlConfig;
 public class OPFWriter extends DOMDocument {
 	private String sUID=null;
 
-	public OPFWriter(ConverterResult cr, int nVersion, XhtmlConfig config) {
+	public OPFWriter(ConverterResult cr, String sFileName, int nVersion, XhtmlConfig config) {
 		super("book", "opf");
 		
         // create DOM
@@ -93,8 +93,9 @@ public class OPFWriter extends DOMDocument {
         }
         pack.appendChild(metadata);
         
-        // Title and language (required)
-        appendElement(contentDOM, metadata, "dc:title", cr.getMetaData().getTitle());
+        // Title and language (required; use file name if title is empty)
+        String sTitle = cr.getMetaData().getTitle();
+        appendElement(contentDOM, metadata, "dc:title", sTitle.length()>0 ? sTitle : sFileName);
         appendElement(contentDOM, metadata, "dc:language", cr.getMetaData().getLanguage());
         
         // Modification (required in EPUB 3)

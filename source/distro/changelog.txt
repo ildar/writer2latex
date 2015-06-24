@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2x] In EPUB the title must be non-empty. To avoid creating an invalid EPUB, the file name is now used as title
+  if the title is empty. 
+
 [w2l] Removed old experimental option use_oooref
 
 [w2x] Bugfix: writer2latex.xhtml.TableConverter.borderWidth ran into an infinite loop if border shorthand properties

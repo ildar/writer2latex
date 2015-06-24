@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-05-05)
+ *  version 1.6 (2015-06-24)
  *
  */
 
@@ -106,7 +106,7 @@ public class EPUBWriter implements OutputFile {
 		zos.closeEntry();
 		
 		// Then manifest
-		OPFWriter manifest = new OPFWriter(xhtmlResult,nVersion,config);
+		OPFWriter manifest = new OPFWriter(xhtmlResult,sFileName,nVersion,config);
 		ZipEntry manifestEntry = new ZipEntry("OEBPS/book.opf");
 		zos.putNextEntry(manifestEntry);
 		writeZipEntry(manifest,zos);
