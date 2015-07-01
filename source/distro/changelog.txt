@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.5.3 ----------
 
+[w2l] The command \textsubscript is now defined with \providecommand to avoid problems with other packages that may
+  already have defined this command
+
+[w2l] Added basic support for hebrew (XeTeX backend only). If the default CTL language is hebrew the entire document
+  is exported with hebrew language setting with a suitable default font (Frank Ruehl CLM/Nachlieli CLM/Miriam Mono CLM)
+
 [w2x] In EPUB the title must be non-empty. To avoid creating an invalid EPUB, the file name is now used as title
   if the title is empty. 
 

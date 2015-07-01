@@ -95,7 +95,7 @@ public class OPFWriter extends DOMDocument {
         
         // Title and language (required; use file name if title is empty)
         String sTitle = cr.getMetaData().getTitle();
-        appendElement(contentDOM, metadata, "dc:title", sTitle.length()>0 ? sTitle : sFileName);
+        appendElement(contentDOM, metadata, "dc:title", sTitle.trim().length()>0 ? sTitle : sFileName);
         appendElement(contentDOM, metadata, "dc:language", cr.getMetaData().getLanguage());
         
         // Modification (required in EPUB 3)

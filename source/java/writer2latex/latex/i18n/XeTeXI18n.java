@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.6 (2015-06-30)
  * 
  */
 
@@ -39,8 +39,10 @@ import writer2latex.latex.util.BeforeAfter;
 public class XeTeXI18n extends I18n {
 
     private Polyglossia polyglossia;
-    private boolean bUsePolyglossia;
+    private boolean bLTR;
     private boolean bUseXepersian;
+    private String sLTRCommand=null;
+    private String sRTLCommand=null;
 
     /** Construct a new XeTeXI18n as ConverterHelper
      *  @param ofr the OfficeReader to get language information from
@@ -49,16 +51,27 @@ public class XeTeXI18n extends I18n {
      */
     public XeTeXI18n(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
     	super(ofr,config,palette);
-    	polyglossia = new Polyglossia();
-    	polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
     	
-    	// Currently all languages except farsi (fa_IR) are handled with polyglossia
-    	// Actually only LTR languages are supported as yet
-    	// TODO: Support CTL languages using polyglossia
-    	bUsePolyglossia = !"fa".equals(sDefaultCTLLanguage);
-    	// For farsi, we load xepersian.sty
+    	// CTL support: Currently two CTL languages are supported
+    	// - hebrew (he_IL) using polyglossia.sty
+    	// - farsi (fa_IR) using xepersian.sty
     	// TODO: Add a use_xepersian option, using polyglossia if false
-    	bUseXepersian = !bUsePolyglossia;
+    	// For these languages currently only monolingual documents are supported
+    	// For LTR languages, multilingual documents are supported using polyglossia
+    	polyglossia = new Polyglossia();
+    	bLTR = !"fa".equals(sDefaultCTLLanguage) && !"he".equals(sDefaultCTLLanguage);
+    	if (bLTR) {
+        	polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
+    	}
+    	else {
+    		polyglossia.applyLanguage(sDefaultCTLLanguage, sDefaultCTLCountry);
+    	}
+    	// For farsi, we load xepersian.sty
+    	bUseXepersian = "fa".equals(sDefaultCTLLanguage);
+    	if (bUseXepersian) {
+    		sLTRCommand = "\\lr";
+    		sRTLCommand = "\\rl";
+    	}
     }
 	
     /** Add declarations to the preamble to load the required packages
@@ -70,24 +83,29 @@ public class XeTeXI18n extends I18n {
     		.append("\\usepackage{fontspec}").nl()
     		.append("\\usepackage{xunicode}").nl()
     		.append("\\usepackage{xltxtra}").nl();
-    	if (bUsePolyglossia) {
+    	// xepersian.sty and polyglossia (or rather bidi) should be loaded as the last package
+		// We put it them the declarations part to achieve this
+    	if (!bUseXepersian) {
     		String[] polyglossiaDeclarations = polyglossia.getDeclarations();
     		for (String s: polyglossiaDeclarations) {
-    			pack.append(s).nl();
+    			decl.append(s).nl();
+    		}
+    		if (!bLTR) { // Use a default font set for hebrew
+    			decl.append("\\setmainfont[Script=Hebrew]{Frank Ruehl CLM}").nl();
+    			decl.append("\\setsansfont[Script=Hebrew]{Nachlieli CLM}").nl();
+    			decl.append("\\setmonofont[Script=Hebrew]{Miriam Mono CLM}").nl();
     		}
     	}
-    	else if (bUseXepersian) {
-        	// xepersian.sty must be loaded as the last package
-    		// We put it in the declarations part to achieve this
+    	else {
     		decl.append("\\usepackage{xepersian}").nl();
-    		// Set the default font to the default CTL font defined in the document
-    		StyleWithProperties defaultStyle = ofr.getDefaultParStyle();
-    		if (defaultStyle!=null) {
-    			String sDefaultCTLFont = defaultStyle.getProperty(XMLString.STYLE_FONT_NAME_COMPLEX);
-    			if (sDefaultCTLFont!=null) {
-    	    		decl.append("\\settextfont{").append(sDefaultCTLFont).append("}").nl();
-    			}
-    		}
+			// Set the default font to the default CTL font defined in the document
+			StyleWithProperties defaultStyle = ofr.getDefaultParStyle();
+			if (defaultStyle!=null) {
+				String sDefaultCTLFont = defaultStyle.getProperty(XMLString.STYLE_FONT_NAME_COMPLEX);
+				if (sDefaultCTLFont!=null) {
+		    		decl.append("\\settextfont{").append(sDefaultCTLFont).append("}").nl();
+				}
+			}
     	}
     }
     
@@ -98,7 +116,7 @@ public class XeTeXI18n extends I18n {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     public void applyLanguage(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba) {
-        if (bUsePolyglossia && !bAlwaysUseDefaultLang && style!=null) {
+        if (bLTR && !bAlwaysUseDefaultLang && style!=null) {
         	// TODO: Support CTL and CJK
             String sISOLang = style.getProperty(XMLString.FO_LANGUAGE,bInherit);
             String sISOCountry = style.getProperty(XMLString.FO_COUNTRY, bInherit);
@@ -143,7 +161,7 @@ public class XeTeXI18n extends I18n {
         		convert(s.charAt(i),buf);
         	}        	
         }
-        else if (bUsePolyglossia) {
+        else if (!bUseXepersian) {
         	int i = 0;
         	while (i<nLen) {
         		ReplacementTrieNode node = stringReplace.get(s,i,nLen);
@@ -157,7 +175,7 @@ public class XeTeXI18n extends I18n {
         		}
         	}
         }
-        else if (bUseXepersian) {
+        else {
         	// TODO: Add support for string replace
 			Bidi bidi = new Bidi(s,Bidi.DIRECTION_RIGHT_TO_LEFT);
 			int nCurrentLevel = bidi.getBaseLevel();
@@ -166,10 +184,10 @@ public class XeTeXI18n extends I18n {
 				int nLevel = bidi.getLevelAt(i);
 				if (nLevel>nCurrentLevel) {
 					if (nLevel%2==0) { // even is LTR
-						buf.append("\\lr{");
+						buf.append(sLTRCommand).append("{");
 					}
 					else { // odd is RTL
-						buf.append("\\rl{");						
+						buf.append(sRTLCommand).append("{");						
 					}
 					nCurrentLevel=nLevel;
 					nNestingLevel++;
