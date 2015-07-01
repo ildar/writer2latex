@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-22)
+ *  Version 1.6 (2015-07-01)
  *
  */
 
@@ -65,6 +65,7 @@ public class BibTeXDocument implements OutputFile {
      * @param ofr the office document
      */
     public BibTeXDocument(String sName, boolean bIsMaster, OfficeReader ofr) {
+    	this.sName = sName;
         this.bIsMaster = bIsMaster;
         loadEntries(ofr);
         // Use default config (only ascii, no extra font packages)
@@ -87,7 +88,7 @@ public class BibTeXDocument implements OutputFile {
      * @return true if there is one or more entries in the document
      */
     public boolean isEmpty() {
-    	return entries.size()>0;
+    	return entries.size()==0;
     }
     
     /** Get export name for an identifier

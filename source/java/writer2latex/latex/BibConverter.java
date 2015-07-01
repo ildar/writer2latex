@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-22)
+ *  Version 1.6 (2015-07-01)
  *
  */
 
@@ -59,6 +59,7 @@ import writer2latex.util.Misc;
 class BibConverter extends ConverterHelper {
 
     private BibTeXDocument bibDoc = null;
+    private boolean bUseBibTeX;
     
     /** Construct a new BibConverter.
      * 
@@ -72,6 +73,9 @@ class BibConverter extends ConverterHelper {
         if (!(config.useBibtex() && config.externalBibtexFiles().length()>0)) {
         	bibDoc = new BibTeXDocument(palette.getOutFileName(),false,ofr);
         }
+        
+        // We need to export it 
+        bUseBibTeX = config.useBibtex();
     }
 
     /** Export the bibliography directly as a thebibliography environment (as an alternative to using BibTeX) 
@@ -228,7 +232,7 @@ class BibConverter extends ConverterHelper {
      * @return the BiBTeXDocument, or null if no BibTeX file is needed
      */
     BibTeXDocument getBibTeXDocument() {
-    	if (bibDoc!=null && !bibDoc.isEmpty()) {
+    	if (bUseBibTeX && bibDoc!=null && !bibDoc.isEmpty()) {
     		return bibDoc;
     	}
     	return null;
