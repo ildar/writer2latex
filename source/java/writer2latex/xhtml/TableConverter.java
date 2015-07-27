@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-23)
+ *  Version 1.6 (2015-07-27)
  *
  */
 
@@ -178,8 +178,11 @@ public class TableConverter extends ConverterHelper {
     private Element createTable(TableReader tblr) {
         Element table = converter.createElement("table");
         // Apply table style
-        // IE needs the cellspacing attribute, as it doesn't understand the css border-spacing attribute
-        table.setAttribute("cellspacing","0");
+        // Older versions of IE needs the cellspacing attribute, as it doesn't understand the css border-spacing attribute
+        // We cannot do this with HTML5
+        if (!converter.isHTML5()) {
+        	table.setAttribute("cellspacing","0");
+        }
         applyTableStyle(tblr.getTableStyleName(), table, tblr.isSubTable());
         return table;
     }

@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 beta ----------
 
+[w2x] No longer add cellspacing attribute if exporting to HTML5
+
 [w2l] Added support for non-ASCII BibTeX files. The new option bibtex_encoding is used to specify the encoding of
   the BibTeX files loaded via the option external_bibtex_files. The default value is "document" which implies the
   same encoding as the LaTeX document. Otherwise the same values as for inputencoding are supported.
