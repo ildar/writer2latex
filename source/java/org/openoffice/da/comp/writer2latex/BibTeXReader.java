@@ -16,19 +16,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-12-27) 
+ *  Version 1.6 (2015-07-24)
  *
  */
 
 package org.openoffice.da.comp.writer2latex;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import org.jbibtex.Key;
 import org.jbibtex.LaTeXParser;
 import org.jbibtex.LaTeXPrinter;
 import org.jbibtex.ParseException;
+import org.jbibtex.TokenMgrException;
 import org.jbibtex.Value;
 
 import writer2latex.bibtex.BibTeXEntryMap;
@@ -56,16 +58,19 @@ import writer2latex.office.BibMark.EntryType;
 public class BibTeXReader {
 
 	private File file;
+	private String sEncoding;
 	private Map<String, BibMark> entries;
 	
 	/** Construct a new <code>BibTeXReader</code> based on a file
 	 * 
 	 * @param file the file to read
+	 * @param sEncoding the character encoding of the file
 	 * @throws IOException if any error occurs reading the file
 	 * @throws ParseException if any error occurs interpreting the contents of the file
 	 */
-	public BibTeXReader(File file) throws IOException, ParseException {
+	public BibTeXReader(File file, String sEncoding) throws IOException, ParseException {
 		this.file = file;
+		this.sEncoding = sEncoding;
 		reload();
 	}
 
@@ -73,8 +78,8 @@ public class BibTeXReader {
 	 */
 	public void reload() throws IOException, ParseException {
 		entries = new HashMap<String, BibMark>();
-		BibTeXDatabase database = parseBibTeX(file);
-		readEntries(database);		
+		BibTeXDatabase database = parseBibTeX(file,sEncoding);
+		readEntries(database);
 	}
 	
 	/** Get the file associated with this <code>BibTeXReader</code>
@@ -93,8 +98,9 @@ public class BibTeXReader {
 		return entries;
 	}
 
-	private static BibTeXDatabase parseBibTeX(File file) throws ParseException, IOException {
-		Reader reader = new FileReader(file);
+	private static BibTeXDatabase parseBibTeX(File file, String sEncoding) throws ParseException, IOException {
+		FileInputStream is = new FileInputStream(file);
+		Reader reader = new InputStreamReader(is,sEncoding);
 		try {
 			BibTeXParser parser = new BibTeXParser() {
 				@Override
@@ -114,7 +120,8 @@ public class BibTeXReader {
 			};
 			return parser.parse(reader);
 		} finally {
-			reader.close();
+			if (reader!=null) { reader.close(); }
+			if (is!=null) { is.close(); }
 		}
 	}
 
@@ -147,6 +154,9 @@ public class BibTeXReader {
 			return printer.print(parser.parse(reader));
 		} catch (ParseException e) {
 			// If parsing fails, return the original string
+			return string;
+		} catch (TokenMgrException e) {
+			// If the string contains invalid characters, return the original string
 			return string;
 		} finally {
 			try {

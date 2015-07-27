@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-23)
+ *  Version 1.6 (2015-07-23)
  *
  */
 
@@ -49,7 +49,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 72; }
+    protected int getOptionCount() { return 73; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -144,45 +144,46 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int USE_BIBTEX = 30;
     private static final int BIBTEX_STYLE = 31;
     private static final int EXTERNAL_BIBTEX_FILES = 32;
-    private static final int ZOTERO_BIBTEX_FILES = 33;
-    private static final int JABREF_BIBTEX_FILES = 34;
-    private static final int INCLUDE_ORIGINAL_CITATIONS = 35;
-    private static final int USE_NATBIB = 36;
-    private static final int NATBIB_OPTIONS = 37;
-    private static final int FONT = 38;
-    private static final int FORMATTING = 39;
-    private static final int PAGE_FORMATTING = 40;
-    private static final int OTHER_STYLES = 41;
-    private static final int IMAGE_CONTENT = 42;
-	private static final int TABLE_CONTENT = 43;
-	private static final int TABLE_FIRST_HEAD_STYLE = 44;
-	private static final int TABLE_HEAD_STYLE = 45;
-	private static final int TABLE_FOOT_STYLE = 46;
-	private static final int TABLE_LAST_FOOT_STYLE = 47;
-    private static final int IGNORE_HARD_PAGE_BREAKS = 48;
-    private static final int IGNORE_HARD_LINE_BREAKS = 49;
-    private static final int IGNORE_EMPTY_PARAGRAPHS =50;
-    private static final int IGNORE_DOUBLE_SPACES = 51;
-    private static final int DISPLAY_HIDDEN_TEXT = 52;
-    private static final int ALIGN_FRAMES = 53;
-    private static final int FLOAT_FIGURES = 54; 
-    private static final int FLOAT_TABLES = 55; 
-    private static final int FLOAT_OPTIONS = 56;
-    private static final int FIGURE_SEQUENCE_NAME = 57; 
-    private static final int TABLE_SEQUENCE_NAME = 58; 
-    private static final int IMAGE_OPTIONS = 59;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 60;
-    private static final int ORIGINAL_IMAGE_SIZE = 61;
-    private static final int SIMPLE_TABLE_LIMIT = 62;
-    private static final int NOTES = 63;
-    private static final int METADATA = 64;
-    private static final int TABSTOP = 65;
-    private static final int WRAP_LINES_AFTER = 66;
-    private static final int SPLIT_LINKED_SECTIONS = 67;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 68;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 69;
-    private static final int OLD_MATH_COLORS = 70;
-    private static final int DEBUG = 71;
+    private static final int BIBTEX_ENCODING = 33;
+    private static final int ZOTERO_BIBTEX_FILES = 34;
+    private static final int JABREF_BIBTEX_FILES = 35;
+    private static final int INCLUDE_ORIGINAL_CITATIONS = 36;
+    private static final int USE_NATBIB = 37;
+    private static final int NATBIB_OPTIONS = 38;
+    private static final int FONT = 39;
+    private static final int FORMATTING = 40;
+    private static final int PAGE_FORMATTING = 41;
+    private static final int OTHER_STYLES = 42;
+    private static final int IMAGE_CONTENT = 43;
+	private static final int TABLE_CONTENT = 44;
+	private static final int TABLE_FIRST_HEAD_STYLE = 45;
+	private static final int TABLE_HEAD_STYLE = 46;
+	private static final int TABLE_FOOT_STYLE = 47;
+	private static final int TABLE_LAST_FOOT_STYLE = 48;
+    private static final int IGNORE_HARD_PAGE_BREAKS = 49;
+    private static final int IGNORE_HARD_LINE_BREAKS = 50;
+    private static final int IGNORE_EMPTY_PARAGRAPHS =51;
+    private static final int IGNORE_DOUBLE_SPACES = 52;
+    private static final int DISPLAY_HIDDEN_TEXT = 53;
+    private static final int ALIGN_FRAMES = 54;
+    private static final int FLOAT_FIGURES = 55; 
+    private static final int FLOAT_TABLES = 56; 
+    private static final int FLOAT_OPTIONS = 57;
+    private static final int FIGURE_SEQUENCE_NAME = 58; 
+    private static final int TABLE_SEQUENCE_NAME = 59; 
+    private static final int IMAGE_OPTIONS = 60;
+    private static final int REMOVE_GRAPHICS_EXTENSION = 61;
+    private static final int ORIGINAL_IMAGE_SIZE = 62;
+    private static final int SIMPLE_TABLE_LIMIT = 63;
+    private static final int NOTES = 64;
+    private static final int METADATA = 65;
+    private static final int TABSTOP = 66;
+    private static final int WRAP_LINES_AFTER = 67;
+    private static final int SPLIT_LINKED_SECTIONS = 68;
+    private static final int SPLIT_TOPLEVEL_SECTIONS = 69;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 70;
+    private static final int OLD_MATH_COLORS = 71;
+    private static final int DEBUG = 72;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -254,6 +255,13 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[USE_BIBTEX] = new BooleanOption("use_bibtex","false");
         options[BIBTEX_STYLE] = new Option("bibtex_style","plain");
         options[EXTERNAL_BIBTEX_FILES] = new Option("external_bibtex_files","");
+        options[BIBTEX_ENCODING] =  new IntegerOption("bibtex_encoding","document") {
+            public void setString(String sValue) {
+                super.setString(sValue);
+                if ("document".equals(sValue)) { nValue = -1; }
+                else { nValue = ClassicI18n.readInputenc(sValue); }
+            }
+        };
         options[ZOTERO_BIBTEX_FILES] = new Option("zotero_bibtex_files","");
         options[JABREF_BIBTEX_FILES] = new Option("jabref_bibtex_files","");
         options[INCLUDE_ORIGINAL_CITATIONS] = new BooleanOption("include_original_citations","false");
@@ -683,6 +691,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useBibtex() { return ((BooleanOption) options[USE_BIBTEX]).getValue(); }
     public String bibtexStyle() { return options[BIBTEX_STYLE].getString(); }
     public String externalBibtexFiles() { return options[EXTERNAL_BIBTEX_FILES].getString(); }
+    public int getBibtexEncoding() { return ((IntegerOption) options[BIBTEX_ENCODING]).getValue(); }
     public String zoteroBibtexFiles() { return options[ZOTERO_BIBTEX_FILES].getString(); }
     public String jabrefBibtexFiles() { return options[JABREF_BIBTEX_FILES].getString(); }
     public boolean includeOriginalCitations() { return ((BooleanOption) options[INCLUDE_ORIGINAL_CITATIONS]).getValue(); }

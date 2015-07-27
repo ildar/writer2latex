@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 1.6 (2015-07-23)
  *
  */
 
@@ -50,7 +50,7 @@ public class TextConverter extends ConverterHelper {
     // TODO: Accessor methods for sections
 	// Some (Sony?) EPUB readers have a limit on the file size of individual files
 	// In any case very large files could be a performance problem, hence we do automatic splitting
-	// after this number of characters. TODO: Make configurable.
+	// after this number of characters.
 	private int nSplitAfter = 150000;
 	private int nPageBreakSplit = XhtmlConfig.NONE; // Should we split at page breaks?
 	// TODO: Collect soft page breaks between table rows

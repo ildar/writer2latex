@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-07-01)
+ *  Version 1.6 (2015-07-27)
  *
  */
 
@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import writer2latex.base.BibliographyGenerator;
 import writer2latex.bibtex.BibTeXDocument;
 
+import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 
@@ -60,6 +61,8 @@ class BibConverter extends ConverterHelper {
 
     private BibTeXDocument bibDoc = null;
     private boolean bUseBibTeX;
+    private String sBibTeXEncoding = null;
+    private String sDocumentEncoding = null;
     
     /** Construct a new BibConverter.
      * 
@@ -72,6 +75,16 @@ class BibConverter extends ConverterHelper {
         // We need to create a BibTeX document except if we are using external BibTeX files
         if (!(config.useBibtex() && config.externalBibtexFiles().length()>0)) {
         	bibDoc = new BibTeXDocument(palette.getOutFileName(),false,ofr);
+        }
+        
+        // We need to use a different encoding for the BibTeX files
+        if (config.externalBibtexFiles().length()>0) {
+        	int nBibTeXEncoding = config.getBibtexEncoding();
+        	int nDocumentEncoding = config.getInputencoding();
+        	if (config.getBackend()!=LaTeXConfig.XETEX && nBibTeXEncoding>-1 && nBibTeXEncoding!=nDocumentEncoding) {
+        		sBibTeXEncoding = ClassicI18n.writeInputenc(nBibTeXEncoding);
+            	sDocumentEncoding = ClassicI18n.writeInputenc(nDocumentEncoding);
+        	}
         }
         
         // We need to export it 
@@ -199,10 +212,17 @@ class BibConverter extends ConverterHelper {
            .append("}").nl();
 
         // Use BibTeX file from configuration, or exported BibTeX file
+        // TODO: For XeTeX, probably use \XeTeXdefaultencoding?
         if (config.externalBibtexFiles().length()>0) {
-            ldp.append("\\bibliography{")
+        	if (sBibTeXEncoding!=null) {
+        		ldp.append("\\inputencoding{").append(sBibTeXEncoding).append("}").nl();
+        	}
+    		ldp.append("\\bibliography{")
                .append(config.externalBibtexFiles())
                .append("}").nl();
+        	if (sBibTeXEncoding!=null) {
+        		ldp.append("\\inputencoding{").append(sDocumentEncoding).append("}").nl();
+        	}
         }
         else {
             ldp.append("\\bibliography{")

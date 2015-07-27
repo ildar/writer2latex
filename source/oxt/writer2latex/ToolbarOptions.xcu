@@ -46,7 +46,7 @@
                 <value>false</value>
             </prop>
             <prop oor:name="Executable">
-                <value>bibtex</value>
+                <value>bibtex8</value>
             </prop>
             <prop oor:name="Options">
                 <value>%s</value>
@@ -137,6 +137,9 @@
         </prop>
         <prop oor:name="BibTeXDir" oor:type="xs:string">
             <value></value>
+        </prop>
+        <prop oor:name="BibTeXEncoding" oor:type="xs:short">
+            <value>0</value><!-- US ASCII -->
         </prop>
         <prop oor:name="UseNatbib" oor:type="xs:boolean">
             <value>false</value>

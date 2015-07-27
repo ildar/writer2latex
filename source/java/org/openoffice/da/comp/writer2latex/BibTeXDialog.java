@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-29)
+ *  Version 1.6 (2015-07-24)
  *
  */ 
  
@@ -61,6 +61,7 @@ import com.sun.star.text.XTextViewCursor;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.ExecutableDialogResults;
 import com.sun.star.uno.AnyConverter;
+import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
@@ -68,7 +69,10 @@ import org.jbibtex.ParseException;
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
 import org.openoffice.da.comp.w2lcommon.helper.DialogBase;
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
+import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
+import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.office.BibMark;
 import writer2latex.office.BibMark.EntryType;
 import writer2latex.util.Misc;
@@ -94,6 +98,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 
     // The BibTeX directory (passed at initialization)
     File bibTeXDirectory = null;
+    
+    // The encoding for BibTeX files (set in constructor from the registry)
+    String sBibTeXJavaEncoding = null;
     
     // Cache of BibTeX files in the BibTeX directory
     File[] files = null;
@@ -121,6 +128,22 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     /** Create a new BibTeXDialog */
     public BibTeXDialog(XComponentContext xContext) {
         super(xContext);
+        sBibTeXJavaEncoding = getBibTeXJavaEncoding();
+    }
+    
+    private String getBibTeXJavaEncoding() {
+    	RegistryHelper registry = new RegistryHelper(xContext);
+    	try {
+    		Object view = registry.getRegistryView(BibliographyDialog.REGISTRY_PATH, false);
+    		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
+        	int nBibTeXEncoding = XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXEncoding"); //$NON-NLS-1$
+        	registry.disposeRegistryView(view);
+        	return ClassicI18n.writeJavaEncoding(nBibTeXEncoding);
+    	}
+    	catch (Exception e) {
+    		// Failed to get registry view
+    	}
+    	return null;
     }
 	
     /** Return the name of the library containing the dialog
@@ -257,11 +280,12 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	int nFile = getListBoxSelectedItem("File"); //$NON-NLS-1$
     	if (nFile>=0) {
     		try {
-				currentFile = new BibTeXReader(files[nFile]);
+				currentFile = new BibTeXReader(files[nFile],sBibTeXJavaEncoding);
 			} catch (IOException e) {
+				System.err.println(e.getMessage());
 				currentFile = null;
 			} catch (ParseException e) {
-				System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 				currentFile = null;
 			}
     		
@@ -502,10 +526,12 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	BibTeXReader[] readers = new BibTeXReader[nFiles];
     	for (int i=0; i<nFiles; i++) {
     		try {
-				readers[i] = new BibTeXReader(files[i]);
+				readers[i] = new BibTeXReader(files[i],sBibTeXJavaEncoding);
 			} catch (IOException e) {
+				System.err.println(e.getMessage());
 				readers[i] = null;
 			} catch (ParseException e) {
+				System.err.println(e.getMessage());
 				readers[i] = null;
  			}
     	}

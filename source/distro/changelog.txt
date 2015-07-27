@@ -1,5 +1,15 @@
 Changelog for Writer2LaTeX version 1.4 -> 1.6
 
+---------- version 1.6 beta ----------
+
+[w2l] Added support for non-ASCII BibTeX files. The new option bibtex_encoding is used to specify the encoding of
+  the BibTeX files loaded via the option external_bibtex_files. The default value is "document" which implies the
+  same encoding as the LaTeX document. Otherwise the same values as for inputencoding are supported.
+  In the UI, the encoding can be selected on the bibliography page of the toolbar settings.
+  The setting is ignored if the backend is XeTeX, in this case all files are assumed to be UTF-8.
+  Also, the default bibtex application has been changed to bibtex8 (but currently no attempt is made to select the
+  proper .csf file)
+
 ---------- version 1.5.3 ----------
 
 [w2l] The command \textsubscript is now defined with \providecommand to avoid problems with other packages that may

@@ -1,5 +1,5 @@
-Writer2LaTeX source version 1.5.3 alpha
-=======================================
+Writer2LaTeX source version 1.6 beta
+====================================
 
 Writer2LaTeX is (c) 2002-2015 by Henrik Just.
 The source is available under the terms and conditions of the
@@ -49,8 +49,8 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 
 
-Third-party software:
----------------------------
+Third-party software: BibTeX API
+--------------------------------
 
 Villu Ruusmanns Java BibTeX API is included in binary form as jbibtex-1.0.14.jar.
 The source code is available from https://code.google.com/p/java-bibtex/
@@ -124,7 +124,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, May 2015
+Henrik Just, July 2015
 
 
 Thanks to Michael Niedermair for writing the original ant build file

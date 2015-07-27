@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-29)
+ *  Version 1.6 (2015-07-23)
  *
  */ 
  
@@ -179,6 +179,8 @@ public final class BibliographyDialog
         			XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXLocation")); //$NON-NLS-1$
         	dlg.setTextFieldText("BibTeXDir", //$NON-NLS-1$
         			XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir")); //$NON-NLS-1$
+        	dlg.setListBoxSelectedItem("BibTeXEncoding", //$NON-NLS-1$
+        			XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXEncoding")); //$NON-NLS-1$
     		dlg.setCheckBoxStateAsBoolean("UseNatbib", //$NON-NLS-1$
     				XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseNatbib")); //$NON-NLS-1$
     		dlg.setTextFieldText("NatbibOptions", //$NON-NLS-1$
@@ -206,6 +208,7 @@ public final class BibliographyDialog
     		XPropertySetHelper.setPropertyValue(xProps, "IncludeOriginalCitations", dlg.getCheckBoxStateAsBoolean("IncludeOriginalCitations")); //$NON-NLS-1$ //$NON-NLS-2$
    			XPropertySetHelper.setPropertyValue(xProps, "BibTeXLocation", dlg.getListBoxSelectedItem("BibTeXLocation")); //$NON-NLS-1$ //$NON-NLS-2$
    			XPropertySetHelper.setPropertyValue(xProps, "BibTeXDir", dlg.getTextFieldText("BibTeXDir")); //$NON-NLS-1$ //$NON-NLS-2$
+   			XPropertySetHelper.setPropertyValue(xProps, "BibTeXEncoding", dlg.getListBoxSelectedItem("BibTeXEncoding")); //$NON-NLS-1$ //$NON-NLS-2$
     		XPropertySetHelper.setPropertyValue(xProps, "UseNatbib", dlg.getCheckBoxStateAsBoolean("UseNatbib")); //$NON-NLS-1$ //$NON-NLS-2$
    			XPropertySetHelper.setPropertyValue(xProps, "NatbibOptions", dlg.getTextFieldText("NatbibOptions")); //$NON-NLS-1$ //$NON-NLS-2$
    			
@@ -263,6 +266,8 @@ public final class BibliographyDialog
 		dlg.setControlEnabled("BibTeXDirLabel", bEnableSettings && bEnableDir); //$NON-NLS-1$
 		dlg.setControlEnabled("BibTeXDir",  bEnableSettings && bEnableDir); //$NON-NLS-1$
 		dlg.setControlEnabled("BibTeXDirButton",  bEnableSettings && bEnableDir); //$NON-NLS-1$
+		dlg.setControlEnabled("BibTeXEncodingLabel",  bEnableSettings); //$NON-NLS-1$
+		dlg.setControlEnabled("BibTeXEncoding",  bEnableSettings); //$NON-NLS-1$
 		dlg.setControlEnabled("ConvertZoteroCitations", bEnableSettings); //$NON-NLS-1$
 		dlg.setControlEnabled("ConvertJabRefCitations", bEnableSettings); //$NON-NLS-1$
 		dlg.setControlEnabled("IncludeOriginalCitations", bEnableSettings && bEnableOriginalCitations); //$NON-NLS-1$
@@ -348,6 +353,3 @@ public final class BibliographyDialog
 	}
 	
 }
-
-
-

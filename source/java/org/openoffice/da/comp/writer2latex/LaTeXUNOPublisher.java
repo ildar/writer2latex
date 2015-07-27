@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-05-29)
+ *  Version 1.6 (2015-07-23)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -34,6 +34,7 @@ import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
+import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
@@ -107,6 +108,8 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         				XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir")); //$NON-NLS-1$
         		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles")) { //$NON-NLS-1$
         			filterHelper.put("external_bibtex_files", sBibTeXFiles); //$NON-NLS-1$
+        			filterHelper.put("bibtex_encoding", ClassicI18n.writeInputenc(  //$NON-NLS-1$
+        					XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXEncoding")));  //$NON-NLS-1$
             		if (XPropertySetHelper.getPropertyValueAsBoolean(xProps, "ConvertZoteroCitations")) { //$NON-NLS-1$
             			filterHelper.put("zotero_bibtex_files", sBibTeXFiles); //$NON-NLS-1$
             		}

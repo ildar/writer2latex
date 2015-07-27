@@ -73,6 +73,11 @@
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDirButton" id="bm_bibtexdirbutton"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXDirButton" visibility="hidden">Click to select the path to the folder containing the BibTeX files</ahelp></paragraph>
 
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXEncoding" id="bm_bibtexencoding"/>
+		<paragraph role="heading" level="3" xml-lang="en-US">File encoding</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Select the encoding of the BibTeX files (this will depend on your
+		BibTeX editor). If you use XeTeX as a backend, you should always use UTF-8.</paragraph>
+
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" id="bm_convertzoterocitations"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Convert Zotero citations</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><link href="http://www.zotero.org" name="Link to the Zotero Website">Zotero</link>

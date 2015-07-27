@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 1.6 (2015-07-23)
  *
  */
 package writer2latex.xhtml;
@@ -61,6 +61,8 @@ final class IndexData {
  */
 class TOCConverter extends IndexConverterHelper {
 	
+	private static final String TOC_LINK_PREFIX = "toc";
+	
     private List<IndexData> indexes = new ArrayList<IndexData>(); // All tables of content
 	private List<TocEntry> tocEntries = new ArrayList<TocEntry>(); // All potential(!) toc items
 	private int nTocFileIndex = -1; // file index for main toc
@@ -94,7 +96,7 @@ class TOCConverter extends IndexConverterHelper {
 	 */
 	void handleHeading(Element onode, Element heading, String sLabel) {
 		int nLevel = getTextCv().getOutlineLevel(onode);
-		String sTarget = "toc"+(++nTocIndex);
+		String sTarget = TOC_LINK_PREFIX+(++nTocIndex);
 		converter.addTarget(heading,sTarget);
 		
 		this.currentChapter = onode;
@@ -126,7 +128,7 @@ class TOCConverter extends IndexConverterHelper {
 			if (nLevel>config.getXhtmlSplitLevel()) {
 				Element div = converter.createElement("div");        			
 				hnode.appendChild(div);
-				sTarget = "toc"+(++nTocIndex);
+				sTarget = TOC_LINK_PREFIX+(++nTocIndex);
 				converter.addTarget(div,sTarget);
 			}
 			converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel, sTarget);
@@ -136,7 +138,7 @@ class TOCConverter extends IndexConverterHelper {
 	void handleParagraph(Element onode, Element par, String sCurrentListLabel) {
         String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
 		if (ofr.isIndexSourceStyle(getParSc().getRealParStyleName(sStyleName))) {
-	        converter.addTarget(par,"toc"+(++nTocIndex));
+	        converter.addTarget(par,TOC_LINK_PREFIX+(++nTocIndex));
 	        TocEntry entry = new TocEntry();
 	        entry.onode = (Element) onode;
 	        entry.sLabel = sCurrentListLabel;  
@@ -151,7 +153,7 @@ class TOCConverter extends IndexConverterHelper {
      * @param hnode the link target will be added to this inline HTML node
      */
     void handleTocMark(Node onode, Node hnode) {
-        hnode.appendChild(converter.createTarget("toc"+(++nTocIndex)));
+        hnode.appendChild(converter.createTarget(TOC_LINK_PREFIX+(++nTocIndex)));
         TocEntry entry = new TocEntry();
         entry.onode = (Element) onode;
         entry.nFileIndex = converter.getOutFileIndex();
@@ -243,7 +245,7 @@ class TOCConverter extends IndexConverterHelper {
                         span.setAttribute("class","SectionNumber");
                         span.appendChild(converter.createTextNode(entry.sLabel));
                     }
-                    Element a = converter.createLink("toc"+i);
+                    Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     getTextCv().traverseInlineText(entry.onode,a);
                 }
@@ -255,7 +257,7 @@ class TOCConverter extends IndexConverterHelper {
                         if (entry.sLabel!=null) {
                             p.appendChild(converter.createTextNode(entry.sLabel));
                         }
-                        Element a = converter.createLink("toc"+i);
+                        Element a = converter.createLink(TOC_LINK_PREFIX+i);
                         p.appendChild(a);
                         getTextCv().traverseInlineText(entry.onode,a);
                     }
@@ -269,7 +271,7 @@ class TOCConverter extends IndexConverterHelper {
                     if (entry.sLabel!=null) {
                         p.appendChild(converter.createTextNode(entry.sLabel));
                     }
-                    Element a = converter.createLink("toc"+i);
+                    Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     getTextCv().traverseInlineText(entry.onode,a);
                 }
@@ -278,7 +280,7 @@ class TOCConverter extends IndexConverterHelper {
                 int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
                 if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
                     Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
-                    Element a = converter.createLink("toc"+i);
+                    Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
                 }
@@ -287,7 +289,7 @@ class TOCConverter extends IndexConverterHelper {
                 int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
                 if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
                     Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
-                    Element a = converter.createLink("toc"+i);
+                    Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
                 }
@@ -353,7 +355,7 @@ class TOCConverter extends IndexConverterHelper {
                     String sNodeName = entry.onode.getTagName();
                     if (XMLString.TEXT_H.equals(sNodeName)) {
 
-                        // Determine wether or not to include this heading
+                        // Determine whether or not to include this heading
                         // Note that this condition misses the case where
                         // a heading of level n is followed by a heading of
                         // level n+2. This is considered a bug in the document!
