@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-07-24)
+ *  Version 1.6 (2015-07-28)
  *
  */ 
  
@@ -168,6 +168,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
    // **** Implement XDialogEventHandler
     
     @Override public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
+    	clearUpdateLabel();
     	if (sMethod.equals("FileChange")) { //$NON-NLS-1$
     		// The user has selected another BibTeX file
     		fileChange();
@@ -205,6 +206,11 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     }
     
     // **** Implement the UI functions
+    
+    // Clear the contents of the update info label
+    private void clearUpdateLabel() {
+    	setLabelText("UpdateLabel","");
+    }
     
     // (Re)load the list of BibTeX files
     private void reload(String sSelectedFileName) {
@@ -509,15 +515,15 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			}
 	
 			// Inform the user about the result
-			if (xFrame!=null) {        	
-	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            if (notUpdated.isEmpty()) {
-	            	msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
-	            }
-	            else {
-	            	msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
-	            }
-	        }				
+            //MessageBox msgBox = new MessageBox(xContext, xFrame);
+            if (notUpdated.isEmpty()) {
+    			setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
+            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else {
+            	setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+            }
     	}
     }
     

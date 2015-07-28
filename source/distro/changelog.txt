@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 beta ----------
 
+[w2x] In the BibTeX dialog, updating references generates a status message. This is now moved from a message box
+  to in a label at the bottom of the dialog.
+
 [w2x] No longer add cellspacing attribute if exporting to HTML5
 
 [w2l] Added support for non-ASCII BibTeX files. The new option bibtex_encoding is used to specify the encoding of
