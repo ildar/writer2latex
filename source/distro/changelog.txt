@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 beta ----------
 
+[w2l] Enabled export of WMF and EMF graphics to PDF (was disabled due to bugs in earlier versions of LO)
+
 [w2x] In the BibTeX dialog, updating references generates a status message. This is now moved from a message box
   to in a label at the bottom of the dialog.
 
