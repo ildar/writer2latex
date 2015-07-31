@@ -26,7 +26,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
   is exported with hebrew language setting with a suitable default font (Frank Ruehl CLM/Nachlieli CLM/Miriam Mono CLM)
 
 [w2x] In EPUB the title must be non-empty. To avoid creating an invalid EPUB, the file name is now used as title
-  if the title is empty. 
+  if the title is empty.
 
 [w2l] Removed old experimental option use_oooref
 
@@ -99,7 +99,7 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 [w2l] Implementation detail: The dialog library W4LDialogs is now merged into W2LDialogs2. This avoids conflicts with
   the old Writer4LaTeX extension if this happens to be installed.
 
-[all] Fixed typo in export dialogs: The text on the help button was in danish.
+[all] Fixed typo in export dialogs: The text on the help button was in Danish.
 
 [w2x] New boolean option embed_img (default false). If set to true, the binary contents of img elements are included
   directly on the src attribute as base64.

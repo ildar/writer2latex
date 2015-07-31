@@ -1,7 +1,34 @@
 Version history for Writer2LaTeX
 ================================
 
-Version 1.4 beta (October 2014)
+Version 1.6 beta (August 2015)
+  - Writer2LaTex extension:
+       - New toolbar replacing the previous separate extension Writer4LaTeX
+       - New feature to insert bibliographic references in Writer directly from BibTeX files
+       - The log viewer dialog now features an option to display error messages only
+       - WMF and EMF images are now exported to PDF
+  - Writer2LaTeX core:
+       - Basic support for Hebrew (XeTeX backend only)
+       - Export bibliography using a thebibliography environment if use_bibtex is false
+       - Adapt to the new color scheme in StarMath introduced with LO 4.4/AOO 4.2
+       - New option old_math_colors to select the old StarMath color scheme
+       - New option font to select a predefined font scheme
+       - New option bibtex_encoding to select the encoding for external BibTeX files
+  - Writer2xhtml extension:
+       - New toolbar to directly export to XHTML or EPUB
+  - Writer2xhtml core:
+       - Support for EPUB 3
+       - New option include_ncx to include an NCX file even if the export format is EPUB 3
+       - Improved markup of footnotes, endnotes, table of contents, alphabetical index and bibliography
+       - Bibliographic references now link directly to the bibliography item
+       - Added support for background color in alphabetical index and bibliography
+       - New option max_width to set the maximum text width
+       - New option embed_img to embed binary images directly as base64
+       - Style maps now support before and after content (similarly to ::before and ::after in CSS)
+  - General:
+       - It is now possible to pass options to the filters using soffice --headless --convert-to
+
+Version 1.4 (February 2015)
   - All:
        - Optimized memory usage
        - Images that are used more than once in the document are now only exported once
