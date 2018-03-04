@@ -56,23 +56,23 @@ public class ResourceDocument implements OutputFile {
 
     // Implement OutputFile
     
-	@Override public String getFileName() {
+	public String getFileName() {
 		return sFileName;
 	}
 
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return sMediaType;
 	}
 
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return false;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		return false;
 	}
 
-	@Override public void write(OutputStream os) throws IOException {
+	public void write(OutputStream os) throws IOException {
 		os.write(content); 
 	}
 	

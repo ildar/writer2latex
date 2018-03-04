@@ -81,19 +81,19 @@ public class LaTeXDocument implements OutputFile {
      *
      * @return  The <code>Document</code> name with file extension.
      */
-    @Override public String getFileName() {
+    public String getFileName() {
         return new String(sName + FILE_EXTENSION);
     }
     
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return MIMETypes.LATEX;
 	}
 	
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return bIsMaster;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		// We don't use this information currently
 		return true;
 	}

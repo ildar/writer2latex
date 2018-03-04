@@ -111,7 +111,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     // **** Implement com.sun.star.lang.XInitialization
     
     // We expect to get the current frame and a comma separated list of BibTeX files to use
-    @Override public void initialize( Object[] objects )
+    public void initialize( Object[] objects )
         throws com.sun.star.uno.Exception {
         for (Object object : objects) {
         	if (object instanceof XFrame) {

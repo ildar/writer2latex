@@ -138,7 +138,7 @@ public abstract class BibliographyGenerator {
 					return this;
 				}
 				
-				@Override public int compare(Element a, Element b) {
+				public int compare(Element a, Element b) {
 					int nCount = sortKeys.size();
 					for (int i=0; i<nCount; i++) {
 						String sWorda = a.getAttribute("text:"+sortKeys.get(i));

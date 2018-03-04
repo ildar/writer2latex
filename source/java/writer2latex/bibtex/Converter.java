@@ -47,7 +47,7 @@ public final class Converter extends ConverterBase {
         config = new LaTeXConfig();
     }
 
-    @Override public Config getConfig() {
+    public Config getConfig() {
     	return config;
     }
 	

@@ -177,7 +177,7 @@ public class DOMDocument implements OutputFile {
      *
      *  @return  The file name of <code>Document</code>.
      */
-    @Override public String getFileName() {
+    public String getFileName() {
 
         return fileName;
     }
@@ -351,15 +351,15 @@ public class DOMDocument implements OutputFile {
     }
 
     // We need these because we implement OutputFile
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return "";
 	}
 	
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return false;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		return false;
 	}
 

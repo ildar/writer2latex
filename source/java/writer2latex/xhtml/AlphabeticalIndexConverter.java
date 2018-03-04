@@ -124,7 +124,7 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
 				Misc.getAttribute(source,XMLString.FO_LANGUAGE),
         		Misc.getAttribute(source, XMLString.FO_COUNTRY)) {
 
-			@Override public int compare(AlphabeticalEntry a, AlphabeticalEntry b) {
+			public int compare(AlphabeticalEntry a, AlphabeticalEntry b) {
 				return getCollator().compare(a.sWord, b.sWord);
 			}
 		};

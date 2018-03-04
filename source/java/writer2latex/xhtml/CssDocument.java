@@ -54,19 +54,19 @@ public class CssDocument implements OutputFile {
     	sContent = "";
     }
 
-	@Override public String getFileName() {
+	public String getFileName() {
 		return sName;
 	}
 
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return "text/css";
 	}
 
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return false;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		return false;
 	}
 

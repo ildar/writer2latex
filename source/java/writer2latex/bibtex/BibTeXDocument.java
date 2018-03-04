@@ -110,23 +110,23 @@ public class BibTeXDocument implements OutputFile {
     
     // Implement writer2latex.api.OutputFile
     
-    @Override public String getFileName() {
+    public String getFileName() {
         return new String(sName + FILE_EXTENSION);
     }
     
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return MIMETypes.BIBTEX;
 	}
 	
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return bIsMaster;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		return false;
 	}
 
-    @Override public void write(OutputStream os) throws IOException {
+    public void write(OutputStream os) throws IOException {
         // BibTeX files are plain ascii
         OutputStreamWriter osw = new OutputStreamWriter(os,"ASCII");
         osw.write("%% This file was converted to BibTeX by Writer2BibTeX ver. "+ConverterFactory.getVersion()+".\n");

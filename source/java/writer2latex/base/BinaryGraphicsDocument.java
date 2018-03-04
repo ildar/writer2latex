@@ -150,7 +150,7 @@ public class BinaryGraphicsDocument implements OutputFile {
     *
     * @return  The document name or URL
     */
-   @Override public String getFileName() {
+   public String getFileName() {
        return sFileName;
    }
    
@@ -158,7 +158,7 @@ public class BinaryGraphicsDocument implements OutputFile {
      *
      * @return  The MIME type or null if this is unknown
      */
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return sMimeType;
 	}
 	
@@ -166,7 +166,7 @@ public class BinaryGraphicsDocument implements OutputFile {
      * 
      *  @return false - a graphics file is never a master document
      */
-    @Override public boolean isMasterDocument() {
+    public boolean isMasterDocument() {
 		return false;
 	}
     
@@ -174,7 +174,7 @@ public class BinaryGraphicsDocument implements OutputFile {
      * 
      *  @return false - a graphics file does not contain formulas
      */
-    @Override public boolean containsMath() {
+    public boolean containsMath() {
     	return false;
     }
 }

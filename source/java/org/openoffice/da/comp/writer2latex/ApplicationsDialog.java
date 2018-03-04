@@ -77,7 +77,7 @@ public final class ApplicationsDialog
 	
     // **** Implement XContainerWindowEventHandler
     
-    @Override public boolean callHandlerMethod(XWindow xWindow, Object event, String sMethod)
+    public boolean callHandlerMethod(XWindow xWindow, Object event, String sMethod)
         throws com.sun.star.lang.WrappedTargetException {
 		XDialog xDialog = (XDialog)UnoRuntime.queryInterface(XDialog.class, xWindow);
 		DialogAccess dlg = new DialogAccess(xDialog);
@@ -117,22 +117,22 @@ public final class ApplicationsDialog
         return false;
     }
 	
-    @Override public String[] getSupportedMethodNames() {
+    public String[] getSupportedMethodNames() {
         String[] sNames = { "external_event", "AfterExportChange", "ApplicationChange", "BrowseClick", "ExecutableUnfocus", "OptionsUnfocus", "AutomaticClick" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         return sNames;
     }
     
     // **** Implement the interface XServiceInfo
 
-    @Override public boolean supportsService(String sServiceName) {
+    public boolean supportsService(String sServiceName) {
         return sServiceName.equals(__serviceName);
     }
 
-    @Override public String getImplementationName() {
+    public String getImplementationName() {
         return __implementationName;
     }
     
-    @Override public String[] getSupportedServiceNames() {
+    public String[] getSupportedServiceNames() {
         String[] sSupportedServiceNames = { __serviceName };
         return sSupportedServiceNames;
     }

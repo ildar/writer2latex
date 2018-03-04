@@ -69,24 +69,24 @@ public class EPUBWriter implements OutputFile {
 	
 	// Implement OutputFile
 
-	@Override public String getFileName() {
+	public String getFileName() {
 		return sFileName+".epub";
 	}
 
-	@Override public String getMIMEType() {
+	public String getMIMEType() {
 		return "application/epub+zip";
 	}
 
-	@Override public boolean isMasterDocument() {
+	public boolean isMasterDocument() {
 		return true;
 	}
 	
-	@Override public boolean containsMath() {
+	public boolean containsMath() {
 		// We don't really care about this
 		return nVersion==3;
 	}
 
-	@Override public void write(OutputStream os) throws IOException {		
+	public void write(OutputStream os) throws IOException {		
 		ZipOutputStream zos = new ZipOutputStream(os);
 		
 		// Write uncompressed MIME type as first entry
