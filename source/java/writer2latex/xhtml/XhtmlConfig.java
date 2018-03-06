@@ -2,7 +2,7 @@
  *
  *  XhtmlConfig.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-15)
+ *  Version 2.0 (2018-03-06)
  *
  */
 
@@ -40,7 +40,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 59; }
+    protected int getOptionCount() { return 57; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -156,8 +156,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int USE_SHEET_NAMES_AS_HEADINGS = 54;
     private static final int SAVE_IMAGES_IN_SUBDIR = 55;
     private static final int UPLINK = 56;
-    private static final int DIRECTORY_ICON = 57;
-    private static final int DOCUMENT_ICON = 58;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -289,8 +287,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[USE_SHEET_NAMES_AS_HEADINGS] = new BooleanOption("use_sheet_names_as_headings","true");
         options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
         options[UPLINK] = new Option("uplink","");
-        options[DIRECTORY_ICON] = new Option("directory_icon","");
-        options[DOCUMENT_ICON] = new Option("document_icon","");
     }
     
 	protected void readInner(Element elm) {
@@ -431,8 +427,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public boolean xhtmlUseSheetNamesAsHeadings() { return ((BooleanOption) options[USE_SHEET_NAMES_AS_HEADINGS]).getValue(); }
     public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
     public String getXhtmlUplink() { return options[UPLINK].getString(); }
-    public String getXhtmlDirectoryIcon() { return options[DIRECTORY_ICON].getString(); }
-    public String getXhtmlDocumentIcon() { return options[DOCUMENT_ICON].getString(); }
 	
     public XhtmlStyleMap getXParStyleMap() { return getStyleMap(xpar); }
     public XhtmlStyleMap getXHeadingStyleMap() { return getStyleMap(xheading); }

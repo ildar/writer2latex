@@ -66,10 +66,6 @@
      manifest:media-type="application/vnd.sun.star.basic-library"/>
 	 
     <manifest:file-entry
-     manifest:full-path="writer2xhtml.rdb"
-     manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/>
-     
-    <manifest:file-entry
 	 manifest:full-path="help"
 	 manifest:media-type="application/vnd.sun.star.help"/>
      

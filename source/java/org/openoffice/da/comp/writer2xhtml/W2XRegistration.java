@@ -2,7 +2,7 @@
  *
  *  W2XRegistration.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-28) 
+ *  Version 2.0 (2018-03-06) 
  *
  */ 
  
@@ -68,12 +68,6 @@ public class W2XRegistration {
         else if (implName.equals(W2XExportFilter.class.getName()) ) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(W2XExportFilter.class,
             W2XExportFilter.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(BatchConverter.__implementationName) ) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(BatchConverter.class,
-            BatchConverter.__serviceName,
             multiFactory,						    
             regKey);
         }
@@ -139,8 +133,6 @@ public class W2XRegistration {
      */
     public static boolean __writeRegistryServiceInfo(XRegistryKey regKey) {
         return
-            FactoryHelper.writeRegistryServiceInfo(BatchConverter.__implementationName,
-                BatchConverter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName,
                         Writer2xhtml.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,

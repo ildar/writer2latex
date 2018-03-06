@@ -2,7 +2,7 @@
  *
  *  Application.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-01-09) 
+ *  Version 2.0 (2018-03-06) 
  *
  */
  
@@ -28,7 +28,6 @@ package writer2latex;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -37,12 +36,10 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Vector;
 
-import writer2latex.api.BatchConverter;
 import writer2latex.api.Converter;
 import writer2latex.api.ConverterFactory;
 import writer2latex.api.ConverterResult;
 import writer2latex.api.MIMETypes;
-//import writer2latex.api.OutputFile;
 
 import writer2latex.util.Misc;
 
@@ -54,7 +51,6 @@ import writer2latex.util.Misc;
  * <ul>
  * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>, <code>-xhtml</code>,
        <code>-xhtml+mathml</code>, <code>-epub</code>, <code>-epub3</code>
- * <li><code>-recurse</code>
  * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-pdfscreen</code>,
  * <code>-pdfprint</code>, <code>-cleanxhtml</code>
  * <li><code>-config[=]filename</code>
@@ -70,7 +66,6 @@ public final class Application {
 	
     /* Based on command-line parameters. */
     private String sTargetMIME = MIMETypes.LATEX;
-    private boolean bRecurse = false;
     private Vector<String> configFileNames = new Vector<String>();
     private String sTemplateFileName = null;
     private String sStyleSheetFileName = null;
@@ -96,23 +91,32 @@ public final class Application {
             showUsage(msg);
         }
     }
-	
-    // Convert the directory or file
+    
     private void doConversion() {
-        // Step 1: Say hello...
-        String sOutputFormat;
-        if (MIMETypes.LATEX.equals(sTargetMIME)) { sOutputFormat = "LaTeX"; }
-        else if (MIMETypes.BIBTEX.equals(sTargetMIME)) { sOutputFormat = "BibTeX"; }
-        else { sOutputFormat = "xhtml"; }
+		sayHello();
+        File source = getSource();
+        File target = getTarget(source);
+        Converter converter = getConverter();
+        readTemplate(converter);
+        readStyleSheet(converter);
+        readStyleResources(converter);
+        readConfig(converter);
+        setOptions(converter);
+        performConversion(converter,source,target);
+        System.out.println("Done!");
+    }
+    
+    private void sayHello() {
         System.out.println();
-        System.out.println("This is Writer2" + sOutputFormat + 
-                           ", Version " + ConverterFactory.getVersion() + 
-                           " (" + ConverterFactory.getDate() + ")");
+        System.out.println("This is Writer2LaTeX, Version " 
+        		+ ConverterFactory.getVersion()
+        		+ " (" + ConverterFactory.getDate() + ")");
         System.out.println();
-        System.out.println("Starting conversion...");
-		
-        // Step 2: Examine source
-        File source = new File(sSource);
+        System.out.println("Starting conversion...");    	
+    }
+    
+    private File getSource() {
+    	File source = new File(sSource);
         if (!source.exists()) {
             System.out.println("I'm sorry, I can't find "+sSource);
             System.exit(1);
@@ -121,57 +125,42 @@ public final class Application {
             System.out.println("I'm sorry, I can't read "+sSource);
             System.exit(1);
         }
-        boolean bBatch = source.isDirectory();
-
-        // Step 3: Examine target
+        if (!source.isFile()) {
+            System.out.println("I'm sorry, "+sSource+" is not a file");
+            System.exit(1);        	
+        }
+        return source;
+    }
+    
+    private File getTarget(File source) {
         File target;
-        if (bBatch) {
-            if (sTarget==null) {
-                target=source;
-            }
-            else {
-                target = new File(sTarget);
-            }
+        if (sTarget==null) {
+            target = new File(source.getParent(),Misc.removeExtension(source.getName()));
         }
         else {
-            if (sTarget==null) {
-                target = new File(source.getParent(),Misc.removeExtension(source.getName()));
-            }
-            else {
-                target = new File(sTarget);
-                if (sTarget.endsWith(File.separator)) {
-                    target = new File(target,Misc.removeExtension(source.getName()));
-                }
+            target = new File(sTarget);
+            if (sTarget.endsWith(File.separator)) {
+                target = new File(target,Misc.removeExtension(source.getName()));
             }
         }
-		
-        // Step 4: Create converters
-        Converter converter = ConverterFactory.createConverter(sTargetMIME);
+        return target;
+    }
+    
+    private Converter getConverter() {
+    	Converter converter = ConverterFactory.createConverter(sTargetMIME);
         if (converter==null) {
             System.out.println("Failed to create converter for "+sTargetMIME);
             System.exit(1);
         }
-		
-        BatchConverter batchCv = null;
-        if (bBatch) {
-            batchCv = ConverterFactory.createBatchConverter(MIMETypes.XHTML);
-            if (batchCv==null) {
-                System.out.println("Failed to create batch converter");
-                System.exit(1);
-            }
-            batchCv.setConverter(converter);
-        }
-		
-        // Step 5a: Read template
+		return converter;
+    }
+    
+    private void readTemplate(Converter converter) {
         if (sTemplateFileName!=null) {
             try {
                 System.out.println("Reading template "+sTemplateFileName);
                 byte [] templateBytes = Misc.inputStreamToByteArray(new FileInputStream(sTemplateFileName));
                 converter.readTemplate(new ByteArrayInputStream(templateBytes));
-                if (batchCv!=null) {
-                    // Currently we use the same template for the directory and the files
-                    batchCv.readTemplate(new ByteArrayInputStream(templateBytes));
-                }
             }
             catch (FileNotFoundException e) {
                 System.out.println("--> This file does not exist!");
@@ -182,8 +171,9 @@ public final class Application {
                 System.out.println("    "+e.getMessage());
             }
         }
-		
-        // Step 5b: Read style sheet
+    }
+    
+    private void readStyleSheet(Converter converter) {
         if (sStyleSheetFileName!=null) {
             try {
                 System.out.println("Reading style sheet "+sStyleSheetFileName);
@@ -199,8 +189,9 @@ public final class Application {
                 System.out.println("    "+e.getMessage());
             }
         }
-        
-        // Step 5c: Read style resources
+    }
+    
+    private void readStyleResources(Converter converter) {
         for (String sResource : resources) {
         	String sMediaType;
         	String sFileName;
@@ -222,9 +213,10 @@ public final class Application {
                 System.out.println("    "+e.getMessage());
         	}        		
         	
-        }
-		
-        // Step 6: Read config
+        }    	
+    }
+    
+    private void readConfig(Converter converter) {
         for (int i=0; i<configFileNames.size(); i++) {
             String sConfigFileName = (String) configFileNames.get(i);
             if (sConfigFileName.startsWith("*")) {
@@ -243,10 +235,6 @@ public final class Application {
                 try {
                     byte[] configBytes = Misc.inputStreamToByteArray(new FileInputStream(sConfigFileName));
                     converter.getConfig().read(new ByteArrayInputStream(configBytes));
-                    if (bBatch) {
-                        // Currently we use the same configuration for the directory and the files
-                        batchCv.getConfig().read(new ByteArrayInputStream(configBytes));
-                    }
                 }
                 catch (IOException e) {
                     System.err.println("--> Failed to read the configuration!");
@@ -254,103 +242,50 @@ public final class Application {
                 }
             }
         }
-		
-        // Step 7: Set options from command line
+    }
+    
+    private void setOptions(Converter converter) {
         Enumeration<String> keys = options.keys();
         while (keys.hasMoreElements()) {
             String sKey = keys.nextElement();
             String sValue = (String) options.get(sKey);
             converter.getConfig().setOption(sKey,sValue);
-            if (batchCv!=null) {
-                batchCv.getConfig().setOption(sKey,sValue);
-            }
         }
-	 	
-        // Step 8: Perform conversion
-        if (bBatch) {
-            batchCv.convert(source,target,bRecurse, new BatchHandlerImpl());
-        }
-        else {
-            System.out.println("Converting "+source.getPath());
-            ConverterResult dataOut = null;
-
-            try {
-                dataOut = converter.convert(source,target.getName());
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("--> The file "+source.getPath()+" does not exist!");
-                System.out.println("    "+e.getMessage());
-                System.exit(1);
-            }
-            catch (IOException e) {
-                System.out.println("--> Failed to convert the file "+source.getPath()+"!");
-                System.out.println("    "+e.getMessage());
-                System.out.println("    Please make sure the file is in OpenDocument format");
-                System.exit(1);
-            }
-
-            // TODO: Should do some further checking on the feasability of writing
-            // the directory and the files.
-            File targetDir = target.getParentFile();
-            if (targetDir!=null && !targetDir.exists()) { targetDir.mkdirs(); }
-            try {
-                dataOut.write(targetDir);
-            }
-            catch (IOException e) {
-                System.out.println("--> Error writing out file!");
-                System.out.println("    "+e.getMessage());
-                System.exit(1);
-            }
-        
-        }
-		
-        // Step 9: Say goodbye!
-        System.out.println("Done!");
     }
+    
+    private void performConversion(Converter converter,File source, File target) {
+        System.out.println("Converting "+source.getPath());
+        ConverterResult dataOut = null;
 
+        try {
+            dataOut = converter.convert(source,target.getName());
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("--> The file "+source.getPath()+" does not exist!");
+            System.out.println("    "+e.getMessage());
+            System.exit(1);
+        }
+        catch (IOException e) {
+            System.out.println("--> Failed to convert the file "+source.getPath()+"!");
+            System.out.println("    "+e.getMessage());
+            System.out.println("    Please make sure the file is in OpenDocument format");
+            System.exit(1);
+        }    	
 
-    /**
-     *  Display usage.
-     */
-    private static void showUsage(String msg) {
-        System.out.println();
-        System.out.println("This is Writer2LaTeX, Version " + ConverterFactory.getVersion() 
-                           + " (" + ConverterFactory.getDate() + ")");
-        System.out.println();
-        if (msg != null) System.out.println(msg);
-        System.out.println();
-        System.out.println("Usage:");
-        System.out.println("   java -jar <path>/writer2latex.jar <options> <source file/directory> [<target file/directory>]");
-        System.out.println("where the available options are:");
-        System.out.println("   -latex");
-        System.out.println("   -bibtex");
-        System.out.println("   -xhtml");
-        System.out.println("   -xhtml11");
-        System.out.println("   -xhtml+mathml");
-        System.out.println("   -html5");
-        System.out.println("   -epub");
-        System.out.println("   -epub3");
-        System.out.println("   -recurse");
-        System.out.println("   -template[=]<template file>");
-        System.out.println("   -stylesheet[=]<style sheet file>");
-        System.out.println("   -resource[=]<resource file>[::<media type>]");
-        System.out.println("   -ultraclean");
-        System.out.println("   -clean");
-        System.out.println("   -pdfprint");
-        System.out.println("   -pdfscreen");
-        System.out.println("   -cleanxhtml");
-        System.out.println("   -config[=]<configuration file>");
-        System.out.println("   -<configuration option>[=]<value>");
-        System.out.println("See the documentation for the available configuration options");
+        // TODO: Should do some further checking on the feasability of writing
+        // the directory and the files.
+        File targetDir = target.getParentFile();
+        if (targetDir!=null && !targetDir.exists()) { targetDir.mkdirs(); }
+        try {
+            dataOut.write(targetDir);
+        }
+        catch (IOException e) {
+            System.out.println("--> Error writing out file!");
+            System.out.println("    "+e.getMessage());
+            System.exit(1);
+        }
     }
-
-    /**
-     *  Parse command-line arguments.
-     *
-     *  @param  args  Array of command line arguments.
-     *
-     *  @throws  IllegalArgumentException  If an argument is invalid.
-     */
+    
     private void parseCommandLine(String sArgs[])
         throws IllegalArgumentException {
 
@@ -367,7 +302,6 @@ public final class Application {
                 else if ("-xhtml+mathml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML; }
                 else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
                 else if ("-epub3".equals(sArg)) { sTargetMIME = MIMETypes.EPUB3; }
-                else if ("-recurse".equals(sArg)) { bRecurse = true; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
                 else if ("-clean".equals(sArg)) { configFileNames.add("*clean.xml"); }
                 else if ("-pdfprint".equals(sArg)) { configFileNames.add("*pdfprint.xml"); }
@@ -437,5 +371,36 @@ public final class Application {
             IllegalArgumentException("I'm sorry, the commandline ended abnormally");
     }
 	
+    private static void showUsage(String msg) {
+        System.out.println();
+        System.out.println("This is Writer2LaTeX, Version " + ConverterFactory.getVersion() 
+                           + " (" + ConverterFactory.getDate() + ")");
+        System.out.println();
+        if (msg != null) System.out.println(msg);
+        System.out.println();
+        System.out.println("Usage:");
+        System.out.println("   java -jar <path>/writer2latex.jar <options> <source file/directory> [<target file/directory>]");
+        System.out.println("where the available options are:");
+        System.out.println("   -latex");
+        System.out.println("   -bibtex");
+        System.out.println("   -xhtml");
+        System.out.println("   -xhtml11");
+        System.out.println("   -xhtml+mathml");
+        System.out.println("   -html5");
+        System.out.println("   -epub");
+        System.out.println("   -epub3");
+        System.out.println("   -template[=]<template file>");
+        System.out.println("   -stylesheet[=]<style sheet file>");
+        System.out.println("   -resource[=]<resource file>[::<media type>]");
+        System.out.println("   -ultraclean");
+        System.out.println("   -clean");
+        System.out.println("   -pdfprint");
+        System.out.println("   -pdfscreen");
+        System.out.println("   -cleanxhtml");
+        System.out.println("   -config[=]<configuration file>");
+        System.out.println("   -<configuration option>[=]<value>");
+        System.out.println("See the documentation for the available configuration options");
+    }
+
 
 }

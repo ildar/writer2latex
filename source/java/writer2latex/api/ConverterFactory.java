@@ -99,23 +99,6 @@ public class ConverterFactory {
         return converter instanceof Converter ? (Converter) converter : null;
     }
 	
-    /** <p>Create a <code>BatchConverter</code> implementation which supports
-     *  conversion into the specified MIME type</p>
-     *  <p>The only currently supported MIME type is <code>text/html</code>
-     *  (XHTML 1.0 strict)</p>
-     *
-     *  @param sMIME the MIME type of the target format
-     *  @return the required <code>BatchConverter</code> or null if a converter
-     *  for the requested MIME type could not be created
-     */
-    public static BatchConverter createBatchConverter(String sMIME) {
-        Object converter = null;
-        if (MIMETypes.XHTML.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.BatchConverterImpl");
-        }
-        return converter instanceof BatchConverter ? (BatchConverter) converter : null;
-    }
-	
     /** Create a <code>StarMathConverter</code> implementation
      *
      *  @return the converter

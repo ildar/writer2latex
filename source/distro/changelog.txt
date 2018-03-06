@@ -1,2 +1,6 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[all] Removed the batch conversion feature.
+
+[all] Changed license from LGPL v2.1 to GPLv3
+

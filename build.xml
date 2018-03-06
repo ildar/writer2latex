@@ -60,7 +60,6 @@
 	        files="${org.json},${org.jbibtex}"/>
         <!-- additional uno interfaces generated from idl -->
         <pathelement path="${source.idl}/writer2latex"/>
-        <pathelement path="${source.idl}/writer2xhtml"/>
     </path> 
 
     <target name="all"
@@ -200,10 +199,6 @@
                 	<include name="writer2latex/latex/i18n/*.class"/>
                 </patternset>
             </fileset>
-            <!-- also include uno interface as generated from idl -->
-            <fileset dir="${source.idl}/writer2xhtml">
-                <include name="org/**/*"/>
-            </fileset>
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
                 <!-- OOo needs this to register the filter: -->
@@ -216,7 +211,6 @@
         <zip destfile="${target.lib}/writer2xhtml.oxt">
             <zipfileset dir="source/oxt/writer2xhtml" prefix="" />
             <zipfileset dir="${tmp}" includes="writer2xhtml-filter.jar" />
-            <zipfileset dir="${source.idl}/writer2xhtml" includes="writer2xhtml.rdb"/>
         </zip>
 		
         <!-- delete the jar for this extension -->
