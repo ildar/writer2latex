@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6 (2015-07-22)
+  # version 1.6 (2018-03-06)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -10,8 +10,6 @@
     <!-- set this property to the location of your SO/OOo installation -->
 	<property name="OFFICE_CLASSES" location="/usr/share/java" />
 	<property name="URE_CLASSES" location="/usr/share/java" />
-    <!-- set this property to the location of the java 6 bootstrap classes (rt.jar) -->
-	<property name="JAVA6_RT_JAR" location="/home/hj/jre6/lib/rt.jar" />
 
     <description>writer2latex - build file</description>
 
@@ -77,10 +75,9 @@
         <javac srcdir="${src}" 
                destdir="${classes}"
                encoding="us-ascii"
-        	   source="1.6"
-        	   target="1.6"
+        	   source="1.8"
+        	   target="1.8"
 	     	   classpath="${source.lib}/${org.json}:${source.lib}/${org.jbibtex}"
-        	   bootclasspath="${JAVA6_RT_JAR}"
         	   includeantruntime="false"
                debug="on">
             <classpath refid="main.class.path"/>

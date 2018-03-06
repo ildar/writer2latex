@@ -95,11 +95,11 @@
 		folder.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">The Writer2LaTeX distribution contains a folder named <emph>Zotero</emph>,
 		which contains a file called <emph>BibTeX-Writer2LaTeX.js</emph>. This file must be added to Zotero to provide a suitable
-		BibTeX export: In Zotero, choose <emph>Preferences</emph> - <emph>Advanced</emph> and click <emph>Show Data Directory</emph>.
+		BibTeX export: In Zotero, choose <emp>Edit</emph> - <emph>Preferences</emph> - <emph>Advanced</emph> and click <emph>Show Data Directory</emph>.
 		Open the subfolder <emph>Translators</emph>, and copy <emph>BibTeX-Writer2LaTeX.js</emph> to this location.
-		Finally restart Firefox.</paragraph>
+		Finally restart Zotero.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">You can now export your Zotero database: In Zotero, select
-		<emph>Export Library</emph>, and choose <emph>BibTeX (Writer2LaTeX)</emph> (not <emph>BibTeX</emph>).
+		<emph>File</emph> - <emph>Export Library</emph>, and choose <emph>BibTeX (Writer2LaTeX)</emph> (not <emph>BibTeX</emph>).
 		Save the file in the folder, you have defined.</paragraph>		
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" visibility="hidden">Check this to convert Zotero citations to LaTeX</ahelp></paragraph>
 
@@ -109,9 +109,8 @@
 			is an open source bibliography reference manager using BibTeX as native file format.
 			
 			You can use JabRef to edit your BibTeX files.
-			In addition JabRef provides a <link href="http://jabref.sourceforge.net/OOPlugin-jabref.php" name="JabRef OOo plugin">plugin</link>
-			which permits you to insert citations from JabRef in your %PRODUCTNAME Writer document
-			using a selection of citation schemes. You should use version 0.8.999 beta or later of the plugin.</paragraph>
+			In addition JabRef permits you to insert citations directly from JabRef in your %PRODUCTNAME Writer document
+			using a selection of citation schemes.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if you want to convert JabRef citations to LaTeX.
 		This enables you to format the citations using a BibTeX style of your choice.
 		Also, the bibliography created by JabRef will be replaced with a BibTeX-generated bibliography.

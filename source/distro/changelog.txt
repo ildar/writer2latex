@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 beta ----------
 
+[w2l] Removed remark about JabRef plugin for LO from help file, as the functionality is now native in JabRef 
+
 [w2l] Enabled export of WMF and EMF graphics to PDF (was disabled due to bugs in earlier versions of LO)
 
 [w2x] In the BibTeX dialog, updating references generates a status message. This is now moved from a message box
@@ -16,8 +18,6 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
   The setting is ignored if the backend is XeTeX, in this case all files are assumed to be UTF-8.
   Also, the default bibtex application has been changed to bibtex8 (but currently no attempt is made to select the
   proper .csf file)
-
----------- version 1.5.3 ----------
 
 [w2l] The command \textsubscript is now defined with \providecommand to avoid problems with other packages that may
   already have defined this command

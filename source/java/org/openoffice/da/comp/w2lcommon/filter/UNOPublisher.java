@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2015-05-28)
+ *  Version 1.6 (2018-03-06)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -160,7 +160,7 @@ public class UNOPublisher {
     
     /** Post process the document after conversion.
      * 
-     *  @param format URL of the converted document
+     *  @param sTargetURL URL of the converted document
      *  @param format the target format
      */
     protected void postProcess(String sTargetURL, TargetFormat format) {

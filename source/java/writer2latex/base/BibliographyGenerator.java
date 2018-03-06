@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-20)
+ *  Version 1.6 (2018-03-06)
  *
  */
 
@@ -196,7 +196,7 @@ public abstract class BibliographyGenerator {
 	
 	/** Generate a bibliography
 	 * 
-	 * @param bibliography a text:bibliography-source element
+	 * @param bibSource a text:bibliography-source element
 	 */
 	protected void generateBibliography(Element bibSource) {
 		Map<String,Element> bibEntryTemplate = collectTemplates(bibSource);

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-29)
+ *  Version 1.6 (2018-03-06)
  *
  */ 
  
@@ -151,7 +151,7 @@ public class ExternalApps {
     /** Define to use the system's default for an external application. This is only possible if the application is a viewer,
      *  otherwise setting the value to true will be ignored
      *  @param sAppName the name of the application
-     *  @param sUseDefault flag defining whether or not to use the default
+     *  @param bUseDefault flag defining whether or not to use the default
      */
     public void setUseDefaultApplication(String sAppName, boolean bUseDefault) {
     	if (bUseDefault && isViewer(sAppName)) {
