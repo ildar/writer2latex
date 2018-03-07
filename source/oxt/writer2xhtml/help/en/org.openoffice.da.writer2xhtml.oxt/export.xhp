@@ -2,13 +2,13 @@
 <helpdocument version="1.0">
 	<meta>
         <topic id="writer2xhtml-export-writer" indexer="include">
-            <title xml-lang="en-US">XHTML Export (Writer)</title>
+            <title xml-lang="en-US">XHTML Export</title>
             <filename>org.openoffice.da.writer2xhtml.oxt/export.xhp</filename>
         </topic>
     </meta>
     <body>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Options" id="bm_options"/>
-        <paragraph role="heading" level="1" xml-lang="en-US">XHTML Export (Writer)</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">XHTML Export</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Exports the current document to XHTML format.</paragraph>
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>File - Export - XHTML 1.0 strict</emph><br/>

@@ -134,56 +134,6 @@
             <value>true</value>
         </prop>
     </node>
-    <node oor:name="XhtmlOptionsCalc">
-        <prop oor:name="Config" oor:type="xs:short">
-            <value>0</value>
-        </prop>
-        <prop oor:name="ConfigName" oor:type="xs:string">
-            <value></value>
-        </prop>
-        <prop oor:name="ConvertToPx" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
-        <prop oor:name="Scaling" oor:type="xs:int">
-            <value>100</value>
-        </prop>
-        <prop oor:name="ColumnScaling" oor:type="xs:int">
-            <value>100</value>
-        </prop>
-        <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="Notes" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
-        <prop oor:name="UseDublinCore" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
-        <prop oor:name="DisplayHiddenSheets" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="DisplayHiddenRowsCols" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="DisplayFilteredRowsCols" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="ApplyPrintRanges" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="UseTitleAsHeading" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
-        <prop oor:name="UseSheetNamesAsHeadings" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
-        <prop oor:name="CalcSplit" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="SaveImagesInSubdir" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-    </node>
 </oor:component-data>
 
 

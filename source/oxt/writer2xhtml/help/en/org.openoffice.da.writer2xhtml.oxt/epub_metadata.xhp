@@ -2,13 +2,13 @@
 <helpdocument version="1.0">
 	<meta>
         <topic id="writer2xhtml-epub-metadata" indexer="include">
-            <title xml-lang="en-US">EPUB document properties (Writer)</title>
+            <title xml-lang="en-US">EPUB document properties</title>
             <filename>org.openoffice.da.writer2xhtml.oxt/epub_metadata.xhp</filename>
         </topic>
     </meta>
     <body>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubMetadata" id="bm_metadata"/>
-        <paragraph role="heading" level="1" xml-lang="en-US">EPUB document properties (Writer)</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">EPUB document properties</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Edit the document properties for an EPUB document.</paragraph>
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>File - Export - EPUB</emph> or <emph>File - Export - EPUB 3</emph>,

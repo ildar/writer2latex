@@ -1,12 +1,17 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[w2l] Removed obsolete file writer.sty
+[filter] New focus: Removed the XHTML export filters from Calc. This affects
+  the LO integration only. The core library still handles spreadsheets (and
+  even presentations). All references to this in the documentation has been
+  deleted though, and the functionality may be removed later.
 
-[api] Removed deprecated method ConverterResult.getMasterDocument()
+[w2l] Clean up: Removed obsolete file writer.sty
 
-[all] Removed the batch conversion feature: The command line application thus
-  accepts only files, not folders. The corresponding API methods as well as
-  the UNO service has been removed.
+[api] Clean up: Removed deprecated method ConverterResult.getMasterDocument()
+  from API
+
+[all] New focus: Removed the batch conversion feature: The command line
+  application thus  accepts only files, not folders. The corresponding API
+  methods as well as the UNO service has been removed.
 
 [all] Changed license from LGPL v2.1 to GPLv3
-

@@ -6,7 +6,7 @@
 		<node oor:name="org.openoffice.da.writer2xhtml.OfficeToolBar" oor:op="replace">
       		<node oor:name="button1" oor:op="replace">
                 <prop oor:name="Context" oor:type="xs:string">
-                    <value>com.sun.star.text.TextDocument,com.sun.star.sheet.SpreadsheetDocument</value>
+                    <value>com.sun.star.text.TextDocument</value>
                 </prop>
                 <prop oor:name="Title" oor:type="xs:string">
                     <value xml:lang="en-US">Publish as XHTML</value>
@@ -60,7 +60,7 @@
       		</node>
       		<node oor:name="button4" oor:op="replace">
                 <prop oor:name="Context" oor:type="xs:string">
-                    <value>com.sun.star.text.TextDocument,com.sun.star.sheet.SpreadsheetDocument</value>
+                    <value>com.sun.star.text.TextDocument</value>
                 </prop>
                 <prop oor:name="Title" oor:type="xs:string">
                     <value xml:lang="en-US">Edit custom style</value>

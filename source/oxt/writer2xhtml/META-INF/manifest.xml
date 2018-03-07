@@ -18,10 +18,6 @@
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
 
     <manifest:file-entry
-     manifest:full-path="Office/UI/CalcWindowState.xcu"
-     manifest:media-type="application/vnd.sun.star.configuration-data"/>
-
-    <manifest:file-entry
      manifest:full-path="writer2xhtml-filter.jar"
      manifest:media-type="application/vnd.sun.star.uno-component;type=Java"/>
 

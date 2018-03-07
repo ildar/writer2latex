@@ -42,26 +42,9 @@
 			</listitem>
 		</list>
         
-        <paragraph role="paragraph" xml-lang="en-US">It further adds a number of entries to the <emph>File - Export</emph> 
-        menu in Calc</paragraph>
-        <list type="unordered">
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export_calc.xhp"
-          name="Export XHTML or EPUB files">XHTML 1.0 strict [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export_calc.xhp"
-          name="Export XHTML or EPUB files">XHTML 1.1 [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export_calc.xhp"
-          name="Export XHTML or EPUB files">HTML5 [Writer2xhtml]</link></paragraph>
-			</listitem>
-		</list>
-
         <paragraph role="heading" level="2" xml-lang="en-US">Using the Writer2xhtml toolbar</paragraph>
 
-        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds a toolbar in Writer and Calc,
+        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds a toolbar in Writer,
         providing the following commands. You can <link href="org.openoffice.da.writer2xhtml.oxt/settings.xhp"
           name="Writer2xhtml toolbar settings">configure</link> the behavior of the toolbar.</paragraph>
 
