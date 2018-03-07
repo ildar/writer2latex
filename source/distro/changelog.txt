@@ -1,6 +1,12 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[all] Removed the batch conversion feature.
+[w2l] Removed obsolete file writer.sty
+
+[api] Removed deprecated method ConverterResult.getMasterDocument()
+
+[all] Removed the batch conversion feature: The command line application thus
+  accepts only files, not folders. The corresponding API methods as well as
+  the UNO service has been removed.
 
 [all] Changed license from LGPL v2.1 to GPLv3
 

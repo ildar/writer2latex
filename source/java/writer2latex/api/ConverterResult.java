@@ -2,7 +2,7 @@
  *
  *  ConverterResult.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-07-20)
+ *  Version 2.0 (2018-03-07)
  *
  */
  
@@ -35,14 +35,6 @@ import java.util.List;
  */
 public interface ConverterResult {
     
-    /** Get the master document
-     *  Deprecated as of Writer2LaTeX 1.2: The master document is always the first document
-     *  returned by the <code>iterator</code> 
-     * 
-     *  @return <code>OutputFile</code> the master document
-     */
-    @Deprecated public OutputFile getMasterDocument();
-
     /** Gets an <code>Iterator</code> to access all files in the
      *  <code>ConverterResult</code>. The iterator will return the master documents first
      *  in logical order (starting with the primary master document)
