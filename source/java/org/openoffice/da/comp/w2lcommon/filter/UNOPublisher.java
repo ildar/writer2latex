@@ -298,7 +298,7 @@ public class UNOPublisher {
       
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath"; //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog"; //$NON-NLS-1$
     	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$

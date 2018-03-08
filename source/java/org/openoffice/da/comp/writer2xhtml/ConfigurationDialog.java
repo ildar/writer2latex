@@ -2,7 +2,7 @@
  *
  *  ConfigurationDialog.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 2.0 (2018-03-06)
  *
  */ 
 
@@ -549,11 +549,8 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	
     }
 
-    private class ContentHandler extends PageHandler {
-    	private final String[] sFormulaValues = { "image+starmath", "image+latex", "starmath", "latex" };
-    	
+    private class ContentHandler extends PageHandler {    	
     	@Override protected void setControls(DialogAccess dlg) {
-    		listBoxFromConfig(dlg, "Formulas", "formulas", sFormulaValues, (short) 0);
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
     		checkBoxFromConfig(dlg, "EmbedSvg", "embed_svg");
@@ -561,7 +558,6 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
-    		listBoxToConfig(dlg, "Formulas", "formulas", sFormulaValues);
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
     		checkBoxToConfig(dlg, "EmbedSvg", "embed_svg");

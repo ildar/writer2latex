@@ -2,7 +2,7 @@
  *
  *  XhtmlOptionsDialog.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-25)
+ *  Version 2.0 (2018-03-08)
  *
  */ 
  
@@ -33,7 +33,7 @@ import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
 
 /** This class provides a uno component which implements a filter ui for the
- *  Xhtml export
+ *  HTML5 export
  */
 public class XhtmlOptionsDialog extends OptionsDialogBase {
     
@@ -201,7 +201,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         setControlEnabled("RepeatLevelsLabel",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("RepeatLevels",!isLocked("repeat_levels") && !isLocked("split_level") && bSplit);
         setControlEnabled("SaveImagesInSubdir",!isLocked("save_images_in_subdir"));
-        setControlEnabled("UseMathjax",(this instanceof XhtmlOptionsDialogMath) && !isLocked("use_mathjax"));
+        setControlEnabled("UseMathjax",!isLocked("use_mathjax"));
     }
 	
     private void enableSplitLevel() {
