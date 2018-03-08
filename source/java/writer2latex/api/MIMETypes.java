@@ -2,7 +2,7 @@
  *
  *  MIMETypes.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-01-09)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -46,11 +46,8 @@ public class MIMETypes {
     public static final String PDF="application/pdf";
 	
     // Destination formats
-    public static final String XHTML="text/html";
-    /** This is a fake MIME type, for internal use only */
-    public static final String XHTML11="application/xhtml11";
-    public static final String XHTML_MATHML="application/xhtml+xml";
-    /** This is a fake MIME type, for internal use only */
+    public static final String HTML="text/html";
+    /** This is a fake MIME type, for backwards compatibility */
     public static final String HTML5="text/html5";
     public static final String EPUB="application/epub+zip";
     /** This is not a MIME type either */

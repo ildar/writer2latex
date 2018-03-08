@@ -2,7 +2,7 @@
  *
  *  MathConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-05-05)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -32,35 +32,20 @@ import org.w3c.dom.NamedNodeMap;
 
 import writer2latex.office.*;
 import writer2latex.util.Misc;
-import writer2latex.base.BinaryGraphicsDocument;
-import writer2latex.latex.StarMathConverter;
 
 /** This class converts formulas: Either as MathML, as an image or as plain text (StarMath or LaTeX format)
  */
 public class MathConverter extends ConverterHelper {
-	
-	private StarMathConverter smc = null;
-
-    private boolean bSupportMathML;
-    private boolean bUseImage;
-    private boolean bUseLaTeX;
 	
     /** Create a new <code>MathConverter</code>
      * 
      * @param ofr the OfficeReader to query about the document 
      * @param config the configuration determining the type of export
      * @param converter the converter instance
-     * @param bSupportMathML true if the formula should be exported as MathML
      */
-    public MathConverter(OfficeReader ofr, XhtmlConfig config, Converter converter,
-        boolean bSupportMathML) {
+    public MathConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
 
         super(ofr,config,converter);
-        this.bSupportMathML = bSupportMathML;
-        this.bUseImage = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.IMAGE_STARMATH;
-        this.bUseLaTeX = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.LATEX;
-        
-        if (bUseLaTeX) { smc = new StarMathConverter(); }
     }
 	
     /** Convert a formula
@@ -70,12 +55,7 @@ public class MathConverter extends ConverterHelper {
      * @param hnode the xhtml node to which content should be added
      */
     public void convert(Element image, Element onode, Node hnode, boolean bAllowDisplayStyle) {
-        if (bSupportMathML) {
-            convertAsMathML(onode,hnode,bAllowDisplayStyle);
-        }
-        else {
-        	convertAsImageOrText(image,onode,hnode);
-        }
+    	convertAsMathML(onode,hnode,bAllowDisplayStyle);
     }
     
     public boolean convertTexMathsEquation(Element onode, Element hnodeBlock, Element hnodeInline, int nMode) {
@@ -106,7 +86,7 @@ public class MathConverter extends ConverterHelper {
     		// Format is <point size>X<mode>X<TeX code>X<format>X<resolution>X<transparency>
     		// where X is a paragraph sign
     		String sMathJax;
-    		if (config.useMathJax() && bSupportMathML) {
+    		if (config.useMathJax()) {
     			switch (converter.getTexMathsStyle(sLaTeX)) {
     			case inline:
     				sMathJax = "\\("+converter.getTexMathsEquation(sLaTeX)+"\\)";
@@ -127,66 +107,14 @@ public class MathConverter extends ConverterHelper {
     	}
     	return false;
     }
-
     
-    // For plain xhtml: Convert the formula as an image or as plain text
-    private void convertAsImageOrText(Element image, Node onode, Node hnode) {
-    	NodeList annotationList = ((Element) onode).getElementsByTagName(XMLString.ANNOTATION); // Since OOo 3.2
-    	if (annotationList.getLength()==0) {
-    		annotationList = ((Element) onode).getElementsByTagName(XMLString.MATH_ANNOTATION);
-    	}
-    	if (annotationList.getLength()>0 && annotationList.item(0).hasChildNodes()) {
-    		// First create the annotation (either StarMath or LaTeX)
-    		String sAnnotation = "";
-    		Node child = annotationList.item(0).getFirstChild();
-    		while (child!=null) {
-    			sAnnotation+=child.getNodeValue();
-    			child = child.getNextSibling();
-    		}
-    		if (bUseLaTeX) { sAnnotation = smc.convert(sAnnotation); }
-
-    		// Next insert the image if required and available
-    		if (bUseImage) {
-    			// Get the image from the ImageLoader
-    			String sHref = Misc.getAttribute(onode,XMLString.XLINK_HREF);
-    			if (sHref==null || sHref.length()==0 || ofr.isInPackage(sHref)) {
-    				BinaryGraphicsDocument bgd = converter.getImageCv().getImage(image);
-    				if (bgd!=null) {
-    					String sMIME = bgd.getMIMEType();
-    					if (MIMETypes.PNG.equals(sMIME) || MIMETypes.JPEG.equals(sMIME) || MIMETypes.GIF.equals(sMIME)) {
-    						converter.addDocument(bgd);
-    	    				// Create the image and add the StarMath/LaTeX formula as alternative text
-    	    				Element img = converter.createElement("img");
-    	    				img.setAttribute("src",bgd.getFileName());
-    	    				img.setAttribute("class", "formula");
-    	    				img.setAttribute("alt",sAnnotation);
-
-    	    				hnode.appendChild(img);
-    	    				
-    	    				return;
-    					}
-    				}
-    			}
-    		}
-
-    		// Otherwise insert the StarMath/LaTeX annotation as a kbd element
-    		Element kbd = converter.createElement("kbd");
-    		kbd.setAttribute("class", "formula");
-    		hnode.appendChild(kbd);
-    		kbd.appendChild(converter.createTextNode(sAnnotation));
-    	}
-    	else {
-    		hnode.appendChild(converter.createTextNode("[Warning: formula ignored]"));
-    	}
-    }
-    
-    // For xhtml+mathml: Insert the mathml, removing the namespace (if any) and the annotation
+    // Insert the mathml, removing the namespace (if any) and the annotation
     private void convertAsMathML(Element onode, Node hnode, boolean bAllowDisplay) {
     	Element math = converter.createElement("math");
     	if (onode.hasAttribute("xmlns:math")) {
     		math.setAttribute("xmlns", onode.getAttribute("xmlns:math"));
     	}
-    	else if (onode.hasAttribute("xmlns") && (converter.nType!=XhtmlDocument.HTML5 || converter.isOPS())) {
+    	else if (onode.hasAttribute("xmlns") && converter.isOPS()) {
     		// Don't include xmlns attribute in HTML5, unless we are creating EPUB 3
     		math.setAttribute("xmlns", onode.getAttribute("xmlns"));
     	}

@@ -2,7 +2,7 @@
  *
  *  PresentationStyleConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -51,10 +51,9 @@ public class PresentationStyleConverter extends FrameStyleConverter {
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
      *  @param converter the main <code>Converter</code> class
-     *  @param nType the type of xhtml to use
      */
-    public PresentationStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
-        super(ofr,config,converter,nType);
+    public PresentationStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+        super(ofr,config,converter);
         // style maps for presentations are currently not supported:
         this.styleMap = new XhtmlStyleMap();
     }

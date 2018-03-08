@@ -2,7 +2,7 @@
  *
  *	NoteConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-14)
+ *  Version 2.0 (2018-03-08)
  *
  */
 package writer2latex.xhtml;
@@ -93,7 +93,7 @@ class NoteConverter extends ConverterHelper {
     }
     
     Element createNoteSection(Node hnode, String sEpubType) {
-    	Element section = converter.createElement(converter.isHTML5() ? "section" : "div");
+    	Element section = converter.createElement("section");
     	hnode.appendChild(section);
     	converter.addEpubType(section, sEpubType);
     	return section;
@@ -123,7 +123,7 @@ class NoteConverter extends ConverterHelper {
 		for (int i=0; i<nSize; i++) {
 			Node note = notes.get(i);
 			// Create container
-			Element aside = converter.createElement(converter.isHTML5() ? "aside" : "div");
+			Element aside = converter.createElement("aside");
 			hnode.appendChild(aside);
 			converter.addEpubType(aside, sEpubType);
 			// Get the citation

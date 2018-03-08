@@ -2,7 +2,7 @@
  *
  *  StyleConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-15)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -66,20 +66,20 @@ class StyleConverter extends ConverterHelper {
      * @param converter the main converter
      * @param nType the XHTML type
      */
-    StyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
+    StyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         // Create the helpers
-        textSc = new TextStyleConverter(ofr,config,converter,nType);
-        parSc = new ParStyleConverter(ofr,config,converter,nType);
-        headingSc = new HeadingStyleConverter(ofr,config,converter,nType);
-        listSc = new ListStyleConverter(ofr,config,converter,nType);
-        sectionSc = new SectionStyleConverter(ofr,config,converter,nType);
-        tableSc = new TableStyleConverter(ofr,config,converter,nType);
-        rowSc = new RowStyleConverter(ofr,config,converter,nType);
-        cellSc = new CellStyleConverter(ofr,config,converter,nType);
-        frameSc = new FrameStyleConverter(ofr,config,converter,nType);
-        presentationSc = new PresentationStyleConverter(ofr,config,converter,nType);
-        pageSc = new PageStyleConverter(ofr,config,converter,nType);
+        textSc = new TextStyleConverter(ofr,config,converter);
+        parSc = new ParStyleConverter(ofr,config,converter);
+        headingSc = new HeadingStyleConverter(ofr,config,converter);
+        listSc = new ListStyleConverter(ofr,config,converter);
+        sectionSc = new SectionStyleConverter(ofr,config,converter);
+        tableSc = new TableStyleConverter(ofr,config,converter);
+        rowSc = new RowStyleConverter(ofr,config,converter);
+        cellSc = new CellStyleConverter(ofr,config,converter);
+        frameSc = new FrameStyleConverter(ofr,config,converter);
+        presentationSc = new PresentationStyleConverter(ofr,config,converter);
+        pageSc = new PageStyleConverter(ofr,config,converter);
     }
 	
     // Accessor methods for helpers: We need to override the style helper accessors

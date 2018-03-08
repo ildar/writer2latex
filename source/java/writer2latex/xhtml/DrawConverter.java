@@ -2,7 +2,7 @@
  *
  *  DrawConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-01-14)
+ *  Version 2.0 (2018-03-06)
  *
  */
  
@@ -491,7 +491,7 @@ public class DrawConverter extends ConverterHelper {
         
         // Create the image (sFileName contains the file name)
         Element imageElement = null;
-        if (converter.nType==XhtmlDocument.HTML5 && bEmbedSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
+        if (bEmbedSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
         	// In HTML5 we may embed SVG images directly in the document
         	if (bgd.isRecycled()) {
         		// Get from the cache (actually we are certain it is there)

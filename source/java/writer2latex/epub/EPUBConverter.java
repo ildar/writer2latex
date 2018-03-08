@@ -30,12 +30,12 @@ import java.io.InputStream;
 
 import writer2latex.api.ConverterResult;
 import writer2latex.base.ConverterResultImpl;
-import writer2latex.xhtml.Xhtml11Converter;
+import writer2latex.xhtml.Converter;
 
 
 /** This class converts an OpenDocument file to an EPUB document.
  */
-public final class EPUBConverter extends Xhtml11Converter {
+public final class EPUBConverter extends Converter {
                         
     // Constructor
     public EPUBConverter() {

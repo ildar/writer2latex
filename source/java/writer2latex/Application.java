@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-06) 
+ *  Version 2.0 (2018-03-08) 
  *
  */
  
@@ -49,8 +49,8 @@ import writer2latex.util.Misc;
  * <pre>java -jar writer2latex.jar [options] source [target]</pre>
  * <p>Where the available options are
  * <ul>
- * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>, <code>-xhtml</code>,
-       <code>-xhtml+mathml</code>, <code>-epub</code>, <code>-epub3</code>
+ * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>,
+ * <code>-epub</code>, <code>-epub3</code>
  * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-pdfscreen</code>,
  * <code>-pdfprint</code>, <code>-cleanxhtml</code>
  * <li><code>-config[=]filename</code>
@@ -296,10 +296,7 @@ public final class Application {
             if (sArg.startsWith("-")) { // found an option
                 if ("-latex".equals(sArg)) { sTargetMIME = MIMETypes.LATEX; }
                 else if ("-bibtex".equals(sArg)) { sTargetMIME = MIMETypes.BIBTEX; }
-                else if ("-html5".equals(sArg)) { sTargetMIME = MIMETypes.HTML5; }
-                else if ("-xhtml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML; }
-                else if ("-xhtml11".equals(sArg)) { sTargetMIME = MIMETypes.XHTML11; }
-                else if ("-xhtml+mathml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML; }
+                else if ("-html5".equals(sArg)) { sTargetMIME = MIMETypes.HTML; }
                 else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
                 else if ("-epub3".equals(sArg)) { sTargetMIME = MIMETypes.EPUB3; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
@@ -383,9 +380,6 @@ public final class Application {
         System.out.println("where the available options are:");
         System.out.println("   -latex");
         System.out.println("   -bibtex");
-        System.out.println("   -xhtml");
-        System.out.println("   -xhtml11");
-        System.out.println("   -xhtml+mathml");
         System.out.println("   -html5");
         System.out.println("   -epub");
         System.out.println("   -epub3");

@@ -2,7 +2,7 @@
  *
  *	IndexConverterBase.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -78,7 +78,7 @@ abstract class IndexConverterHelper extends ConverterHelper {
     
     // Create a container node for the index
     private Element createContainer(Element source, Element hnode) {
-		Element container = converter.createElement(converter.isHTML5() ? "section" : "div");
+		Element container = converter.createElement("section");
 		hnode.appendChild(container);
 
 		converter.addEpubType(container, sEpubType);

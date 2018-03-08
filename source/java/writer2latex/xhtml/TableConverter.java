@@ -2,7 +2,7 @@
  *
  *  TableConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-27)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -177,11 +177,6 @@ public class TableConverter extends ConverterHelper {
     private Element createTable(TableReader tblr) {
         Element table = converter.createElement("table");
         // Apply table style
-        // Older versions of IE needs the cellspacing attribute, as it doesn't understand the css border-spacing attribute
-        // We cannot do this with HTML5
-        if (!converter.isHTML5()) {
-        	table.setAttribute("cellspacing","0");
-        }
         applyTableStyle(tblr.getTableStyleName(), table, tblr.isSubTable());
         return table;
     }
@@ -209,11 +204,9 @@ public class TableConverter extends ConverterHelper {
         if (config.tableSize()!=XhtmlConfig.NONE) {
         	if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE || bFirstRowColSpan) {
         		Element colgroup = hnode;
-        		if (converter.nType==XhtmlDocument.HTML5) {
-        			// Polyglot HTML5 documents must use an explicit colgroup
-        			colgroup = converter.createElement("colgroup");
-        			hnode.appendChild(colgroup);
-        		}
+    			// Polyglot HTML5 documents must use an explicit colgroup
+    			colgroup = converter.createElement("colgroup");
+    			hnode.appendChild(colgroup);
         		if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE) {
         			for (int nCol=0; nCol<nColCount; nCol++) {
         				Element col = converter.createElement("col");
@@ -238,12 +231,9 @@ public class TableConverter extends ConverterHelper {
         }
         if (nBodyStart==0 || nBodyStart==nRowCount) {
             // all body or all head
-        	Element tbody = hnode;
-        	if (converter.nType==XhtmlDocument.HTML5) {
-        		// Polyglot HTML5 documents must use an explicit tbody
-        		tbody = converter.createElement("tbody");
-        		hnode.appendChild(tbody);
-        	}
+    		// Polyglot HTML5 documents must use an explicit tbody
+        	Element tbody = converter.createElement("tbody");
+    		hnode.appendChild(tbody);
             traverseRows(view,0,nRowCount,tbody);
         }
         else {

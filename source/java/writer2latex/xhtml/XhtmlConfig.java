@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-06)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -40,7 +40,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 57; }
+    protected int getOptionCount() { return 56; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -86,12 +86,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public static final int ABSOLUTE = 1;
     public static final int RELATIVE = 2;
     
-    // Formulas (for XHTML 1.0 strict)
-    public static final int STARMATH = 0;
-    public static final int LATEX = 1;
-    public static final int IMAGE_STARMATH = 2;
-    public static final int IMAGE_LATEX = 3;
-    
     // Page breaks
     // public static final int NONE = 0;
     public static final int STYLES = 1;
@@ -132,30 +126,29 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int FONT_SCALING = 30;
     private static final int FLOAT_OBJECTS = 31;
     private static final int TABSTOP_STYLE = 32;
-    private static final int FORMULAS = 33;
-    private static final int ENDNOTES_HEADING = 34;
-    private static final int FOOTNOTES_HEADING = 35;
-    private static final int EXTERNAL_TOC_DEPTH = 36;
-    private static final int INCLUDE_TOC = 37;
-    private static final int INCLUDE_NCX = 38;
-    private static final int SPLIT_LEVEL = 39;
-    private static final int REPEAT_LEVELS = 40;
-    private static final int PAGE_BREAK_SPLIT = 41;
-    private static final int SPLIT_AFTER = 42;
-    private static final int IMAGE_SPLIT = 43;
-    private static final int COVER_IMAGE = 44;
-    private static final int EMBED_SVG = 45;
-    private static final int EMBED_IMG = 46;
-    private static final int USE_MATHJAX = 47;
-    private static final int CALC_SPLIT = 48;
-    private static final int DISPLAY_HIDDEN_SHEETS = 49;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 50;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 51;
-    private static final int APPLY_PRINT_RANGES = 52;
-    private static final int USE_TITLE_AS_HEADING = 53;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 54;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 55;
-    private static final int UPLINK = 56;
+    private static final int ENDNOTES_HEADING = 33;
+    private static final int FOOTNOTES_HEADING = 34;
+    private static final int EXTERNAL_TOC_DEPTH = 35;
+    private static final int INCLUDE_TOC = 36;
+    private static final int INCLUDE_NCX = 37;
+    private static final int SPLIT_LEVEL = 38;
+    private static final int REPEAT_LEVELS = 39;
+    private static final int PAGE_BREAK_SPLIT = 40;
+    private static final int SPLIT_AFTER = 41;
+    private static final int IMAGE_SPLIT = 42;
+    private static final int COVER_IMAGE = 43;
+    private static final int EMBED_SVG = 44;
+    private static final int EMBED_IMG = 45;
+    private static final int USE_MATHJAX = 46;
+    private static final int CALC_SPLIT = 47;
+    private static final int DISPLAY_HIDDEN_SHEETS = 48;
+    private static final int DISPLAY_HIDDEN_ROWS_COLS = 49;
+    private static final int DISPLAY_FILTERED_ROWS_COLS = 50;
+    private static final int APPLY_PRINT_RANGES = 51;
+    private static final int USE_TITLE_AS_HEADING = 52;
+    private static final int USE_SHEET_NAMES_AS_HEADINGS = 53;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 54;
+    private static final int UPLINK = 55;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -224,15 +217,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[TABSTOP_STYLE] = new Option("tabstop_style","");
         options[ENDNOTES_HEADING] = new Option("endnotes_heading","");
         options[FOOTNOTES_HEADING] = new Option("footnotes_heading","");
-        options[FORMULAS] = new IntegerOption("formulas","image+starmath") {
-        	@Override public void setString(String sValue) {
-        		super.setString(sValue);
-        		if ("latex".equals(sValue)) { nValue = LATEX; }
-        		else if ("image+latex".equals(sValue)) { nValue = IMAGE_LATEX; }
-        		else if ("starmath".equals(sValue)) { nValue = 	STARMATH; }
-        		else { nValue = IMAGE_STARMATH; }
-        	}
-        };
         options[EXTERNAL_TOC_DEPTH] = new IntegerOption("external_toc_depth","auto")  {
         	@Override public void setString(String sValue) {
                 super.setString(sValue);
@@ -405,7 +389,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public String getXhtmlTabstopStyle() { return options[TABSTOP_STYLE].getString(); }
     public String getEndnotesHeading() { return options[ENDNOTES_HEADING].getString(); }
     public String getFootnotesHeading() { return options[FOOTNOTES_HEADING].getString(); }
-    public int formulas() { return ((IntegerOption) options[FORMULAS]).getValue(); }
     public int externalTocDepth() { return ((IntegerOption) options[EXTERNAL_TOC_DEPTH]).getValue(); }
     public boolean includeToc() { return ((BooleanOption) options[INCLUDE_TOC]).getValue(); }
     public boolean includeNCX() { return ((BooleanOption) options[INCLUDE_NCX]).getValue(); }

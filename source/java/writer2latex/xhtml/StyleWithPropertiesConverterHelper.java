@@ -2,7 +2,7 @@
  *
  *  StyleWithPropertiesConverterHelper.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,20 +19,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2014-10-24)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
 package writer2latex.xhtml;
 
 import java.util.Enumeration;
-//import java.util.Hashtable;
 
-//import writer2latex.latex.util.Info;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.util.CSVList;
-//import writer2latex.util.ExportNameCollection;
 
 /**
  * <p>This is an abstract class to convert an OpenDocument style family
@@ -45,11 +42,10 @@ public abstract class StyleWithPropertiesConverterHelper
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
      *  @param converter the main <code>Converter</code> class
-     *  @param nType the type of xhtml to use
      */
     public StyleWithPropertiesConverterHelper(OfficeReader ofr, XhtmlConfig config,
-        Converter converter, int nType) {
-        super(ofr,config,converter,nType);
+        Converter converter) {
+        super(ofr,config,converter);
     }
 
     /** Apply a style, either by converting the style or by applying the

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-06)
+ *  Version 2.0 (2018-03-08)
  *
  */
  
@@ -32,8 +32,8 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.9.1";
-    private static final String DATE = "2018-03-06";
-	
+    private static final String DATE = "2018-03-08";
+
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
      *  Development versions have an odd minor version number
@@ -52,16 +52,8 @@ public class ConverterFactory {
      *  <ul>
      *    <li><code>application/x-latex</code> for LaTeX format</li>
      *    <li><code>application/x-bibtex</code> for BibTeX format</li>
-     *    <li><code>text/html</code> for XHTML 1.0 strict format</li>
-     *    <li><code>application/xhtml11</code> for XHTML 1.1 format
-     *    Note that this is <em>not</em> the recommended media type for XHTML 1.1
-     *    (see http://www.w3.org/TR/xhtml-media-types/), but it is used internally
-     *    by Writer2xhtml to distinguish from XHTML+MathML</li>
-     *    <li><code>application/xhtml+xml</code> for XHTML+MathML</li>
-     *    <li><code>text/html5</code> for HTML5 documents
-     *    Note that this is <em>not</em> the recommended media type for HTML5
-     *    (see http://wiki.whatwg.org/), but it is used internally
-     *    by Writer2xhtml to distinguish from HTML5</li>
+     *    <li><code>text/html5</code> or <code>text/html5</code> for HTML5 documents
+     *    (the latter for backwards compatibility with w2l 1.4 and 1.6)</li>
      *    <li><code>application/epub+zip</code></li> for EPUB format</li>
      *    <li><code>epub3</code> for EPUB 3 format</li>
      *  </ul>
@@ -78,17 +70,11 @@ public class ConverterFactory {
         else if (MIMETypes.BIBTEX.equals(sMIME)) {
             converter = createInstance("writer2latex.bibtex.Converter");
         }
-        else if (MIMETypes.XHTML.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.Xhtml10Converter");
-        }
-        else if (MIMETypes.XHTML11.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.Xhtml11Converter");
-        }
-        else if (MIMETypes.XHTML_MATHML.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.XhtmlMathMLConverter");
+        else if (MIMETypes.HTML.equals(sMIME)) {
+            converter = createInstance("writer2latex.xhtml.Converter");
         }
         else if (MIMETypes.HTML5.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.Html5Converter");
+            converter = createInstance("writer2latex.xhtml.Converter");
         }
         else if (MIMETypes.EPUB3.equals(sMIME)) {
             converter = createInstance("writer2latex.epub.EPUB3Converter");

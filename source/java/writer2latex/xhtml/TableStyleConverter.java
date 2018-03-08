@@ -2,7 +2,7 @@
  *
  *  TableStyleConverter.java
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2010-05-13)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -42,10 +42,9 @@ public class TableStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
      *  @param converter the main <code>Converter</code> class
-     *  @param nType the type of xhtml to use
      */
-    public TableStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
-        super(ofr,config,converter,nType);
+    public TableStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+        super(ofr,config,converter);
         // Style maps for tables are currently not supported.
         this.styleMap = new XhtmlStyleMap();
         this.bConvertStyles = config.xhtmlTableFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlTableFormatting()==XhtmlConfig.IGNORE_HARD;

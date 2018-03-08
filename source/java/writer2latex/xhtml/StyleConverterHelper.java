@@ -2,7 +2,7 @@
  *
  *  StyleConverterHelper.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-03-10)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -48,9 +48,6 @@ public abstract class StyleConverterHelper extends ConverterHelper {
     protected boolean bConvertStyles = true;
     protected boolean bConvertHard = true;
 	
-    // The type of xhtml document
-    protected int nType;
-	
     // Scaling and unit transformation to use
     private String sScale;
     private String sColScale;
@@ -60,11 +57,9 @@ public abstract class StyleConverterHelper extends ConverterHelper {
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
      *  @param converter the main <code>Converter</code> class
-     *  @param nType the type of xhtml to use
      */
-    public StyleConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
+    public StyleConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
-        this.nType = nType;
         sScale = config.getXhtmlScaling();
         sColScale = config.getXhtmlColumnScaling();
         bConvertToPx = config.xhtmlConvertToPx();

@@ -2,7 +2,7 @@
  *
  *  ConverterHelper.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-15)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -98,9 +98,8 @@ class ConverterHelper {
         }
         if (info.sLang!=null) {
             hnode.setAttribute("xml:lang",info.sLang);
-            if (converter.getType()==XhtmlDocument.XHTML10 || converter.getType()==XhtmlDocument.HTML5) {
-                hnode.setAttribute("lang",info.sLang); // HTML4 compatibility/polyglot HTML5S
-            }
+            // polyglot HTML5
+            hnode.setAttribute("lang",info.sLang);
         }
         if (info.sDir!=null) {
             hnode.setAttribute("dir",info.sDir);

@@ -2,7 +2,7 @@
  *
  *  MIMETypes.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 2.0 (2018-03-06)
  *
  */
 
@@ -66,8 +66,6 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
     // Preferred file extensions for some files
     public static final String LATEX_EXT = ".tex";
     public static final String BIBTEX_EXT = ".bib";
-    public static final String XHTML_EXT = ".html";
-    public static final String XHTML_MATHML_EXT = ".xhtml";
     public static final String HTML5_EXT = ".html";
     public static final String PNG_EXT = ".png";
     public static final String JPEG_EXT = ".jpg"; // this is the default in graphicx.sty
@@ -139,9 +137,8 @@ public final class MIMETypes extends writer2latex.api.MIMETypes {
         if (PDF.equals(sMIME)) { return PDF_EXT; }
         if (LATEX.equals(sMIME)) { return LATEX_EXT; }
         if (BIBTEX.equals(sMIME)) { return BIBTEX_EXT; }
-        if (XHTML.equals(sMIME)) { return XHTML_EXT; }
-        if (XHTML_MATHML.equals(sMIME)) { return XHTML_MATHML_EXT; }
-        if (HTML5.equals(sMIME)) { return XHTML_EXT; }
+        if (HTML.equals(sMIME)) { return HTML5_EXT; }
+        if (HTML5.equals(sMIME)) { return HTML5_EXT; }
         return "";
     }		
 	

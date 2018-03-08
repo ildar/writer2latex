@@ -2,7 +2,7 @@
  *
  *  HeadingStyleConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-10)
+ *  Version 2.0 (2018-03-08)
  *
  */
 package writer2latex.xhtml;
@@ -40,8 +40,8 @@ public class HeadingStyleConverter extends StyleConverterHelper {
 	private List<Set<String>> otherLevelStyles;
 
 	public HeadingStyleConverter(OfficeReader ofr, XhtmlConfig config,
-			Converter converter, int nType) {
-		super(ofr, config, converter, nType);
+			Converter converter) {
+		super(ofr, config, converter);
         this.styleMap = config.getXHeadingStyleMap();
         this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
         this.bConvertHard = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES;

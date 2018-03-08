@@ -2,7 +2,7 @@
  *
  *  CellStyleConverter.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.0 (2008-09-08)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -41,10 +41,9 @@ public class CellStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
      *  @param converter the main <code>Converter</code> class
-     *  @param nType the type of xhtml to use
      */
-    public CellStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
-        super(ofr,config,converter,nType);
+    public CellStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
+        super(ofr,config,converter);
         // Style maps for Cells are currently not supported.
         // (In OOo, cell styles are only supported by Calc) 
         this.styleMap = new XhtmlStyleMap();

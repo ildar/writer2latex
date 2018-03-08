@@ -2,7 +2,7 @@
  *
  *  Converter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 2.0 (2018-03-08)
  *
  */
 
@@ -92,7 +92,6 @@ public class Converter extends ConverterBase {
     private Set<ResourceDocument> resources = new HashSet<ResourceDocument>();
     
     // The xhtml output file(s)
-    protected int nType = XhtmlDocument.XHTML10; // the doctype
     private boolean bOPS = false; // Do we need to be OPS conforming?
     Vector<XhtmlDocument> outFiles;
     private int nOutFileIndex;
@@ -112,16 +111,15 @@ public class Converter extends ConverterBase {
     // attributes - at least background color and font size later)
     private Stack<String> contentWidth = new Stack<String>();
     
-    // Constructor setting the DOCTYPE
-    public Converter(int nType) {
+    // Constructor
+    public Converter() {
         super();
         config = new XhtmlConfig();
-        this.nType = nType;
     }
 
     // override methods to read templates, style sheets and resources
     @Override public void readTemplate(InputStream is) throws IOException {
-        template = new XhtmlDocument("Template",nType);
+        template = new XhtmlDocument("Template");
         template.read(is);
     }
 	
@@ -190,10 +188,6 @@ public class Converter extends ConverterBase {
 
     protected MathConverter getMathCv() { return mathCv; }
 	
-    protected int getType() { return nType; }
-    
-    public boolean isHTML5() { return nType==XhtmlDocument.HTML5; }
-	
     protected int getOutFileIndex() { return nOutFileIndex; }
     
     protected void addContentEntry(String sTitle, int nLevel, String sTarget) {
@@ -239,7 +233,7 @@ public class Converter extends ConverterBase {
     public boolean isOPS() { return bOPS; }
     
     @Override public void convertInner() throws IOException {      
-        sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));
+        sTargetFileName = Misc.trimDocumentName(sTargetFileName,".html");
 		
         outFiles = new Vector<XhtmlDocument>();
         nOutFileIndex = -1;
@@ -262,16 +256,13 @@ public class Converter extends ConverterBase {
         imageConverter.setDefaultFormat(MIMETypes.PNG);
         imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         imageConverter.addAcceptedFormat(MIMETypes.GIF);
-        
-        if (nType==XhtmlDocument.HTML5) { // HTML supports SVG as well
-        	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
-        }
+       	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
 
-        styleCv = new StyleConverter(ofr,config,this,nType);
+        styleCv = new StyleConverter(ofr,config,this);
         textCv = new TextConverter(ofr,config,this);
         tableCv = new TableConverter(ofr,config,this);
         drawCv = new DrawConverter(ofr,config,this);
-        mathCv = new MathConverter(ofr,config,this,nType!=XhtmlDocument.XHTML10 && nType!=XhtmlDocument.XHTML11);
+        mathCv = new MathConverter(ofr,config,this);
 
         // Set locale to document language
         StyleWithProperties style = ofr.isSpreadsheet() ? ofr.getDefaultCellStyle() : ofr.getDefaultParStyle();
@@ -352,7 +343,7 @@ public class Converter extends ConverterBase {
         
         // Load MathJax
         // TODO: Should we support different configurations of MathJax?
-        if ((nType==XhtmlDocument.HTML5 || nType==XhtmlDocument.XHTML_MATHML) && config.useMathJax()) {
+        if (config.useMathJax()) {
         	for (int i=0; i<=nOutFileIndex; i++) {
         		if (outFiles.get(i).hasMath()) {
         			XhtmlDocument doc = outFiles.get(i);
@@ -633,7 +624,7 @@ public class Converter extends ConverterBase {
 	
     // Prepare next output file
     public Element nextOutFile() {
-        htmlDoc = new XhtmlDocument(getOutFileName(++nOutFileIndex,false),nType);
+        htmlDoc = new XhtmlDocument(getOutFileName(++nOutFileIndex,false));
         htmlDoc.setConfig(config);
         if (template!=null) { htmlDoc.readFromTemplate(template); }
         else if (bNeedHeaderFooter) { htmlDoc.createHeaderFooter(); }
@@ -671,19 +662,11 @@ public class Converter extends ConverterBase {
 
         Element head = htmlDoc.getHeadNode();
         if (head!=null) {
-        	// Declare charset (we need this for XHTML 1.0 strict and HTML5 because we have no <?xml ... ?>)
-        	if (nType==XhtmlDocument.XHTML10) {
-        		Element meta = htmlDOM.createElement("meta");
-        		meta.setAttribute("http-equiv","Content-Type");
-        		meta.setAttribute("content","text/html; charset="+htmlDoc.getEncoding().toLowerCase());
-        		head.appendChild(meta);
-        	}
-        	else if (nType==XhtmlDocument.HTML5) {
-        		// The encoding should be UTF-8, but we still respect the user's setting
-        		Element meta = htmlDOM.createElement("meta");
-        		meta.setAttribute("charset",htmlDoc.getEncoding().toUpperCase());
-        		head.appendChild(meta);        		
-        	}
+        	// Declare charset. The encoding should be UTF-8, but we still
+        	// respect the user's setting
+    		Element meta = htmlDOM.createElement("meta");
+    		meta.setAttribute("charset",htmlDoc.getEncoding().toUpperCase());
+    		head.appendChild(meta);        		
 
         	// Add meta data (for EPUB the meta data belongs to the .opf file)
         	if (!bOPS) {
@@ -781,14 +764,14 @@ public class Converter extends ConverterBase {
     
     // Add epub namespace for the purpose of semantic inflection in EPUB 3
     public void addEpubNs(Element elm) {
-    	if (bOPS && nType==XhtmlDocument.HTML5) {
+    	if (bOPS) {
            	elm.setAttribute("xmlns:epub", "http://www.idpf.org/2007/ops");
     	}    	
     }
     
 	// Add a type from the structural semantics vocabulary of EPUB 3
     public void addEpubType(Element elm, String sType) {
-    	if (bOPS && nType==XhtmlDocument.HTML5 && sType!=null) {
+    	if (bOPS && sType!=null) {
     		elm.setAttribute("epub:type", sType);
     	}
     }
