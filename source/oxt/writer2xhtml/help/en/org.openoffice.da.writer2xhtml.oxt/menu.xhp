@@ -13,21 +13,9 @@
 
         <paragraph role="heading" level="3" xml-lang="en-US">File - Export</paragraph>
 
-        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds a number of entries to the <emph>File - Export</emph> 
+        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds some entries to the <emph>File - Export</emph> 
         menu in Writer</paragraph>
         <list type="unordered">
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
-          name="Export XHTML or EPUB files">XHTML 1.0 strict [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
-          name="Export XHTML or EPUB files">XHTML 1.1 [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
-          name="Export XHTML or EPUB files">XHTML 1.1 + MathML 2.0 [Writer2xhtml]</link></paragraph>
-			</listitem>
 			<listitem>
 		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
           name="Export XHTML or EPUB files">HTML5 [Writer2xhtml]</link></paragraph>
@@ -49,16 +37,16 @@
           name="Writer2xhtml toolbar settings">configure</link> the behavior of the toolbar.</paragraph>
 
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
-          name="Export XHTML files">Publish to XHTML</link></paragraph>
+          name="Export HTML5 files">Publish to HTML5</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:PublishAsXHTML" id="bm_processdocument"/>
-        <paragraph role="paragraph" xml-lang="en-US">Convert the document to a web page in XHTML format
+        <paragraph role="paragraph" xml-lang="en-US">Convert the document to a web page in HTML5 format
         and display the result in the default browser.</paragraph>
 
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an XHTML file</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an HTML5 file</ahelp></paragraph>
         
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
-          name="Export EPUB files">Publish to EPUB (Writer only)</link></paragraph>
+          name="Export EPUB files">Publish to EPUB</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:PublishAsEPUB" id="bm_processdocument"/>
         <paragraph role="paragraph" xml-lang="en-US">Convert the document to and electronic book in EPUB format
@@ -68,7 +56,7 @@
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsEPUB" visibility="hidden">Publish the current document as an EPUB file</ahelp></paragraph>
 
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_metadata.xhp"
-          name="EPUB document properties">Edit EPUB document properties (Writer only)</link></paragraph>
+          name="EPUB document properties">Edit EPUB document properties</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:EditEPUBDocumentProperties" id="bm_editepubdocumentproperties"/>
         <paragraph role="paragraph" xml-lang="en-US">Electronic books in EPUB format supports a complex set of

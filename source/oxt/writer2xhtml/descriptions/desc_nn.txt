@@ -1,1 +1,1 @@
-Writer2xhtml gir Writer og Calc eksportfilter for XHTML og XHTML+MathML
+Writer2xhtml gir Writer eksportfilter for HTML5+MathML

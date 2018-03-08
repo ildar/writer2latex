@@ -1,1 +1,1 @@
-Writer2xhtml dostarcza filtrów eksportu programów Writer i Calc do XHTMLa oraz XHTML+MathML
+Writer2xhtml dostarcza filtrów eksportu programów Writer do HTML5+MathML

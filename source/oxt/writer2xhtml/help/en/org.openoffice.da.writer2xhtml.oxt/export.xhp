@@ -2,35 +2,32 @@
 <helpdocument version="1.0">
 	<meta>
         <topic id="writer2xhtml-export-writer" indexer="include">
-            <title xml-lang="en-US">XHTML Export</title>
+            <title xml-lang="en-US">HTML5 Export</title>
             <filename>org.openoffice.da.writer2xhtml.oxt/export.xhp</filename>
         </topic>
     </meta>
     <body>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Options" id="bm_options"/>
-        <paragraph role="heading" level="1" xml-lang="en-US">XHTML Export</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Exports the current document to XHTML format.</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">HTML5 Export</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Exports the current document to HTML5 format.</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>File - Export - XHTML 1.0 strict</emph><br/>
-        	or <emph>File - Export - XHTML 1.1</emph><br/>
-        	or <emph>File - Export - XHTML 1.1 + MathML 2.0</emph><br/>
-        	or <emph>File - Export - HTML5</emph><br/>
+        	Choose <emph>File - Export - HTML5</emph><br/>
         	or click the <emph>HTML5-button</emph> in the toolbar
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Style</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsConfig" id="bm_options_config"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsConfig" visibility="hidden">Select the style to use for the XHTML document</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsConfig" visibility="hidden">Select the style to use for the HTML5 document</ahelp></paragraph>
 		<section id="split1">
 	        <paragraph role="heading" level="3" xml-lang="en-US">Use style</paragraph>
         	<paragraph role="paragraph" xml-lang="en-US">This option allows you to choose between various styles to apply to the
-        	XHTML document.</paragraph>
+        	HTML5 document.</paragraph>
         </section>
         <list type="unordered">
 			<listitem>
 				<section id="split2">
-					<paragraph role="paragraph" xml-lang="en-US"><emph>Original formatting</emph> produces an XHTML document which uses
+					<paragraph role="paragraph" xml-lang="en-US"><emph>Original formatting</emph> produces an HTML5 document which uses
 					the same style as the original document. The document will look quite similar to the original when viewed
 					in a browser.</paragraph>
 				</section>
@@ -87,7 +84,7 @@
     	    in e.g. cm or inches.</paragraph>
         </section>
 		<section id="converttopx3">
-	        <paragraph role="paragraph" xml-lang="en-US">For XHTML it is recommended to use the unit px instead, and using this option you can require that
+	        <paragraph role="paragraph" xml-lang="en-US">For HTML5 it is recommended to use the unit px instead, and using this option you can require that
         	all dimensions are converted to px.</paragraph>
         </section>
 		<section id="converttopx4">
@@ -114,8 +111,8 @@
 	    </section>
 		<section id="notes2">
     	    <paragraph role="paragraph" xml-lang="en-US">If you select this option, notes (also known as annotations) in the
-        	%PRODUCTNAME document are exported as comments in the XHTML document. They will not be directly visible in the browser,
-	        only in the XHTML source. If the option is not selected, notes are completely ignored.</paragraph>
+        	%PRODUCTNAME document are exported as comments in the HTML5 document. They will not be directly visible in the browser,
+	        only in the HTML5 source. If the option is not selected, notes are completely ignored.</paragraph>
 	    </section>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsUseDublinCore" id="bm_options_usedublincore"/>
@@ -189,8 +186,8 @@
 		<section id="saveimagesinsubdir">
         	<paragraph role="heading" level="3" xml-lang="en-US">Save images in subdirectory</paragraph>
         	<paragraph role="paragraph" xml-lang="en-US">Writer2xhtml normally saves images associated with the document in the same
-        	directory as the XHTML document. If the document contains a large number of images it may be more convenient to save the
-        	images in a separate subdirectory. This option will create a subdirectory with the same name as the XHTML document to
+        	directory as the HTML5 document. If the document contains a large number of images it may be more convenient to save the
+        	images in a separate subdirectory. This option will create a subdirectory with the same name as the HTML5 document to
         	store the images.</paragraph>
         </section>
 
@@ -201,7 +198,7 @@
         	<paragraph role="paragraph" xml-lang="en-US"><link href="http://www.mathjax.org/" name="MathJax web site">MathJax</link> is a JavaScript library for displaying mathematical content in web pages.
         	Using MathJax ensures that your mathematical content will display correctly in most browsers.
         	This includes formulas created with the extension <link href="http://roland65.free.fr/texmaths/" name="TexMaths web site">TexMaths</link>.
-        	This option is only available if you export to XHTML 1.1+MathML 2.0 or HTML5.</paragraph>
+        	</paragraph>
         </section>
 	</body>
 </helpdocument>

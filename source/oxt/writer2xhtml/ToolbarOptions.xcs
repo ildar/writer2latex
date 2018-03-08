@@ -7,7 +7,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <component>
         <group oor:name="Settings">
-            <prop oor:name="XhtmlFormat" oor:type="xs:short" />
             <prop oor:name="XhtmlView" oor:type="xs:short" />
             <prop oor:name="XhtmlExecutable" oor:type="xs:string" />
             <prop oor:name="EpubFormat" oor:type="xs:short" />

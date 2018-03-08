@@ -2,7 +2,7 @@
  *
  *  ToolbarSettingsDialog.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-05)
+ *  Version 2.0 (2018-03-07)
  *
  */ 
  
@@ -84,9 +84,6 @@ public final class ToolbarSettingsDialog
             if (sMethod.equals("external_event") ){
                 return handleExternalEvent(dlg, event);
             }
-            else if (sMethod.equals("XhtmlFormatChange")) {
-            	return true;
-            }
             else if (sMethod.equals("XhtmlViewChange")) {
             	return xhtmlViewChange(dlg);
             }
@@ -113,7 +110,7 @@ public final class ToolbarSettingsDialog
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "external_event", "XhtmlFormatChange", "XhtmlViewChange", "XhtmlBrowseClick",
+        String[] sNames = { "external_event", "XhtmlViewChange", "XhtmlBrowseClick",
         		"EpupFormatChange", "EpubViewChange", "EpubBrowseClick" };
         return sNames;
     }
@@ -162,8 +159,6 @@ public final class ToolbarSettingsDialog
 			Object view = registry.getRegistryView(REGISTRY_PATH, false);
 			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
 			
-        	dlg.setListBoxSelectedItem("XhtmlFormat",
-        			XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlFormat"));
         	dlg.setListBoxSelectedItem("XhtmlView",
         			XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlView"));
         	dlg.setTextFieldText("XhtmlExecutable",
@@ -184,7 +179,6 @@ public final class ToolbarSettingsDialog
     	try {
     		Object view = registry.getRegistryView(REGISTRY_PATH, true);
     		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
-   			XPropertySetHelper.setPropertyValue(xProps, "XhtmlFormat", dlg.getListBoxSelectedItem("XhtmlFormat"));
    			XPropertySetHelper.setPropertyValue(xProps, "XhtmlView", dlg.getListBoxSelectedItem("XhtmlView"));
    			XPropertySetHelper.setPropertyValue(xProps, "XhtmlExecutable", dlg.getTextFieldText("XhtmlExecutable"));
    			XPropertySetHelper.setPropertyValue(xProps, "EpubFormat", dlg.getListBoxSelectedItem("EpubFormat"));
@@ -214,9 +208,8 @@ public final class ToolbarSettingsDialog
     }
 
     private void enableXhtmlExecutable(DialogAccess dlg) {
-    	int nItem = dlg.getListBoxSelectedItem("XhtmlView");
-    	dlg.setControlEnabled("XhtmlExecutable", nItem==2);
-    	dlg.setControlEnabled("XhtmlBrowseButton", nItem==2);
+    	//dlg.setControlEnabled("XhtmlExecutable", nItem==2);
+    	//dlg.setControlEnabled("XhtmlBrowseButton", nItem==2);
     }
     
     private boolean xhtmlBrowseClick(DialogAccess dlg) {

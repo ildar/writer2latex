@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2018-03-06)
+ *  Version 2.0 (2018-03-08)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -50,7 +50,7 @@ import com.sun.star.util.XModifiable;
  */
 public class UNOPublisher {
 	
-    public enum TargetFormat { xhtml, xhtml11, xhtml_mathml, html5, epub, epub3, latex };
+    public enum TargetFormat { html5, epub, epub3, latex };
     
     private String sAppName;
     
@@ -256,8 +256,7 @@ public class UNOPublisher {
     private boolean updateMediaProperties(TargetFormat format) {
     	prepareMediaProperties(format);
     	
-    	String sDialogName = xModel.getURL().endsWith(".odt") || xModel.getURL().endsWith(".fodt") ? //$NON-NLS-1$ //$NON-NLS-2$
-    			getDialogName(format) : getDialogNameCalc(format);
+    	String sDialogName = getDialogName(format);
     	if (sDialogName!=null) {
 	    	try {
 	            // Display options dialog
@@ -289,9 +288,6 @@ public class UNOPublisher {
     
     private static String getTargetExtension(TargetFormat format) {
     	switch (format) {
-    	case xhtml: return ".html"; //$NON-NLS-1$
-    	case xhtml11: return ".xhtml"; //$NON-NLS-1$
-    	case xhtml_mathml: return ".xhtml"; //$NON-NLS-1$
     	case html5: return ".html"; //$NON-NLS-1$
     	case epub: return ".epub"; //$NON-NLS-1$
     	case epub3: return ".epub"; //$NON-NLS-1$
@@ -302,9 +298,6 @@ public class UNOPublisher {
       
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
-    	case xhtml: 
-    	case xhtml11: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
-    	case xhtml_mathml:
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath"; //$NON-NLS-1$
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog"; //$NON-NLS-1$
     	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog"; //$NON-NLS-1$
@@ -313,24 +306,8 @@ public class UNOPublisher {
     	}
     }
     
-    private static String getDialogNameCalc(TargetFormat format) {
-    	switch (format) {
-    	case xhtml: 
-    	case xhtml11: 
-    	case xhtml_mathml:
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc";  //$NON-NLS-1$
-    	case epub: 
-    	case epub3: 
-    	case latex:
-    	default: return null;
-    	}    	
-    }
-      
     private static String getFilterName(TargetFormat format) {
     	switch (format) {
-    	case xhtml: return "org.openoffice.da.writer2xhtml"; //$NON-NLS-1$
-    	case xhtml11: return "org.openoffice.da.writer2xhtml11"; //$NON-NLS-1$
-    	case xhtml_mathml: return "org.openoffice.da.writer2xhtml.mathml"; //$NON-NLS-1$
     	case html5: return "org.openoffice.da.writer2xhtml5"; //$NON-NLS-1$
     	case epub: return "org.openoffice.da.writer2xhtml.epub"; //$NON-NLS-1$
     	case epub3: return "org.openoffice.da.writer2xhtml.epub3"; //$NON-NLS-1$

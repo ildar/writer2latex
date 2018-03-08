@@ -19,8 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-06) 
- *
+ *  Version 2.0 (2018-03-07) 
  */ 
  
 package org.openoffice.da.comp.writer2xhtml;
@@ -83,12 +82,6 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(XhtmlOptionsDialogCalc.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialogCalc.class,
-            XhtmlOptionsDialogCalc.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
         else if (implName.equals(EpubOptionsDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(EpubOptionsDialog.class,
             EpubOptionsDialog.__serviceName,
@@ -141,8 +134,6 @@ public class W2XRegistration {
                 XhtmlOptionsDialog.__serviceName, regKey) &
                 FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogMath.__implementationName,
                         XhtmlOptionsDialogMath.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogCalc.__implementationName,
-                XhtmlOptionsDialogCalc.__serviceName, regKey) & 
             FactoryHelper.writeRegistryServiceInfo(EpubOptionsDialog.__implementationName,
                         EpubOptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(Epub3OptionsDialog.__implementationName,

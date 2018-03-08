@@ -9,8 +9,8 @@
                     <value>com.sun.star.text.TextDocument</value>
                 </prop>
                 <prop oor:name="Title" oor:type="xs:string">
-                    <value xml:lang="en-US">Publish as XHTML</value>
-                    <value xml:lang="da">Publicer som XHTML</value>
+                    <value xml:lang="en-US">Publish as HTML5</value>
+                    <value xml:lang="da">Publicer som HTML5</value>
                 </prop>
                 <prop oor:name="Target" oor:type="xs:string">
                     <value>_self</value>

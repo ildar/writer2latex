@@ -1,1 +1,1 @@
-Writer2xhtml nabízí exportní filtry pro Writer a Calc s výstupem v XHTML a XHTML+MathML
+Writer2xhtml nabízí exportní filtry pro Writer s výstupem v HTML5+MathML

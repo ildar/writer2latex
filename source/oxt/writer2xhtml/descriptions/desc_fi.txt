@@ -1,1 +1,1 @@
-Writer2xhtml:llä on mahdollista viedä sekä writerin että Calcin dokumentteja XHTML ja XHMTL+MathML muotoihin
+Writer2xhtml:llä on mahdollista viedä sekä writerin dokumentteja HTML5+MathML

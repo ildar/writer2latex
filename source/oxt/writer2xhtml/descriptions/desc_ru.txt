@@ -1,1 +1,1 @@
-Writer2xhtml обеспечивает для Writer и Calc фильтрами экспорта в XHTML и XHTML+MathML
+Writer2xhtml обеспечивает для Writer фильтрами экспорта в HTML5+MathML

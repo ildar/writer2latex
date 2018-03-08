@@ -5,9 +5,6 @@
   xmlns:oor="http://openoffice.org/2001/registry"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="Settings">
-        <prop oor:name="XhtmlFormat" oor:type="xs:short">
-            <value>3</value><!-- HTML5 -->
-        </prop>
         <prop oor:name="XhtmlView" oor:type="xs:short">
             <value>1</value><!-- Default application -->
         </prop>

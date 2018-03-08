@@ -2,7 +2,7 @@
  *
  *  Writer2xhtml.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-05)
+ *  Version 2.0 (2018-03-08)
  *
  */ 
  
@@ -127,7 +127,7 @@ public final class Writer2xhtml extends WeakBase
         com.sun.star.beans.PropertyValue[] aArguments ) {
         if ( aURL.Protocol.compareTo(PROTOCOL) == 0 ) {
             if ( aURL.Path.compareTo("PublishAsXHTML") == 0 ) {
-               	publishAsXhtml();
+        		publish(TargetFormat.html5);
                 return;
             }
             else if ( aURL.Path.compareTo("PublishAsEPUB") == 0 ) {
@@ -163,23 +163,6 @@ public final class Writer2xhtml extends WeakBase
 	        }
 		} catch (Exception e) {
 			// Failed to get dialog
-		}
-    }
-    
-    private void publishAsXhtml() {
-    	RegistryHelper registry = new RegistryHelper(m_xContext);
-		try {
-			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
-			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);			
-			short nXhtmlFormat = XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlFormat");
-			switch (nXhtmlFormat) {
-			case 0: publish(TargetFormat.xhtml); break; 
-			case 1: publish(TargetFormat.xhtml11); break;
-			case 2: publish(TargetFormat.xhtml_mathml); break;
-			case 3: publish(TargetFormat.html5);
-			}
-		} catch (Exception e) {
-    		// Failed to get registry view
 		}
     }
     
