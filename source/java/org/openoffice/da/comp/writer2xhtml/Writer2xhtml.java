@@ -27,17 +27,11 @@ package org.openoffice.da.comp.writer2xhtml;
 
 // TODO: Create common base for dispatcher classes
 
-import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;
-import com.sun.star.lang.XComponent;
 import com.sun.star.lib.uno.helper.WeakBase;
-import com.sun.star.ui.dialogs.XExecutableDialog;
-import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
-import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
        
 /** This class implements the ui (dispatch) commands provided by Writer2xhtml.
  */
@@ -130,14 +124,6 @@ public final class Writer2xhtml extends WeakBase
         		publish(TargetFormat.html5);
                 return;
             }
-            else if ( aURL.Path.compareTo("PublishAsEPUB") == 0 ) {
-                publishAsEpub();
-                return;
-            }
-            else if ( aURL.Path.compareTo("EditEPUBDocumentProperties") == 0 ) {
-                editDocumentProperties();
-                return;
-            }
         }
     }
 
@@ -149,39 +135,6 @@ public final class Writer2xhtml extends WeakBase
     com.sun.star.util.URL aURL ) {
     }
 	
-    // The actual commands...
-    private void editDocumentProperties() {
-        Object dialog;
-		try {
-			dialog = m_xContext.getServiceManager().createInstanceWithContext("org.openoffice.da.writer2xhtml.EpubMetadataDialog", m_xContext);
-	        XExecutableDialog xDialog = (XExecutableDialog) UnoRuntime.queryInterface(XExecutableDialog.class, dialog);
-	        xDialog.execute();
-	        // Dispose the dialog after execution (to free up the memory)
-	        XComponent xComponent = (XComponent) UnoRuntime.queryInterface(XComponent.class, dialog);
-	        if (xComponent!=null) {
-	        	xComponent.dispose();
-	        }
-		} catch (Exception e) {
-			// Failed to get dialog
-		}
-    }
-    
-    private void publishAsEpub() {
-    	RegistryHelper registry = new RegistryHelper(m_xContext);
-		try {
-			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
-			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);			
-			short nEpubFormat = XPropertySetHelper.getPropertyValueAsShort(xProps, "EpubFormat");
-			switch (nEpubFormat) {
-			case 0: publish(TargetFormat.epub); break;
-			case 1: publish(TargetFormat.epub3);
-			}
-		} catch (Exception e) {
-    		// Failed to get registry view
-		}
-    	
-    }
-    
     private void publish(TargetFormat format) {
     	if (unoPublisher==null) { 
     		unoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2xhtml");

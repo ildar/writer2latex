@@ -26,42 +26,6 @@
 	                    <value>%origin%/icons/html5</value>
 	                </prop>
 	      		</node>
-	      		<node oor:name="button2" oor:op="replace">
-	                <prop oor:name="Context" oor:type="xs:string">
-	                    <value>com.sun.star.text.TextDocument</value>
-	                </prop>
-	                <prop oor:name="Title" oor:type="xs:string">
-	                    <value xml:lang="en-US">Publish as EPUB</value>
-	                    <value xml:lang="da">Publicer som EPUB</value>
-	                </prop>
-	                <prop oor:name="Target" oor:type="xs:string">
-	                    <value>_self</value>
-	                </prop>
-	                <prop oor:name="URL" oor:type="xs:string">
-	                    <value>org.openoffice.da.writer2xhtml:PublishAsEPUB</value>
-	                </prop>
-	                <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                    <value>%origin%/icons/epub</value>
-	                </prop>
-	      		</node>
-	      		<node oor:name="button3" oor:op="replace">
-	                <prop oor:name="Context" oor:type="xs:string">
-	                    <value>com.sun.star.text.TextDocument</value>
-	                </prop>
-	                <prop oor:name="Title" oor:type="xs:string">
-	                    <value xml:lang="en-US">Edit EPUB document properties</value>
-	                    <value xml:lang="da">Rediger EPUB-dokumentegenskaber</value>
-	                </prop>
-	                <prop oor:name="Target" oor:type="xs:string">
-	                    <value>_self</value>
-	                </prop>
-	                <prop oor:name="URL" oor:type="xs:string">
-	                    <value>org.openoffice.da.writer2xhtml:EditEPUBDocumentProperties</value>
-	                </prop>
-	                <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                    <value>%origin%/icons/metadata</value>
-	                </prop>
-	      		</node>
 	      		<node oor:name="button4" oor:op="replace">
 	                <prop oor:name="Context" oor:type="xs:string">
 	                    <value>com.sun.star.text.TextDocument</value>

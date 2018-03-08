@@ -11,14 +11,5 @@
         <prop oor:name="XhtmlExecutable" oor:type="xs:string">
             <value></value>
         </prop>
-        <prop oor:name="EpubFormat" oor:type="xs:short">
-            <value>1</value><!-- EPUB3 -->
-        </prop>
-        <prop oor:name="EpubView" oor:type="xs:short">
-            <value>1</value><!-- Default application -->
-        </prop>
-        <prop oor:name="EpubExecutable" oor:type="xs:string">
-            <value></value>
-        </prop>
     </node>
 </oor:component-data>

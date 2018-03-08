@@ -1,10 +1,12 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[w2x] Clean up: Removed the option formulas which was specific for old XHTML
+[filter] New focus: Removed the EPUB export filters
+
+[filter] Clean up: Removed the option formulas which was specific for old XHTML
   formats not supporting MathML.
 
-[w2x] Clean up: Removed support for obsolete XHTML formats, retaning only HTML5.
-  The ConverterFactory now produces a HTML5 converter if given the MIME type
+[w2x] Clean up: Removed support for obsolete XHTML formats, retaining only HTML5.
+  The ConverterFactory now produces an HTML5 converter if given the MIME type
   text/html. The pseudo type text/html5 is retained for backwards compatibility.
 
 [filter] Clean up: Removed filters for obsolete XHTML formats, retaining

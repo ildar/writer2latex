@@ -17,15 +17,15 @@
   </publisher>
   
   <display-name>
-    <name lang="da">Writer2xhtml eksportfiltre</name>
-    <name lang="en">Writer2xhtml export filters</name>
+    <name lang="da">Writer2xhtml eksportfilter</name>
+    <name lang="en">Writer2xhtml export filter</name>
     <name lang="ca">Filtres d'exportació per al writer2xhtml</name>
     <name lang="de">Writer2xhtml Exportfilter</name>
-    <name lang="nl">Writer2xhtml exportfilters</name>
+    <name lang="nl">Writer2xhtml exportfilter</name>
     <name lang="nn">Writer2xhtml eksportfilter</name>
     <name lang="es">Writer2xhtml filtros para exportar</name>
     <name lang="fi">Writer2xhtml vienti suodattimet</name>
-    <name lang="fr">Filtres d'exportation Writer2xhtml</name>
+    <name lang="fr">Filtre d'exportation Writer2xhtml</name>
     <name lang="it">Filtri di esportazione Writer2xhtml</name>
     <name lang="pt_BR">Filtros de exportação Writer2xhtml</name>
     <name lang="cs">Exportní filtry Writer2xhtml</name>
@@ -33,7 +33,7 @@
     <name lang="ru">Фильтры экспорта Writer2xhtml</name>
     <name lang="uk">Фільтри експорту Writer2xhtml</name>
     <name lang="tr">Writer2LaTeX ihraç etme filitreleri</name>
-    <name lang="fa">Writer2xhtml export filters</name>
+    <name lang="fa">Writer2xhtml export filter</name>
   </display-name>
   
   <icon>

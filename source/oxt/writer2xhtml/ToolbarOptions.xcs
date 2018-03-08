@@ -9,9 +9,6 @@
         <group oor:name="Settings">
             <prop oor:name="XhtmlView" oor:type="xs:short" />
             <prop oor:name="XhtmlExecutable" oor:type="xs:string" />
-            <prop oor:name="EpubFormat" oor:type="xs:short" />
-            <prop oor:name="EpubView" oor:type="xs:short" />
-            <prop oor:name="EpubExecutable" oor:type="xs:string" />
         </group>
     </component>
 </oor:component-schema>		

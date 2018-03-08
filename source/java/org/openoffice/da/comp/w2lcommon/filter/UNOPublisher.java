@@ -50,7 +50,7 @@ import com.sun.star.util.XModifiable;
  */
 public class UNOPublisher {
 	
-    public enum TargetFormat { html5, epub, epub3, latex };
+    public enum TargetFormat { html5, latex };
     
     private String sAppName;
     
@@ -289,8 +289,6 @@ public class UNOPublisher {
     private static String getTargetExtension(TargetFormat format) {
     	switch (format) {
     	case html5: return ".html"; //$NON-NLS-1$
-    	case epub: return ".epub"; //$NON-NLS-1$
-    	case epub3: return ".epub"; //$NON-NLS-1$
     	case latex: return ".tex"; //$NON-NLS-1$
     	default: return ""; //$NON-NLS-1$
     	}
@@ -299,8 +297,6 @@ public class UNOPublisher {
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
     	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
-    	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog"; //$NON-NLS-1$
-    	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$
     	default: return null;
     	}
@@ -309,8 +305,6 @@ public class UNOPublisher {
     private static String getFilterName(TargetFormat format) {
     	switch (format) {
     	case html5: return "org.openoffice.da.writer2xhtml5"; //$NON-NLS-1$
-    	case epub: return "org.openoffice.da.writer2xhtml.epub"; //$NON-NLS-1$
-    	case epub3: return "org.openoffice.da.writer2xhtml.epub3"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.writer2latex"; //$NON-NLS-1$
     	default: return ""; //$NON-NLS-1$
     	}

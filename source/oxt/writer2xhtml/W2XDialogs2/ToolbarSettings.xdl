@@ -19,30 +19,6 @@
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:XhtmlBrowseClick" script:language="UNO"/>
   </dlg:button>
   
-  <dlg:text dlg:id="EpubLabel" dlg:tab-index="8" dlg:left="6" dlg:top="44" dlg:width="210" dlg:height="12" dlg:value="EPUB Export"/>
-  <dlg:text dlg:id="EpubFormatLabel" dlg:tab-index="9" dlg:left="12" dlg:top="58" dlg:width="55" dlg:height="12" dlg:value="Format"/>
-  <dlg:menulist dlg:id="EpubFormat" dlg:tab-index="10" dlg:left="72" dlg:top="56" dlg:width="120" dlg:height="12" dlg:spin="true" dlg:linecount="2" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:SettingsEpubFormat">
-   <dlg:menupopup>
-    <dlg:menuitem dlg:value="EPUB 2"/>
-    <dlg:menuitem dlg:value="EPUB 3" dlg:selected="true"/>
-   </dlg:menupopup>
-   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:EpubFormatChange" script:language="UNO"/>
-  </dlg:menulist>
-  <dlg:text dlg:id="EpubViewLabel" dlg:tab-index="11" dlg:left="12" dlg:top="72" dlg:width="55" dlg:height="12" dlg:value="After export"/>
-  <dlg:menulist dlg:id="EpubView" dlg:tab-index="12" dlg:left="72" dlg:top="70" dlg:width="120" dlg:height="12" dlg:spin="true" dlg:linecount="3" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:SettingsEpubView">
-   <dlg:menupopup>
-    <dlg:menuitem dlg:value="Do nothing"/>
-    <dlg:menuitem dlg:value="open with default viewer" dlg:selected="true"/>
-    <dlg:menuitem dlg:value="open with custom application"/>
-   </dlg:menupopup>
-   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:EpubViewChange" script:language="UNO"/>
-  </dlg:menulist>
-  
-  <dlg:text dlg:id="EpubExecutableLabel" dlg:tab-index="13" dlg:left="12" dlg:top="84" dlg:width="55" dlg:height="12" dlg:value="Application"/>
-  <dlg:textfield dlg:id="EpubExecutable" dlg:tab-index="14" dlg:left="72" dlg:top="84" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:SettingsEpubExecutable"/>
-  <dlg:button dlg:id="EpubBrowseButton" dlg:tab-index="15" dlg:left="200" dlg:top="83" dlg:width="55" dlg:height="14" dlg:value="Browse..." dlg:help-url="org.openoffice.da.writer2xhtml.oxt:SettingsEpubBrowse">
-   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:EpubBrowseClick" script:language="UNO"/>
-  </dlg:button>
-    
+
  </dlg:bulletinboard>
 </dlg:window>

@@ -76,24 +76,6 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(EpubOptionsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(EpubOptionsDialog.class,
-            EpubOptionsDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(Epub3OptionsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(Epub3OptionsDialog.class,
-            Epub3OptionsDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(EpubMetadataDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(EpubMetadataDialog.class,
-            EpubMetadataDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
         else if (implName.equals(ConfigurationDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(ConfigurationDialog.class,
             ConfigurationDialog.__serviceName,
@@ -126,12 +108,6 @@ public class W2XRegistration {
                 W2XExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
                 XhtmlOptionsDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(EpubOptionsDialog.__implementationName,
-                        EpubOptionsDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(Epub3OptionsDialog.__implementationName,
-                        Epub3OptionsDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(EpubMetadataDialog.__implementationName,
-                        EpubMetadataDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
                 ConfigurationDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ToolbarSettingsDialog.__implementationName,

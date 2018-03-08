@@ -75,8 +75,6 @@ public class UNOConverter {
 		filterNames.put("org.openoffice.da.writer2latex","application/x-latex");
 		filterNames.put("org.openoffice.da.writer2bibtex","application/x-bibtex");
 		filterNames.put("org.openoffice.da.writer2xhtml5","text/html5");
-		filterNames.put("org.openoffice.da.writer2xhtml.epub","application/epub+zip");
-		filterNames.put("org.openoffice.da.writer2xhtml.epub3","epub3");
 
 		// Get the arguments
 		Object filterData = null;

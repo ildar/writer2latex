@@ -56,6 +56,7 @@ public class XhtmlUNOPublisher extends UNOPublisher {
 	 *  @param format the target format
 	 */
     @Override protected void postProcess(String sURL, TargetFormat format) {
+    	// format is not used as we only handle HTML5
     	RegistryHelper registry = new RegistryHelper(xContext);
     	
     	short nView = 1;
@@ -65,14 +66,8 @@ public class XhtmlUNOPublisher extends UNOPublisher {
 			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
 			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
 			
-			if (format==TargetFormat.html5) {
-				nView = XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlView");
-				sExecutable = XPropertySetHelper.getPropertyValueAsString(xProps, "XhtmlExecutable");				
-			}
-			else { // EPUB				
-				nView = XPropertySetHelper.getPropertyValueAsShort(xProps, "EpubView");
-				sExecutable = XPropertySetHelper.getPropertyValueAsString(xProps, "EpubExecutable");
-			}
+			nView = XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlView");
+			sExecutable = XPropertySetHelper.getPropertyValueAsString(xProps, "XhtmlExecutable");				
 		} catch (Exception e) {
     		// Failed to get registry view
 		}

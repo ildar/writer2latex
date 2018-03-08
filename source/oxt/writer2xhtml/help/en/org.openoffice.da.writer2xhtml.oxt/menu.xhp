@@ -13,20 +13,12 @@
 
         <paragraph role="heading" level="3" xml-lang="en-US">File - Export</paragraph>
 
-        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds some entries to the <emph>File - Export</emph> 
+        <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml adds an entry to the <emph>File - Export</emph> 
         menu in Writer</paragraph>
         <list type="unordered">
 			<listitem>
 		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
           name="Export XHTML or EPUB files">HTML5 [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
-          name="Export XHTML or EPUB files">EPUB [Writer2xhtml]</link></paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
-          name="Export XHTML or EPUB files">EPUB 3 [Writer2xhtml]</link></paragraph>
 			</listitem>
 		</list>
         
@@ -45,25 +37,6 @@
 
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an HTML5 file</ahelp></paragraph>
         
-        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
-          name="Export EPUB files">Publish to EPUB</link></paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:PublishAsEPUB" id="bm_processdocument"/>
-        <paragraph role="paragraph" xml-lang="en-US">Convert the document to and electronic book in EPUB format
-        and display the result in the default EPUB viewer.
-        </paragraph>
-        
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsEPUB" visibility="hidden">Publish the current document as an EPUB file</ahelp></paragraph>
-
-        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_metadata.xhp"
-          name="EPUB document properties">Edit EPUB document properties</link></paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:EditEPUBDocumentProperties" id="bm_editepubdocumentproperties"/>
-        <paragraph role="paragraph" xml-lang="en-US">Electronic books in EPUB format supports a complex set of
-        document properties. This function brings up a dialog to edit the properties.</paragraph>
-        
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:EditEPUBDocumentProperties" visibility="hidden">Edit the EPUB document properties of the current document</ahelp></paragraph>
-
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/Configuration/Introduction.xhp"
           name="Confguration">Edit custom style</link></paragraph>
 
