@@ -2,7 +2,7 @@
  *
  *  ConverterBase.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 2.0 (2018-03-10)
  *
  */
 
@@ -79,18 +79,6 @@ public abstract class ConverterBase implements Converter {
     // Provide a do noting fallback method
     public void readTemplate(File file) throws IOException { }
 
-    // Provide a do noting fallback method
-    public void readStyleSheet(InputStream is) throws IOException { }
-	
-    // Provide a do noting fallback method
-    public void readStyleSheet(File file) throws IOException { }
-
-    // Provide a do noting fallback method
-    public void readResource(InputStream is, String sFileName, String sMediaType) throws IOException { }
-    
-    // Provide a do noting fallback method
-    public void readResource(File file, String sFileName, String sMediaType) throws IOException { }
-
     public ConverterResult convert(File source, String sTargetFileName) throws FileNotFoundException,IOException {
         return convert(new FileInputStream(source), sTargetFileName);
     }
@@ -119,11 +107,6 @@ public abstract class ConverterBase implements Converter {
         this.sTargetFileName = sTargetFileName;
         converterResult.reset();
         
-        converterResult.setMetaData(metaData);
-        if (metaData.getLanguage()==null || metaData.getLanguage().length()==0) {
-        	metaData.setLanguage(ofr.getMajorityLanguage());
-        }
-		
         convertInner();
         
         return converterResult;

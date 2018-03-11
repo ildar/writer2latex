@@ -2,7 +2,7 @@
  *
  *  OptionsDialogBase.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-11-01)
+ *  Version 2.0 (2018-03-09)
  *
  */ 
  
@@ -396,25 +396,6 @@ public abstract class OptionsDialogBase extends DialogBase implements
         		MacroExpander expander = new MacroExpander(xContext);
         		filterData.put("ConfigURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL")));
         		filterData.put("TemplateURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"TargetTemplateURL")));
-        		filterData.put("StyleSheetURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"StyleSheetURL")));
-
-        		// The resources are provided as a set
-        		Object resources = XPropertySetHelper.getPropertyValue(xCfgProps,"Resources");
-        		XNameAccess xResourceNameAccess = (XNameAccess) UnoRuntime.queryInterface(XNameAccess.class,resources);
-        		if (xResourceNameAccess!=null) {
-        			StringBuilder buf = new StringBuilder();
-        			String[] sResourceNames = xResourceNameAccess.getElementNames();
-        			for (String sName : sResourceNames) {
-        				Object resource = xResourceNameAccess.getByName(sName);
-        				XPropertySet xResourceProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,resource);
-        				String sURL = expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xResourceProps,"URL"));
-        				String sFileName = expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xResourceProps,"FileName"));
-        				String sMediaType = expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xResourceProps,"MediaType"));
-        				if (buf.length()>0) { buf.append(';'); }
-        				buf.append(sURL).append("::").append(sFileName).append("::").append(sMediaType);
-        			}
-    				filterData.put("Resources",buf.toString());    				
-        		}
         	}
         	catch (Exception e) {
         	}

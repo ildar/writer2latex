@@ -191,8 +191,8 @@ class StyleConverter extends ConverterHelper {
                 }
             }
             
-            // For text documents (XHTML only), also set maximum width
-            if (ofr.isText() && !converter.isOPS()) {
+            // For text documents, also set maximum width
+            if (ofr.isText()) {
             	String sMaxWidth = config.getMaxWidth().trim();
             	if (sMaxWidth.length()>0) {
 		            props.addValue("max-width", sMaxWidth);

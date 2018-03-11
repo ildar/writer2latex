@@ -47,10 +47,6 @@ public class TextConverter extends ConverterHelper {
 
     // Data used to handle splitting over several files
     // TODO: Accessor methods for sections
-	// Some (Sony?) EPUB readers have a limit on the file size of individual files
-	// In any case very large files could be a performance problem, hence we do automatic splitting
-	// after this number of characters.
-	private int nSplitAfter = 150000;
 	private int nPageBreakSplit = XhtmlConfig.NONE; // Should we split at page breaks?
 	// TODO: Collect soft page breaks between table rows
 	private boolean bPendingPageBreak = false; // We have encountered a page break which should be inserted asap
@@ -61,7 +57,6 @@ public class TextConverter extends ConverterHelper {
     boolean bAfterHeading=false; // last element was a top level heading
     protected Stack<Node> sections = new Stack<Node>(); // stack of nested sections
     Element[] currentHeading = new Element[7]; // Last headings (repeated when splitting)
-    private int nCharacterCount = 0; // The number of text characters in the current document
 
     // Counters for generated numbers
     private ListCounter outlineNumbering;
@@ -104,10 +99,9 @@ public class TextConverter extends ConverterHelper {
         indexCv = new AlphabeticalIndexConverter(ofr, config, converter);
         footCv = new FootnoteConverter(ofr, config, converter);
         endCv = new EndnoteConverter(ofr, config, converter);
-        nSplitAfter = 1000*config.splitAfter();
         nPageBreakSplit = config.pageBreakSplit();
         nSplit = config.getXhtmlSplitLevel();
-        nRepeatLevels = converter.isOPS() ? 0 : config.getXhtmlRepeatLevels(); // never repeat headings in EPUB
+        nRepeatLevels = config.getXhtmlRepeatLevels();
         nFloatMode = ofr.isText() && config.xhtmlFloatObjects() ? 
             DrawConverter.FLOATING : DrawConverter.ABSOLUTE;
         outlineNumbering = new ListCounter(ofr.getOutlineStyle());
@@ -130,9 +124,6 @@ public class TextConverter extends ConverterHelper {
             }
         }
         
-        // Add cover image
-        hnode = getDrawCv().insertCoverImage(hnode);
-
         // Convert content
         hnode = (Element)traverseBlockText(onode,hnode);
         
@@ -200,7 +191,6 @@ public class TextConverter extends ConverterHelper {
                 else if (nodeName.equals(XMLString.TEXT_P)) {
                 	StyleWithProperties style = ofr.getParStyle(Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME));
                 	hnode = maybeSplit(hnode, style);
-                	nCharacterCount+=OfficeReader.getCharacterCount(child);
                     // is there a block element, we should use?
                     XhtmlStyleMap xpar = config.getXParStyleMap();
                     String sDisplayName = style!=null ? style.getDisplayName() : null;
@@ -248,7 +238,6 @@ public class TextConverter extends ConverterHelper {
                     int nOutlineLevel = getOutlineLevel((Element)child);
                     Node rememberNode = hnode;
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
-                	nCharacterCount+=OfficeReader.getCharacterCount(child);
                     handleHeading((Element)child,(Element)hnode,rememberNode!=hnode);
                 }
                 else if (nodeName.equals(XMLString.TEXT_LIST) || // oasis
@@ -319,7 +308,6 @@ public class TextConverter extends ConverterHelper {
                 // Remember if this was a heading
                 if (nDontSplitLevel==0) {
                     bAfterHeading = nodeName.equals(XMLString.TEXT_H);
-                    hnode = getDrawCv().flushFullscreenFrames((Element)hnode);
                 }
             }
             i++;
@@ -367,9 +355,6 @@ public class TextConverter extends ConverterHelper {
     	if (getPageBreak(style)) {
     		return doMaybeSplit(node, 0);
     	}
-    	if (converter.isOPS() && nSplitAfter>0 && nCharacterCount>nSplitAfter) {
-    		return doMaybeSplit(node, 0);
-    	}
     	if (nLevel>=0) {
     		return doMaybeSplit(node, nLevel);
     	}
@@ -382,7 +367,7 @@ public class TextConverter extends ConverterHelper {
         if (nDontSplitLevel>1) { // we cannot split due to a nested structure
             return (Element) node;
         }
-        if (!converter.isOPS() && bAfterHeading && nLevel-nLastSplitLevel<=nRepeatLevels) {
+        if (bAfterHeading && nLevel-nLastSplitLevel<=nRepeatLevels) {
             // we cannot split because we are right after a heading and the
             // maximum number of parent headings on the page is not reached
         	// TODO: Something wrong here....nLastSplitLevel is never set???
@@ -390,7 +375,6 @@ public class TextConverter extends ConverterHelper {
         }
         if (nSplit>=nLevel && converter.outFileHasContent()) {
             // No objections, this is a level that causes splitting
-        	nCharacterCount = 0;
         	bPendingPageBreak = false;
             if (converter.getOutFileIndex()>=0) { footCv.insertFootnotes(node,false); }
             return converter.nextOutFile();
@@ -466,91 +450,69 @@ public class TextConverter extends ConverterHelper {
             	sLabel = counter.step(nListLevel).getLabel();
             }        	
         	
-    		// In EPUB export, a striked out heading will only appear in the external toc            
-        	boolean bTocOnly = false;
-        	if (converter.isOPS() && style!=null) {
-        		String sStrikeOut = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE, true);
-        		if (sStrikeOut!=null && !"none".equals(sStrikeOut)) {
-        			bTocOnly = true;
-        		}
-        	}
-
         	// Export the heading
-        	if (!bTocOnly) {
-        		// If split output, add headings of higher levels
-        		if (bAfterSplit && nSplit>0) {
-        			int nFirst = nLevel-nRepeatLevels;
-        			if (nFirst<0) { nFirst=0; }                
-        			for (int i=nFirst; i<nLevel; i++) {
-        				if (currentHeading[i]!=null) {
-        					hnode.appendChild(converter.importNode(currentHeading[i],true));
-        				}
-        			}
-        		}		
+    		// If split output, add headings of higher levels
+    		if (bAfterSplit && nSplit>0) {
+    			int nFirst = nLevel-nRepeatLevels;
+    			if (nFirst<0) { nFirst=0; }                
+    			for (int i=nFirst; i<nLevel; i++) {
+    				if (currentHeading[i]!=null) {
+    					hnode.appendChild(converter.importNode(currentHeading[i],true));
+    				}
+    			}
+    		}		
 
-        		// Apply style
-        		StyleInfo info = new StyleInfo();
-        		info.sTagName = "h"+nLevel;
-        		getHeadingSc().applyStyle(nLevel, sStyleName, info);
+    		// Apply style
+    		StyleInfo info = new StyleInfo();
+    		info.sTagName = "h"+nLevel;
+    		getHeadingSc().applyStyle(nLevel, sStyleName, info);
 
-        		// add root element
-        		Element heading = converter.createElement(info.sTagName);
-        		hnode.appendChild(heading);
-        		applyStyle(info,heading);
-        		traverseFloats(onode,hnode,heading);
-        		// Apply writing direction
-        		/*String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
-            StyleWithProperties style = ofr.getParStyle(sStyleName);
-            if (style!=null) {
-                StyleInfo headInfo = new StyleInfo(); 
-                StyleConverterHelper.applyDirection(style,headInfo);
-                getParSc().applyStyle(headInfo,heading);
-            }*/
+    		// add root element
+    		Element heading = converter.createElement(info.sTagName);
+    		hnode.appendChild(heading);
+    		applyStyle(info,heading);
+    		traverseFloats(onode,hnode,heading);
+    		// Apply writing direction
+    		/*String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
+        StyleWithProperties style = ofr.getParStyle(sStyleName);
+        if (style!=null) {
+            StyleInfo headInfo = new StyleInfo(); 
+            StyleConverterHelper.applyDirection(style,headInfo);
+            getParSc().applyStyle(headInfo,heading);
+        }*/
 
-        		// Prepend asapNode
-        		prependAsapNode(heading);
+    		// Prepend asapNode
+    		prependAsapNode(heading);
 
-        		// Prepend numbering
-        		if (!bUnNumbered) {
-    				insertListLabel(listStyle,nListLevel,"SectionNumber",null,sLabel,heading);            	
-        		}
-        		
-        		// Add to toc
-        		if (!bInToc) {
-        			tocCv.handleHeading(onode,heading,sLabel);
-        		}
+    		// Prepend numbering
+    		if (!bUnNumbered) {
+				insertListLabel(listStyle,nListLevel,"SectionNumber",null,sLabel,heading);            	
+    		}
+    		
+    		// Add to toc
+    		if (!bInToc) {
+    			tocCv.handleHeading(onode,heading,sLabel);
+    		}
 
-        		// Convert content
-        		StyleInfo innerInfo = new StyleInfo();
-        		getHeadingSc().applyInnerStyle(nLevel, sStyleName, innerInfo);
-        		Element content = heading;
-        		if (innerInfo.sTagName!=null && innerInfo.sTagName.length()>0) {
-        			content = converter.createElement(innerInfo.sTagName);
-        			heading.appendChild(content);
-        			applyStyle(innerInfo, content);
-        		}
-        		traverseInlineText(onode,content);
+    		// Convert content
+    		StyleInfo innerInfo = new StyleInfo();
+    		getHeadingSc().applyInnerStyle(nLevel, sStyleName, innerInfo);
+    		Element content = heading;
+    		if (innerInfo.sTagName!=null && innerInfo.sTagName.length()>0) {
+    			content = converter.createElement(innerInfo.sTagName);
+    			heading.appendChild(content);
+    			applyStyle(innerInfo, content);
+    		}
+    		traverseInlineText(onode,content);
 
-            	// Add before/after text if required
-            	addBeforeAfter(heading,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXHeadingStyleMap());
-        		
-        		// Keep track of current headings for split output
-                currentHeading[nLevel] = heading;
-                for (int i=nLevel+1; i<=6; i++) {
-                    currentHeading[i] = null;
-                }
-        	}
-        	else {
-        		if (!bInToc) {
-        			tocCv.handleHeadingExternal(onode, hnode, sLabel);
-        		}
-                // Keep track of current headings for split output
-                currentHeading[nLevel] = null;
-                for (int i=nLevel+1; i<=6; i++) {
-                    currentHeading[i] = null;
-                }
-        		
-        	}
+        	// Add before/after text if required
+        	addBeforeAfter(heading,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXHeadingStyleMap());
+    		
+    		// Keep track of current headings for split output
+            currentHeading[nLevel] = heading;
+            for (int i=nLevel+1; i<=6; i++) {
+                currentHeading[i] = null;
+            }
         }
         else { // beyond h6 - export as ordinary paragraph
             handleParagraph(onode,hnode);
@@ -598,14 +560,8 @@ public class TextConverter extends ConverterHelper {
             sCurrentListLabel = null;
         }        
         
-        if (converter.isOPS() && !par.hasChildNodes()) {
-            // Finally, in EPUB export, if the exported paragraph turns out to be empty, remove it
-        	hnode.removeChild(par);
-        }
-        else {
-        	// Otherwise, add before/after text if required
-        	addBeforeAfter(par,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXParStyleMap());
-        }
+       	// Add before/after text if required
+       	addBeforeAfter(par,ofr.getParStyle(getParSc().getRealParStyleName(sStyleName)),config.getXParStyleMap());
     }
     
     private void prependAsapNode(Node node) {

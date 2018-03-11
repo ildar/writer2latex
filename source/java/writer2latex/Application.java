@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08) 
+ *  Version 2.0 (2018-03-09) 
  *
  */
  
@@ -31,9 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Set;
 import java.util.Vector;
 
 import writer2latex.api.Converter;
@@ -50,13 +48,10 @@ import writer2latex.util.Misc;
  * <p>Where the available options are
  * <ul>
  * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>,
- * <code>-epub</code>, <code>-epub3</code>
  * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-pdfscreen</code>,
  * <code>-pdfprint</code>, <code>-cleanxhtml</code>
  * <li><code>-config[=]filename</code>
  * <li><code>-template[=]filename</code>
- * <li><code>-stylesheet[=]filename</code>
- * <li><code>-resource[=]filename[::media type]</code>
  * <li><code>-option[=]value</code>
  * </ul>
  * <p>where <code>option</code> can be any simple option known to Writer2LaTeX
@@ -68,8 +63,6 @@ public final class Application {
     private String sTargetMIME = MIMETypes.LATEX;
     private Vector<String> configFileNames = new Vector<String>();
     private String sTemplateFileName = null;
-    private String sStyleSheetFileName = null;
-    private Set<String> resources = new HashSet<String>(); 
     private Hashtable<String,String> options = new Hashtable<String,String>();
     private String sSource = null;
     private String sTarget = null;
@@ -98,8 +91,6 @@ public final class Application {
         File target = getTarget(source);
         Converter converter = getConverter();
         readTemplate(converter);
-        readStyleSheet(converter);
-        readStyleResources(converter);
         readConfig(converter);
         setOptions(converter);
         performConversion(converter,source,target);
@@ -171,49 +162,6 @@ public final class Application {
                 System.out.println("    "+e.getMessage());
             }
         }
-    }
-    
-    private void readStyleSheet(Converter converter) {
-        if (sStyleSheetFileName!=null) {
-            try {
-                System.out.println("Reading style sheet "+sStyleSheetFileName);
-                byte [] styleSheetBytes = Misc.inputStreamToByteArray(new FileInputStream(sStyleSheetFileName));
-                converter.readStyleSheet(new ByteArrayInputStream(styleSheetBytes));
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("--> This file does not exist!");
-                System.out.println("    "+e.getMessage());
-            }
-            catch (IOException e) {
-                System.out.println("--> Failed to read the style sheet file!");
-                System.out.println("    "+e.getMessage());
-            }
-        }
-    }
-    
-    private void readStyleResources(Converter converter) {
-        for (String sResource : resources) {
-        	String sMediaType;
-        	String sFileName;
-        	int nSeparator = sResource.indexOf("::");
-        	if (nSeparator>-1) {
-        		sFileName = sResource.substring(0,nSeparator);
-        		sMediaType = sResource.substring(nSeparator+2);
-        	}
-        	else {
-        		sFileName = sResource;
-        		sMediaType = null;
-        	}
-        	System.out.println("Reading resource file "+sFileName);
-        	try {
-        		byte [] resourceBytes = Misc.inputStreamToByteArray(new FileInputStream(sFileName));
-        		converter.readResource(new ByteArrayInputStream(resourceBytes),sFileName,sMediaType);
-        	} catch (IOException e) {
-                System.out.println("--> Failed to read the resource file!");
-                System.out.println("    "+e.getMessage());
-        	}        		
-        	
-        }    	
     }
     
     private void readConfig(Converter converter) {
@@ -297,8 +245,6 @@ public final class Application {
                 if ("-latex".equals(sArg)) { sTargetMIME = MIMETypes.LATEX; }
                 else if ("-bibtex".equals(sArg)) { sTargetMIME = MIMETypes.BIBTEX; }
                 else if ("-html5".equals(sArg)) { sTargetMIME = MIMETypes.HTML; }
-                else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
-                else if ("-epub3".equals(sArg)) { sTargetMIME = MIMETypes.EPUB3; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
                 else if ("-clean".equals(sArg)) { configFileNames.add("*clean.xml"); }
                 else if ("-pdfprint".equals(sArg)) { configFileNames.add("*pdfprint.xml"); }
@@ -316,8 +262,6 @@ public final class Application {
                     }
                     if ("-config".equals(sArg)) { configFileNames.add(sArg2); }
                     else if ("-template".equals(sArg)) { sTemplateFileName = sArg2; }
-                    else if ("-stylesheet".equals(sArg)) { sStyleSheetFileName = sArg2; }
-                    else if ("-resource".equals(sArg)) { resources.add(sArg2); }
                     else { // configuration option
                         options.put(sArg.substring(1),sArg2);
                     }
@@ -381,11 +325,7 @@ public final class Application {
         System.out.println("   -latex");
         System.out.println("   -bibtex");
         System.out.println("   -html5");
-        System.out.println("   -epub");
-        System.out.println("   -epub3");
         System.out.println("   -template[=]<template file>");
-        System.out.println("   -stylesheet[=]<style sheet file>");
-        System.out.println("   -resource[=]<resource file>[::<media type>]");
         System.out.println("   -ultraclean");
         System.out.println("   -clean");
         System.out.println("   -pdfprint");

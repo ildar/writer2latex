@@ -49,11 +49,7 @@ public class MIMETypes {
     public static final String HTML="text/html";
     /** This is a fake MIME type, for backwards compatibility */
     public static final String HTML5="text/html5";
-    public static final String EPUB="application/epub+zip";
-    /** This is not a MIME type either */
-    public static final String EPUB3="epub3";
     public static final String LATEX="application/x-latex";
     public static final String BIBTEX="application/x-bibtex";
-    public static final String TEXT="text";
 	
 }

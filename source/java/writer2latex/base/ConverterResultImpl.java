@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-07)
+ *  Version 2.0 (2018-03-10)
  *
  */ 
 
@@ -28,34 +28,18 @@ package writer2latex.base;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import java.util.Iterator;
 
 import writer2latex.api.ConverterResult;
-import writer2latex.api.MetaData;
 import writer2latex.api.OutputFile;
-import writer2latex.api.ContentEntry;
 
 /** <code>ConverterResultImpl</code> is a straightforward implementation of <code>ConverterResult</code>
  */
 public class ConverterResultImpl implements ConverterResult {
 	
 	private List<OutputFile> files;
-	
-	private List<ContentEntry> content; 
-	private ContentEntry titlePageFile;
-	private ContentEntry textFile;
-	private ContentEntry tocFile;
-	private ContentEntry lofFile;
-	private ContentEntry lotFile;
-	private ContentEntry indexFile;
-	private ContentEntry bibliographyFile;
-	private ContentEntry coverFile;
-	private ContentEntry coverImageFile;
-	
-	private MetaData metaData = null;
 	
 	private int nMasterCount;
 	
@@ -70,16 +54,6 @@ public class ConverterResultImpl implements ConverterResult {
      */
     public void reset() {
         files = new Vector<OutputFile>();
-        content = new Vector<ContentEntry>();
-        titlePageFile = null;
-        textFile = null;
-        tocFile = null;
-        lofFile = null;
-        lotFile = null;
-        indexFile = null;
-        bibliographyFile = null;
-        coverImageFile = null;
-        metaData = null;
         nMasterCount = 0;
 	}
 
@@ -107,142 +81,6 @@ public class ConverterResultImpl implements ConverterResult {
         return files.iterator();
 	}
 
-    /** Add an entry to the "external" table of contents
-     * 
-     *  @param entry the entry to add
-     */
-    public void addContentEntry(ContentEntry entry) {
-    	content.add(entry);
-    }
-    
-    public List<ContentEntry> getContent() {
-    	return Collections.unmodifiableList(content);
-    }
-    
-    /** Define the entry which contains the title page
-     * 
-     * @param entry the entry
-     */
-    public void setTitlePageFile(ContentEntry entry) {
-    	titlePageFile = entry;
-    }
-    
-    public ContentEntry getTitlePageFile() {
-    	return titlePageFile;
-    }
-    
-    /** Define the entry which contains the main text file
-     * 
-     * @param entry the entry
-     */
-    public void setTextFile(ContentEntry entry) {
-    	textFile = entry;
-    }
-    
-    public ContentEntry getTextFile() {
-    	return textFile;
-    }
-    
-    /** Define the entry which contains the table of contents
-     * 
-     * @param entry the entry
-     */
-    public void setTocFile(ContentEntry entry) {
-    	tocFile = entry;
-    }
-    
-    public ContentEntry getTocFile() {
-    	return tocFile;
-    }
-    
-    /** Define the entry which contains the list of figures
-     * 
-     * @param entry the entry
-     */
-    public void setLofFile(ContentEntry entry) {
-    	lofFile = entry;
-    }
-    
-    public ContentEntry getLofFile() {
-    	return lofFile;
-    }
-    
-    /** Define the entry which contains the list of tables
-     * 
-     * @param entry the entry
-     */
-    public void setLotFile(ContentEntry entry) {
-    	lotFile = entry;
-    }
-    
-    public ContentEntry getLotFile() {
-    	return lotFile;
-    }
-    
-    /** Define the entry which contains the alphabetical index
-     * 
-     * @param entry the entry
-     */
-    public void setIndexFile(ContentEntry entry) {
-    	indexFile = entry;
-    }
-    
-    public ContentEntry getIndexFile() {
-    	return indexFile;
-    }
-    
-    /** Define the entry which contains the bibliography
-     * 
-     * @param entry the entry
-     */
-    public void setBibliographyFile(ContentEntry entry) {
-    	bibliographyFile = entry;
-    }
-    
-    public ContentEntry getBibliographyFile() {
-    	return bibliographyFile;
-    }
-    
-    /** Define the entry which contains the cover
-     * 
-     * @param entry the entry
-     */
-    public void setCoverFile(ContentEntry entry) {
-    	coverFile = entry;
-    }
-    
-    public ContentEntry getCoverFile() {
-    	return coverFile;
-    }
-
-    /** Define the entry which contains the cover image
-     * 
-     * @param entry the entry
-     */
-    public void setCoverImageFile(ContentEntry entry) {
-    	coverImageFile = entry;
-    }
-    
-    public ContentEntry getCoverImageFile() {
-    	return coverImageFile;
-    }
-    
-    /** Set the meta data of this <code>ConverterResult</code> 
-     * 
-     * @param metaData the meta data
-     */
-	public void setMetaData(MetaData metaData) {
-		this.metaData = metaData;
-	}
-	
-	/** Get the meta data of this <code>ConverterResult</code>
-	 *  
-	 *  @return the meta data
-	 */
-    public MetaData getMetaData() {
-		return metaData;
-	}
-    
     /** Write all files to a given directory
      * 
      *  @param dir the directory to use

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-06)
+ *  Version 2.0 (2018-03-08)
  *
  */
  
@@ -99,8 +99,6 @@ public class DrawConverter extends ConverterHelper {
     private String sScale;
     private boolean bConvertToPx;
     private int nImageSize;
-    private String sImageSplit;
-    private boolean bCoverImage;
     private boolean bEmbedSVG;
     private boolean bEmbedImg;
 
@@ -112,11 +110,6 @@ public class DrawConverter extends ConverterHelper {
     // This flag determines whether to collect frames or insert them immediately
     private boolean bCollectFrames = false;
     
-    // Large images (for full screen) in EPUB export are collected here
-    private Vector<Element> fullscreenFrames = new Vector<Element>();
-    // This flag determines whether to collect full screen images or insert them immediately
-    private boolean bCollectFullscreenFrames = true;
-
     public DrawConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         // We can only handle one form; pick an arbitrary one.
@@ -126,12 +119,9 @@ public class DrawConverter extends ConverterHelper {
             form = formsIterator.next();
         }
         bCollectFrames = ofr.isSpreadsheet();
-        bCollectFullscreenFrames = true;
         sScale = config.getXhtmlScaling();
         bConvertToPx = config.xhtmlConvertToPx();
         nImageSize = config.imageSize();
-        sImageSplit = config.imageSplit();
-        bCoverImage = config.coverImage();
         bEmbedSVG = config.embedSVG();
         bEmbedImg = config.embedImg();
     }
@@ -241,47 +231,7 @@ public class DrawConverter extends ConverterHelper {
         if (ofr.isOpenDocument()) return (Element) onode.getParentNode();
         else return onode;
     }
-    
-    // Add cover image (the first image in the document is taken out of context)
-    public Element insertCoverImage(Element hnode) {
-    	Element currentNode = hnode;
-    	if (bCoverImage) {
-    		Element cover = ofr.getFirstImage();
-    		if (cover!=null) {
-    			converter.setCoverFile(null);
-    			bCollectFullscreenFrames = false;
-    			handleDrawElement(cover,currentNode,null,FULL_SCREEN);
-    			bCollectFullscreenFrames = true;
-    			// Add margin:0 to body
-    			Element head = Misc.getChildByTagName(hnode.getOwnerDocument().getDocumentElement(),"head");
-    			if (head!=null) {
-    				Element style = converter.createElement("style");
-    				head.appendChild(style);
-    				style.setAttribute("type", "text/css");
-    				style.appendChild(converter.createTextNode("body { margin:0 }"));
-    			}
-    			currentNode = getTextCv().doMaybeSplit(hnode, 0);    	
-    		}
-    	}
-    	return currentNode;
-    }
-    
-    // Flush all full screen images, returning the new document node
-    public Element flushFullscreenFrames(Element hnode) {
-    	Element currentNode = hnode;
-    	if (converter.isTopLevel() && !fullscreenFrames.isEmpty()) {
-    		bCollectFullscreenFrames = false;
-    		currentNode = getTextCv().doMaybeSplit(hnode, 0);
-    		for (Element image : fullscreenFrames) {
-    			handleDrawElement(image,currentNode,null,FULL_SCREEN);
-    			currentNode = getTextCv().doMaybeSplit(hnode, 0);
-    		}
-    		fullscreenFrames.clear();
-    		bCollectFullscreenFrames = true;
-    	}
-    	return currentNode;
-    }
-	
+        
     public void flushFrames(Element hnode) {
         bCollectFrames = false;
         int nCount = frames.size();
@@ -444,30 +394,6 @@ public class DrawConverter extends ConverterHelper {
     private void handleDrawImage(Element onode, Element hnodeBlock, Element hnodeInline, int nMode) {
         Element frame = getFrame(onode);
         
-    	// For EPUB document some images require special treatment: Cover image and full screen images
-        if (bCollectFullscreenFrames && converter.isOPS()) {
-            // First check whether this is the cover image
-        	if (bCoverImage && onode==ofr.getFirstImage()) {
-        		return;
-        	}
-        	// Next check to see if we should treat this image as a "full screen" image
-        	// (Currently only images are handled like this, hence the code is here rather than in handleDrawElement)
-        	else if (!"none".equals(sImageSplit) && converter.isTopLevel()) {
-        		StyleWithProperties style = ofr.getFrameStyle(frame.getAttribute(XMLString.DRAW_STYLE_NAME));
-        		String sWidth = getFrameWidth(frame, style);
-        		String sHeight = getFrameHeight(frame, style);
-        		// It is if the image width exceeds a certain percentage of the current text width and the height is
-        		// greater than 1.33*the width (recommended by Michel "Coolmicro")
-        		if (sWidth!=null && sHeight!=null &&
-        				Calc.sub(Calc.multiply("133%",sWidth), sHeight).startsWith("-") &&
-        				Calc.sub(Calc.multiply(sImageSplit,converter.getContentWidth()),
-        						Calc.multiply(sScale,Calc.truncateLength(sWidth))).startsWith("-")) {
-        			fullscreenFrames.add(onode);
-        			return;
-        		}
-        	}
-        }
-        
         // Get the image from the ImageLoader
         BinaryGraphicsDocument bgd = null;
         String sFileName = null;
@@ -475,15 +401,9 @@ public class DrawConverter extends ConverterHelper {
         if (bgd!=null) {
         	if (!bgd.isLinked()) { // embedded image
                 sFileName = bgd.getFileName();
-                // If this is the cover image, add it to the converter result
-            	if (bCoverImage && onode==ofr.getFirstImage()) {
-            		converter.setCoverImageFile(bgd,null);
-            	}        		
         	}
         	else { // linked image
-            	if (!converter.isOPS()) { // Cannot have linked images in EPUB, ignore the image
-            		sFileName = bgd.getFileName();
-            	}
+           		sFileName = bgd.getFileName();
         	}
         }        
         

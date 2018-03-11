@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-10)
  *
  */
 package writer2latex.xhtml;
@@ -70,7 +70,6 @@ class NoteConverter extends ConverterHelper {
         String sId = Misc.getAttribute(onode,XMLString.TEXT_ID);
         Element link = converter.createLink(sId);
         converter.addTarget(link,"body"+sId);
-        converter.addEpubType(link, "noteref");
 		span.appendChild(link);
 		// Get the citation
         Element citation = Misc.getChildByTagName(onode,XMLString.TEXT_NOTE_CITATION);
@@ -92,10 +91,9 @@ class NoteConverter extends ConverterHelper {
     	return notes.size()>0;
     }
     
-    Element createNoteSection(Node hnode, String sEpubType) {
+    Element createNoteSection(Node hnode) {
     	Element section = converter.createElement("section");
     	hnode.appendChild(section);
-    	converter.addEpubType(section, sEpubType);
     	return section;
     }
      
@@ -106,26 +104,20 @@ class NoteConverter extends ConverterHelper {
     		hnode.appendChild(heading);
     		heading.appendChild(converter.createTextNode(sHeading));
 
-    		// Add to external content.
-    		if (config.getXhtmlSplitLevel()>0) {
-            	converter.addContentEntry(sHeading, 1, null);        			
-    		}
-    		else {
+    		//if (config.getXhtmlSplitLevel()==0) {
     			//For single output file we need a target
-                converter.addTarget(heading,sTarget);                
-            	converter.addContentEntry(sHeading, 1, sTarget);        			
-    		}
+    			//converter.addTarget(heading,sTarget);                
+    		//}
     	}
     }
     
-    void flushNotes(Node hnode, String sEpubType) {
+    void flushNotes(Node hnode) {
     	int nSize = notes.size();
 		for (int i=0; i<nSize; i++) {
 			Node note = notes.get(i);
 			// Create container
 			Element aside = converter.createElement("aside");
 			hnode.appendChild(aside);
-			converter.addEpubType(aside, sEpubType);
 			// Get the citation
 			Node citation = Misc.getChildByTagName(note,XMLString.TEXT_NOTE_CITATION);
 			if (citation==null) { // try old format

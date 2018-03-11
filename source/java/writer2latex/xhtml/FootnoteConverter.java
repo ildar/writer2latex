@@ -2,7 +2,7 @@
  *
  *	FootnoteConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-14)
+ *  Version 2.0 (2018-03-08)
  *
  */
 package writer2latex.xhtml;
@@ -53,7 +53,7 @@ class FootnoteConverter extends NoteConverter {
     void insertFootnotes(Node hnode, boolean bFinal) {
         if (hasNotes()) {
         	if (bFootnotesAtPage) {
-        		Element section = createNoteSection(hnode, "footnotes");
+        		Element section = createNoteSection(hnode);
 
         		// Add footnote rule
         		Element rule = converter.createElement("hr");
@@ -62,14 +62,14 @@ class FootnoteConverter extends NoteConverter {
         		getPageSc().applyStyle(info, rule);
         		section.appendChild(rule);
 
-        		flushNotes(section,"footnote");
+        		flushNotes(section);
         	}
         	else if (bFinal) {
         		// New page if required for footnotes as endnotes
         		if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
-        		Element section = createNoteSection(hnode, "footnotes");
+        		Element section = createNoteSection(hnode);
         		insertNoteHeading(section, config.getFootnotesHeading(), "footnotes");        	
-        		flushNotes(section,"footnote");
+        		flushNotes(section);
         	}
         }
     }

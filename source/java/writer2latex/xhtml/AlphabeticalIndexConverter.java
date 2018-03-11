@@ -2,9 +2,9 @@
  *
  *	AlphabeticalIndexConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
- *  This file is part of Writer2LaTeX.
+ *  This file is part of Wrter2LaTeX.
  *  
  *  Writer2LaTeX is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-19)
+ *  Version 2.0 (2018-03-10)
  *
  */
 package writer2latex.xhtml;
@@ -51,7 +51,7 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
     private int nAlphabeticalIndex = -1; // File containing alphabetical index
 
     AlphabeticalIndexConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-        super(ofr,config,converter,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE,"index");
+        super(ofr,config,converter,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE);
     }
     
     /** Return the id of the file containing the alphabetical index
@@ -99,7 +99,6 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
     @Override void handleIndex(Element onode, Element hnode) {
     	// Register the file index (we assume that there is only one alphabetical index)
         nAlphabeticalIndex = converter.getOutFileIndex();
-        converter.setIndexFile(null);
         super.handleIndex(onode, hnode);
     }
     

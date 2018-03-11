@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-07)
+ *  Version 2.0 (2018-03-10)
  *
  */
  
@@ -28,7 +28,6 @@ package writer2latex.api;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
 /** A <code>ConverterResult</code> represent a document, which is the result
  *  of a conversion performed by a <code>Converter</code>implementation.
@@ -41,75 +40,7 @@ public interface ConverterResult {
      *  @return  an <code>Iterator</code> of all files
      */
     public Iterator<OutputFile> iterator();
-    
-    /** Get the meta data associated with the source document
-     *  @return the meta data
-     */
-    public MetaData getMetaData();
-    
-    /** Get the content table (based on headings) for this <code>ConverterResult</code>
-     * 
-     *  @return list view of the content
-     */
-    public List<ContentEntry> getContent();
-    
-    /** Get the entry which contains the table page
-     * 
-     *  @return the entry or null if there is no title page
-     */
-    public ContentEntry getTitlePageFile();
-        
-    /** Get the entry which contains the start of the actual text (the first chapter, or simply the start of
-     *  the document if there are no headings)
-     * 
-     *  @return the entry
-     */
-    public ContentEntry getTextFile();
-        
-    /** Get the entry which contains the table of contents
-     * 
-     *  @return the entry or null if a table of content does not exist
-     */
-    public ContentEntry getTocFile();
-        
-    /** Get the entry which contains the list of tables
-     * 
-     *  @return the entry or null if a list of tables does not exist
-     */
-    public ContentEntry getLotFile();
-    
-    /** Get the entry which contains the list of figures
-     * 
-     *  @return the entry or null if a list of figures does not exist
-     */
-    public ContentEntry getLofFile();
-    
-    /** Get the entry which contains the alphabetical index
-     * 
-     *  @return the entry or null if an alphabetical index does not exist
-     */
-    public ContentEntry getIndexFile();
-    
-    /** Get the entry which contains the bibliography
-     * 
-     *  @return the entry or null if a bibliography does not exist
-     */
-    public ContentEntry getBibliographyFile();
-    
-    /** Get the entry which contains the cover (which usually will contain a cover image)
-     * 
-     *  @return the entry or null if a cover does not exist
-     */
-    public ContentEntry getCoverFile();
-    
-    /** Get the entry which contains the actual cover image
-     * 
-     *  @return the entry or null if a cover image does not exist
-     */
-    public ContentEntry getCoverImageFile();
-    
-
-    
+            
     /** Write all files of the <code>ConverterResult</code> to a directory.
      *  Subdirectories are created as required by the individual
      *  <code>OutputFile</code>s.

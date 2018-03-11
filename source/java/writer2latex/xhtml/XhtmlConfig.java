@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-10)
  *
  */
 
@@ -40,7 +40,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 56; }
+    protected int getOptionCount() { return 49; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -122,33 +122,26 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int CONVERT_TO_PX = 26;
     private static final int SCALING = 27;
     private static final int COLUMN_SCALING = 28;
-    private static final int RELATIVE_FONT_SIZE = 29;
-    private static final int FONT_SCALING = 30;
-    private static final int FLOAT_OBJECTS = 31;
-    private static final int TABSTOP_STYLE = 32;
-    private static final int ENDNOTES_HEADING = 33;
-    private static final int FOOTNOTES_HEADING = 34;
-    private static final int EXTERNAL_TOC_DEPTH = 35;
-    private static final int INCLUDE_TOC = 36;
-    private static final int INCLUDE_NCX = 37;
-    private static final int SPLIT_LEVEL = 38;
-    private static final int REPEAT_LEVELS = 39;
-    private static final int PAGE_BREAK_SPLIT = 40;
-    private static final int SPLIT_AFTER = 41;
-    private static final int IMAGE_SPLIT = 42;
-    private static final int COVER_IMAGE = 43;
-    private static final int EMBED_SVG = 44;
-    private static final int EMBED_IMG = 45;
-    private static final int USE_MATHJAX = 46;
-    private static final int CALC_SPLIT = 47;
-    private static final int DISPLAY_HIDDEN_SHEETS = 48;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 49;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 50;
-    private static final int APPLY_PRINT_RANGES = 51;
-    private static final int USE_TITLE_AS_HEADING = 52;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 53;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 54;
-    private static final int UPLINK = 55;
+    private static final int FLOAT_OBJECTS = 29;
+    private static final int TABSTOP_STYLE = 30;
+    private static final int ENDNOTES_HEADING = 31;
+    private static final int FOOTNOTES_HEADING = 32;
+    private static final int INCLUDE_TOC = 33;
+    private static final int SPLIT_LEVEL = 34;
+    private static final int REPEAT_LEVELS = 35;
+    private static final int PAGE_BREAK_SPLIT = 36;
+    private static final int EMBED_SVG = 37;
+    private static final int EMBED_IMG = 38;
+    private static final int USE_MATHJAX = 39;
+    private static final int CALC_SPLIT = 40;
+    private static final int DISPLAY_HIDDEN_SHEETS = 41;
+    private static final int DISPLAY_HIDDEN_ROWS_COLS = 42;
+    private static final int DISPLAY_FILTERED_ROWS_COLS = 43;
+    private static final int APPLY_PRINT_RANGES = 44;
+    private static final int USE_TITLE_AS_HEADING = 45;
+    private static final int USE_SHEET_NAMES_AS_HEADINGS = 46;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 47;
+    private static final int UPLINK = 48;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -211,25 +204,11 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[CONVERT_TO_PX] = new BooleanOption("convert_to_px","true");
         options[SCALING] = new Option("scaling","100%");
         options[COLUMN_SCALING] = new Option("column_scaling","100%");
-        options[RELATIVE_FONT_SIZE] = new BooleanOption("relative_font_size","false");
-        options[FONT_SCALING] = new Option("font_scaling","100%");
         options[FLOAT_OBJECTS] = new BooleanOption("float_objects","true");
         options[TABSTOP_STYLE] = new Option("tabstop_style","");
         options[ENDNOTES_HEADING] = new Option("endnotes_heading","");
         options[FOOTNOTES_HEADING] = new Option("footnotes_heading","");
-        options[EXTERNAL_TOC_DEPTH] = new IntegerOption("external_toc_depth","auto")  {
-        	@Override public void setString(String sValue) {
-                super.setString(sValue);
-                if ("auto".equals(sValue)) {
-                	nValue = 0;
-                }
-                else {
-                	nValue = Misc.getPosInteger(sValue,1);
-                }
-            }
-        };
         options[INCLUDE_TOC] = new BooleanOption("include_toc","true");
-        options[INCLUDE_NCX] = new BooleanOption("include_ncx","true");
         options[SPLIT_LEVEL] = new IntegerOption("split_level","0") {
         	@Override public void setString(String sValue) {
                 super.setString(sValue);
@@ -251,14 +230,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         		else { nValue = NONE; }
         	}
         };
-        options[SPLIT_AFTER] = new IntegerOption("split_after","0") {
-        	@Override public void setString(String sValue) {
-        		super.setString(sValue);
-        		nValue = Misc.getPosInteger(sValue, 0);
-        	}
-        };
-        options[IMAGE_SPLIT] = new Option("image_split","none");
-        options[COVER_IMAGE] = new BooleanOption("cover_image","false");
         options[EMBED_SVG] = new BooleanOption("embed_svg","false");
         options[EMBED_IMG] = new BooleanOption("embed_img","false");
         options[USE_MATHJAX] = new BooleanOption("use_mathjax","false");
@@ -383,21 +354,14 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public boolean xhtmlConvertToPx() { return ((BooleanOption) options[CONVERT_TO_PX]).getValue(); }
     public String getXhtmlScaling() { return options[SCALING].getString(); }
     public String getXhtmlColumnScaling() { return options[COLUMN_SCALING].getString(); }
-    public boolean relativeFontSize() { return ((BooleanOption) options[RELATIVE_FONT_SIZE]).getValue(); }
-    public String fontScaling() { return options[FONT_SCALING].getString(); }
     public boolean xhtmlFloatObjects() { return ((BooleanOption) options[FLOAT_OBJECTS]).getValue(); }
     public String getXhtmlTabstopStyle() { return options[TABSTOP_STYLE].getString(); }
     public String getEndnotesHeading() { return options[ENDNOTES_HEADING].getString(); }
     public String getFootnotesHeading() { return options[FOOTNOTES_HEADING].getString(); }
-    public int externalTocDepth() { return ((IntegerOption) options[EXTERNAL_TOC_DEPTH]).getValue(); }
     public boolean includeToc() { return ((BooleanOption) options[INCLUDE_TOC]).getValue(); }
-    public boolean includeNCX() { return ((BooleanOption) options[INCLUDE_NCX]).getValue(); }
     public int getXhtmlSplitLevel() { return ((IntegerOption) options[SPLIT_LEVEL]).getValue(); }
     public int getXhtmlRepeatLevels() { return ((IntegerOption) options[REPEAT_LEVELS]).getValue(); }
     public int pageBreakSplit() { return ((IntegerOption) options[PAGE_BREAK_SPLIT]).getValue(); }
-    public int splitAfter() { return ((IntegerOption) options[SPLIT_AFTER]).getValue(); }
-    public String imageSplit() { return options[IMAGE_SPLIT].getString(); }
-    public boolean coverImage() { return ((BooleanOption) options[COVER_IMAGE]).getValue(); }
     public boolean embedSVG() { return ((BooleanOption) options[EMBED_SVG]).getValue(); }
     public boolean embedImg() { return ((BooleanOption) options[EMBED_IMG]).getValue(); }
     public boolean useMathJax() { return ((BooleanOption) options[USE_MATHJAX]).getValue(); }

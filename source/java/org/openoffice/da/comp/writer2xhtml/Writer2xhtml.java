@@ -93,10 +93,6 @@ public final class Writer2xhtml extends WeakBase
         if ( aURL.Protocol.compareTo(PROTOCOL) == 0 ) {
             if ( aURL.Path.compareTo("PublishAsXHTML") == 0 )
                 return this;
-            else if ( aURL.Path.compareTo("PublishAsEPUB") == 0 )
-                return this;
-            else if ( aURL.Path.compareTo("EditEPUBDocumentProperties") == 0 )
-                return this;
         }
         return null;
     }

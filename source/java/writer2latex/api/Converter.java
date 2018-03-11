@@ -2,7 +2,7 @@
  *
  *  Converter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-08-28)
+ *  Version 2.0 (2018-03-09)
  *
  */
  
@@ -69,48 +69,6 @@ public interface Converter {
      *  while reading the template
      */
     public void readTemplate(File file) throws IOException;
-
-    /** Read a style sheet to <em>include</em> with the converted document.
-     *  The format of the style sheet depends on the <code>Converter</code>
-     *  implementation.
-     *
-     *  @param is an <code>InputStream</code> from which to read the style sheet
-     *  @throws IOException if some exception occurs while reading the style sheet
-     */
-    public void readStyleSheet(InputStream is) throws IOException;
-
-    /** Read a style sheet to <em>include</em> with the converted document.
-     *  The format of the style sheet depends on the <code>Converter</code>
-     *  implementation.
-     *
-     *  @param file a file from which to read the style sheet
-     *  @throws IOException if the file does not exist or some exception occurs
-     *  while reading the style sheet
-     */
-    public void readStyleSheet(File file) throws IOException;
-
-    /** Read a resource to <em>include</em> with the converted document.
-     *  A resource can be any (binary) file and will be placed in the same directory as
-     *  the style sheet
-     *
-     *  @param is an <code>InputStream</code> from which to read the resource
-     *  @param sFileName the file name to use for the resource
-     *  @param sMediaType the media type of the resource, if null the media type will be guessed from the file name
-     *  @throws IOException if some exception occurs while reading the resource
-     */
-    public void readResource(InputStream is, String sFileName, String sMediaType) throws IOException;
-
-    /** Read a style sheet to <em>include</em> with the converted document.
-     *  A resource can be any (binary) file and will be placed in the same directory as
-     *  the style sheet
-     *
-     *  @param file a file from which to read the style sheet
-     *  @param sFileName the file name to use for the resource
-     *  @param sMediaType the media type of the resource, if null the media type will be guessed from the file name
-     *  @throws IOException if the file does not exist or some exception occurs
-     *  while reading the resource
-     */
-    public void readResource(File file, String sFileName, String sMediaType) throws IOException;
 
     /** Convert a document
      *

@@ -2,7 +2,7 @@
  *
  *	EndnoteConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-12)
+ *  Version 2.0 (2018-03-08)
  *
  */
 package writer2latex.xhtml;
@@ -42,9 +42,9 @@ class EndnoteConverter extends NoteConverter {
     void insertEndnotes(Node hnode) {
         if (hasNotes()) {
         	if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
-        	Element section = createNoteSection(hnode, "rearnotes");
+        	Element section = createNoteSection(hnode);
         	insertNoteHeading(section, config.getEndnotesHeading(), "endnotes");
-        	flushNotes(section,"rearnote");
+        	flushNotes(section);
         }
     }
 }

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-07)
+ *  Version 2.0 (2018-03-08)
  *
  */ 
  
@@ -90,15 +90,6 @@ public final class ToolbarSettingsDialog
             else if (sMethod.equals("XhtmlBrowseClick")) {
             	return xhtmlBrowseClick(dlg);
             }
-            else if (sMethod.equals("EpubFormatChange")) {
-            	return true;
-            }
-            else if (sMethod.equals("EpubViewChange")) {
-            	return epubViewChange(dlg);
-            }
-            else if (sMethod.equals("EpubBrowseClick")) {
-            	return epubBrowseClick(dlg);
-            }
         }
         catch (com.sun.star.uno.RuntimeException e) {
             throw e;
@@ -110,8 +101,7 @@ public final class ToolbarSettingsDialog
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "external_event", "XhtmlViewChange", "XhtmlBrowseClick",
-        		"EpupFormatChange", "EpubViewChange", "EpubBrowseClick" };
+        String[] sNames = { "external_event", "XhtmlViewChange", "XhtmlBrowseClick" };
         return sNames;
     }
     
@@ -141,7 +131,6 @@ public final class ToolbarSettingsDialog
             } else if (sMethod.equals("back") || sMethod.equals("initialize")) {
                 loadConfiguration(dlg);
                 enableXhtmlExecutable(dlg);
-                enableEpubExecutable(dlg);
                 return true;
             }
         }
@@ -163,12 +152,6 @@ public final class ToolbarSettingsDialog
         			XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlView"));
         	dlg.setTextFieldText("XhtmlExecutable",
         			XPropertySetHelper.getPropertyValueAsString(xProps, "XhtmlExecutable"));
-        	dlg.setListBoxSelectedItem("EpubFormat",
-        			XPropertySetHelper.getPropertyValueAsShort(xProps, "EpubFormat"));
-        	dlg.setListBoxSelectedItem("EpubView",
-        			XPropertySetHelper.getPropertyValueAsShort(xProps, "EpubView"));
-        	dlg.setTextFieldText("EpubExecutable",
-        			XPropertySetHelper.getPropertyValueAsString(xProps, "EpubExecutable"));
 		} catch (Exception e) {
     		// Failed to get registry view
 		}
@@ -181,9 +164,6 @@ public final class ToolbarSettingsDialog
     		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
    			XPropertySetHelper.setPropertyValue(xProps, "XhtmlView", dlg.getListBoxSelectedItem("XhtmlView"));
    			XPropertySetHelper.setPropertyValue(xProps, "XhtmlExecutable", dlg.getTextFieldText("XhtmlExecutable"));
-   			XPropertySetHelper.setPropertyValue(xProps, "EpubFormat", dlg.getListBoxSelectedItem("EpubFormat"));
-   			XPropertySetHelper.setPropertyValue(xProps, "EpubView", dlg.getListBoxSelectedItem("EpubView"));
-   			XPropertySetHelper.setPropertyValue(xProps, "EpubExecutable", dlg.getTextFieldText("EpubExecutable"));
    			
             // Commit registry changes
             XChangesBatch  xUpdateContext = (XChangesBatch)
@@ -217,22 +197,6 @@ public final class ToolbarSettingsDialog
     	return true;
     }
 	
-    private boolean epubViewChange(DialogAccess dlg) {
-    	enableEpubExecutable(dlg);
-    	return true;
-    }
-	
-    private void enableEpubExecutable(DialogAccess dlg) {
-    	int nItem = dlg.getListBoxSelectedItem("EpubView");
-    	dlg.setControlEnabled("EpubExecutable", nItem==2);
-    	dlg.setControlEnabled("EpubBrowseButton", nItem==2);
-    }
-    
-    private boolean epubBrowseClick(DialogAccess dlg) {
-    	browseForExecutable(dlg,"EpubExecutable");
-    	return true;
-    }
-    
     private boolean browseForExecutable(DialogAccess dlg, String sControlName) {
     	String sPath = filePicker.getPath();
     	if (sPath!=null) {

@@ -166,9 +166,6 @@ public class PageStyleConverter extends StyleConverterHelper {
         				// Background color
         				StyleInfo pageInfo = new StyleInfo();
         				getFrameSc().cssBackground(pageLayout,pageInfo.props,true);
-        				/*if (converter.isOPS()) { // Use zero margin for EPUB and default margins for XHTML
-        					pageInfo.props.addValue("margin", "0");
-        				}*/
         				if (pageInfo.hasAttributes()) {
         					buf.append(sIndent).append("body {").append(pageInfo.props.toString()).append("}")
         					.append(config.prettyPrint() ? "\n" : " ");

@@ -63,11 +63,6 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
     private Hashtable<String, String> orgAnchorStyleNames = new Hashtable<String, String>();
     private Hashtable<String, String> orgAnchorVisitedStyleNames = new Hashtable<String, String>();
     
-    // Export font sizes as percentages?
-    private boolean bRelativeFontSize = false;
-    private String sFontScaling = "100%";
-    private String sBaseFontSize = "12pt";
-    
     // Use default font?
     private boolean bConvertFont = false;
 
@@ -81,15 +76,13 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
         this.styleMap = config.getXTextStyleMap();
         this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
         this.bConvertHard = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES;
-        this.bRelativeFontSize = converter.isOPS() && config.relativeFontSize();
-        this.sFontScaling = config.fontScaling();
-        StyleWithProperties defaultStyle = ofr.getDefaultParStyle();
+        /*StyleWithProperties defaultStyle = ofr.getDefaultParStyle();
         if (defaultStyle!=null) {
         	String sFontSize = defaultStyle.getProperty(XMLString.FO_FONT_SIZE,false);
         	if (sFontSize!=null) {
         		sBaseFontSize = sFontSize;
         	}
-        }
+        }*/
         this.bConvertFont = !config.useDefaultFont();
     }
 
@@ -316,13 +309,7 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
                     s3 = s2; s4="100%";
                 }
                 if (s!=null) {
-                	if (bRelativeFontSize) {
-                		String sFontSize = Calc.divide(Calc.multiply(sFontScaling, Calc.multiply(s4,s)), sBaseFontSize);
-                		if (!"100%".equals(sFontSize)) props.addValue("font-size", sFontSize);
-                	}
-                	else {
-                		props.addValue("font-size",Calc.multiply(s4,scale(s)));
-                	}
+               		props.addValue("font-size",Calc.multiply(s4,scale(s)));
                 }
                 else {
                 	props.addValue("font-size",s4);
@@ -332,13 +319,7 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
                 }
             }
             else if (s!=null) {
-            	if (bRelativeFontSize) {
-            		String sFontSize = Calc.divide(Calc.multiply(sFontScaling, s),sBaseFontSize);
-            		if (!"100%".equals(sFontSize)) props.addValue("font-size", sFontSize);
-            	}
-            	else {
-            		props.addValue("font-size",scale(s));
-            	}
+           		props.addValue("font-size",scale(s));
             }
         }
 

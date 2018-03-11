@@ -37,7 +37,6 @@ import writer2latex.util.Misc;
  */
 abstract class IndexConverterHelper extends ConverterHelper {
 	
-	private String sEpubType;
 	private String sSourceName;
     
 	/** Construct a new index converter
@@ -46,13 +45,11 @@ abstract class IndexConverterHelper extends ConverterHelper {
 	 * @param config the configuration
 	 * @param converter the converter
 	 * @param sSourceName the name of the source data element in the index
-	 * @param sEpubType the EPUB 3 semantic type of the index
 	 */
 	IndexConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter,
-			String sSourceName, String sEpubType) {
+			String sSourceName) {
         super(ofr,config,converter);
 		this.sSourceName = sSourceName;
-		this.sEpubType = sEpubType;
     }
 	
     /** Generate the actual contents of the index
@@ -81,8 +78,6 @@ abstract class IndexConverterHelper extends ConverterHelper {
 		Element container = converter.createElement("section");
 		hnode.appendChild(container);
 
-		converter.addEpubType(container, sEpubType);
-		
 		String sName = source.getAttribute(XMLString.TEXT_NAME);
 		if (sName!=null) {
 			converter.addTarget(container,sName);

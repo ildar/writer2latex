@@ -2,7 +2,7 @@
  *
  *	TOCConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-23)
+ *  Version 2.0 (2018-03-10)
  *
  */
 package writer2latex.xhtml;
@@ -72,11 +72,8 @@ class TOCConverter extends IndexConverterHelper {
 	private int nExternalTocDepth = 1; // The number of levels to include in the "external" table of contents
 
 	TOCConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-		super(ofr,config,converter,XMLString.TEXT_TABLE_OF_CONTENT_SOURCE,"toc");
-        nExternalTocDepth = config.externalTocDepth();
-        if (nExternalTocDepth==0) { // A value of zero means auto (i.e. determine from split level)
-        	nExternalTocDepth = Math.max(config.getXhtmlSplitLevel(),1);
-        }
+		super(ofr,config,converter,XMLString.TEXT_TABLE_OF_CONTENT_SOURCE);
+       	nExternalTocDepth = Math.max(config.getXhtmlSplitLevel(),1);
 	}
    
 	/** Return the id of the file containing the alphabetical index
@@ -99,14 +96,7 @@ class TOCConverter extends IndexConverterHelper {
 		converter.addTarget(heading,sTarget);
 		
 		this.currentChapter = onode;
-	
-		// Add in external content. For single file output we include all level 1 headings + their target
-		// Targets are added only when the toc level is deeper than the split level 
-		if (nLevel<=nExternalTocDepth) {
-			converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel,
-					nLevel>config.getXhtmlSplitLevel() ? sTarget : null);
-		}
-	
+		
 		// Add to real toc
 		TocEntry entry = new TocEntry();
 		entry.onode = onode;
@@ -130,7 +120,6 @@ class TOCConverter extends IndexConverterHelper {
 				sTarget = TOC_LINK_PREFIX+(++nTocIndex);
 				converter.addTarget(div,sTarget);
 			}
-			converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel, sTarget);
 		}
 	}
 	
@@ -169,7 +158,6 @@ class TOCConverter extends IndexConverterHelper {
 	    	if (!ofr.getTocReader((Element)onode).isByChapter()) { 
 	    		nTocFileIndex = converter.getOutFileIndex(); 
 	    	}
-	    	converter.setTocFile(null);
 	    	super.handleIndex(onode,hnode);
     	}
     }

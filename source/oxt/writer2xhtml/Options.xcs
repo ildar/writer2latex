@@ -11,13 +11,6 @@
             <prop oor:name="LockedOptions" oor:type="xs:string" />
             <prop oor:name="ConfigURL" oor:type="xs:string" />
             <prop oor:name="TargetTemplateURL" oor:type="xs:string" />
-            <prop oor:name="StyleSheetURL" oor:type="xs:string" />
-            <set oor:name="Resources" oor:node-type="Resource" />			
-        </group>
-        <group oor:name="Resource">
-        	<prop oor:name="URL" oor:type="xs:string" />
-        	<prop oor:name="FileName" oor:type="xs:string" />
-        	<prop oor:name="MediaType" oor:type="xs:string" />
         </group>
         <group oor:name="Template">
             <prop oor:name="TemplateName" oor:type="xs:string" />

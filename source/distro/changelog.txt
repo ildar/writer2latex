@@ -1,13 +1,29 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2x] New focus: Removed support for EPUB from the core
+  These EPUB specific API methods were removed from Converter:
+    readStyleSheet() and readResource()
+  These EPUB specific API methods were removed from ConverterResult:
+    getTitlePageFile(), getTextFile(), getCoverFile(), getCoverImageFile(),
+    getContent(), getTocFile(), getLofFile(), getLotFile(), getIndexFile(),
+    getBibliographyFile(), getMetaData() 
+  These EPUB specific options were removed: include_ncx,
+    relative_font_size, font_scaling, split_after, image_split, cover_image,
+    external_toc_depth
+  Two command line options were removed: -stylesheet and -resource
+  
+  TODO: Slet resten af EPUB api i converterresult?
+  TODO: Slet EPUB options (har pt blot udkommenteret accessor metoder)
+
 [filter] New focus: Removed the EPUB export filters
 
 [filter] Clean up: Removed the option formulas which was specific for old XHTML
   formats not supporting MathML.
 
-[w2x] Clean up: Removed support for obsolete XHTML formats, retaining only HTML5.
-  The ConverterFactory now produces an HTML5 converter if given the MIME type
-  text/html. The pseudo type text/html5 is retained for backwards compatibility.
+[w2x] Clean up: Removed support for obsolete XHTML formats from the core,
+  retaining only HTML5. The ConverterFactory now produces an HTML5 converter
+  if given the MIME type text/html. The pseudo type text/html5 is retained
+  for backwards compatibility.
 
 [filter] Clean up: Removed filters for obsolete XHTML formats, retaining
   only HTML5

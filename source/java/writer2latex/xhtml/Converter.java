@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-10)
  *
  */
 
@@ -27,10 +27,8 @@ package writer2latex.xhtml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.Hashtable;
@@ -45,10 +43,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import writer2latex.api.Config;
-import writer2latex.api.ContentEntry;
 import writer2latex.api.ConverterFactory;
-import writer2latex.api.OutputFile;
-import writer2latex.base.ContentEntryImpl;
 import writer2latex.base.ConverterBase;
 import writer2latex.office.MIMETypes;
 import writer2latex.office.OfficeReader;
@@ -59,13 +54,10 @@ import writer2latex.util.Misc;
 import writer2latex.xhtml.l10n.L10n;
 
 /**
- * <p>This class converts an OpenDocument file to an XHTML(+MathML) or EPUB document.</p>
+ * <p>This class converts an OpenDocument file to an HTML5 document.</p>
  *
  */
 public class Converter extends ConverterBase {
-	private static final String EPUB_STYLES_FOLDER = "styles/";
-	private static final String EPUB_STYLESHEET = "styles/styles1.css";
-	private static final String EPUB_CUSTOM_STYLESHEET = "styles/styles.css";
 	
     // Config
     private XhtmlConfig config;
@@ -87,12 +79,7 @@ public class Converter extends ConverterBase {
     // The template
     private XhtmlDocument template = null;
     
-    // The included style sheet and associated resources
-    private CssDocument styleSheet = null;
-    private Set<ResourceDocument> resources = new HashSet<ResourceDocument>();
-    
     // The xhtml output file(s)
-    private boolean bOPS = false; // Do we need to be OPS conforming?
     Vector<XhtmlDocument> outFiles;
     private int nOutFileIndex;
     private XhtmlDocument htmlDoc; // current outfile
@@ -117,7 +104,7 @@ public class Converter extends ConverterBase {
         config = new XhtmlConfig();
     }
 
-    // override methods to read templates, style sheets and resources
+    // override methods to read template
     @Override public void readTemplate(InputStream is) throws IOException {
         template = new XhtmlDocument("Template");
         template.read(is);
@@ -126,41 +113,6 @@ public class Converter extends ConverterBase {
     @Override public void readTemplate(File file) throws IOException {
         readTemplate(new FileInputStream(file));
     }
-
-    @Override public void readStyleSheet(InputStream is) throws IOException {
-    	if (styleSheet==null) {
-    		styleSheet = new CssDocument(EPUB_CUSTOM_STYLESHEET);
-    	}
-    	styleSheet.read(is);
-    }
-	
-    @Override public void readStyleSheet(File file) throws IOException {
-        readStyleSheet(new FileInputStream(file));
-    }
-    
-    @Override public void readResource(InputStream is, String sFileName, String sMediaType) throws IOException {
-    	if (sMediaType==null) {
-    		// Guess the media type from the file extension
-    		sMediaType="";
-    		String sfilename = sFileName.toLowerCase();
-    		// PNG, JPEG and GIF are the basic raster image formats that must be supported by EPUB readers
-    		if (sfilename.endsWith(MIMETypes.PNG_EXT)) { sMediaType = MIMETypes.PNG; }
-    		else if (sfilename.endsWith(MIMETypes.JPEG_EXT)) { sMediaType = MIMETypes.JPEG; }
-    		else if (sfilename.endsWith(".jpeg")) { sMediaType = MIMETypes.JPEG; }
-    		else if (sfilename.endsWith(MIMETypes.GIF_EXT)) { sMediaType = MIMETypes.GIF; }
-    		// The OPS 2.0.1 specification recommends (and only mentions) OpenType with this media type
-    		else if (sfilename.endsWith(".otf")) { sMediaType = "application/vnd.ms-opentype"; }
-    		// For convenience we also include a media type for true type fonts (the most common, it seems)
-    		else if (sfilename.endsWith(".ttf")) { sMediaType = "application/x-font-ttf"; }
-    	}
-    	ResourceDocument doc = new ResourceDocument(EPUB_STYLES_FOLDER+sFileName, sMediaType);
-    	doc.read(is);
-    	resources.add(doc);
-    }
-    
-    @Override public void readResource(File file, String sFileName, String sMediaType) throws IOException {
-    	readResource(new FileInputStream(file), sFileName, sMediaType);
-    }    
     
     protected String getContentWidth() {
     	return contentWidth.peek();
@@ -189,37 +141,7 @@ public class Converter extends ConverterBase {
     protected MathConverter getMathCv() { return mathCv; }
 	
     protected int getOutFileIndex() { return nOutFileIndex; }
-    
-    protected void addContentEntry(String sTitle, int nLevel, String sTarget) {
-    	converterResult.addContentEntry(new ContentEntryImpl(sTitle,nLevel,htmlDoc,sTarget));
-    }
-    
-    protected void setTocFile(String sTarget) {
-    	converterResult.setTocFile(new ContentEntryImpl(l10n.get(L10n.CONTENTS),1,htmlDoc,sTarget));
-    	//nTocFileIndex = nOutFileIndex;
-    }
-	
-    protected void setLofFile(String sTarget) {
-    	converterResult.setLofFile(new ContentEntryImpl("Figures",1,htmlDoc,sTarget));
-    }
-	
-    protected void setLotFile(String sTarget) {
-    	converterResult.setLotFile(new ContentEntryImpl("Tables",1,htmlDoc,sTarget));
-    }
-	
-    protected void setIndexFile(String sTarget) {
-    	converterResult.setIndexFile(new ContentEntryImpl(l10n.get(L10n.INDEX),1,htmlDoc,sTarget));
-    	//nAlphabeticalIndex = nOutFileIndex;
-    }
-    
-    protected void setCoverFile(String sTarget) {
-    	converterResult.setCoverFile(new ContentEntryImpl("Cover",0,htmlDoc,sTarget));
-    }
-	
-    protected void setCoverImageFile(OutputFile file, String sTarget) {
-    	converterResult.setCoverImageFile(new ContentEntryImpl("Cover image",0,file,sTarget));
-    }
-	
+        
     protected Element createElement(String s) { return htmlDOM.createElement(s); }
 	
     protected Text createTextNode(String s) { return htmlDOM.createTextNode(s); }
@@ -228,30 +150,20 @@ public class Converter extends ConverterBase {
 	
     protected L10n getL10n() { return l10n; }
     
-    public void setOPS(boolean b) { bOPS = true; }
-    
-    public boolean isOPS() { return bOPS; }
-    
     @Override public void convertInner() throws IOException {      
         sTargetFileName = Misc.trimDocumentName(sTargetFileName,".html");
 		
         outFiles = new Vector<XhtmlDocument>();
         nOutFileIndex = -1;
 
-        bNeedHeaderFooter = !bOPS && (ofr.isSpreadsheet() || ofr.isPresentation() || config.getXhtmlSplitLevel()>0 || config.pageBreakSplit()>XhtmlConfig.NONE || config.getXhtmlUplink().length()>0);
+        bNeedHeaderFooter = (ofr.isSpreadsheet() || ofr.isPresentation() || config.getXhtmlSplitLevel()>0 || config.pageBreakSplit()>XhtmlConfig.NONE || config.getXhtmlUplink().length()>0);
 
         l10n = new L10n();
         
-        if (isOPS()) {
-        	imageConverter.setBaseFileName("image");
-        	imageConverter.setUseSubdir("images");
-        }
-        else { 
-        	imageConverter.setBaseFileName(sTargetFileName+"-img");
-        	if (config.saveImagesInSubdir()) {
-        		imageConverter.setUseSubdir(sTargetFileName+"-img");        	
-        	}
-        }
+    	imageConverter.setBaseFileName(sTargetFileName+"-img");
+    	if (config.saveImagesInSubdir()) {
+    		imageConverter.setUseSubdir(sTargetFileName+"-img");        	
+    	}
 
         imageConverter.setDefaultFormat(MIMETypes.PNG);
         imageConverter.addAcceptedFormat(MIMETypes.JPEG);
@@ -285,24 +197,6 @@ public class Converter extends ConverterBase {
         else if (ofr.isPresentation()) { drawCv.convertDrawContent(body); }
         else { textCv.convertTextContent(body); }
 		
-        // Set the title page and text page entries
-        if (converterResult.getContent().isEmpty()) {
-        	// No headings in the document: There is no title page and the text page is the first page
-        	converterResult.setTextFile(new ContentEntryImpl("Text", 1, outFiles.get(0), null));
-        	// We also have to add a toc entry (the ncx file cannot be empty)
-        	converterResult.addContentEntry(new ContentEntryImpl("Text", 1, outFiles.get(0), null));
-        }
-        else {
-        	ContentEntry firstHeading = converterResult.getContent().get(0);
-        	// The title page is the first page after the cover, unless the first page starts with a heading
-        	int nFirstPage = converterResult.getCoverFile()!=null ? 1 : 0;
-        	if (outFiles.get(nFirstPage)!=firstHeading.getFile() || firstHeading.getTarget()!=null) {
-        		converterResult.setTitlePageFile(new ContentEntryImpl("Title page", 1, outFiles.get(nFirstPage), null));
-        	}
-        	// The text page is the one containing the first heading
-        	converterResult.setTextFile(new ContentEntryImpl("Text", 1, firstHeading.getFile(), firstHeading.getTarget()));
-        }
-
         // Resolve links
         ListIterator<LinkDescriptor> iter = links.listIterator();
         while (iter.hasNext()) {
@@ -320,16 +214,8 @@ public class Converter extends ConverterBase {
             }
         }
 
-        // Add included style sheet, if any - and we are creating OPS content
-        if (bOPS && styleSheet!=null) {
-        	converterResult.addDocument(styleSheet);
-        	for (ResourceDocument doc : resources) {
-        		converterResult.addDocument(doc);
-        	}
-        }
-        
         // Export styles (XHTML)
-        if (!isOPS() && !config.separateStylesheet()) {
+        if (!config.separateStylesheet()) {
         	for (int i=0; i<=nOutFileIndex; i++) {
         		Element head = outFiles.get(i).getHeadNode();
         		if (head!=null) {
@@ -484,12 +370,7 @@ public class Converter extends ConverterBase {
         
         // Export styles
         if (config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
-        	if (isOPS()) { // EPUB
-        		CssDocument cssDoc = new CssDocument(EPUB_STYLESHEET);
-        		cssDoc.read(styleCv.exportStyles(false));
-        		converterResult.addDocument(cssDoc);
-        	}
-        	else if (config.separateStylesheet()) { // XHTML
+        	if (config.separateStylesheet()) {
         		CssDocument cssDoc = new CssDocument(sTargetFileName+"-styles.css");
         		cssDoc.read(styleCv.exportStyles(false));
         		converterResult.addDocument(cssDoc);
@@ -635,7 +516,6 @@ public class Converter extends ConverterBase {
         htmlDOM = htmlDoc.getContentDOM();
         Element rootElement = htmlDOM.getDocumentElement();
         styleCv.applyDefaultLanguage(rootElement);
-        addEpubNs(rootElement);
         rootElement.insertBefore(htmlDOM.createComment(
              "This file was converted to xhtml by "
              + (ofr.isText() ? "Writer" : (ofr.isSpreadsheet() ? "Calc" : "Impress"))
@@ -668,44 +548,42 @@ public class Converter extends ConverterBase {
     		meta.setAttribute("charset",htmlDoc.getEncoding().toUpperCase());
     		head.appendChild(meta);        		
 
-        	// Add meta data (for EPUB the meta data belongs to the .opf file)
-        	if (!bOPS) {
-        		// "Traditional" meta data
-        		//createMeta("generator","Writer2LaTeX "+Misc.VERSION);
-        		createMeta(head,"description",metaData.getDescription());
-        		createMeta(head,"keywords",metaData.getKeywords());
+        	// Add meta data
+    		// "Traditional" meta data
+    		//createMeta("generator","Writer2LaTeX "+Misc.VERSION);
+    		createMeta(head,"description",metaData.getDescription());
+    		createMeta(head,"keywords",metaData.getKeywords());
 
-        		// Dublin core meta data (optional)
-        		// Format as recommended on dublincore.org (http://dublincore.org/documents/dc-html/)
-        		// Declare meta data profile
-        		if (config.xhtmlUseDublinCore()) {
-        			head.setAttribute("profile","http://dublincore.org/documents/2008/08/04/dc-html/");
-        			// Add link to declare namespace
-        			Element dclink = htmlDOM.createElement("link");
-        			dclink.setAttribute("rel","schema.DC");
-        			dclink.setAttribute("href","http://purl.org/dc/elements/1.1/");
-        			head.appendChild(dclink);
-        			// Insert the actual meta data
-        			createMeta(head,"DC.title",metaData.getTitle());
-        			// DC.subject actually contains subject+keywords, so we merge them
-        			String sDCSubject = "";
-        			if (metaData.getSubject()!=null && metaData.getSubject().length()>0) {
-        				sDCSubject = metaData.getSubject();
-        			}
-        			if (metaData.getKeywords()!=null && metaData.getKeywords().length()>0) {
-        				if (sDCSubject.length()>0) { sDCSubject+=", "; }
-        				sDCSubject += metaData.getKeywords();
-        			}
-        			createMeta(head,"DC.subject",sDCSubject);
-        			createMeta(head,"DC.description",metaData.getDescription());
-        			createMeta(head,"DC.creator",metaData.getCreator());
-        			createMeta(head,"DC.date",metaData.getDate());
-        			createMeta(head,"DC.language",metaData.getLanguage());
-        		}
-        	}
+    		// Dublin core meta data (optional)
+    		// Format as recommended on dublincore.org (http://dublincore.org/documents/dc-html/)
+    		// Declare meta data profile
+    		if (config.xhtmlUseDublinCore()) {
+    			head.setAttribute("profile","http://dublincore.org/documents/2008/08/04/dc-html/");
+    			// Add link to declare namespace
+    			Element dclink = htmlDOM.createElement("link");
+    			dclink.setAttribute("rel","schema.DC");
+    			dclink.setAttribute("href","http://purl.org/dc/elements/1.1/");
+    			head.appendChild(dclink);
+    			// Insert the actual meta data
+    			createMeta(head,"DC.title",metaData.getTitle());
+    			// DC.subject actually contains subject+keywords, so we merge them
+    			String sDCSubject = "";
+    			if (metaData.getSubject()!=null && metaData.getSubject().length()>0) {
+    				sDCSubject = metaData.getSubject();
+    			}
+    			if (metaData.getKeywords()!=null && metaData.getKeywords().length()>0) {
+    				if (sDCSubject.length()>0) { sDCSubject+=", "; }
+    				sDCSubject += metaData.getKeywords();
+    			}
+    			createMeta(head,"DC.subject",sDCSubject);
+    			createMeta(head,"DC.description",metaData.getDescription());
+    			createMeta(head,"DC.creator",metaData.getCreator());
+    			createMeta(head,"DC.date",metaData.getDate());
+    			createMeta(head,"DC.language",metaData.getLanguage());
+    		}
 
-        	// Add link to custom stylesheet, if producing normal XHTML
-        	if (!bOPS && config.xhtmlCustomStylesheet().length()>0) {
+        	// Add link to custom stylesheet
+        	if (config.xhtmlCustomStylesheet().length()>0) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
         		htmlStyle.setAttribute("type","text/css");
@@ -714,31 +592,13 @@ public class Converter extends ConverterBase {
         		head.appendChild(htmlStyle);
         	}
         	
-        	// Add link to generated stylesheet if producing normal XHTML and the user wants separate css
-        	if (!bOPS && config.separateStylesheet() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
+        	// Add link to generated stylesheet if the user wants separate css
+        	if (config.separateStylesheet() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
         		htmlStyle.setAttribute("type","text/css");
         		htmlStyle.setAttribute("media","all");
         		htmlStyle.setAttribute("href",sTargetFileName+"-styles.css");
-        		head.appendChild(htmlStyle);
-        	}
-
-        	// Add link to included style sheet if producing OPS content
-        	if (bOPS && styleSheet!=null) {
-        		Element sty = htmlDOM.createElement("link");
-        		sty.setAttribute("rel", "stylesheet");
-        		sty.setAttribute("type", "text/css");
-        		sty.setAttribute("href", EPUB_CUSTOM_STYLESHEET);
-        		head.appendChild(sty);
-        	}
-
-        	// Add link to generated stylesheet if producing OPS content
-        	if (isOPS() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
-        		Element htmlStyle = htmlDOM.createElement("link");
-        		htmlStyle.setAttribute("rel","stylesheet");
-        		htmlStyle.setAttribute("type","text/css");
-        		htmlStyle.setAttribute("href",EPUB_STYLESHEET);
         		head.appendChild(htmlStyle);
         	}
 
@@ -762,20 +622,6 @@ public class Converter extends ConverterBase {
         return htmlDoc.getContentNode();
     }
     
-    // Add epub namespace for the purpose of semantic inflection in EPUB 3
-    public void addEpubNs(Element elm) {
-    	if (bOPS) {
-           	elm.setAttribute("xmlns:epub", "http://www.idpf.org/2007/ops");
-    	}    	
-    }
-    
-	// Add a type from the structural semantics vocabulary of EPUB 3
-    public void addEpubType(Element elm, String sType) {
-    	if (bOPS && sType!=null) {
-    		elm.setAttribute("epub:type", sType);
-    	}
-    }
-	
     // create a target
     public Element createTarget(String sId) {
         Element a = htmlDOM.createElement("a");
