@@ -1,6 +1,9 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[w2x] New focus: Removed support for EPUB from the core
+[w2l extension] New focus: The article template and the associated configuration
+  and help is now integrated into writer2latex.oxt.
+
+[w2x core] New focus: Removed support for EPUB from the core
   These EPUB specific API methods were removed from Converter:
     readStyleSheet() and readResource()
   These EPUB specific API methods were removed from ConverterResult:
@@ -15,25 +18,25 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
   TODO: Slet resten af EPUB api i converterresult?
   TODO: Slet EPUB options (har pt blot udkommenteret accessor metoder)
 
-[filter] New focus: Removed the EPUB export filters
+[w2x filter] New focus: Removed the EPUB export filters
 
-[filter] Clean up: Removed the option formulas which was specific for old XHTML
+[w2x filter] Clean up: Removed the option formulas which was specific for old XHTML
   formats not supporting MathML.
 
-[w2x] Clean up: Removed support for obsolete XHTML formats from the core,
+[w2x core] Clean up: Removed support for obsolete XHTML formats from the core,
   retaining only HTML5. The ConverterFactory now produces an HTML5 converter
   if given the MIME type text/html. The pseudo type text/html5 is retained
   for backwards compatibility.
 
-[filter] Clean up: Removed filters for obsolete XHTML formats, retaining
+[w2x filter] Clean up: Removed filters for obsolete XHTML formats, retaining
   only HTML5
 
-[filter] New focus: Removed the XHTML export filters from Calc. This affects
+[w2x filter] New focus: Removed the XHTML export filters from Calc. This affects
   the LO integration only. The core library still handles spreadsheets (and
   even presentations). All references to this in the documentation has been
   deleted though, and the functionality may be removed later.
 
-[w2l] Clean up: Removed obsolete file writer.sty
+[w2l distro] Clean up: Removed obsolete file writer.sty
 
 [api] Clean up: Removed deprecated method ConverterResult.getMasterDocument()
   from API

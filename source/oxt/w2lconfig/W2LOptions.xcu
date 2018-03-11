@@ -7,27 +7,28 @@
   <!-- Defines the w2l configuration packages -->
     <node oor:name="LaTeXOptions">
         <node oor:name="Configurations">
-            <node oor:name="w2l-article" oor:op="replace">
+            <node oor:name="w2l-letter" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
                 <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
-                    <value>W2L: LaTeX article</value>
+                    <value xml:lang="en-US">LaTeX letter template</value>
+                    <value xml:lang="da">LaTeX brevskabelon</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
-                    <value>%origin%/config/article.xml</value>
+                    <value>%origin%/config/letter.xml</value>
                 </prop>
             </node>
         </node>
-        <node oor:name="Templates">
-            <node oor:name="w2l-article-template" oor:op="replace">
+        <!--<node oor:name="Templates">
+            <node oor:name="w2l-letter-template" oor:op="replace">
                 <prop oor:name="TemplateName" oor:type="xs:string">
-                    <value>LaTeX-article</value>
+                    <value>Letter template</value>
                 </prop>
                 <prop oor:name="ConfigName" oor:type="xs:string">
-                    <value>w2l-article</value>
+                    <value>w2l-letter</value>
                 </prop>
             </node>
-        </node>
+        </node>-->
     </node>
 </oor:component-data>

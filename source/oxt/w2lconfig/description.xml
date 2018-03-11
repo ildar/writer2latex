@@ -11,12 +11,12 @@
   
   <publisher>
     <name xlink:href="http://writer2latex.sourceforge.net" 
-    lang="en">Writer2LaTeX configurations</name>
+    lang="en">Writer2LaTeX sample configuration</name>
   </publisher>
   
   <display-name>
-    <name lang="da">Writer2LaTeX konfigurationer</name>
-    <name lang="en">Writer2LaTeX configurations</name>
+    <name lang="da">Writer2LaTeX eksempelkonfiguration</name>
+    <name lang="en">Writer2LaTeX sample configuration</name>
   </display-name>
   
   <extension-description>

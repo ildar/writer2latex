@@ -5,6 +5,35 @@
   xmlns:oor="http://openoffice.org/2001/registry"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="LaTeXOptions">
+    	<!-- Declare the available configurations -->
+        <node oor:name="Configurations">
+            <node oor:name="w2l-article" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">LaTeX article template</value>
+                    <value xml:lang="da">LaTeX artikel-skabelon</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/article.xml</value>
+                </prop>
+            </node>
+        </node>
+        
+        <!-- Declare the available templates -->
+        <node oor:name="Templates">
+            <node oor:name="w2l-article-template" oor:op="replace">
+                <prop oor:name="TemplateName" oor:type="xs:string">
+                    <value>LaTeX-article</value>
+                </prop>
+                <prop oor:name="ConfigName" oor:type="xs:string">
+                    <value>w2l-article</value>
+                </prop>
+            </node>
+        </node>
+    
+    	<!-- Declare default settings for the export dialog -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>2</value> <!-- Default -->
         </prop>
@@ -91,6 +120,3 @@
         </prop>
     </node>
 </oor:component-data>
-
-
-		

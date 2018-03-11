@@ -2,6 +2,7 @@
 <tree_view version="02-nov-2014">
   <help_section application="writer2latex" id="w2l01_writer" title="Writer2LaTeX">
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/introduction.xhp">Introduction</topic>
+      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/templates.xhp">LaTeX templates</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/menu.xhp">Menu and toolbar</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/bibtex.xhp">BibTeX references</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/export.xhp">LaTeX export</topic>

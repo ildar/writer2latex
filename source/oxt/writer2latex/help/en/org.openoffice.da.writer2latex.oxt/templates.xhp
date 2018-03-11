@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <helpdocument version="1.0">
 	<meta>
-        <topic id="w2lconfigtemplates" indexer="include">
-            <title xml-lang="en-US">Using the templates</title>
-            <filename>org.openoffice.da.w2lconfig.oxt/templates.xhp</filename>
+        <topic id="writer2latex-templatex" indexer="include">
+            <title xml-lang="en-US">Using the LaTeX templates</title>
+            <filename>org.openoffice.da.writer2latex.oxt/templates.xhp</filename>
         </topic>
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Using the templates</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">You can use some special
-		Writer templates provided with Writer2LaTeX configurations to
-		create your documents. Using the styles supported by these templates, you can easily create standard LaTeX documents
-		using the opportunities of standard LaTeX document classes.
+		<paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX provides templates corresponding to various LaTeX document classes.
+		Currently templates for a LaTeX article and a LaTeX beamer presentation are available.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">You can also add your own templates and install them as %PRODUCTNAME extensions.
+		The extension <emph>writer2latex-letter.oxt</emph> is a sample extension, which adds support for writing a LaTeX letter.
 		</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">For this initial version, templates for the standard LaTeX classes article
-        are provided. More templates will be added later (report, book, beamer...), and you can also add your own templates.
-        </paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Using the styles supported by these templates, you can easily create standard
+		LaTeX documents using the features of LaTeX document classes.
+		</paragraph>
 
-        <paragraph role="heading" level="2" xml-lang="en-US">The article template</paragraph>
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>File - New - Templates and Documents - Writer2LaTeX</emph>
+      	Choose <emph>File - New - Templates</emph> and select a template from the group <emph>Writer2LaTeX</emph>
         </section>
-        
+    
+        <paragraph role="heading" level="2" xml-lang="en-US">The article template</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This template contains a number of styles that corresponds to LaTeX code.
-        If you use these styles and makes sure to use the configuration <emph>W2L: Article</emph> when you convert your document
-        (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
+        If you use these styles and makes sure to use the configuration <emph>Writer2LaTeX article template</emph> when you convert
+        your document (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
         Note that hard formatting and any other styles will be ignored. The available styles are summarized in the following tables.
         </paragraph>
         <paragraph role="heading" level="3" xml-lang="en-US">Paragraph styles</paragraph>
