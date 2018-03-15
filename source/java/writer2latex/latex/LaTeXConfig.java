@@ -42,6 +42,7 @@ import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.ReplacementTrie;
 import writer2latex.latex.util.StyleMap;
 import writer2latex.latex.util.StyleMapItem;
+import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
 public class LaTeXConfig extends writer2latex.base.ConfigBase {
@@ -584,6 +585,43 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
     // VII. Convenience accessor methods
     
+    // Replace parameters in a string with their values
+    // Parameters take the form {%name%} or a comma separated list
+    // of several names {%name,name%}
+    private String replaceParameters(String sSource) {
+    	StringBuilder sb = new StringBuilder();
+    	int i = 0;
+    	int j,k;
+    	while ((j=sSource.indexOf("{%", i))>-1) {
+    		// Text from index i to j contains no parameters
+    		sb.append(sSource.substring(i, j));
+    		if ((k=sSource.indexOf("%}",j))>-1) {
+    			// Text from index j+2 to index k is a parameter list
+        		String[] sParams = sSource.substring(j+2, k).split(",");
+        		CSVList values = new CSVList(",");
+        		for (String sParam : sParams) {
+        			// Ignore undefined parameters
+        			if (getParameters().containsKey(sParam)) {
+        				String sCurrentValue = getOption(sParam);
+        				if (sCurrentValue.length()>0) {
+        					// Only add non-empty parameter values to result
+        					values.addValue(getOption(sParam));
+        				}
+        			}
+        		}
+        		sb.append(values.toString());
+        		i=k+2;
+    		}
+    		else {
+    			i=j;
+    			break;
+    		}
+    	}
+		// No more parameters, append remaining part of string
+    	sb.append(sSource.substring(i));
+    	return sb.toString();
+    }
+    
     public HeadingMap getHeadingMap() {
     	int nMaxLevel = 0;
     	while (nMaxLevel<10 && headingMap.get(Integer.toString(nMaxLevel+1))!=null) { nMaxLevel++; }
@@ -649,14 +687,14 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     }
 
     // Get the custom preamble
-    public String getCustomPreamble() { return sCustomPreamble; }
+    public String getCustomPreamble() { return replaceParameters(sCustomPreamble); }
 
     // Common options
     public boolean debug() { return ((BooleanOption) options[DEBUG]).getValue(); }
 
     // General options
     public String getDocumentclass() { return options[DOCUMENTCLASS].getString(); }
-    public String getGlobalOptions() { return options[GLOBAL_OPTIONS].getString(); }
+    public String getGlobalOptions() { return replaceParameters(options[GLOBAL_OPTIONS].getString()); }
     public int getBackend() { return ((IntegerOption) options[BACKEND]).getValue(); }
     public int getInputencoding() { return ((IntegerOption) options[INPUTENCODING]).getValue(); }
     public boolean multilingual() { return ((BooleanOption) options[MULTILINGUAL]).getValue(); }

@@ -2,7 +2,7 @@
  *
  *  Config.java
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2009-09-22)
+ *  Version 2.0 (2018-03-11)
  *
  */
 
@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.IllegalArgumentException;
+import java.util.List;
+import java.util.Map;
 
 /** This is an interface for configuration of a {@link Converter}.
  *  A configuration always supports simple name/value options.
@@ -76,6 +78,16 @@ public interface Config {
 	 * @throws IOException if an error occurs writing to the file
 	 */
 	public void write(File file) throws IOException;
+	
+	/** Get the definitions of all defined parameters. Parameters are defined
+	 *  in configuration files. A parameter has a name and a list of associated
+	 *  values, the first value being the default value. The actual values are
+	 *  accessed as ordinary options. The current value of parameters are
+	 *  automatically applied to option values by the the get method.
+	 *  
+	 * @return map from parameter names to list of possible parameter values
+	 */
+	public Map<String,List<String>> getParameters();
 	
 	/** Set a name/value option. Options that are not defined by the
 	 * {@link Converter} implementation as well as null values are

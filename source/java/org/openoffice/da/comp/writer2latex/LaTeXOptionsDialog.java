@@ -2,7 +2,7 @@
  *
  *  LaTeXOptionsDialog.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2015-05-12)
+ *  Version 2.0 (2018-03-15)
  *  
  */
 
@@ -97,6 +97,12 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     protected void loadSettings(XPropertySet xProps) {
         // General
         loadConfig(xProps);
+        // TODO: This is sample content
+        String[] sNames = { "typesize", "papersize", "orientation" };
+        setListBoxStringItemList("ParameterName",sNames);
+        String[] sValues = { "a4paper", "a5paper", "b5paper", "legalpaper", "executivepaper" };
+        setListBoxStringItemList("ParameterValue",sValues);
+        
         loadListBoxOption(xProps,"Backend");
         loadListBoxOption(xProps,"Inputencoding");
         loadCheckBoxOption(xProps,"Multilingual");
@@ -142,22 +148,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     /** Save settings from the dialog to the registry and create FilterData */
     protected void saveSettings(XPropertySet xProps, PropertyHelper filterData) {
         // General
-        short nConfig = saveConfig(xProps, filterData);
-        switch (nConfig) {
-            case 0: filterData.put("ConfigURL","*ultraclean.xml"); break;
-            case 1: filterData.put("ConfigURL","*clean.xml"); break;
-            case 2: filterData.put("ConfigURL","*default.xml"); break;
-            case 3: filterData.put("ConfigURL","*pdfprint.xml"); break;
-            case 4: filterData.put("ConfigURL","*pdfscreen.xml"); break;
-            case 5: filterData.put("ConfigURL","$(user)/writer2latex.xml");
-                    filterData.put("AutoCreate","true");
-        }
-
+        saveConfig(xProps, filterData);
         saveListBoxOption(xProps, filterData, "Backend", "backend", BACKEND_VALUES );
-        if (getListBoxSelectedItem("Config")==4) {
-            // pdfscreen locks the backend to pdftex
-            filterData.put("backend","pdftex");
-        }
         saveListBoxOption(xProps, filterData, "Inputencoding", "inputencoding", INPUTENCODING_VALUES);
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
         saveListBoxOption(xProps, filterData, "Font", "font", FONT_VALUES);
@@ -251,10 +243,10 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     }
 	
     protected boolean isLocked(String sOptionName) {
-        if ("backend".equals(sOptionName)) {
-            // backend must be pdf for pdfscreen
-            return getListBoxSelectedItem("Config")==4 || super.isLocked(sOptionName);
-        }
+    	if ("parameter".equals(sOptionName)) {
+    		// TODO: Parameters are locked if the config does not have parameters
+    		return false;
+    	}
         else if ("inputencoding".equals(sOptionName)) {
         	// backend=xetex locks the encoding to utf8
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
@@ -268,10 +260,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
         else if ("additional_symbols".equals(sOptionName)) {
-            // additional_symbols is disabled for custom config (where the 5
-            // individual options can be set independently)
-        	// it is also disabled for backend=xetex
-            return getListBoxSelectedItem("Backend")==3 || getListBoxSelectedItem("Config")==5 || super.isLocked(sOptionName);
+            // additional_symbols is disabled for backend=xetex
+            return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
         else if ("use_pifont".equals(sOptionName)) {
             return isLocked("additional_symbols");
@@ -297,6 +287,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // General
         setControlEnabled("BackendLabel",!isLocked("backend"));
         setControlEnabled("Backend",!isLocked("backend"));
+        setControlEnabled("ParameterName",!isLocked("parameter"));
+        setControlEnabled("ParameterValue",!isLocked("parameter"));
         setControlEnabled("InputencodingLabel",!isLocked("inputencoding"));
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));

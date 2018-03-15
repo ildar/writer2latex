@@ -446,7 +446,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
         String sName, String sOptionName, String[] sValues) {
         short nValue = saveListBoxOption(xProps, sName);
         if (!isLocked(sOptionName) && (nValue>=0) && (nValue<sValues.length)) {
-            filterData.put(sOptionName, sValues[nValue]);
+        	filterData.put(sOptionName, sValues[nValue]);
         }
         return nValue;
     }

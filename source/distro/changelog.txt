@@ -1,5 +1,20 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[filter] Implementation detail: All configurations shown in the dialogs are
+  now stored in the configuration (previously standard and custom configurations
+  were handled in code)
+
+[filter] The custom configuration is no longer autocreated by the filters.
+  This behaviour is not needed, as the configuration dialog takes care of this.
+
+[w2l] Configuration files can now define parameters. Parameters are additional
+  named options with a fixed set of valid values. Parameters are handled like
+  other options in the API, and the current value will be inserted as part of
+  some option values using a simple placeholder scheme; {%parameter%}.
+  Currently global_options and custom_preamble can have parameters. 
+
+[w2l extension] Updated article template to use Latin Modern fonts
+
 [w2l extension] New focus: The article template and the associated configuration
   and help is now integrated into writer2latex.oxt.
 
@@ -15,9 +30,6 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
     external_toc_depth
   Two command line options were removed: -stylesheet and -resource
   
-  TODO: Slet resten af EPUB api i converterresult?
-  TODO: Slet EPUB options (har pt blot udkommenteret accessor metoder)
-
 [w2x filter] New focus: Removed the EPUB export filters
 
 [w2x filter] Clean up: Removed the option formulas which was specific for old XHTML

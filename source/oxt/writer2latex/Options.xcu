@@ -7,6 +7,163 @@
     <node oor:name="LaTeXOptions">
     	<!-- Declare the available configurations -->
         <node oor:name="Configurations">
+        	<!-- Standard configurations -->
+            <node oor:name="w2l-ultraclean" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Ultra-clean article</value>
+                    <value xml:lang="da-DK">Ekstra ren artikel</value>
+                    <value xml:lang="ca">S&#x00fa;per-net</value>
+                    <value xml:lang="de-DE">Sehr aufger&#x00e4;umter Artikel</value>
+                    <value xml:lang="es-ES">Art&#x00ed;culo muy simple</value>
+                    <value xml:lang="fa-IR">&#x0645;&#x0642;&#x0627;&#x0644;&#x0647; &#x06a9;&#x0627;&#x0645;&#x0644;&#x0627; &#x067e;&#x0627;&#x06a9;</value>
+                    <value xml:lang="fi-FI">Ultra-clean artikkeli</value>
+                    <value xml:lang="fr-FR">Article &#x00e9;pur&#x00e9;</value>
+                    <value xml:lang="it-IT">Articolo ultra-pulito</value>
+                    <value xml:lang="nl-NL">Extra schoon artikel</value>
+                    <value xml:lang="nn-NO">Ultra-rein artikkel</value>
+                    <value xml:lang="pl-PL">Super-prosty artyku&#x0142;</value>
+                    <value xml:lang="pt-BR">Artigo ultra-limpo</value>
+                    <value xml:lang="ru-RU">&#x0421;&#x0432;&#x0435;&#x0440;&#x0445;&#x0447;&#x0438;&#x0441;&#x0442;&#x0430;&#x044f; &#x0441;&#x0442;&#x0430;&#x0442;&#x044c;&#x044f;</value>
+                    <value xml:lang="tr-TR">Ter-Temiz Makale</value>
+                    <value xml:lang="uk-UA">&#x041d;&#x0430;&#x0434;&#x0447;&#x0438;&#x0441;&#x0442;&#x0430; &#x0441;&#x0442;&#x0430;&#x0442;&#x0442;&#x044f;</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*ultraclean.xml</value>
+                </prop>
+            </node>
+            <node oor:name="w2l-clean" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Clean article</value>
+                    <value xml:lang="da-DK">Ren artikel</value>
+                    <value xml:lang="ca">Net</value>
+                    <value xml:lang="de-DE">Aufger&#x00e4;umter Artikel</value>
+                    <value xml:lang="es-ES">Art&#x00ed;culo simple</value>
+                    <value xml:lang="fa-IR">&#x0645;&#x0642;&#x0627;&#x0644;&#x0647; &#x067e;&#x0627;&#x06a9;</value>
+                    <value xml:lang="fi-FI">Clean artikkeli</value>
+                    <value xml:lang="fr-FR">Article propre</value>
+                    <value xml:lang="it-IT">Articolo pulito</value>
+                    <value xml:lang="nl-NL">Schoon artikel</value>
+                    <value xml:lang="nn-NO">Rein artikkel</value>
+                    <value xml:lang="pl-PL">Prosty artyu&#x0142;</value>
+                    <value xml:lang="pt-BR">Artigo limpo</value>
+                    <value xml:lang="ru-RU">&#x0427;&#x0438;&#x0441;&#x0442;&#x0430;&#x044f; &#x0441;&#x0442;&#x0430;&#x0442;&#x044c;&#x044f;</value>
+                    <value xml:lang="tr-TR">Temiz Makale</value>
+                    <value xml:lang="uk-UA">&#x0427;&#x0438;&#x0441;&#x0442;&#x0430; &#x0441;&#x0442;&#x0430;&#x0442;&#x0442;&#x044f;</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*clean.xml</value>
+                </prop>
+            </node>
+            <node oor:name="w2l-default" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Default</value>
+                    <value xml:lang="da-DK">Standard</value>
+                    <value xml:lang="ca">Per omissi&#x00f3;</value>
+                    <value xml:lang="de-DE">Voreinstellung</value>
+                    <value xml:lang="es-ES">Por defecto</value>
+                    <value xml:lang="fa-IR">&#x067e;&#x06cc;&#x0634; &#x0641;&#x0631;&#x0636;</value>
+                    <value xml:lang="fi-FI">Oletus</value>
+                    <value xml:lang="fr-FR">Par d&#x00e9;faut</value>
+                    <value xml:lang="it-IT">Predefinito</value>
+                    <value xml:lang="nl-NL">Standaard</value>
+                    <value xml:lang="nn-NO">Standard</value>
+                    <value xml:lang="pl-PL">Domy&#x015b;lny;</value>
+                    <value xml:lang="pt-BR">Padr&#x00e3;o</value>
+                    <value xml:lang="ru-RU">&#x041f;&#x043e; &#x0443;&#x043c;&#x043e;&#x043b;&#x0447;&#x0430;&#x043d;&#x0438;&#x044e;</value>
+                    <value xml:lang="tr-TR">Varsay&#x0131;lan</value>
+                    <value xml:lang="uk-UA">&#x0417;&#x0430; &#x0437;&#x0430;&#x043c;&#x043e;&#x0432;&#x0447;&#x0443;&#x0432;&#x0430;&#x043d;&#x043d;&#x044f;&#x043c;</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*default.xml</value>
+                </prop>
+            </node>
+            <node oor:name="w2l-pdfprint" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Print optimized</value>
+                    <value xml:lang="da-DK">Udskriftsoptimeret</value>
+                    <value xml:lang="ca">Optimitzat per impressi&#x00f3;</value>
+                    <value xml:lang="de-DE">Druck optimiert</value>
+                    <value xml:lang="es-ES">Impresi&#x00f3;n optimizada</value>
+                    <value xml:lang="fa-IR">&#x0628;&#x0647;&#x06cc;&#x0646;&#x0647; &#x0634;&#x062f;&#x0647; &#x0628;&#x0631;&#x0627;&#x06cc; &#x0686;&#x0627;&#x067e;</value>
+                    <value xml:lang="fi-FI">Tulostukseen optimoitu</value>
+                    <value xml:lang="fr-FR">Adapt&#x00e9; pour une impression</value>
+                    <value xml:lang="it-IT">Ottimizzato per stampa</value>
+                    <value xml:lang="nl-NL">Voor druk geoptimaliseerd</value>
+                    <value xml:lang="nn-NO">Optimalisert for utskrift</value>
+                    <value xml:lang="pl-PL">Optymalizowany do wydruku</value>
+                    <value xml:lang="pt-BR">Optimizado para impress&#x00e3;o</value>
+                    <value xml:lang="ru-RU">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0438;&#x0437;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x044b;&#x0439; &#x0434;&#x043b;&#x044f; &#x043f;&#x0435;&#x0447;&#x0430;&#x0442;&#x0438;</value>
+                    <value xml:lang="tr-TR">Yaz&#x0131c;&#x0131; &#x0130;&#x00e7;in</value>
+                    <value xml:lang="uk-UA">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0456;&#x0437;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x0438;&#x0439; &#x0434;&#x043b;&#x044f; &#x0434;&#x0440;&#x0443;&#x043a;&#x0443;</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*pdfprint.xml</value>
+                </prop>
+            </node>
+            <node oor:name="w2l-pdfscreen" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value>backend</value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Screen optimized (pdf)</value>
+                    <value xml:lang="da-DK">Sk&#x00e6;rmoptimeret</value>
+                    <value xml:lang="ca">Optimitzat per pantalla (pdf)</value>
+                    <value xml:lang="de-DE">Monitor optimiert (pdf)</value>
+                    <value xml:lang="es-ES">Optimizado para pantalla (pdf)</value>
+                    <value xml:lang="fa-IR">&#x0628;&#x0647;&#x06cc;&#x0646;&#x0647; &#x0634;&#x062f;&#x0647; &#x0628;&#x0631;&#x0627;&#x06cc; &#x0646;&#x0645;&#x0627;&#x06cc;&#x0634;</value>
+                    <value xml:lang="fi-FI">N&#x00e4;yt&#x00f6;lle optimoitu (pdf)</value>
+                    <value xml:lang="fr-FR">Adapt&#x00e9; pour un &#x00e9;cran (pdf)</value>
+                    <value xml:lang="it-IT">Ottimizzato per schermo (pdf)</value>
+                    <value xml:lang="nl-NL">Voor beeldscherm geoptimaliseerd (PDF)</value>
+                    <value xml:lang="nn-NO">Optimalisert for skjerm (pdf)</value>
+                    <value xml:lang="pl-PL">Optymalizowany dla ekranu (pdf)</value>
+                    <value xml:lang="pt-BR">Optimizado para tela (pdf)</value>
+                    <value xml:lang="ru-RU">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0438;&#x0437;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x044b;&#x0439; &#x0434;&#x043b;&#x044f; &#x044d;&#x043a;&#x0440;&#x0430;&#x043d;&#x0430; (pdf)</value>
+                    <value xml:lang="tr-TR">Ekran &#x0130;&#x00e7;in (pdf)</value>
+                    <value xml:lang="uk-UA">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0456;&#x0437;&#x043e;&#x0432;&#x0430;&#x043d;&#x0438;&#x0439; &#x0434;&#x043b;&#x044f; &#x0435;&#x043a;&#x0440;&#x0430;&#x043d;&#x0443; (pdf)</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*pdfscreen.xml</value>
+                </prop>
+            </node>
+            <node oor:name="w2l-custom" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value>additional_symbols</value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Custom</value>
+                    <value xml:lang="da-DK">Brugerdefineret</value>
+                    <value xml:lang="ca">Personalitzat</value>
+                    <value xml:lang="de-DE">Angepasst</value>
+                    <value xml:lang="es-ES">Personalizado</value>
+                    <value xml:lang="fa-IR">&#x062f;&#x0644;&#x062e;&#x0648;&#x0627;&#x0647;</value>
+                    <value xml:lang="fi-FI">Custom</value>
+                    <value xml:lang="fr-FR">Configuration personnalis&#x00e9;e</value>
+                    <value xml:lang="it-IT">Personalizzato</value>
+                    <value xml:lang="nl-NL">Aangepast</value>
+                    <value xml:lang="nn-NO">Eigendefinert</value>
+                    <value xml:lang="pl-PL">U&#x017c;ytkownika</value>
+                    <value xml:lang="pt-BR">Normal</value>
+                    <value xml:lang="ru-RU">&#x0412;&#x044b;&#x0431;&#x043e;&#x0440;&#x043e;&#x0447;&#x043d;&#x044b;&#x0439;</value>
+                    <value xml:lang="tr-TR">&#x00d6;zel</value>
+                    <value xml:lang="uk-UA">&#x0412;&#x0438;&#x0431;&#x0456;&#x0440;&#x043a;&#x043e;&#x0432;&#x0438;&#x0439;</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>$(user)/writer2latex.xml</value>
+                </prop>
+            </node>
             <node oor:name="w2l-article" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
