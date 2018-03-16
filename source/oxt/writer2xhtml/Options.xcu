@@ -5,6 +5,83 @@
   xmlns:oor="http://openoffice.org/2001/registry"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="XhtmlOptions">
+          <node oor:name="Configurations">
+            <!-- Define the standard configurations for the UI -->
+            <!-- The default configuration exports the original formatting -->
+            <node oor:name="w2x-default" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Original formatting</value>
+                    <value xml:lang="da-DK">Oprindelig formatering</value>
+                    <value xml:lang="ca">Format original</value>
+                    <value xml:lang="cs-CZ">P&#x016f;vodn&#x00ed; form&#x00e1;tov;&#x00e1;n&#x00ed;</value>
+                    <value xml:lang="de-DE">Original Formatierungen</value>
+                    <value xml:lang="es-ES">Formato original</value>
+                    <value xml:lang="fa-IR">&#x0642;&#x0627;&#x0644;&#x0628; &#x0628;&#x0646;&#x062f;&#x06cc; &#x0627;&#x0635;&#x0644;&#x06cc;</value>
+                    <value xml:lang="fi-FI">Alkuper&#x00e4;inen muotoilu</value>
+                    <value xml:lang="fr-FR">Format d'origine</value>
+                    <value xml:lang="it-IT">Formattazione originale</value>
+                    <value xml:lang="nl-NL">Origineel formaat</value>
+                    <value xml:lang="nn-NO">Opphavleg formatering</value>
+                    <value xml:lang="pl-PL">Formatowanie oryginalne</value>
+                    <value xml:lang="pt-BR">Formata&#x00e7;&#x00e3;o original</value>
+                    <value xml:lang="ru-RU">&#x041e;&#x0440;&#x0438;&#x0433;&#x0438;&#x043d;&#x0430;&#x043b;&#x044c;&#x043d;&#x043e;&#x0435; &#x0444;&#x043e;&#x0440;&#x043c;&#x0430;&#x0442;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x0438;&#x0435;</value>
+                    <value xml:lang="tr-TR">Orjinal formatlama</value>
+                    <value xml:lang="uk-UA">&#x0410;&#x0432;&#x0442;&#x0435;&#x043d;&#x0442;&#x0438;&#x0447;&#x043d;&#x0435; &#x0444;&#x043e;&#x0440;&#x043c;&#x0430;&#x0442;&#x0443;&#x0432;&#x0430;&#x043d;&#x043d;&#x044f;</value>                    
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*default.xml</value>
+                </prop>
+            </node>
+            <!-- The clean configuration exports a document without style information -->
+            <node oor:name="w2x-clean" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Clean HTML5</value>
+                    <value xml:lang="da-DK">Ren HTML5</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*cleanxhtml.xml</value>
+                </prop>
+            </node>
+            <!-- The custom configuration exports with user style and template -->
+            <node oor:name="w2x-custom" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value xml:lang="en-US">Custom</value>
+                    <value xml:lang="da-DK">Brugerdefineret</value>
+                    <value xml:lang="ca">Personalitzat</value>
+                    <value xml:lang="cs-CZ">Vlastn&#x00ed;</value>
+                    <value xml:lang="de-DE">Benutzerdefiniert</value>
+                    <value xml:lang="es-ES">Personalizado</value>
+                    <value xml:lang="fa-IR">&#x062f;&#x0644;&#x062e;&#x0648;&#x0627;&#x0647;</value>
+                    <value xml:lang="fi-FI">Custom</value>
+                    <value xml:lang="fr-FR">Personnalis&#x00e9;</value>
+                    <value xml:lang="it-IT">Personalizzato</value>
+                    <value xml:lang="nl-NL">Aangepast</value>
+                    <value xml:lang="nn-NO">Eigendefinert</value>
+                    <value xml:lang="pl-PL">U&#x017c;ytkownika</value>
+                    <value xml:lang="pt-BR">Padr&#x00e3;o</value>
+                    <value xml:lang="ru-RU">&#x0412;&#x044b;&#x0431;&#x043e;&#x0440;&#x043e;&#x0447;&#x043d;&#x044b;&#x0439;</value>
+                    <value xml:lang="tr-TR">&#x00d6;zel</value>
+                    <value xml:lang="uk-UA">&#x0412;&#x0438;&#x0431;&#x0456;&#x0440;&#x043a;&#x043e;&#x0432;&#x0438;&#x0439;</value>
+                    
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>$(user)/writer2xhtml.xml</value>
+                </prop>
+                <prop oor:name="TargetTemplateURL" oor:type="xs:string">
+                    <value>$(user)/writer2xhtml-template.xhtml</value>
+                </prop>
+            </node>
+        </node>
+        <!-- Dialog settings -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>0</value>
         </prop>

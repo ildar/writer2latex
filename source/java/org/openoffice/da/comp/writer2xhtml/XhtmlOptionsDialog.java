@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-15)
  *
  */ 
  
@@ -101,27 +101,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Save settings from the dialog to the registry and create FilterData */
     protected void saveSettings(XPropertySet xProps, PropertyHelper helper) {
         // Style
-        short nConfig = saveConfig(xProps, helper);
-        String[] sCoreStyles = { "Chocolate", "Midnight", "Modernist",
-            "Oldstyle", "Steely", "Swiss", "Traditional", "Ultramarine" };
-        switch (nConfig) {
-            case 0: helper.put("ConfigURL","*default.xml"); break;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8: helper.put("ConfigURL","*cleanxhtml.xml");
-                    helper.put("custom_stylesheet", "http://www.w3.org/StyleSheets/Core/"+sCoreStyles[nConfig-1]);
-                    break;
-            case 9: helper.put("ConfigURL","$(user)/writer2xhtml.xml");
-            		helper.put("AutoCreate","true");
-            		helper.put("TemplateURL", "$(user)/writer2xhtml-template.xhtml");
-            		helper.put("StyleSheetURL", "$(user)/writer2xhtml-styles.css");
-        }
-		
+        saveConfig(xProps, helper);
         saveCheckBoxOption(xProps, helper, "ConvertToPx", "convert_to_px");
         saveNumericOptionAsPercentage(xProps, helper, "Scaling", "scaling");
         saveNumericOptionAsPercentage(xProps, helper, "ColumnScaling", "column_scaling");

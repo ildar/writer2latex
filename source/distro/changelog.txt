@@ -1,11 +1,18 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2x extension] The old "core styles" from W3C are no longer available in
+  the dialog, but are moved to the sample configuration. A new clean HTML5
+  export with no style information is offered as replacement.
+  
+[w2x] The configuration cleanxhtml.xml no longer loads a style sheet
+
 [filter] Implementation detail: All configurations shown in the dialogs are
   now stored in the configuration (previously standard and custom configurations
   were handled in code)
 
 [filter] The custom configuration is no longer autocreated by the filters.
-  This behaviour is not needed, as the configuration dialog takes care of this.
+  This behaviour has not been needed for a long time, as the configuration
+  dialog takes care of this.
 
 [w2l] Configuration files can now define parameters. Parameters are additional
   named options with a fixed set of valid values. Parameters are handled like

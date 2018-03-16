@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-09)
+ *  Version 2.0 (2018-03-16)
  *
  */ 
  
@@ -250,47 +250,44 @@ public abstract class OptionsDialogBase extends DialogBase implements
     protected void updateLockedOptions() {
         lockedOptions.clear();
         short nItem = getListBoxSelectedItem("Config");
-        int nStdConfigs = getListBoxStringItemList("Config").length - sConfigNames.length;
-        if (nItem>=nStdConfigs) {
-            // Get current configuration name
-            String sName = sConfigNames[nItem-nStdConfigs];
+        // Get current configuration name
+        String sName = sConfigNames[nItem];
+		
+        try {
+            // Prepare registry view
+            Object view = getRegistryView(false);
+            XPropertySet xProps = (XPropertySet)
+                UnoRuntime.queryInterface(XPropertySet.class,view);
+ 		
+            // Get the available configurations
+            Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
+            XNameAccess xConfigurations = (XNameAccess)
+                UnoRuntime.queryInterface(XNameAccess.class,configurations);
 			
-            try {
-                // Prepare registry view
-                Object view = getRegistryView(false);
-                XPropertySet xProps = (XPropertySet)
-                    UnoRuntime.queryInterface(XPropertySet.class,view);
-	 		
-                // Get the available configurations
-                Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
-                XNameAccess xConfigurations = (XNameAccess)
-                    UnoRuntime.queryInterface(XNameAccess.class,configurations);
-				
-                // Get the LockedOptions node from the desired configuration
-                String sLockedOptions = "";
-                Object config = xConfigurations.getByName(sName);
-                XPropertySet xCfgProps = (XPropertySet)
-                    UnoRuntime.queryInterface(XPropertySet.class,config);
-                sLockedOptions = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"LockedOptions");
-				
-                // Dispose the registry view
-                disposeRegistryView(view);
+            // Get the LockedOptions node from the desired configuration
+            String sLockedOptions = "";
+            Object config = xConfigurations.getByName(sName);
+            XPropertySet xCfgProps = (XPropertySet)
+                UnoRuntime.queryInterface(XPropertySet.class,config);
+            sLockedOptions = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"LockedOptions");
 			
-                // Feed lockedOptions with the comma separated list of options
-                int nStart = 0;
-                for (int i=0; i<sLockedOptions.length(); i++) {
-                    if (sLockedOptions.charAt(i)==',') {
-                        lockedOptions.add(sLockedOptions.substring(nStart,i).trim());
-                        nStart = i+1;
-                    }
-                }
-                if (nStart<sLockedOptions.length()) {
-                    lockedOptions.add(sLockedOptions.substring(nStart).trim());
+            // Dispose the registry view
+            disposeRegistryView(view);
+		
+            // Feed lockedOptions with the comma separated list of options
+            int nStart = 0;
+            for (int i=0; i<sLockedOptions.length(); i++) {
+                if (sLockedOptions.charAt(i)==',') {
+                    lockedOptions.add(sLockedOptions.substring(nStart,i).trim());
+                    nStart = i+1;
                 }
             }
-            catch (Exception e) {
-                // no options will be locked...
+            if (nStart<sLockedOptions.length()) {
+                lockedOptions.add(sLockedOptions.substring(nStart).trim());
             }
+        }
+        catch (Exception e) {
+            // no options will be locked...
         }
         
     }    
@@ -301,36 +298,31 @@ public abstract class OptionsDialogBase extends DialogBase implements
 	
     // Configuration
     protected void loadConfig(XPropertySet xProps) {
-        // The list box is extended with configurations from the registry
-        String[] sStdConfigs = getListBoxStringItemList("Config");
-        int nStdConfigs = sStdConfigs.length;
-
+        // Get all configuration names from the registry
         Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
         XNameAccess xConfigurations = (XNameAccess)
             UnoRuntime.queryInterface(XNameAccess.class,configurations);
         sConfigNames = xConfigurations.getElementNames();
-        int nRegConfigs = sConfigNames.length;
-
-        String[] sAllConfigs = new String[nStdConfigs+nRegConfigs];
-        for (short i=0; i<nStdConfigs; i++) {
-            sAllConfigs[i] = sStdConfigs[i];
-        }
+        int nConfigs = sConfigNames.length;
 		
-        for (short i=0; i<nRegConfigs; i++) {
+        // Get the display names from the registry
+        String[] sConfigs = new String[nConfigs];
+        for (short i=0; i<nConfigs; i++) {
             try {
                 Object config = xConfigurations.getByName(sConfigNames[i]);
                 XPropertySet xCfgProps = (XPropertySet)
                     UnoRuntime.queryInterface(XPropertySet.class,config);
-                sAllConfigs[nStdConfigs+i] = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"DisplayName");
+                sConfigs[i] = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"DisplayName");
             }
             catch (Exception e) {
-                sAllConfigs[nStdConfigs+i] = "";
+                sConfigs[i] = "";
             }
         }
 
-        setListBoxStringItemList("Config",sAllConfigs);
-        if (nStdConfigs+nRegConfigs<=12) {
-            setListBoxLineCount("Config",(short) (nStdConfigs+nRegConfigs));
+        // Populate the list box and adjust the visible number of items 
+        setListBoxStringItemList("Config",sConfigs);
+        if (nConfigs<=12) {
+            setListBoxLineCount("Config",(short) (nConfigs));
         }  
         else {
             setListBoxLineCount("Config",(short) 12);
@@ -350,9 +342,9 @@ public abstract class OptionsDialogBase extends DialogBase implements
                 String sTemplateName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"TemplateName");
                 if (sTemplateName.equals(sTheTemplateName)) {
                     String sConfigName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"ConfigName");
-                    for (short j=0; j<nRegConfigs; j++) {
+                    for (short j=0; j<nConfigs; j++) {
                         if (sConfigNames[j].equals(sConfigName)) {
-                            setListBoxSelectedItem("Config",(short) (nStdConfigs+j));
+                            setListBoxSelectedItem("Config",(short) (j));
                             return;
                         }
                     }
@@ -364,16 +356,10 @@ public abstract class OptionsDialogBase extends DialogBase implements
         }
 
         // Select item based on value stored in registry
-        short nConfig = XPropertySetHelper.getPropertyValueAsShort(xProps,"Config");
-        if (nConfig<nStdConfigs) {
-            setListBoxSelectedItem("Config",nConfig);
-        }
-        else { // Registry configurations are stored by name
-            String sConfigName = XPropertySetHelper.getPropertyValueAsString(xProps,"ConfigName");
-            for (short i=0; i<nRegConfigs; i++) {
-                if (sConfigNames[i].equals(sConfigName)) {
-                    setListBoxSelectedItem("Config",(short) (nStdConfigs+i));
-                }
+        String sConfigName = XPropertySetHelper.getPropertyValueAsString(xProps,"ConfigName");
+        for (short i=0; i<nConfigs; i++) {
+            if (sConfigNames[i].equals(sConfigName)) {
+                setListBoxSelectedItem("Config",(short) (i));
             }
         }
     }
@@ -385,25 +371,19 @@ public abstract class OptionsDialogBase extends DialogBase implements
             UnoRuntime.queryInterface(XNameAccess.class,configurations);
 
         short nConfig = getListBoxSelectedItem("Config");
-        int nStdConfigs = getListBoxStringItemList("Config").length - sConfigNames.length;
-        if (nConfig>=nStdConfigs) { // only handle registry configurations
-        	int i = nConfig-nStdConfigs;
-			XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[i]);
-        	try {
-        		Object config = xNameAccess.getByName(sConfigNames[i]);
-        		XPropertySet xCfgProps = (XPropertySet)
-        		UnoRuntime.queryInterface(XPropertySet.class,config);
-        		MacroExpander expander = new MacroExpander(xContext);
-        		filterData.put("ConfigURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL")));
-        		filterData.put("TemplateURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"TargetTemplateURL")));
-        	}
-        	catch (Exception e) {
-        	}
-        }
-        else { // Standard configurations have no name
-            XPropertySetHelper.setPropertyValue(xProps,"ConfigName","");        	
-        }
-        XPropertySetHelper.setPropertyValue(xProps,"Config",nConfig);
+		XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[nConfig]);
+    	try {
+    		Object config = xNameAccess.getByName(sConfigNames[nConfig]);
+    		XPropertySet xCfgProps = (XPropertySet)
+    		UnoRuntime.queryInterface(XPropertySet.class,config);
+    		MacroExpander expander = new MacroExpander(xContext);
+    		filterData.put("ConfigURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL")));
+    		filterData.put("TemplateURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"TargetTemplateURL")));
+    	}
+    	catch (Exception e) {
+    	}
+
+    	XPropertySetHelper.setPropertyValue(xProps,"Config",nConfig);
         return nConfig;
     }
 	
@@ -518,6 +498,3 @@ public abstract class OptionsDialogBase extends DialogBase implements
     }
 			
 }
-
-
-

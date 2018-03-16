@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- cleanxhtml.xml 2010-05-17
+<!-- cleanxhtml.xml 2018-03-15
      This is a sample configuration file for Writer2xhtml.
      The options are set to produce a clean XHTML file using
-     standard XHTML elements, using a custom style sheet for
-     formatting. -->
+     standard XHTML elements, without any style information. -->
 
 <config>
   <!-- options -->
   <option name="no_doctype" value="false" />
-  <!-- put url to your own stylesheet here: -->
-  <option name="custom_stylesheet" value="http://www.w3.org/StyleSheets/Core/Oldstyle" />
   <option name="formatting" value="ignore_all" />
   <option name="frame_formatting" value="ignore_all" />
   <option name="section_formatting" value="ignore_all" />

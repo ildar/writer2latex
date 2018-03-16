@@ -26,6 +26,20 @@
                     <value>%origin%/config/sampletemplate.xhtml</value>
                 </prop>
             </node>
+            <!-- TODO "Chocolate", "Midnight", "Modernist",
+            "Oldstyle", "Steely", "Swiss", "Traditional", "Ultramarine"-->
+            <node oor:name="w2x-w3ccore-chocolate" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Chocolate</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>http://www.w3.org/StyleSheets/Core/Chocolate</value>
+                </prop>
+            </node>
+            
         </node>
         <node oor:name="Templates">
             <!-- This node maps an OOo template to the our configuration -->
