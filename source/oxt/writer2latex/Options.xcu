@@ -8,7 +8,7 @@
     	<!-- Declare the available configurations -->
         <node oor:name="Configurations">
         	<!-- Standard configurations -->
-            <node oor:name="w2l-ultraclean" oor:op="replace">
+            <node oor:name="01w2l-ultraclean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -34,7 +34,7 @@
                     <value>*ultraclean.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-clean" oor:op="replace">
+            <node oor:name="02w2l-clean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -60,7 +60,7 @@
                     <value>*clean.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-default" oor:op="replace">
+            <node oor:name="03w2l-default" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -86,7 +86,7 @@
                     <value>*default.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-pdfprint" oor:op="replace">
+            <node oor:name="04w2l-pdfprint" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -112,7 +112,7 @@
                     <value>*pdfprint.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-pdfscreen" oor:op="replace">
+            <node oor:name="05w2l-pdfscreen" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>backend</value>
                 </prop>
@@ -138,7 +138,7 @@
                     <value>*pdfscreen.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-custom" oor:op="replace">
+            <node oor:name="06w2l-custom" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>additional_symbols</value>
                 </prop>
@@ -164,7 +164,7 @@
                     <value>$(user)/writer2latex.xml</value>
                 </prop>
             </node>
-            <node oor:name="w2l-article" oor:op="replace">
+            <node oor:name="07w2l-article" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -185,7 +185,7 @@
                     <value>LaTeX-article</value>
                 </prop>
                 <prop oor:name="ConfigName" oor:type="xs:string">
-                    <value>w2l-article</value>
+                    <value>07w2l-article</value>
                 </prop>
             </node>
         </node>

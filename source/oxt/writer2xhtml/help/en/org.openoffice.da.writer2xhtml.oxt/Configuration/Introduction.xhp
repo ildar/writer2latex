@@ -8,7 +8,7 @@
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Custom style</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Define a custom style for the XHTML export</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define a custom style for the HTML5 export</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>Tools - Options - Writer2xhtml</emph>
@@ -16,10 +16,10 @@
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigIntroduction" id="bm_configintroduction"/>
         <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml comes with a number of predefined styles.
-        A style defines technical aspects of the generated XHTML styles, in particular the export of formatting.
-        Advanced users can define their own custom style. You can for example use the custom style to create XHTML documents that
+        A style defines technical aspects of the generated HTML5 styles, in particular the export of formatting.
+        Advanced users can define their own custom style. You can for example use the custom style to create HTML5 documents that
         takes advantage of your own CSS style sheet.
-        This requires some knowledge of XHTML and CSS.</paragraph>
+        This requires some knowledge of HTML5 and CSS.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">To use the custom style, choose <emph>Custom</emph> in the export dialog.</paragraph>
     </body>
 </helpdocument>

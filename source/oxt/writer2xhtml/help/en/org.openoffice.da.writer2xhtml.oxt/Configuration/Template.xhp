@@ -8,18 +8,18 @@
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Template</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Use this page to define an XHTML template to use as a basis for the
-        generated XHTML documents.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Use this page to define an HTML5 template to use as a basis for the
+        generated HTML5 documents.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>Tools - Options - Writer2xhtml - Template</emph>
         </section>
         
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" id="bm_configusecustomtemplate"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use custom XHTML template</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define an XHTML template. Otherwise a default
+        <paragraph role="heading" level="3" xml-lang="en-US">Use custom HTML5 template</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define an HTML5 template. Otherwise a default
         template will be used.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">A template should be an ordinary XHTML file (do not include a DOCTYPE declaration)
+        <paragraph role="paragraph" xml-lang="en-US">A template should be an ordinary HTML5 file (do not include a DOCTYPE declaration)
         with some special elements:</paragraph>
         <list type="unordered">
 			<listitem>
@@ -41,22 +41,7 @@
         <paragraph role="paragraph" xml-lang="en-US">You can change the names of the id attributes at the bottom of this page.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The template must be well-formed XML. If this is not the case, an error message
         is displayed below the template. A template with errors will be ignored in the export.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">A simple template including a header might look like this:</paragraph>
-		<paragraph role="code" xml-lang="en-US">
-&lt;html&gt;<br/>
-&#xA0;&#xA0;&lt;head&gt;<br/>
-&#xA0;&#xA0;&#xA0;&#xA0;&lt;title/&gt;<br/>
-&#xA0;&#xA0;&lt;/head&gt;<br/>
-&#xA0;&#xA0;&lt;body&gt;<br/>
-&#xA0;&#xA0;&#xA0;&#xA0;&lt;div id='header'/&gt;<br/>
-&#xA0;&#xA0;&#xA0;&#xA0;&lt;div id='content'/&gt;<br/>
-&#xA0;&#xA0;&lt;/body&gt;<br/>
-&lt;/html&gt;
-</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">As the template does not include footer and panel nodes, these elements will not be included.
-        </paragraph>
-        
-        <paragraph role="paragraph" xml-lang="en-US">A template with all the elements, suitable for HTML5 might look like this:
+        <paragraph role="paragraph" xml-lang="en-US">A template with all the elements might look like this:
         </paragraph>
 		<paragraph role="code" xml-lang="en-US">
 &lt;html&gt;<br/>
@@ -71,15 +56,15 @@
 &#xA0;&#xA0;&lt;/body&gt;<br/>
 &lt;/html&gt;
 </paragraph>
-        
+		<paragraph role="paragraph" xml-lang="en-US">If you leave out an element, it will not be included.</paragraph>        
         <paragraph role="paragraph" xml-lang="en-US">The absolutely mininal template is this:</paragraph>
 		<paragraph role="code" xml-lang="en-US">
 &lt;div/&gt;
 </paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The <emph>div</emph>-element will be used as the content container.
-        The generated document will not be a complete XHTML document (no <emph>html</emph>, <emph>head</emph> and
+        The generated document will not be a complete HTML5 document (no <emph>html</emph>, <emph>head</emph> and
         <emph>body</emph> nodes). It will however still be a well-formed XML file that can be handled with standard tools.
-        The use case for this is that you can produce XHTML fragments suitable for inclusion in e.g. a CMS.</paragraph>
+        The use case for this is that you can produce HTML5 fragments suitable for inclusion in e.g. a CMS.</paragraph>
 		<paragraph role="note" xml-lang="en-US">Make sure to check the option <emph>Do not include DOCTYPE</emph> in this case!</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:LoadTemplate" id="bm_configloadtemplate"/>

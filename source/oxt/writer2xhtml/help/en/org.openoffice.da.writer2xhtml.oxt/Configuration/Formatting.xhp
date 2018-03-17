@@ -72,7 +72,7 @@
 		        problem with continued lists. If you select this value, Writer2xhtml will export a list that continues on level 2 or below
 		        like</paragraph>
 		        <paragraph role="code" xml-lang="en-US">&lt;ol&gt;&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;&lt;/ol&gt;</paragraph>
-				<paragraph role="paragraph" xml-lang="en-US">This is not valid in XHTML, but works in browsers.
+				<paragraph role="paragraph" xml-lang="en-US">This is not valid in HTML5, but works in browsers.
 				Also two deprecated attributes are used to continue numbering.</paragraph>
         	</listitem>
         	<listitem>
@@ -92,6 +92,6 @@
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SeparateStylesheet" id="bm_configseparatestylesheet"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Create separate style sheet</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to create a separate CSS file in the export.
-        Otherwise the CSS code will be exported embedded in the XHTML document(s).</paragraph>
+        Otherwise the CSS code will be exported embedded in the HTML5 document(s).</paragraph>
     </body>
 </helpdocument>

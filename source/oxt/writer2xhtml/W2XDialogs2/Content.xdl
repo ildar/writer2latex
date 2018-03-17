@@ -8,7 +8,7 @@
   <dlg:text dlg:id="FootnotesHeadingLabel" dlg:tab-index="3" dlg:left="10" dlg:top="36" dlg:width="110" dlg:height="12" dlg:value="Footnotes heading"/>
   <dlg:textfield dlg:id="FootnotesHeading" dlg:tab-index="4" dlg:left="130" dlg:top="34" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:FootnotesHeading"/>
   <dlg:text dlg:id="ImageLabel" dlg:tab-index="8" dlg:left="5" dlg:top="50" dlg:width="245" dlg:height="12" dlg:value="Images"/>
-  <dlg:checkbox dlg:id="EmbedSvg" dlg:tab-index="9" dlg:left="10" dlg:top="64" dlg:width="240" dlg:height="12" dlg:value="Embed SVG images in the HTML document (HTML5 only)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:EmbedSvg"/>
-  <dlg:checkbox dlg:id="EmbedImg" dlg:tab-index="10" dlg:left="10" dlg:top="76" dlg:width="240" dlg:height="12" dlg:value="Embed all images in the HTML document (base64 encoded)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:EmbedImg"/>
+  <dlg:checkbox dlg:id="EmbedSvg" dlg:tab-index="9" dlg:left="10" dlg:top="64" dlg:width="240" dlg:height="12" dlg:value="Embed SVG images in the HTML5 document" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:EmbedSvg"/>
+  <dlg:checkbox dlg:id="EmbedImg" dlg:tab-index="10" dlg:left="10" dlg:top="76" dlg:width="240" dlg:height="12" dlg:value="Embed all images in the HTML5 document (base64 encoded)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:EmbedImg"/>
  </dlg:bulletinboard>
 </dlg:window>

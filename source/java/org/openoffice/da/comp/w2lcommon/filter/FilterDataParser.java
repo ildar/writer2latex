@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-09)
+ *  Version 2.0 (2018-03-17)
  *
  */ 
  
@@ -27,13 +27,11 @@ package org.openoffice.da.comp.w2lcommon.filter;
 
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Enumeration;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.io.NotConnectedException;
 import com.sun.star.io.XInputStream;
-import com.sun.star.io.XOutputStream;
 import com.sun.star.ucb.CommandAbortedException;
 import com.sun.star.ucb.XSimpleFileAccess2;
 import com.sun.star.uno.AnyConverter;
@@ -42,8 +40,6 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XStringSubstitution;
 
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
-import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
-
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import writer2latex.api.Converter;
 
@@ -139,25 +135,12 @@ public class FilterDataParser {
     private void applyParsedFilterData(PropertyValue[] filterData, Converter converter) {
         PropertyHelper props = new PropertyHelper(filterData);
         
-        // Get the special properties TemplateURL, ConfigURL and AutoCreate
+        // Get the special properties TemplateURL and ConfigURL
         Object tpl = props.get("TemplateURL");
         String sTemplate = null;
         if (tpl!=null && AnyConverter.isString(tpl)) {
             try {
                 sTemplate = substituteVariables(AnyConverter.toString(tpl));
-            }
-            catch (com.sun.star.lang.IllegalArgumentException e) {
-                // Failed to convert to String; should not happen - ignore   
-            }
-        }
-        
-        Object auto = props.get("AutoCreate");
-        boolean bAutoCreate = false;
-        if (auto!=null && AnyConverter.isString(auto)) {
-            try {
-                if ("true".equals(AnyConverter.toString(auto))) {
-                    bAutoCreate = true;
-                }
             }
             catch (com.sun.star.lang.IllegalArgumentException e) {
                 // Failed to convert to String; should not happen - ignore   
@@ -200,33 +183,6 @@ public class FilterDataParser {
             }
         }
         
-        // Create config if required
-        try {
-            if (bAutoCreate && sfa2!=null && sConfig!=null && !sConfig.startsWith("*") && !sfa2.exists(sConfig)) {
-                // Note: Requires random access, ie. must be a file URL:
-                XOutputStream xOs = sfa2.openFileWrite(sConfig);
-                if (xOs!=null) {
-                    OutputStream os = new XOutputStreamToOutputStreamAdapter(xOs);
-                    converter.getConfig().write(os);
-                    os.flush();
-                    os.close();
-                    xOs.closeOutput();
-                }
-            }
-        }
-        catch (IOException e) {
-            // ignore
-        }
-        catch (NotConnectedException e) {
-            // ignore
-        }
-        catch (CommandAbortedException e) {
-            // Ignore
-        }
-        catch (com.sun.star.uno.Exception e) {
-          // Ignore
-        }
-
         // Load the configuration from the specified URL, if any
         if (sConfig!=null) {
             if (sConfig.startsWith("*")) { // internal configuration
@@ -266,7 +222,7 @@ public class FilterDataParser {
         Enumeration<String> keys = props.keys();
         while (keys.hasMoreElements()) {
             String sKey = keys.nextElement();
-            if (!"ConfigURL".equals(sKey) && !"TemplateURL".equals(sKey) && !"AutoCreate".equals(sKey)) {
+            if (!"ConfigURL".equals(sKey) && !"TemplateURL".equals(sKey)) {
                 Object value = props.get(sKey);
                 if (AnyConverter.isString(value)) {
                     try {

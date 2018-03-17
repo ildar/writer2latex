@@ -7,8 +7,9 @@
     <!-- This is a sample registry file for use with Writer2xhtml -->
     <node oor:name="XhtmlOptions">
         <node oor:name="Configurations">
-            <!-- This node adds a configuration to the ui -->
-            <node oor:name="sampleconfig1" oor:op="replace">
+            <!-- Declare a custom configuration.
+                 Note that the configurations are ordered by name -->
+            <node oor:name="10w2x-sample-config" oor:op="replace">
                 <!-- A comma separated of options that should be locked in the ui -->
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>xhtml_notes,xhtml_split_level,xhtml_repeat_levels</value>
@@ -26,20 +27,97 @@
                     <value>%origin%/config/sampletemplate.xhtml</value>
                 </prop>
             </node>
-            <!-- TODO "Chocolate", "Midnight", "Modernist",
-            "Oldstyle", "Steely", "Swiss", "Traditional", "Ultramarine"-->
-            <node oor:name="w2x-w3ccore-chocolate" oor:op="replace">
+        	<!-- Declare the old W3C Core styles. -->
+            <node oor:name="11w2x-w3ccore-chocolate" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
                 <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
-                    <value>Chocolate</value>
+                    <value>W3C Chocolate</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
-                    <value>http://www.w3.org/StyleSheets/Core/Chocolate</value>
+                    <value>%origin%/config/w3ccore.xml</value>
                 </prop>
             </node>
-            
+            <!--
+            <node oor:name="12w2x-w3ccore-midnight" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Midnight</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="13w2x-w3ccore-modernist" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Modernist</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="14w2x-w3ccore-oldstyle" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Oldstyle</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="15w2x-w3ccore-steely" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Steely</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="16w2x-w3ccore-swiss" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Swiss</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="17w2x-w3ccore-traditional" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Traditional</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            <node oor:name="18w2x-w3ccore-ultramarine" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value></value>
+                </prop>
+                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                    <value>Ultramarine</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/w3ccore.xml</value>
+                </prop>
+            </node>
+            -->            
         </node>
         <node oor:name="Templates">
             <!-- This node maps an OOo template to the our configuration -->

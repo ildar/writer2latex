@@ -25,6 +25,7 @@
  
 package org.openoffice.da.comp.w2lcommon.filter;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 import com.sun.star.awt.XDialogEventHandler;
@@ -298,12 +299,13 @@ public abstract class OptionsDialogBase extends DialogBase implements
 	
     // Configuration
     protected void loadConfig(XPropertySet xProps) {
-        // Get all configuration names from the registry
+        // Get all configuration names from the registry and sort them by name
         Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
         XNameAccess xConfigurations = (XNameAccess)
             UnoRuntime.queryInterface(XNameAccess.class,configurations);
         sConfigNames = xConfigurations.getElementNames();
         int nConfigs = sConfigNames.length;
+        Arrays.sort(sConfigNames);
 		
         // Get the display names from the registry
         String[] sConfigs = new String[nConfigs];
@@ -318,7 +320,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
                 sConfigs[i] = "";
             }
         }
-
+        
         // Populate the list box and adjust the visible number of items 
         setListBoxStringItemList("Config",sConfigs);
         if (nConfigs<=12) {
@@ -327,7 +329,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
         else {
             setListBoxLineCount("Config",(short) 12);
         }
-		
+        
         // Select item based on template name
         String sTheTemplateName = getTemplateName();
         Object templates = XPropertySetHelper.getPropertyValue(xProps,"Templates");
@@ -356,6 +358,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
         }
 
         // Select item based on value stored in registry
+        setListBoxSelectedItem("Config",(short)0);
         String sConfigName = XPropertySetHelper.getPropertyValueAsString(xProps,"ConfigName");
         for (short i=0; i<nConfigs; i++) {
             if (sConfigNames[i].equals(sConfigName)) {

@@ -8,7 +8,7 @@
           <node oor:name="Configurations">
             <!-- Define the standard configurations for the UI -->
             <!-- The default configuration exports the original formatting -->
-            <node oor:name="w2x-default" oor:op="replace">
+            <node oor:name="01w2x-default" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -36,7 +36,7 @@
                 </prop>
             </node>
             <!-- The clean configuration exports a document without style information -->
-            <node oor:name="w2x-clean" oor:op="replace">
+            <node oor:name="02w2x-clean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>
@@ -49,7 +49,7 @@
                 </prop>
             </node>
             <!-- The custom configuration exports with user style and template -->
-            <node oor:name="w2x-custom" oor:op="replace">
+            <node oor:name="03w2x-custom" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value></value>
                 </prop>

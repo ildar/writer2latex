@@ -33,9 +33,8 @@
 				</section>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Chocolate, Midnight, Modern, Oldstyle, Steely, Swiss, Traditional
-				and Ultramarine</emph> formats the document with one of the
-				<link href="http://www.w3.org/StyleSheets/Core/" name="Link to the W3C's page on core style sheets">8 core styles</link> provided by the World Wide Web Consortium.</paragraph>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Clean HTML</emph> produces an HTML5 document without any style information.
+				It will use a default formatting when viewed in a browser.</paragraph>
 			</listitem>
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Custom</emph> is a user defined format. You can define your own
@@ -47,7 +46,8 @@
         <section id="split3">
         	<paragraph role="paragraph" xml-lang="en-US">Expert users can extend the list with further formats using
         	<emph>configuration packages</emph>. See the documentation on the
-        	<link href="http://writer2latex.sourceforge.net" name="Link to the Writer2LaTeX Website">web site for Writer2xhtml</link>.</paragraph>
+        	<link href="http://writer2latex.sourceforge.net" name="Link to the Writer2LaTeX Website">web site for Writer2xhtml</link>.
+        	An example configuration package <emph>xhtml-config-sample.oxt</emph> is provided.</paragraph>
         </section>
 
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsScaling" id="bm_options_scaling"/>

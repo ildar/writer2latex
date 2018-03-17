@@ -34,8 +34,8 @@
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to apply a custom style for this attribute.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:AttributeElement" id="bm_configattributeelement"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">XHTML element</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Enter the name of an XHTML element or select one from the list.</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">HTML5 element</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the name of an HTML5 element or select one from the list.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:AttributeCss" id="bm_configattributecss"/>
         <paragraph role="heading" level="3" xml-lang="en-US">CSS class</paragraph>
