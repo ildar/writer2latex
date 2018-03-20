@@ -1,12 +1,31 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+
+[core] New feature: Configuration files can now define parameters. Parameters
+  are additional named options with a fixed set of valid values. Parameters
+  are handled like other options in the API, and the current value will be
+  inserted as part of some option values using a simple placeholder scheme;
+  {%parametername%} or a list {%parametername1,parametername2%}.
+  Currently in w2l, global_options and custom_preamble can have parameters,
+  and in w2x, custom_stylesheet can have parameters. 
+
+[w2x extension] The options multilingual, embed_svg and embed_img can now be
+  set in filter dialog, and are thus removed from the configuration settings.
+  To make room for this, the dialog layout was change to a two column layout,
+  resembling the LaTeX dialog as far as possible.
+
+[filter] Export button is now first in tab order. This implies that Export
+  can be started immediately with the Enter button if no settings need to be
+  changed.
+
 [w2l] The article template no longer requires ooomath.sty
 
 [w2x extension] The old "core styles" from W3C are no longer available in
-  the dialog, but are moved to the sample configuration. A new clean HTML5
-  export with no style information is offered as replacement.
+  the dialog. A new clean HTML5 export with no style information is offered
+  as replacement. The core styles are moved to the sample configuration as
+  a demonstration of parameters in configurations.
   
-[w2x] The configuration cleanxhtml.xml no longer loads a style sheet
+[w2x] The configuration cleanxhtml.xml no longer sets custom_stylesheet
 
 [filter] Implementation detail: All configurations shown in the dialogs are
   now stored in the configuration (previously standard and custom configurations
@@ -15,12 +34,6 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 [filter] The custom configuration is no longer autocreated by the filters.
   This behaviour has not been needed for a long time, as the configuration
   dialog takes care of this.
-
-[w2l] Configuration files can now define parameters. Parameters are additional
-  named options with a fixed set of valid values. Parameters are handled like
-  other options in the API, and the current value will be inserted as part of
-  some option values using a simple placeholder scheme; {%parameter%}.
-  Currently global_options and custom_preamble can have parameters. 
 
 [w2l extension] Updated article template to use Latin Modern fonts
 

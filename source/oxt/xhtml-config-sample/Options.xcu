@@ -30,7 +30,7 @@
         	<!-- Declare the old W3C Core styles. -->
             <node oor:name="11w2x-w3ccore-chocolate" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value>embed_svg,embed_img,multilingual</value>
                 </prop>
                 <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
                     <value>W3C Chocolate</value>

@@ -82,39 +82,26 @@
             </node>
         </node>
         <!-- Dialog settings -->
+        <!-- General -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>0</value>
         </prop>
         <prop oor:name="ConfigName" oor:type="xs:string">
             <value></value>
         </prop>
-        <prop oor:name="ConvertToPx" oor:type="xs:boolean">
-            <value>true</value>
-        </prop>
+        <prop oor:name="Parameters" oor:type="xs:string">
+            <value></value>
+        </prop>        
         <prop oor:name="Scaling" oor:type="xs:int">
             <value>100</value>
         </prop>
-        <prop oor:name="ColumnScaling" oor:type="xs:int">
-            <value>100</value>
-        </prop>
-        <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="Notes" oor:type="xs:boolean">
+        <prop oor:name="ConvertToPx" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <prop oor:name="UseDublinCore" oor:type="xs:boolean">
+        <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <prop oor:name="IgnoreEmptyParagraphs" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="IgnoreHardLineBreaks" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="IgnoreDoubleSpaces" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
+        <!-- Files -->
         <prop oor:name="Split" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -127,8 +114,38 @@
         <prop oor:name="SaveImagesInSubdir" oor:type="xs:boolean">
             <value>false</value>
         </prop>
+		<!-- Special content -->
+        <prop oor:name="Notes" oor:type="xs:boolean">
+            <value>true</value>
+        </prop>
+        <prop oor:name="UseDublinCore" oor:type="xs:boolean">
+            <value>true</value>
+        </prop>
+        <!-- Figures, tables and formulas -->
+        <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
+        <prop oor:name="EmbedSVG" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
+        <prop oor:name="EmbedImg" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
+        <prop oor:name="ColumnScaling" oor:type="xs:int">
+            <value>100</value>
+        </prop>
         <prop oor:name="UseMathjax" oor:type="xs:boolean">
             <value>true</value>
+        </prop>
+        <!-- Auto correct -->
+        <prop oor:name="IgnoreEmptyParagraphs" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
+        <prop oor:name="IgnoreHardLineBreaks" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
+        <prop oor:name="IgnoreDoubleSpaces" oor:type="xs:boolean">
+            <value>false</value>
         </prop>
     </node>
 </oor:component-data>

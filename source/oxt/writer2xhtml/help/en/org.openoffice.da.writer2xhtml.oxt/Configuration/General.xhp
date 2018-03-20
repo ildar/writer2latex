@@ -42,11 +42,6 @@
         <paragraph role="paragraph" xml-lang="en-US">Check this to use named character entities as defined by HTML5, this will 
         also use named MathML.</paragraph>
 
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Multilingual" id="bm_configmultilingual"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Include detailed language information</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to include all language information in the HTML5 document.
-        Otherwise only the default language will be exported.</paragraph>
-
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:PrettyPrint" id="bm_configprettyprint"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use "pretty printing"</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to use “pretty print”

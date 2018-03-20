@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-09)
+ *  Version 2.0 (2018-03-18)
  *
  */ 
 
@@ -115,7 +115,6 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		
 
     		checkBoxFromConfig(dlg, "UseNamedEntities", "use_named_entities");
-    		checkBoxFromConfig(dlg, "Multilingual", "multilingual");
     		checkBoxFromConfig(dlg, "PrettyPrint", "pretty_print");
     		
     		encodingChange(dlg);
@@ -129,7 +128,6 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		config.setOption("hexadecimal_entities", Boolean.toString(dlg.getListBoxSelectedItem("HexadecimalEntities")==(short)0));
     		
     		checkBoxToConfig(dlg, "UseNamedEntities", "use_named_entities");
-    		checkBoxToConfig(dlg, "Multilingual", "multilingual");
     		checkBoxToConfig(dlg, "PrettyPrint", "pretty_print");    		
     	}
     	
@@ -450,15 +448,11 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	@Override protected void setControls(DialogAccess dlg) {
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxFromConfig(dlg, "EmbedSvg", "embed_svg");
-    		checkBoxFromConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxToConfig(dlg, "EmbedSvg", "embed_svg");
-    		checkBoxToConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
