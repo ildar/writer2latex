@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-10)
+ *  Version 2.0 (2018-03-20)
  *
  */
 
@@ -338,7 +338,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public boolean multilingual() { return ((BooleanOption) options[MULTILINGUAL]).getValue(); }
     public String templateIds() { return options[TEMPLATE_IDS].getString(); }
     public boolean separateStylesheet() { return ((BooleanOption) options[SEPARATE_STYLESHEET]).getValue(); }
-    public String xhtmlCustomStylesheet() { return options[CUSTOM_STYLESHEET].getString(); }
+    public String xhtmlCustomStylesheet() { return replaceParameters(options[CUSTOM_STYLESHEET].getString()); }
     public int xhtmlFormatting() { return ((XhtmlFormatOption) options[FORMATTING]).getValue(); }
     public int xhtmlFrameFormatting() { return ((XhtmlFormatOption) options[FRAME_FORMATTING]).getValue(); }
     public int xhtmlSectionFormatting() { return ((XhtmlFormatOption) options[SECTION_FORMATTING]).getValue(); }

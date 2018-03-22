@@ -1,13 +1,14 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-
 [core] New feature: Configuration files can now define parameters. Parameters
   are additional named options with a fixed set of valid values. Parameters
   are handled like other options in the API, and the current value will be
   inserted as part of some option values using a simple placeholder scheme;
   {%parametername%} or a list {%parametername1,parametername2%}.
   Currently in w2l, global_options and custom_preamble can have parameters,
-  and in w2x, custom_stylesheet can have parameters. 
+  and in w2x, custom_stylesheet can have parameters.
+  In the filter dialogs, parameters are set in two new list boxes right below
+  the configuration list box. 
 
 [w2x extension] The options multilingual, embed_svg and embed_img can now be
   set in filter dialog, and are thus removed from the configuration settings.

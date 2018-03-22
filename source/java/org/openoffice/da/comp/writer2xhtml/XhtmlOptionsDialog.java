@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-18)
+ *  Version 2.0 (2018-03-21)
  *
  */ 
  
@@ -31,6 +31,8 @@ import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
+
+import writer2latex.api.MIMETypes;
 
 /** This class provides a uno component which implements a filter ui for the
  *  HTML5 export
@@ -56,7 +58,11 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     public String getRegistryPath() {
         return "/org.openoffice.da.Writer2xhtml.Options/XhtmlOptions";
     }
-	
+
+    protected String getMIME() {
+    	return MIMETypes.HTML5;
+    }
+
     /** Create a new XhtmlOptionsDialog */
     public XhtmlOptionsDialog(XComponentContext xContext) {
         super(xContext);

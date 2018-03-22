@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-12)
+ *  Version 2.0 (2018-03-20)
  *
  */
 
@@ -76,7 +76,45 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     	allParams.remove(0);
     	return allParams;
     }
-	
+    
+    // Replace parameters in a string with their values
+    // Parameters take the form {%name%} or a comma separated list
+    // of several names {%name,name%}
+    // The subclass can use this for whatever purpose is relevant
+    protected String replaceParameters(String sSource) {
+    	StringBuilder sb = new StringBuilder();
+    	int i = 0;
+    	int j,k;
+    	while ((j=sSource.indexOf("{%", i))>-1) {
+    		// Text from index i to j contains no parameters
+    		sb.append(sSource.substring(i, j));
+    		if ((k=sSource.indexOf("%}",j))>-1) {
+    			// Text from index j+2 to index k is a parameter list
+        		String[] sParams = sSource.substring(j+2, k).split(",");
+        		CSVList values = new CSVList(",");
+        		for (String sParam : sParams) {
+        			// Ignore undefined parameters
+        			if (getParameters().containsKey(sParam)) {
+        				String sCurrentValue = getOption(sParam);
+        				if (sCurrentValue.length()>0) {
+        					// Only add non-empty parameter values to result
+        					values.addValue(getOption(sParam));
+        				}
+        			}
+        		}
+        		sb.append(values.toString());
+        		i=k+2;
+    		}
+    		else {
+    			i=j;
+    			break;
+    		}
+    	}
+		// No more parameters, append remaining part of string
+    	sb.append(sSource.substring(i));
+    	return sb.toString();
+    }
+    	
     public void setOption(String sName,String sValue) {
     	if (sName!=null && sValue!=null) {
     		// First look for an option

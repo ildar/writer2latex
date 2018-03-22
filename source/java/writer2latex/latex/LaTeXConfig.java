@@ -2,7 +2,7 @@
  *
  *  LaTeXConfig.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-23)
+ *  Version 2.0 (2018-03-20)
  *
  */
 
@@ -42,7 +42,6 @@ import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.ReplacementTrie;
 import writer2latex.latex.util.StyleMap;
 import writer2latex.latex.util.StyleMapItem;
-import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
 public class LaTeXConfig extends writer2latex.base.ConfigBase {
@@ -584,43 +583,6 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	
 	/////////////////////////////////////////////////////////////////////////
     // VII. Convenience accessor methods
-    
-    // Replace parameters in a string with their values
-    // Parameters take the form {%name%} or a comma separated list
-    // of several names {%name,name%}
-    private String replaceParameters(String sSource) {
-    	StringBuilder sb = new StringBuilder();
-    	int i = 0;
-    	int j,k;
-    	while ((j=sSource.indexOf("{%", i))>-1) {
-    		// Text from index i to j contains no parameters
-    		sb.append(sSource.substring(i, j));
-    		if ((k=sSource.indexOf("%}",j))>-1) {
-    			// Text from index j+2 to index k is a parameter list
-        		String[] sParams = sSource.substring(j+2, k).split(",");
-        		CSVList values = new CSVList(",");
-        		for (String sParam : sParams) {
-        			// Ignore undefined parameters
-        			if (getParameters().containsKey(sParam)) {
-        				String sCurrentValue = getOption(sParam);
-        				if (sCurrentValue.length()>0) {
-        					// Only add non-empty parameter values to result
-        					values.addValue(getOption(sParam));
-        				}
-        			}
-        		}
-        		sb.append(values.toString());
-        		i=k+2;
-    		}
-    		else {
-    			i=j;
-    			break;
-    		}
-    	}
-		// No more parameters, append remaining part of string
-    	sb.append(sSource.substring(i));
-    	return sb.toString();
-    }
     
     public HeadingMap getHeadingMap() {
     	int nMaxLevel = 0;

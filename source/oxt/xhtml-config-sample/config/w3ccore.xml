@@ -2,8 +2,9 @@
 <!-- This file is identical to cleanxhtml.xml except for the style URL -->
 
 <config>
-  <!-- style sheet -->
-  <option name="custom_stylesheet" value="http://www.w3.org/StyleSheets/Core/Chocolate" />  
+  <!-- style sheet selection -->
+  <parameter name="style" values="Chocolate,Midnight,Modernist,Oldstyle,Steely,Swiss,Traditional,Ultramarine" />
+  <option name="custom_stylesheet" value="http://www.w3.org/StyleSheets/Core/{%style%}" />  
 
   <!-- options -->
   <option name="no_doctype" value="false" />

@@ -19,14 +19,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-16)
+ *  Version 2.0 (2018-03-22)
  *
  */ 
  
 package org.openoffice.da.comp.w2lcommon.filter;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import com.sun.star.awt.XDialogEventHandler;
 import com.sun.star.beans.PropertyValue;
@@ -51,11 +54,14 @@ import org.openoffice.da.comp.w2lcommon.helper.MacroExpander;
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
+import writer2latex.api.Config;
+import writer2latex.api.ConverterFactory;
+
 /** This class provides an abstract uno component which implements a filter ui
  */
 public abstract class OptionsDialogBase extends DialogBase implements
         XPropertyAccess { // Filter ui requires XExecutableDialog + XPropertyAccess
-		
+	
     //////////////////////////////////////////////////////////////////////////
     // The subclass must override the following; and override the
     // implementation of XDialogEventHandler if needed
@@ -80,14 +86,14 @@ public abstract class OptionsDialogBase extends DialogBase implements
 
     /** Return the path to the options in the registry */
     public abstract String getRegistryPath();
+    
+    /** Return the MIME type handled by the converter */
+    protected abstract String getMIME();
 	
     /** Create a new OptionsDialogBase */
     public OptionsDialogBase(XComponentContext xContext) {
         super(xContext);
         this.xMSF = null; // must be set properly by subclass
-        mediaProps = null;
-        sConfigNames = null;
-        lockedOptions = new HashSet<String>();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -155,15 +161,29 @@ public abstract class OptionsDialogBase extends DialogBase implements
 
     // The service factory
     protected XMultiServiceFactory xMSF;
-	
+    
     // The media properties (set/get via XPropertyAccess implementation) 
-    private PropertyValue[] mediaProps;
+    private PropertyValue[] mediaProps = null;
 	
-    // Configuration names (stored during execution of dialog)
-    private String[] sConfigNames;
+    // Set of locked controls (as read from config)
+    private HashSet<String> lockedOptions = new HashSet<String>();
 	
-    // Set of locked controls
-    private HashSet<String> lockedOptions;
+    // Some data to connect list boxes in filter UI with config 
+    
+    // The configuration names are identified by item number in list box
+    private String[] sConfigNames = null;
+    
+    // Configuration parameter names likewise, the mapping being
+    // config item -> param item -> param name
+    private Map<Short,String[]> paramNames = new HashMap<Short,String[]>();
+    
+    // And finally parameter values likewise, the mapping being
+    // config item -> param item -> param value item -> param value name
+    private Map<Short, Map<Short,String[]>> paramValues = new HashMap<Short,Map<Short,String[]>>();
+    
+    // Current value of configuration names and parameters
+    private Map<Short,Short> currentParamNames = new HashMap<Short,Short>();
+    private Map<Short,Map<Short,Short>> currentParamValues = new HashMap<Short,Map<Short,Short>>();
 	
 	
     //////////////////////////////////////////////////////////////////////////
@@ -297,7 +317,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
         return lockedOptions.contains(sOptionName);
     }
 	
-    // Configuration
+    // Load configurations and their parameters from registry
     protected void loadConfig(XPropertySet xProps) {
         // Get all configuration names from the registry and sort them by name
         Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
@@ -306,15 +326,47 @@ public abstract class OptionsDialogBase extends DialogBase implements
         sConfigNames = xConfigurations.getElementNames();
         int nConfigs = sConfigNames.length;
         Arrays.sort(sConfigNames);
-		
-        // Get the display names from the registry
+        
+        // Get the display names and the parameters for each configuration
+        ConverterHelper helper = new ConverterHelper(xContext);
         String[] sConfigs = new String[nConfigs];
         for (short i=0; i<nConfigs; i++) {
+        	// Read display name and config URL from registry
             try {
-                Object config = xConfigurations.getByName(sConfigNames[i]);
+                // Get the node for this configuration
+            	Object regconfig = xConfigurations.getByName(sConfigNames[i]);
                 XPropertySet xCfgProps = (XPropertySet)
-                    UnoRuntime.queryInterface(XPropertySet.class,config);
+                    UnoRuntime.queryInterface(XPropertySet.class,regconfig);
+                
+                // Get and store the display name
                 sConfigs[i] = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"DisplayName");
+                
+                // Get the parameters
+                String sConfigURL = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL");
+                Config config = ConverterFactory.createConfig(getMIME());
+                helper.readConfig(config, sConfigURL);
+                Map<String,List<String>> configParameters = config.getParameters();
+                
+                // Store the parameter names
+                String[] sParamNames = configParameters.keySet().toArray(new String[0]);
+                paramNames.put(i, sParamNames);
+                
+                // Store the parameter values
+                paramValues.put(i, new HashMap<Short, String[]>());
+                int nParamCount = sParamNames.length; 
+                for (short j=0; j<nParamCount; j++) {
+                	String[] sParamValues = configParameters.get(sParamNames[j]).toArray(new String[0]);
+                	paramValues.get(i).put(j, sParamValues);
+                }
+                
+                // Create current selections for this config
+                // TODO: Make persistent
+                currentParamNames.put(i, (short)0);
+                Map<Short,Short> thisParamValues = new HashMap<Short,Short>();
+                for (short j=0; j<nParamCount; j++) {
+                	thisParamValues.put(j, (short)0);
+                }
+                currentParamValues.put(i, thisParamValues);
             }
             catch (Exception e) {
                 sConfigs[i] = "";
@@ -365,8 +417,52 @@ public abstract class OptionsDialogBase extends DialogBase implements
                 setListBoxSelectedItem("Config",(short) (i));
             }
         }
+        
+    }
+    
+    // Populate parameter list boxes based on current config
+    protected void loadParameters() {
+    	short nConfigItem = getListBoxSelectedItem("Config");
+    	if (paramNames.get(nConfigItem).length>0) {
+            setListBoxStringItemList("ParameterName", paramNames.get(nConfigItem));
+            setListBoxSelectedItem("ParameterName", currentParamNames.get(nConfigItem));
+        	loadParameterValues();
+            setControlEnabled("ParameterName",true);
+            setControlEnabled("ParameterValue",true);
+    	}
+    	else {
+    		// No parameters
+    		setListBoxStringItemList("ParameterName", new String[0]);
+    		setListBoxStringItemList("ParameterValue", new String[0]);
+            setControlEnabled("ParameterName",false);
+            setControlEnabled("ParameterValue",false);
+    	}
+    }
+    
+    // save current parameter name
+    protected void parameterNameChange() {
+    	short nConfigItem = getListBoxSelectedItem("Config");
+    	short nParamNameItem = getListBoxSelectedItem("ParameterName");
+    	currentParamNames.put(nConfigItem, nParamNameItem);
+    	loadParameterValues();
+    }
+    
+    // Populate parameter value list box based on current parameter name
+    protected void loadParameterValues() {
+    	short nConfigItem = getListBoxSelectedItem("Config");
+    	short nParamNameItem = getListBoxSelectedItem("ParameterName");
+        setListBoxStringItemList("ParameterValue", paramValues.get(nConfigItem).get(nParamNameItem));
+        setListBoxSelectedItem("ParameterValue", currentParamValues.get(nConfigItem).get(nParamNameItem));
     }
 	
+    // save current parameter value
+    protected void parameterValueChange() {
+    	short nConfigItem = getListBoxSelectedItem("Config");
+    	short nParamNameItem = getListBoxSelectedItem("ParameterName");
+    	short nParamValueItem = getListBoxSelectedItem("ParameterValue");
+    	currentParamValues.get(nConfigItem).put(nParamNameItem,nParamValueItem);
+    }
+    
     protected short saveConfig(XPropertySet xProps, PropertyHelper filterData) {
         // The Config list box is common for all dialogs
         Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
@@ -499,5 +595,5 @@ public abstract class OptionsDialogBase extends DialogBase implements
         }
         return nValue;
     }
-			
+    			
 }

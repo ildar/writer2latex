@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-15)
+ *  Version 2.0 (2018-03-21)
  *  
  */
 
@@ -31,6 +31,8 @@ import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
+
+import writer2latex.api.MIMETypes;
 
 /** This class provides a UNO component which implements a filter ui for the
  *  LaTeX export
@@ -92,16 +94,16 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     public String getRegistryPath() {
         return "/org.openoffice.da.Writer2LaTeX.Options/LaTeXOptions";
     }
+    
+    protected String getMIME() {
+    	return MIMETypes.LATEX;
+    }
 
     /** Load settings from the registry to the dialog */
     protected void loadSettings(XPropertySet xProps) {
         // General
         loadConfig(xProps);
-        // TODO: This is sample content
-        String[] sNames = { "typesize", "papersize", "orientation" };
-        setListBoxStringItemList("ParameterName",sNames);
-        String[] sValues = { "a4paper", "a5paper", "b5paper", "legalpaper", "executivepaper" };
-        setListBoxStringItemList("ParameterValue",sValues);
+        loadParameters();
         
         loadListBoxOption(xProps,"Backend");
         loadListBoxOption(xProps,"Inputencoding");
@@ -215,8 +217,15 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     // Implement XDialogEventHandler
     public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
         if (sMethod.equals("ConfigChange") || sMethod.equals("BackendChange")) {
+        	loadParameters();
             updateLockedOptions();
             enableControls();
+        }
+        else if (sMethod.equals("ParameterNameChange")) {
+        	parameterNameChange();
+        }
+        else if (sMethod.equals("ParameterValueChange")) {
+        	parameterValueChange();
         }
         else if (sMethod.equals("UseBibtexChange")) {
             enableBibtexStyle();
@@ -287,8 +296,6 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // General
         setControlEnabled("BackendLabel",!isLocked("backend"));
         setControlEnabled("Backend",!isLocked("backend"));
-        setControlEnabled("ParameterName",!isLocked("parameter"));
-        setControlEnabled("ParameterValue",!isLocked("parameter"));
         setControlEnabled("InputencodingLabel",!isLocked("inputencoding"));
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
