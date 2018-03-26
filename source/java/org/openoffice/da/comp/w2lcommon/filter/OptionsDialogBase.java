@@ -211,7 +211,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
 
         // Make array for display names
         String[] sConfigs = new String[nConfigs];
-
+        
     	// Then iterate over all configurations in the registry
         for (short nConfigItem=0; nConfigItem<nConfigs; nConfigItem++) {
             try {
@@ -283,7 +283,6 @@ public abstract class OptionsDialogBase extends DialogBase implements
 		JSONObject obj = null;
 		try {
 			obj = new JSONObject(sParameters);
-			System.out.println("Found: "+obj.toString());
 			for (Object config : obj.keySet()) {
 				if (config instanceof String) {
 					String sConfig = (String)config;
@@ -298,7 +297,6 @@ public abstract class OptionsDialogBase extends DialogBase implements
 			    				String[] sParamValues = paramValues.get(nConfig).get(nParam);
 			    				for (short i = 0; i<sParamValues.length; i++) {
 			    					if (sParamValues[i].equals(sParamValue)) {
-			    						System.out.println(sParamName+"("+nParam+") -> "+sParamValue+" ("+i+")");
 			    						currentParamValues.get(nConfig).put(nParam,i);
 			    					}
 			    				}

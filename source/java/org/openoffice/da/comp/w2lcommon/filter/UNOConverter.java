@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2018-03-08)
+ *  Version 1.6 (2018-03-26)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -74,7 +74,7 @@ public class UNOConverter {
 		HashMap<String,String> filterNames = new HashMap<String,String>();
 		filterNames.put("org.openoffice.da.writer2latex","application/x-latex");
 		filterNames.put("org.openoffice.da.writer2bibtex","application/x-bibtex");
-		filterNames.put("org.openoffice.da.writer2xhtml5","text/html5");
+		filterNames.put("org.openoffice.da.writer2html5","text/html");
 
 		// Get the arguments
 		Object filterData = null;

@@ -2,7 +2,7 @@
  *
  *  ExportFilterBase.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2014-10-06)
+ *  Version 2.0 (2018-03-26)
  *  
  */
 
@@ -57,7 +57,7 @@ XTypeProvider {
 	public static final String __implementationName = "";
 
 	/** Filter name to include in error messages */
-	public String __displayName = "";
+	private static String DISPLAY_NAME = "Writer2LaTeX";
 
 	private XComponentContext xComponentContext = null;
 	private SimpleDOMBuilder domBuilder = new SimpleDOMBuilder(); 
@@ -95,15 +95,15 @@ XTypeProvider {
 		}
 		catch (IOException e){
 			MessageBox msgBox = new MessageBox(xComponentContext);
-			msgBox.showMessage(__displayName+": IO error in conversion",
+			msgBox.showMessage(DISPLAY_NAME+": IO error in conversion",
 					e.toString()+" at "+e.getStackTrace()[0].toString());
 			throw new com.sun.star.uno.RuntimeException(e.getMessage());
 		}
 		catch (Exception e){
 			MessageBox msgBox = new MessageBox(xComponentContext);
-			msgBox.showMessage(__displayName+": Internal error in conversion",
+			msgBox.showMessage(DISPLAY_NAME+": Internal error in conversion",
 					e.toString()+" at "+e.getStackTrace()[0].toString());
-			throw new com.sun.star.uno.RuntimeException(__displayName+" Exception");
+			throw new com.sun.star.uno.RuntimeException(DISPLAY_NAME+" Exception");
 		}
 	}
 

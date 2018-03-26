@@ -1,5 +1,7 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[all] New focus: Merged the extensions writer2latex.oxt and writer2xhtml.oxt
+
 [core] New feature: Configuration files can now define parameters. Parameters
   are additional named options with a fixed set of valid values. Parameters
   are handled like other options in the API, and the current value will be

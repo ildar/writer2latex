@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-25)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -31,6 +31,7 @@ import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
+import org.openoffice.da.comp.writer2latex.W2LRegistration;
 
 import writer2latex.api.MIMETypes;
 
@@ -41,13 +42,13 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2xhtml.XhtmlOptionsDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.XhtmlOptionsDialog";
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog";
 	
-    public String getDialogLibraryName() { return "W2XDialogs"; }
+    public String getDialogLibraryName() { return "W2HDialogs"; }
 	
     /** Return the name of the dialog within the library
      */
@@ -56,7 +57,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Return the name of the registry path
      */
     public String getRegistryPath() {
-        return "/org.openoffice.da.Writer2xhtml.Options/XhtmlOptions";
+        return "/org.openoffice.da.Writer2LaTeX.Options/XhtmlOptions";
     }
 
     protected String getMIME() {
@@ -66,7 +67,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Create a new XhtmlOptionsDialog */
     public XhtmlOptionsDialog(XComponentContext xContext) {
         super(xContext);
-        xMSF = W2XRegistration.xMultiServiceFactory;
+        xMSF = W2LRegistration.xMultiServiceFactory;
     }
 	
     /** Load settings from the registry to the dialog */
@@ -103,7 +104,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         loadCheckBoxOption(xProps, "IgnoreHardLineBreaks");
         loadCheckBoxOption(xProps, "IgnoreEmptyParagraphs");
         loadCheckBoxOption(xProps, "IgnoreDoubleSpaces");
-
+        
         updateLockedOptions();
         enableControls();
     }

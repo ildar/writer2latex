@@ -2,7 +2,7 @@
  *
  *  W2LRegistration.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,11 +19,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2014-12-11) 
+ *  Version 2.0 (2018-03-26) 
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex;
+
+import org.openoffice.da.comp.writer2xhtml.W2XExportFilter;
+import org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog;
 
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XSingleServiceFactory;
@@ -59,7 +62,7 @@ public class W2LRegistration {
         XMultiServiceFactory multiFactory, XRegistryKey regKey) {
         xMultiServiceFactory = multiFactory;
         XSingleServiceFactory xSingleServiceFactory = null;
-        if (implName.equals(W2LExportFilter.class.getName()) ) {
+        if (implName.equals(W2LExportFilter.__implementationName) ) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(W2LExportFilter.class,
             W2LExportFilter.__serviceName,
             multiFactory,						    
@@ -68,6 +71,18 @@ public class W2LRegistration {
         else if (implName.equals(LaTeXOptionsDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(LaTeXOptionsDialog.class,
             LaTeXOptionsDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(W2XExportFilter.__implementationName) ) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(W2XExportFilter.class,
+            W2XExportFilter.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(XhtmlOptionsDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialog.class,
+            XhtmlOptionsDialog.__serviceName,
             multiFactory,						    
             regKey);
         }
@@ -143,6 +158,10 @@ public class W2LRegistration {
                 W2LExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(LaTeXOptionsDialog.__implementationName,
                 LaTeXOptionsDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,
+                W2XExportFilter.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
+                XhtmlOptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2LStarMathConverter.__implementationName,
                 W2LStarMathConverter.__serviceName, regKey) &
         	FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,

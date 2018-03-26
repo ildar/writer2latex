@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-22)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -35,14 +35,11 @@ import org.openoffice.da.comp.w2lcommon.filter.ExportFilterBase;
 public class W2XExportFilter extends ExportFilterBase {
     
     /** Service name for the component */
-    public static final String __serviceName = "org.openoffice.da.comp.writer2xhtml.W2XExportFilter";
+    public static final String __serviceName = "org.openoffice.da.comp.writer2latex.W2XExportFilter";
 	
     /** Implementation name for the component */
-    public static final String __implementationName = "org.openoffice.da.comp.writer2xhtml.W2XExportFilter";
+    public static final String __implementationName = "org.openoffice.da.comp.writer2latex.W2XExportFilter";
 	
-    /** Filter name to include in error messages */
-	public final String __displayName = "Writer2LaTeX";
-
     public W2XExportFilter(XComponentContext xComponentContext1) {
         super(xComponentContext1);
     }

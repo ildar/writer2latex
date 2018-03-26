@@ -2,7 +2,7 @@
  *
  *  W2LExportFilter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2014-10-06)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -40,9 +40,6 @@ public class W2LExportFilter extends ExportFilterBase {
     /** Implementation name for the component */
     public static final String __implementationName = "org.openoffice.da.comp.writer2latex.W2LExportFilter";
 	
-    /** Filter name to include in error messages */
-	public final String __displayName = "Writer2LaTeX";
-
     public W2LExportFilter(XComponentContext xComponentContext1) {
         super(xComponentContext1);
     }

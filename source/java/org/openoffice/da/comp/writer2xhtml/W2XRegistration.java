@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08) 
+ *  Version 2.0 (2018-03-26) 
  */ 
  
 package org.openoffice.da.comp.writer2xhtml;
@@ -64,18 +64,6 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(W2XExportFilter.class.getName()) ) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(W2XExportFilter.class,
-            W2XExportFilter.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(XhtmlOptionsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialog.class,
-            XhtmlOptionsDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
         else if (implName.equals(ConfigurationDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(ConfigurationDialog.class,
             ConfigurationDialog.__serviceName,
@@ -104,10 +92,6 @@ public class W2XRegistration {
         return
             FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName,
                         Writer2xhtml.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,
-                W2XExportFilter.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
-                XhtmlOptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
                 ConfigurationDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ToolbarSettingsDialog.__implementationName,

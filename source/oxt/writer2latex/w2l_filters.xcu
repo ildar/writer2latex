@@ -64,6 +64,19 @@
 		<prop oor:name="TemplateName"/>
 	</node>-->
 	
+	<node oor:name="org.openoffice.da.writer2html5" oor:op="replace" oor:finalized="true" oor:mandatory="true">
+		<prop oor:name="FileFormatVersion"><value>0</value></prop>
+		<prop oor:name="Type"><value>writer_html5_File</value></prop>
+		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog</value></prop>
+		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2latex.W2XExportFilter unused com.sun.star.comp.Writer.XMLOasisImporter com.sun.star.comp.Writer.XMLOasisExporter staroffice/sxw text/html</value></prop>
+		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
+		<prop oor:name="TemplateName"/>
+		<prop oor:name="UIName">
+			<value>HTML5 [Writer2LaTeX]</value>
+		</prop>
+		<prop oor:name="Flags"><value>EXPORT ALIEN 3RDPARTYFILTER</value></prop>
+	</node>
 
 
   </node>

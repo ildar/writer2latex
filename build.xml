@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.9.1 (2018-03-06)
+  # version 1.9.1 (2018-03-26)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -125,7 +125,7 @@
 
         <!-- First extension: writer2latex.oxt -->
 		
-        <!-- Create jar with relevant files  -->
+        <!-- Create jar with relevant files (everything but cmd line app) -->
         <jar jarfile="${tmp}/writer2latex-filter.jar">
             <fileset dir="${classes}">
                 <patternset>
@@ -135,8 +135,6 @@
                 	<include name="**/*.class"/>
 		    		<include name="**/*.properties"/>
                     <exclude name="writer2latex/Application.class"/>
-                    <exclude name="writer2latex/xhtml/**/*"/>
-                	<exclude name="org/openoffice/da/comp/writer2xhtml/**/*"/>
                 </patternset>
             </fileset>
         	<!-- include third party libraries -->
@@ -177,7 +175,6 @@
                 	<include name="org/openoffice/da/comp/writer2xhtml/**/*.class"/>
                 	<include name="writer2latex/api/**/*.class"/>
                 	<include name="writer2latex/base/**/*.class"/>
-                	<include name="writer2latex/epub/**/*.class"/>
                 	<include name="writer2latex/office/**/*.class"/>
                 	<include name="writer2latex/util/**/*.class"/>
                 	<include name="writer2latex/xhtml/**/*.class"/>
