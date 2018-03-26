@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-22)
  *
  */ 
  
@@ -133,7 +133,7 @@ public final class Writer2xhtml extends WeakBase
 	
     private void publish(TargetFormat format) {
     	if (unoPublisher==null) { 
-    		unoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2xhtml");
+    		unoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX");
     	}
     	unoPublisher.publish(format);
     }	

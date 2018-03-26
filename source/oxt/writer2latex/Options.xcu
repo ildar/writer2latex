@@ -197,6 +197,9 @@
         <prop oor:name="ConfigName" oor:type="xs:string">
             <value></value>
         </prop>
+        <prop oor:name="Parameters" oor:type="xs:string">
+            <value></value>
+        </prop>
         <prop oor:name="Backend" oor:type="xs:short">
             <value>1</value> <!-- pdftex -->
         </prop>

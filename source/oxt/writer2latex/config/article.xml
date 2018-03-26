@@ -8,16 +8,36 @@
 
 <config>
   <!-- Parameters (global options) -->
-  <parameter name="typesize" values=",11pt,12pt" /> <!-- default 10pt -->
-  <parameter name="papersize" values=",a4paper,a5paper,b5paper,legalpaper,executivepaper" /> <!-- default letterpaper -->
-  <parameter name="orientation" values=",landscape" /> <!-- default empty -->
-  <parameter name="duplex" values=",twoside" /> <!-- default oneside -->
-  <parameter name="draft" values=",draft" /> <!-- default final -->
-  <parameter name="titlepage" values=",titlepage" /> <!-- default notitlepage -->
-  <parameter name="columns" values=",twocolumn" /> <!-- default onecolumn -->
-  <parameter name="equationnumbers" values=",leqno" /> <!-- default empty -->
-  <parameter name="equationalignment" values=",fleqn" /> <!-- default empty -->
-  <parameter name="bibliography" values=",openbib" /> <!-- default empty -->
+  <parameter name="typesize" values="10pt,11pt,12pt">
+  	<value-map value="10pt"/>
+  </parameter>
+  <parameter name="papersize" values="letterpaper,legalpaper,executivepaper,a4paper,a5paper,b5paper">
+  	<value-map value="letterpaper"/>
+  </parameter>
+  <parameter name="orientation" values="portrait,landscape">
+  	<value-map value="portrait"/>
+  </parameter>
+  <parameter name="duplex" values="oneside,twoside">
+  	<value-map value="oneside"/>
+  </parameter>
+  <parameter name="draft" values="final,draft">
+  	<value-map value="final"/>
+  </parameter>
+  <parameter name="titlepage" values="notitlepage,titlepage">
+  	<value-map value="notitlepage"/>
+  </parameter>
+  <parameter name="columns" values="onecolumn,twocolumn">
+  	<value-map value="onecolumn"/>
+  </parameter>
+  <parameter name="equationnumbers" values="reqno,leqno">
+  	<value-map value="reqno"/>
+  </parameter>
+  <parameter name="equationalignment" values="centereqn,fleqn">
+  	<value-map value="centereqn"/>
+  </parameter>
+  <parameter name="bibliography" values="leftbib,openbib">
+  	<value-map value="leftbib"/>
+  </parameter>
 
   <!-- Options. These can be adjusted to add support for various packages -->
   <option name="no_preamble" value="false" />

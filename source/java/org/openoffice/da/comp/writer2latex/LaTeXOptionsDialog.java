@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-21)
+ *  Version 2.0 (2018-03-25)
  *  
  */
 
@@ -102,9 +102,6 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     /** Load settings from the registry to the dialog */
     protected void loadSettings(XPropertySet xProps) {
         // General
-        loadConfig(xProps);
-        loadParameters();
-        
         loadListBoxOption(xProps,"Backend");
         loadListBoxOption(xProps,"Inputencoding");
         loadCheckBoxOption(xProps,"Multilingual");
@@ -150,7 +147,6 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     /** Save settings from the dialog to the registry and create FilterData */
     protected void saveSettings(XPropertySet xProps, PropertyHelper filterData) {
         // General
-        saveConfig(xProps, filterData);
         saveListBoxOption(xProps, filterData, "Backend", "backend", BACKEND_VALUES );
         saveListBoxOption(xProps, filterData, "Inputencoding", "inputencoding", INPUTENCODING_VALUES);
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
@@ -217,7 +213,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     // Implement XDialogEventHandler
     public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
         if (sMethod.equals("ConfigChange") || sMethod.equals("BackendChange")) {
-        	loadParameters();
+        	updateParameters();
             updateLockedOptions();
             enableControls();
         }
@@ -246,17 +242,14 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "ConfigChange", "UseBibtexChange", "WrapLinesChange",
-            "OptimizeSimpleTablesChange", "FloatTablesChange", "FloatFiguresChange" };
+        String[] sNames = { "ConfigChange", "ParameterNameChange", "ParameterValueChange",
+        		"UseBibtexChange", "WrapLinesChange",
+        		"OptimizeSimpleTablesChange", "FloatTablesChange", "FloatFiguresChange" };
         return sNames;
     }
 	
     protected boolean isLocked(String sOptionName) {
-    	if ("parameter".equals(sOptionName)) {
-    		// TODO: Parameters are locked if the config does not have parameters
-    		return false;
-    	}
-        else if ("inputencoding".equals(sOptionName)) {
+        if ("inputencoding".equals(sOptionName)) {
         	// backend=xetex locks the encoding to utf8
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }

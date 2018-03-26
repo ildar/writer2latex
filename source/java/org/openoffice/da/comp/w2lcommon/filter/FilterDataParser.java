@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-17)
+ *  Version 2.0 (2018-03-22)
  *
  */ 
  
@@ -101,7 +101,6 @@ public class FilterDataParser {
 	        		filterData[i] = new PropertyValue();
 	        		filterData[i].Name = sItem[0];
 	        		filterData[i].Value = sItem.length>1 ? sItem[1] : "";
-	        		System.out.println(filterData[i].Name+" "+filterData[i].Value);
 	        	}
 	        	applyParsedFilterData(filterData,converter);
     		}
@@ -224,6 +223,7 @@ public class FilterDataParser {
             String sKey = keys.nextElement();
             if (!"ConfigURL".equals(sKey) && !"TemplateURL".equals(sKey)) {
                 Object value = props.get(sKey);
+            	if (sKey.startsWith("param:")) { sKey = sKey.substring(6); }
                 if (AnyConverter.isString(value)) {
                     try {
                         converter.getConfig().setOption(sKey,AnyConverter.toString(value));

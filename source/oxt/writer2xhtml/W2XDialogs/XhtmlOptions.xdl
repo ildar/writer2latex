@@ -53,8 +53,12 @@
   <dlg:button dlg:id="HelpButton" dlg:tab-index="3" dlg:left="282" dlg:top="200" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Options" dlg:value="Help" dlg:button-type="help"/>
   <dlg:checkbox dlg:id="UseMathjax" dlg:tab-index="20" dlg:left="193" dlg:top="120" dlg:width="149" dlg:height="12" dlg:help-text="&amp;144.XhtmlOptions.UseMathjax.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsUseMathjax" dlg:value="&amp;145.XhtmlOptions.UseMathjax.Label" dlg:checked="false"/>
   <dlg:fixedline dlg:id="FixedLine1" dlg:tab-index="34" dlg:left="179" dlg:top="10" dlg:width="2" dlg:height="180" dlg:help-text="&amp;146.XhtmlOptions.FixedLine1.HelpText" dlg:value="&amp;147.XhtmlOptions.FixedLine1.Label" dlg:align="vertical"/>
-  <dlg:menulist dlg:id="ParameterName" dlg:tab-index="5" dlg:left="12" dlg:top="34" dlg:width="60" dlg:height="12" dlg:help-text="&amp;149.XhtmlOptions.ParameterName.HelpText" dlg:spin="true"/>
-  <dlg:menulist dlg:id="ParameterValue" dlg:tab-index="6" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-text="&amp;151.XhtmlOptions.ParameterValue.HelpText" dlg:spin="true"/>
+  <dlg:menulist dlg:id="ParameterName" dlg:tab-index="5" dlg:left="12" dlg:top="34" dlg:width="60" dlg:height="12" dlg:help-text="&amp;149.XhtmlOptions.ParameterName.HelpText" dlg:spin="true">
+     <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterNameChange" script:language="UNO"/>
+  </dlg:menulist>
+  <dlg:menulist dlg:id="ParameterValue" dlg:tab-index="6" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-text="&amp;151.XhtmlOptions.ParameterValue.HelpText" dlg:spin="true">
+    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterValueChange" script:language="UNO"/>
+  </dlg:menulist>
   <dlg:checkbox dlg:id="Multilingual" dlg:tab-index="9" dlg:left="12" dlg:top="78" dlg:width="149" dlg:height="12" dlg:help-text="&amp;154.XhtmlOptions.Multilingual.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsMultilingual" dlg:value="&amp;155.XhtmlOptions.Multilingual.Label" dlg:checked="false"/>
   <dlg:text dlg:id="GeneralLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="156" dlg:height="12" dlg:help-text="&amp;156.XhtmlOptions.GeneralLabel.HelpText" dlg:value="&amp;157.XhtmlOptions.GeneralLabel.Label"/>
   <dlg:text dlg:id="FigTableMathLabel" dlg:tab-index="35" dlg:left="186" dlg:top="50" dlg:width="156" dlg:height="12" dlg:help-text="&amp;160.XhtmlOptions.FigTableMathLabel.HelpText" dlg:value="&amp;161.XhtmlOptions.FigTableMathLabel.Label"/>

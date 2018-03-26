@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-20)
+ *  Version 2.0 (2018-03-25)
  *
  */
 
@@ -51,6 +51,7 @@ import org.w3c.dom.DOMImplementation;
 
 import writer2latex.api.ComplexOption;
 import writer2latex.util.CSVList;
+import writer2latex.util.Misc;
 
 public abstract class ConfigBase implements writer2latex.api.Config {
 	
@@ -61,20 +62,34 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     protected Option[] options;
     // Complex, named options
     protected Map<String,ComplexOption> optionGroups;
-    // Parameters (First item is current value; tail contains all valid values)
+    // Parameters (map from name to list of possible values)
     protected Map<String,List<String>> parameters;
+    // Parameter value maps (map from name to value->final value maps)
+    protected Map<String,Map<String,String>> paramValueMaps;
+    // Current parameter values (map from name to current value;
+    protected Map<String,String> currentParamValues;
 	
     public ConfigBase() {
         options = new Option[getOptionCount()];
         optionGroups = new HashMap<String,ComplexOption>();
         parameters = new HashMap<String,List<String>>();
+        paramValueMaps = new HashMap<String,Map<String,String>>();
+        currentParamValues = new HashMap<String,String>();
     }
     
+    /** Get the parameters defined by this configuration
+     * 
+     *  @return a copy of all parameters as a map from parameter names
+     *  to a list of possible values
+     */
     public Map<String,List<String>> getParameters() {
-    	Map<String,List<String>> allParams = new HashMap<String,List<String>>();
-    	allParams.putAll(parameters);
-    	allParams.remove(0);
-    	return allParams;
+    	Map<String,List<String>> copy = new HashMap<String,List<String>>();
+    	for (String sName : parameters.keySet()) {
+    		List<String> itemCopy = new Vector<String>();
+    		itemCopy.addAll(parameters.get(sName));
+    		copy.put(sName, itemCopy);
+    	}
+    	return copy;
     }
     
     // Replace parameters in a string with their values
@@ -94,11 +109,12 @@ public abstract class ConfigBase implements writer2latex.api.Config {
         		CSVList values = new CSVList(",");
         		for (String sParam : sParams) {
         			// Ignore undefined parameters
-        			if (getParameters().containsKey(sParam)) {
-        				String sCurrentValue = getOption(sParam);
+        			if (parameters.containsKey(sParam)) {
+        				String sCurrentValue
+        				  = paramValueMaps.get(sParam).get(currentParamValues.get(sParam));
         				if (sCurrentValue.length()>0) {
         					// Only add non-empty parameter values to result
-        					values.addValue(getOption(sParam));
+        					values.addValue(sCurrentValue);
         				}
         			}
         		}
@@ -126,8 +142,8 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     		}
     		// Otherwise try parameters
     		if (parameters.containsKey(sName) && parameters.get(sName).contains(sValue)) {
-				// Valid value
-				parameters.get(sName).set(0, sValue);
+				// Parameter exists, and value is valid
+				currentParamValues.put(sName, sValue);
     		}
         }
     }
@@ -142,7 +158,7 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     		}
     		// Otherwise try parameters
     		if (parameters.containsKey(sName)) {
-				return parameters.get(sName).get(0);
+				return currentParamValues.get(sName);
     		}
     	}
         return null;
@@ -190,20 +206,10 @@ public abstract class ConfigBase implements writer2latex.api.Config {
             if (child.getNodeType()==Node.ELEMENT_NODE) {
                 Element elm = (Element)child;
                 if (elm.getTagName().equals("option")) {
-                    String sName = elm.getAttribute("name");
-                    String sValue = elm.getAttribute("value");
-                    if (sName.length()>0) { setOption(sName,sValue); }
+                	readOption(elm);
                 }
                 else if (elm.getTagName().equals("parameter")) {
-                    String sName = elm.getAttribute("name");
-                    String[] sValues = elm.getAttribute("values").split(",");
-                    if (sName.length()>0 && sValues.length>0) {
-                    	List<String> values = new Vector<String>();
-                    	// Set first item as default value
-                    	values.add(sValues[0]);
-                    	values.addAll(Arrays.asList(sValues));
-                    	parameters.put(sName,values);
-                    }
+                	readParameter(elm);
                 }
                 else {
                     readInner(elm);
@@ -212,11 +218,65 @@ public abstract class ConfigBase implements writer2latex.api.Config {
             child = child.getNextSibling();
         }
     }
-	
+    
     public void read(File file) throws IOException {
     	read(new FileInputStream(file));
     }
     
+    // Read an option node
+    private void readOption(Element option) {
+        String sName = option.getAttribute("name");
+        String sValue = option.getAttribute("value");
+        if (sName.length()>0) { setOption(sName,sValue); }
+    }
+    
+    // Read a parameter node and set current value to default value
+    private void readParameter(Element parameter) {
+        String sName = parameter.getAttribute("name");
+        String[] sValues = parameter.getAttribute("values").split(",");
+        if (sName.length()>0 && sValues.length>0) {
+        	List<String> values = new Vector<String>();
+        	values.addAll(Arrays.asList(sValues));
+        	parameters.put(sName,values);
+        	currentParamValues.put(sName, values.get(0));
+        	readValueMaps(parameter, sName);
+        }
+    }
+    
+    // Read value maps for a parameter
+    private void readValueMaps(Element parameter, String sName) {
+    	List<String> values = parameters.get(sName);
+    	
+    	// First create trivial maps for all values
+    	Map<String,String> valueMap = new HashMap<String,String>();
+    	for (String sValue : values) {
+    		valueMap.put(sValue, sValue);
+    	}
+    	paramValueMaps.put(sName, valueMap);
+    	
+    	// Then read the actual maps
+    	Node child = parameter.getFirstChild();
+    	while (child!=null) {
+    		if (child.getNodeType()==Node.ELEMENT_NODE) {
+    			Element elm = (Element)child;
+    			if (elm.getTagName().equals("value-map")) {
+    				readValueMap(elm, sName);
+    			}
+    		}
+    		child=child.getNextSibling();
+    	}
+    }
+    
+    private void readValueMap(Element valueMap, String sName) {
+    	List<String> values = parameters.get(sName);
+
+    	String sValue = valueMap.getAttribute("value");
+		if (values.contains(sValue)) {
+            String sTargetValue = Misc.getPCDATA(valueMap);
+            paramValueMaps.get(sName).put(sValue, sTargetValue);
+		}
+    }
+	
     /** Read configuration information from an xml element.
      *  The subclass must define this to read richer configuration data
      */
@@ -238,25 +298,10 @@ public abstract class ConfigBase implements writer2latex.api.Config {
         Element rootElement = dom.getDocumentElement();
 
         // Write parameters first
-        for (String sName : parameters.keySet()) {
-            Element paramNode = dom.createElement("parameter");
-            paramNode.setAttribute("name",sName);
-            List<String> values = parameters.get(sName);
-            CSVList valueList = new CSVList(',');
-            for (int i=1; i<values.size(); i++) {
-            	valueList.addValue(values.get(i));
-            }
-            paramNode.setAttribute("values",valueList.toString());
-            rootElement.appendChild(paramNode);        	
-        }
+        writeParameters(rootElement);
 
         // Then simple options
-        for (int i=0; i<getOptionCount(); i++) {
-            Element optionNode = dom.createElement("option");
-            optionNode.setAttribute("name",options[i].getName());
-            optionNode.setAttribute("value",options[i].getString());
-            rootElement.appendChild(optionNode);
-        }
+        writeOptions(rootElement);
         
         // Finally complex options
         writeInner(dom);
@@ -267,6 +312,42 @@ public abstract class ConfigBase implements writer2latex.api.Config {
 	
     public void write(File file) throws IOException {
     	write(new FileOutputStream(file));
+    }
+    
+    private void writeParameters(Element root) {
+        for (String sName : parameters.keySet()) {
+            Element paramNode = root.getOwnerDocument().createElement("parameter");
+            paramNode.setAttribute("name",sName);
+            List<String> values = parameters.get(sName);
+            CSVList valueList = new CSVList(',');
+            for (int i=1; i<values.size(); i++) {
+            	valueList.addValue(values.get(i));
+            }
+            paramNode.setAttribute("values",valueList.toString());
+            root.appendChild(paramNode);
+            writeValueMaps(paramNode, sName);
+        }
+    }
+    
+    private void writeValueMaps(Element parameter, String sName) {
+        Map<String,String> map = paramValueMaps.get(sName); 
+        for (String sValue : map.keySet()) {
+        	if (!sValue.equals(map.get(sValue))) {
+        		Element valueMapNode = parameter.getOwnerDocument().createElement("value-map");
+        		valueMapNode.setAttribute("value", sValue);
+        		valueMapNode.appendChild(parameter.getOwnerDocument().createTextNode(map.get(sValue)));
+        		parameter.appendChild(valueMapNode);
+        	}
+        }
+    }
+    
+    private void writeOptions(Element root) {
+        for (int i=0; i<getOptionCount(); i++) {
+            Element optionNode = root.getOwnerDocument().createElement("option");
+            optionNode.setAttribute("name",options[i].getName());
+            optionNode.setAttribute("value",options[i].getString());
+            root.appendChild(optionNode);
+        }
     }
 
     /** Write configuration information to an xml document.

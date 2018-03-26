@@ -22,6 +22,7 @@
             <!-- General -->
             <prop oor:name="Config" oor:type="xs:short" />
             <prop oor:name="ConfigName" oor:type="xs:string" />
+            <prop oor:name="Parameters" oor:type="xs:string" />
             <prop oor:name="Backend" oor:type="xs:short" />
             <prop oor:name="Inputencoding" oor:type="xs:short" />
             <prop oor:name="Multilingual" oor:type="xs:boolean" />

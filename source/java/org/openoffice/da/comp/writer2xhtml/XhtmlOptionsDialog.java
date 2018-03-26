@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-21)
+ *  Version 2.0 (2018-03-25)
  *
  */ 
  
@@ -72,7 +72,6 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Load settings from the registry to the dialog */
     protected void loadSettings(XPropertySet xProps) {
         // General
-        loadConfig(xProps);
         int nScaling = loadNumericOption(xProps, "Scaling");
         if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
         	setNumericFieldValue("Scaling",100);
@@ -110,12 +109,11 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     }
 	
     /** Save settings from the dialog to the registry and create FilterData */
-    protected void saveSettings(XPropertySet xProps, PropertyHelper helper) {
+    protected void saveSettings(XPropertySet xProps, PropertyHelper filterData) {
         // General
-        saveConfig(xProps, helper);
-        saveNumericOptionAsPercentage(xProps, helper, "Scaling", "scaling");
-        saveCheckBoxOption(xProps, helper, "ConvertToPx", "convert_to_px");
-        saveCheckBoxOption(xProps, helper, "Multilingual", "multilingual");
+        saveNumericOptionAsPercentage(xProps, filterData, "Scaling", "scaling");
+        saveCheckBoxOption(xProps, filterData, "ConvertToPx", "convert_to_px");
+        saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
         
         // Files
         boolean bSplit = saveCheckBoxOption(xProps, "Split");
@@ -123,40 +121,47 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         short nRepeatLevels = saveListBoxOption(xProps, "RepeatLevels");
         if (!isLocked("split_level")) {
             if (bSplit) {
-               helper.put("split_level",Integer.toString(nSplitLevel+1));
-               helper.put("repeat_levels",Integer.toString(nRepeatLevels));
+               filterData.put("split_level",Integer.toString(nSplitLevel+1));
+               filterData.put("repeat_levels",Integer.toString(nRepeatLevels));
             }
             else {
-                helper.put("split_level","0");
+                filterData.put("split_level","0");
             }
         }    		
-        saveCheckBoxOption(xProps, helper, "SaveImagesInSubdir", "save_images_in_subdir");
+        saveCheckBoxOption(xProps, filterData, "SaveImagesInSubdir", "save_images_in_subdir");
 
         // Special content
-        saveCheckBoxOption(xProps, helper, "Notes", "notes");
-        saveCheckBoxOption(xProps, helper, "UseDublinCore", "use_dublin_core");
+        saveCheckBoxOption(xProps, filterData, "Notes", "notes");
+        saveCheckBoxOption(xProps, filterData, "UseDublinCore", "use_dublin_core");
   		
         // Figures, tables and formulas
         saveCheckBoxOption(xProps, "OriginalImageSize");
         // TODO: Support "relative"
-        helper.put("image_size", getCheckBoxStateAsBoolean("OriginalImageSize") ? "none" : "absolute");
-        saveCheckBoxOption(xProps, helper, "EmbedSVG","embed_svg");
-        saveCheckBoxOption(xProps, helper, "EmbedImg","embed_img");
-        saveNumericOptionAsPercentage(xProps, helper, "ColumnScaling", "column_scaling");
-        saveCheckBoxOption(xProps, helper, "UseMathjax", "use_mathjax");
+        filterData.put("image_size", getCheckBoxStateAsBoolean("OriginalImageSize") ? "none" : "absolute");
+        saveCheckBoxOption(xProps, filterData, "EmbedSVG","embed_svg");
+        saveCheckBoxOption(xProps, filterData, "EmbedImg","embed_img");
+        saveNumericOptionAsPercentage(xProps, filterData, "ColumnScaling", "column_scaling");
+        saveCheckBoxOption(xProps, filterData, "UseMathjax", "use_mathjax");
 
         // AutoCorrect
-        saveCheckBoxOption(xProps, helper, "IgnoreHardLineBreaks", "ignore_hard_line_breaks");
-        saveCheckBoxOption(xProps, helper, "IgnoreEmptyParagraphs", "ignore_empty_paragraphs");
-        saveCheckBoxOption(xProps, helper, "IgnoreDoubleSpaces", "ignore_double_spaces");
+        saveCheckBoxOption(xProps, filterData, "IgnoreHardLineBreaks", "ignore_hard_line_breaks");
+        saveCheckBoxOption(xProps, filterData, "IgnoreEmptyParagraphs", "ignore_empty_paragraphs");
+        saveCheckBoxOption(xProps, filterData, "IgnoreDoubleSpaces", "ignore_double_spaces");
     }
 	
 	
     // Implement XDialogEventHandler
     public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
         if (sMethod.equals("ConfigChange")) {
+        	updateParameters();
             updateLockedOptions();
             enableControls();
+        }
+        else if (sMethod.equals("ParameterNameChange")) {
+        	parameterNameChange();
+        }
+        else if (sMethod.equals("ParameterValueChange")) {
+        	parameterValueChange();
         }
         else if (sMethod.equals("SplitChange")) {
             enableSplitLevel();
@@ -165,7 +170,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     }
 
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "ConfigChange", "SplitChange" };
+        String[] sNames = { "ConfigChange", "ParameterNameChange", "ParameterValueChange", "SplitChange" };
         return sNames;
     }
 	

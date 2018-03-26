@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-22)
  *  
  */
 package org.openoffice.da.comp.writer2xhtml;
@@ -89,7 +89,7 @@ public class XhtmlUNOPublisher extends UNOPublisher {
     		}
         }
         MessageBox msgBox = new MessageBox(xContext, xFrame);
-        msgBox.showMessage("Writer2xhtml","Error: Failed to open exported document");
+        msgBox.showMessage("Writer2LaTeX","Error: Failed to open exported document");
     }
     
     // Open the file in the default application on this system (if any)

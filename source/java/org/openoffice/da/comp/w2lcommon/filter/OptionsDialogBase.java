@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-22)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -54,6 +54,9 @@ import org.openoffice.da.comp.w2lcommon.helper.MacroExpander;
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import writer2latex.api.Config;
 import writer2latex.api.ConverterFactory;
 
@@ -76,7 +79,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
      */
     protected abstract void saveSettings(XPropertySet xRegistryProps, PropertyHelper filterData);
 	
-    /** Return the name of the library containing the dialog
+	/** Return the name of the library containing the dialog
      */
     public abstract String getDialogLibraryName();
 	
@@ -107,8 +110,12 @@ public abstract class OptionsDialogBase extends DialogBase implements
             Object view = getRegistryView(false);
             XPropertySet xProps = (XPropertySet)
                 UnoRuntime.queryInterface(XPropertySet.class,view);
+            
+            // Load common settings (configuration and parameters)
+            loadCommon(xProps);
+            updateParameters();
 
-            // Load settings using method from subclass
+            // The subclass must take care of the rest
             loadSettings(xProps);
 
             // Dispose the registry view
@@ -128,8 +135,10 @@ public abstract class OptionsDialogBase extends DialogBase implements
             XPropertySet xProps = (XPropertySet)
                 UnoRuntime.queryInterface(XPropertySet.class,rwview);
 
-            // Save settings and create FilterData using method from subclass
+            // Save common settings and create FilterData
             PropertyHelper filterData = new PropertyHelper();
+            saveCommon(xProps, filterData);
+            // The subclass takes care of the rest
             saveSettings(xProps, filterData);
 
             // Commit registry changes
@@ -184,8 +193,244 @@ public abstract class OptionsDialogBase extends DialogBase implements
     // Current value of configuration names and parameters
     private Map<Short,Short> currentParamNames = new HashMap<Short,Short>();
     private Map<Short,Map<Short,Short>> currentParamValues = new HashMap<Short,Map<Short,Short>>();
+    
+    ///////////////////////////////////////////////////////////
+    // Load and save common options (configuration and parameters)
 	
-	
+    // Load common settings from registry
+    private void loadCommon(XPropertySet xProps) {
+        // Get name access to all configuration nodes in the registry
+        Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
+        XNameAccess xConfigurations = (XNameAccess)
+            UnoRuntime.queryInterface(XNameAccess.class,configurations);
+        
+        // Get all configuration names and sort the by name
+        sConfigNames = xConfigurations.getElementNames();
+        Arrays.sort(sConfigNames);
+        int nConfigs = sConfigNames.length;
+
+        // Make array for display names
+        String[] sConfigs = new String[nConfigs];
+
+    	// Then iterate over all configurations in the registry
+        for (short nConfigItem=0; nConfigItem<nConfigs; nConfigItem++) {
+            try {
+                // Get the node for this configuration
+            	Object regconfig = xConfigurations.getByName(sConfigNames[nConfigItem]);
+                XPropertySet xCfgProps = (XPropertySet)
+                    UnoRuntime.queryInterface(XPropertySet.class,regconfig);
+                
+                // Get and store the display name
+                sConfigs[nConfigItem] = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"DisplayName");
+                
+                // Get the configuration URL and use it to load parameters
+                loadParameters(xProps, nConfigItem, XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL"));
+            }
+            catch (Exception e) {
+            	// Errors in registry?
+                sConfigs[nConfigItem] = "??";
+                loadParameters(xProps, nConfigItem, "");
+            }
+        }
+        
+        // Populate the config list box and select an item 
+        setListBoxStringItemList("Config",sConfigs);
+        adjustListBoxVisibleItems("Config");
+        selectConfig(xProps);
+                
+        // Get current parameter values from registry
+        createDefaultCurrentParameterValues();
+        loadCurrentParameterValues(xProps);
+    }
+    
+    // Load parameters from registry
+    private void loadParameters(XPropertySet xProps, short nConfig, String sConfigURL) {
+    	// Load the configuration from the URL and get the parameters
+        ConverterHelper helper = new ConverterHelper(xContext);
+        Config config = ConverterFactory.createConfig(getMIME());
+        helper.readConfig(config, sConfigURL);
+        Map<String,List<String>> configParameters = config.getParameters();
+        
+        // Get the parameter names from the config and store them
+        String[] sParamNames = configParameters.keySet().toArray(new String[0]);
+        paramNames.put(nConfig, sParamNames);
+        
+        // Get the parameter values from the config and store them
+        paramValues.put(nConfig, new HashMap<Short, String[]>());
+        int nParamCount = sParamNames.length; 
+        for (short nParam=0; nParam<nParamCount; nParam++) {
+        	String[] sParamValues = configParameters.get(sParamNames[nParam]).toArray(new String[0]);
+        	paramValues.get(nConfig).put(nParam, sParamValues);
+        }
+    }
+    
+    private void createDefaultCurrentParameterValues() {
+    	int nConfigs = sConfigNames.length;
+    	for (short nConfig=0; nConfig<nConfigs; nConfig++) {
+	        currentParamNames.put(nConfig, (short)0);
+	        int nParamCount = paramValues.get(nConfig).size();
+	        Map<Short,Short> thisParamValues = new HashMap<Short,Short>();
+	        for (short nParam=0; nParam<nParamCount; nParam++) {
+	        	thisParamValues.put(nParam, (short)0);
+	        }
+	        currentParamValues.put(nConfig, thisParamValues);    	
+    	}
+    }
+    
+    // Load current parameter values from registry
+    private void loadCurrentParameterValues(XPropertySet xProps) {
+        String sParameters = XPropertySetHelper.getPropertyValueAsString(xProps,"Parameters");
+		JSONObject obj = null;
+		try {
+			obj = new JSONObject(sParameters);
+			System.out.println("Found: "+obj.toString());
+			for (Object config : obj.keySet()) {
+				if (config instanceof String) {
+					String sConfig = (String)config;
+					short nConfig = getConfigIndex(sConfig);
+					if (nConfig>-1 && obj.get(sConfig) instanceof JSONObject) {
+						JSONObject paramObj = (JSONObject) obj.get(sConfig);
+						// Iterate over parameters for this config
+			    		for (short nParam=0; nParam<paramNames.get(nConfig).length; nParam++) {
+			    			String sParamName = paramNames.get(nConfig)[nParam];
+			    			if (paramObj.has(sParamName)) {
+			    				String sParamValue = paramObj.getString(sParamName);
+			    				String[] sParamValues = paramValues.get(nConfig).get(nParam);
+			    				for (short i = 0; i<sParamValues.length; i++) {
+			    					if (sParamValues[i].equals(sParamValue)) {
+			    						System.out.println(sParamName+"("+nParam+") -> "+sParamValue+" ("+i+")");
+			    						currentParamValues.get(nConfig).put(nParam,i);
+			    					}
+			    				}
+			    			}
+			    		}
+					}
+				}
+			}
+		} catch (JSONException e) {
+			// Bad format of registry value, settings are ignored
+		}    	
+    }
+    
+    // Select the configuration in the dialog based on template or registry
+    private void selectConfig(XPropertySet xProps) {
+        // Get the template name for the current document
+        String sTheTemplateName = getTemplateName();
+        
+        // Get name access to all template declarations in the registry
+        Object templates = XPropertySetHelper.getPropertyValue(xProps,"Templates");
+        XNameAccess xTemplates = (XNameAccess)
+            UnoRuntime.queryInterface(XNameAccess.class,templates);
+        String[] sTemplateNames = xTemplates.getElementNames();
+        
+        // Iterate over the template declarations to find a possible match
+        for (int i=0; i<sTemplateNames.length; i++) {
+            try {
+                Object template = xTemplates.getByName(sTemplateNames[i]);
+                XPropertySet xTplProps = (XPropertySet)
+                    UnoRuntime.queryInterface(XPropertySet.class,template);
+                String sTemplateName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"TemplateName");
+                if (sTemplateName.equals(sTheTemplateName)) {
+                    String sConfigName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"ConfigName");
+                    short nConfig = getConfigIndex(sConfigName);
+                    if (nConfig>-1) {
+                        setListBoxSelectedItem("Config", nConfig);
+                        return;
+                    }
+                }
+            }
+            catch (Exception e) {
+                // ignore
+            }
+        }
+
+        // If there is no matching template, select item based on value stored in registry
+        setListBoxSelectedItem("Config",(short)0);
+        String sConfigName = XPropertySetHelper.getPropertyValueAsString(xProps,"ConfigName");
+        Short nItem = getConfigIndex(sConfigName);
+        if (nItem>-1) {
+        	setListBoxSelectedItem("Config",nItem);
+        }        
+    }
+    
+    // Get the configuration index from the name
+    private short getConfigIndex(String sConfigName) {
+    	int nConfigs = sConfigNames.length;
+        for (short i=0; i<nConfigs; i++) {
+            if (sConfigNames[i].equals(sConfigName)) {
+                return i;
+            }
+        }
+        return (short)-1;
+    }
+    
+    // Save common options to registry and filter data
+    private void saveCommon(XPropertySet xProps, PropertyHelper filterData) {
+    	saveConfig(xProps);
+    	saveConfigFilterData(xProps,filterData);
+    	saveParameters(xProps);
+    	saveParametersFilterData(filterData);
+    }
+    
+    // Save the current configuration index and name in the registry 
+    private void saveConfig(XPropertySet xProps) {
+        short nConfig = getListBoxSelectedItem("Config");
+    	XPropertySetHelper.setPropertyValue(xProps,"Config",nConfig);
+		XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[nConfig]);
+    }
+    
+    // Set ConfigURL and TemplateURL in filter data
+    private void saveConfigFilterData(XPropertySet xProps, PropertyHelper filterData) {
+    	// Get name access to the Configurations node in the registry
+        Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
+        XNameAccess xNameAccess = (XNameAccess)
+            UnoRuntime.queryInterface(XNameAccess.class,configurations);
+
+        // Get the ConfigURL and the TemplateURL and store them to filter data
+    	try {
+    		Object config = xNameAccess.getByName(sConfigNames[getListBoxSelectedItem("Config")]);
+    		XPropertySet xCfgProps = (XPropertySet)
+    				UnoRuntime.queryInterface(XPropertySet.class,config);
+    		MacroExpander expander = new MacroExpander(xContext);
+    		filterData.put("ConfigURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL")));
+    		filterData.put("TemplateURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"TargetTemplateURL")));
+    	}
+    	catch (Exception e) {
+    	}
+    }
+
+    private void saveParameters(XPropertySet xProps) {
+    	// Save current value of all parameters for all configurations
+    	// in the registry. To keep the registry simple, we use JSON
+    	JSONObject obj = new JSONObject();
+    	// Iterate over all configurations
+    	for (short nConfig=0; nConfig<sConfigNames.length; nConfig++) {
+    		JSONObject configObj = new JSONObject();
+    		// Iterate over all parameters in this configuration
+    		for (short nParam=0; nParam<paramNames.get(nConfig).length; nParam++) {
+    			// Get the current value and store it 
+    			int nParamValue = currentParamValues.get(nConfig).get(nParam);
+    			String sParamName = paramNames.get(nConfig)[nParam];
+    			String sParamValue = paramValues.get(nConfig).get(nParam)[nParamValue];
+    			configObj.put(sParamName, sParamValue);
+    		}
+    		obj.put(sConfigNames[nConfig], configObj);
+    	}
+    	// Save the JSON object in registry
+    	XPropertySetHelper.setPropertyValue(xProps,"Parameters",obj.toString());
+    }
+    
+    private void saveParametersFilterData(PropertyHelper filterData) {
+    	// Save parameter values for selected configuration to filter data
+        short nConfig = getListBoxSelectedItem("Config");
+        int nParamCount = paramNames.get(nConfig).length;
+        for (short i=0; i<nParamCount; i++) {
+        	String sName = paramNames.get(nConfig)[i];
+        	String sValue = paramValues.get(nConfig).get(i)[currentParamValues.get(nConfig).get(i)];
+        	filterData.put("param:"+sName, sValue);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
     // Some private utility methods
 	
@@ -317,115 +562,13 @@ public abstract class OptionsDialogBase extends DialogBase implements
         return lockedOptions.contains(sOptionName);
     }
 	
-    // Load configurations and their parameters from registry
-    protected void loadConfig(XPropertySet xProps) {
-        // Get all configuration names from the registry and sort them by name
-        Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
-        XNameAccess xConfigurations = (XNameAccess)
-            UnoRuntime.queryInterface(XNameAccess.class,configurations);
-        sConfigNames = xConfigurations.getElementNames();
-        int nConfigs = sConfigNames.length;
-        Arrays.sort(sConfigNames);
-        
-        // Get the display names and the parameters for each configuration
-        ConverterHelper helper = new ConverterHelper(xContext);
-        String[] sConfigs = new String[nConfigs];
-        for (short i=0; i<nConfigs; i++) {
-        	// Read display name and config URL from registry
-            try {
-                // Get the node for this configuration
-            	Object regconfig = xConfigurations.getByName(sConfigNames[i]);
-                XPropertySet xCfgProps = (XPropertySet)
-                    UnoRuntime.queryInterface(XPropertySet.class,regconfig);
-                
-                // Get and store the display name
-                sConfigs[i] = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"DisplayName");
-                
-                // Get the parameters
-                String sConfigURL = XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL");
-                Config config = ConverterFactory.createConfig(getMIME());
-                helper.readConfig(config, sConfigURL);
-                Map<String,List<String>> configParameters = config.getParameters();
-                
-                // Store the parameter names
-                String[] sParamNames = configParameters.keySet().toArray(new String[0]);
-                paramNames.put(i, sParamNames);
-                
-                // Store the parameter values
-                paramValues.put(i, new HashMap<Short, String[]>());
-                int nParamCount = sParamNames.length; 
-                for (short j=0; j<nParamCount; j++) {
-                	String[] sParamValues = configParameters.get(sParamNames[j]).toArray(new String[0]);
-                	paramValues.get(i).put(j, sParamValues);
-                }
-                
-                // Create current selections for this config
-                // TODO: Make persistent
-                currentParamNames.put(i, (short)0);
-                Map<Short,Short> thisParamValues = new HashMap<Short,Short>();
-                for (short j=0; j<nParamCount; j++) {
-                	thisParamValues.put(j, (short)0);
-                }
-                currentParamValues.put(i, thisParamValues);
-            }
-            catch (Exception e) {
-                sConfigs[i] = "";
-            }
-        }
-        
-        // Populate the list box and adjust the visible number of items 
-        setListBoxStringItemList("Config",sConfigs);
-        if (nConfigs<=12) {
-            setListBoxLineCount("Config",(short) (nConfigs));
-        }  
-        else {
-            setListBoxLineCount("Config",(short) 12);
-        }
-        
-        // Select item based on template name
-        String sTheTemplateName = getTemplateName();
-        Object templates = XPropertySetHelper.getPropertyValue(xProps,"Templates");
-        XNameAccess xTemplates = (XNameAccess)
-            UnoRuntime.queryInterface(XNameAccess.class,templates);
-        String[] sTemplateNames = xTemplates.getElementNames();
-        for (int i=0; i<sTemplateNames.length; i++) {
-            try {
-                Object template = xTemplates.getByName(sTemplateNames[i]);
-                XPropertySet xTplProps = (XPropertySet)
-                    UnoRuntime.queryInterface(XPropertySet.class,template);
-                String sTemplateName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"TemplateName");
-                if (sTemplateName.equals(sTheTemplateName)) {
-                    String sConfigName = XPropertySetHelper.getPropertyValueAsString(xTplProps,"ConfigName");
-                    for (short j=0; j<nConfigs; j++) {
-                        if (sConfigNames[j].equals(sConfigName)) {
-                            setListBoxSelectedItem("Config",(short) (j));
-                            return;
-                        }
-                    }
-                }
-            }
-            catch (Exception e) {
-                // ignore
-            }
-        }
-
-        // Select item based on value stored in registry
-        setListBoxSelectedItem("Config",(short)0);
-        String sConfigName = XPropertySetHelper.getPropertyValueAsString(xProps,"ConfigName");
-        for (short i=0; i<nConfigs; i++) {
-            if (sConfigNames[i].equals(sConfigName)) {
-                setListBoxSelectedItem("Config",(short) (i));
-            }
-        }
-        
-    }
-    
     // Populate parameter list boxes based on current config
-    protected void loadParameters() {
+    protected void updateParameters() {
     	short nConfigItem = getListBoxSelectedItem("Config");
     	if (paramNames.get(nConfigItem).length>0) {
             setListBoxStringItemList("ParameterName", paramNames.get(nConfigItem));
             setListBoxSelectedItem("ParameterName", currentParamNames.get(nConfigItem));
+            adjustListBoxVisibleItems("ParameterName");
         	loadParameterValues();
             setControlEnabled("ParameterName",true);
             setControlEnabled("ParameterValue",true);
@@ -453,6 +596,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
     	short nParamNameItem = getListBoxSelectedItem("ParameterName");
         setListBoxStringItemList("ParameterValue", paramValues.get(nConfigItem).get(nParamNameItem));
         setListBoxSelectedItem("ParameterValue", currentParamValues.get(nConfigItem).get(nParamNameItem));
+        adjustListBoxVisibleItems("ParameterValue");
     }
 	
     // save current parameter value
@@ -462,30 +606,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
     	short nParamValueItem = getListBoxSelectedItem("ParameterValue");
     	currentParamValues.get(nConfigItem).put(nParamNameItem,nParamValueItem);
     }
-    
-    protected short saveConfig(XPropertySet xProps, PropertyHelper filterData) {
-        // The Config list box is common for all dialogs
-        Object configurations = XPropertySetHelper.getPropertyValue(xProps,"Configurations");
-        XNameAccess xNameAccess = (XNameAccess)
-            UnoRuntime.queryInterface(XNameAccess.class,configurations);
-
-        short nConfig = getListBoxSelectedItem("Config");
-		XPropertySetHelper.setPropertyValue(xProps,"ConfigName",sConfigNames[nConfig]);
-    	try {
-    		Object config = xNameAccess.getByName(sConfigNames[nConfig]);
-    		XPropertySet xCfgProps = (XPropertySet)
-    		UnoRuntime.queryInterface(XPropertySet.class,config);
-    		MacroExpander expander = new MacroExpander(xContext);
-    		filterData.put("ConfigURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"ConfigURL")));
-    		filterData.put("TemplateURL",expander.expandMacros(XPropertySetHelper.getPropertyValueAsString(xCfgProps,"TargetTemplateURL")));
-    	}
-    	catch (Exception e) {
-    	}
-
-    	XPropertySetHelper.setPropertyValue(xProps,"Config",nConfig);
-        return nConfig;
-    }
-	
+    	
     // Check box option (boolean)
     protected boolean loadCheckBoxOption(XPropertySet xProps, String sName) {
         boolean bValue = XPropertySetHelper.getPropertyValueAsBoolean(xProps,sName);
@@ -595,5 +716,17 @@ public abstract class OptionsDialogBase extends DialogBase implements
         }
         return nValue;
     }
+    
+    // Adjust size of list box to actual contents
+    private void adjustListBoxVisibleItems(String sName) {
+    	int nCount = getListBoxStringItemList(sName).length;
+	    if (nCount<=12) {
+	        setListBoxLineCount(sName,(short) (nCount));
+	    }  
+	    else {
+	        setListBoxLineCount(sName,(short) 12);
+	    }
+    }
+
     			
 }

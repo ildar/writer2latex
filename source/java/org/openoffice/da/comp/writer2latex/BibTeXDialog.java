@@ -2,7 +2,7 @@
  *
  *  BibTeXDialog.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-28)
+ *  Version 2.0 (2018-03-25)
  *
  */ 
  
@@ -572,9 +572,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 					}
 				}
 			} catch (UnknownPropertyException e) {
-				System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 			} catch (WrappedTargetException e) {
-				System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 			}
         }
         return null;
