@@ -58,13 +58,7 @@ public class W2XRegistration {
         XMultiServiceFactory multiFactory, XRegistryKey regKey) {
         xMultiServiceFactory = multiFactory;
         XSingleServiceFactory xSingleServiceFactory = null;
-        if (implName.equals(Writer2xhtml.__implementationName) ) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(Writer2xhtml.class,
-            Writer2xhtml.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(ConfigurationDialog.__implementationName)) {
+        if (implName.equals(ConfigurationDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(ConfigurationDialog.class,
             ConfigurationDialog.__serviceName,
             multiFactory,						    
@@ -90,8 +84,6 @@ public class W2XRegistration {
      */
     public static boolean __writeRegistryServiceInfo(XRegistryKey regKey) {
         return
-            FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName,
-                        Writer2xhtml.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
                 ConfigurationDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ToolbarSettingsDialog.__implementationName,

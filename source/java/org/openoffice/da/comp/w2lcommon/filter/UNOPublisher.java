@@ -296,7 +296,7 @@ public class UNOPublisher {
       
     private static String getDialogName(TargetFormat format) {
     	switch (format) {
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$
     	default: return null;
     	}
@@ -304,7 +304,7 @@ public class UNOPublisher {
     
     private static String getFilterName(TargetFormat format) {
     	switch (format) {
-    	case html5: return "org.openoffice.da.writer2xhtml5"; //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.writer2html5"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.writer2latex"; //$NON-NLS-1$
     	default: return ""; //$NON-NLS-1$
     	}

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -55,7 +55,7 @@ public final class ToolbarSettingsDialog
     extends WeakBase
     implements XServiceInfo, XContainerWindowEventHandler {
 	
-	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2xhtml.toolbar.ToolbarOptions/Settings";
+	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Html5Settings";
 
     private XComponentContext xContext;
     private FilePicker filePicker;

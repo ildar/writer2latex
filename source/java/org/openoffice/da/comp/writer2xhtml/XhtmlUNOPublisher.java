@@ -63,11 +63,13 @@ public class XhtmlUNOPublisher extends UNOPublisher {
     	String sExecutable = null;
     	
 		try {
+			System.out.println("Trying to get registry view "+ToolbarSettingsDialog.REGISTRY_PATH);
 			Object view = registry.getRegistryView(ToolbarSettingsDialog.REGISTRY_PATH, false);
 			XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
 			
 			nView = XPropertySetHelper.getPropertyValueAsShort(xProps, "XhtmlView");
-			sExecutable = XPropertySetHelper.getPropertyValueAsString(xProps, "XhtmlExecutable");				
+			sExecutable = XPropertySetHelper.getPropertyValueAsString(xProps, "XhtmlExecutable");
+			System.out.println("Got it");
 		} catch (Exception e) {
     		// Failed to get registry view
 		}

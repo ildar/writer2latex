@@ -2,7 +2,7 @@
  *
  *  Writer2LaTeX.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-05-29)
+ *  Version 2.0 (2018-03-26)
  *
  */ 
  
@@ -38,6 +38,7 @@ import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
+import org.openoffice.da.comp.writer2xhtml.XhtmlUNOPublisher;
        
 /** This class implements the ui (dispatch) commands provided by the Writer2LaTeX toolbar.
  *  The actual processing is done by the core classes <code>UNOPublisher</code>,
@@ -55,6 +56,7 @@ public final class Writer2LaTeX extends WeakBase
     private final XComponentContext m_xContext;
     private XFrame m_xFrame;
     private LaTeXUNOPublisher unoPublisher = null;
+    private XhtmlUNOPublisher xhtmlUnoPublisher = null;
 	
     public static final String __implementationName = Writer2LaTeX.class.getName();
     public static final String __serviceName = "com.sun.star.frame.ProtocolHandler";  //$NON-NLS-1$
@@ -93,7 +95,6 @@ public final class Writer2LaTeX extends WeakBase
         return m_serviceNames;
     }
 
-	
     // com.sun.star.frame.XDispatchProvider:
     public com.sun.star.frame.XDispatch queryDispatch( com.sun.star.util.URL aURL,
         String sTargetFrameName, int iSearchFlags ) {
@@ -103,6 +104,8 @@ public final class Writer2LaTeX extends WeakBase
             else if ( aURL.Path.compareTo("ViewLog") == 0 ) //$NON-NLS-1$
                 return this;
             else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) //$NON-NLS-1$
+                return this;
+            else if ( aURL.Path.compareTo("PublishAsHTML5") == 0 ) //$NON-NLS-1$
                 return this;
         }
         return null;
@@ -139,6 +142,10 @@ public final class Writer2LaTeX extends WeakBase
                 insertBibTeX();
                 return;
             }
+            else if ( aURL.Path.compareTo("PublishAsHTML5") == 0 ) { //$NON-NLS-1$
+                processHTML5();
+                return;
+            }
         }
     }
 
@@ -151,7 +158,15 @@ public final class Writer2LaTeX extends WeakBase
     }
 	
     // The actual commands...
-	
+    
+    private void processHTML5() {
+    	System.out.println("Process html5");
+    	createXhtmlUNOPublisher();
+    	System.out.println("Got the publisher "+(xhtmlUnoPublisher!=null));
+    	xhtmlUnoPublisher.publish(TargetFormat.html5);
+    	System.out.println("Did publish");
+    }
+    
     private void process() {
     	createUNOPublisher();
     	unoPublisher.publish(TargetFormat.latex);
@@ -220,6 +235,12 @@ public final class Writer2LaTeX extends WeakBase
 		XPropertySet xProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
 		return XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles"); //$NON-NLS-1$
     }
+        
+	private void createXhtmlUNOPublisher() {
+    	if (xhtmlUnoPublisher==null) { 
+    		xhtmlUnoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX"); //$NON-NLS-1$
+    	}		
+	}
 	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 

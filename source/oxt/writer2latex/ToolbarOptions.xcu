@@ -148,4 +148,13 @@
             <value></value>
         </prop>
     </node>
+    <node oor:name="Html5Settings">
+        <prop oor:name="XhtmlView" oor:type="xs:short">
+            <value>1</value><!-- Default application -->
+        </prop>
+        <prop oor:name="XhtmlExecutable" oor:type="xs:string">
+            <value></value>
+        </prop>
+    </node>
+    
 </oor:component-data>
