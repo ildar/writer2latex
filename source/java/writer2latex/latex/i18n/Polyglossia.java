@@ -2,7 +2,7 @@
  *
  *  XeTeXI18n.java
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2010-12-15) 
+ *  Version 2.0 (2018-03-27) 
  * 
  */
 
@@ -35,79 +35,87 @@ import java.util.Set;
 public class Polyglossia {
 	private static Map<String,String> languageMap;
 	private static Map<String,String> variantMap;
+	private static Set<String> ctlLanguages;
 	
-	static {
+	static {  
 		languageMap = new HashMap<String,String>();
-		languageMap.put("am", "amharic");
-		languageMap.put("ar", "arabic");
-		languageMap.put("ast", "asturian");
-		languageMap.put("bg", "bulgarian"); 
-		languageMap.put("bn", "bengali"); 
-		languageMap.put("br", "breton");
-		languageMap.put("ca", "catalan"); 
-		languageMap.put("cop", "coptic"); 
-		languageMap.put("cs", "czech");
-		languageMap.put("cy", "welsh");
-		languageMap.put("da", "danish");
-		languageMap.put("de", "german"); 
-		languageMap.put("dsb", "lsorbian");
-		languageMap.put("dv", "divehi");
-		languageMap.put("el", "greek"); 
-		languageMap.put("en", "english");
-		languageMap.put("eo", "esperanto"); 
-		languageMap.put("es", "spanish");
-		languageMap.put("et", "estonian"); 
-		languageMap.put("eu", "basque"); 
-		languageMap.put("fa", "farsi"); 
-		languageMap.put("fi", "finnish"); 
-		languageMap.put("fr", "french"); 
-		languageMap.put("ga", "irish");
-		languageMap.put("gd", "scottish"); 
-		languageMap.put("gl", "galician"); 
-		languageMap.put("grc", "greek");
-		languageMap.put("he", "hebrew");
-		languageMap.put("hi", "hindi");
-		languageMap.put("hr", "croatian");
-		languageMap.put("hsb", "usorbian");
-		languageMap.put("hu", "magyar"); 
-		languageMap.put("hy", "armenian");
-		languageMap.put("id", "bahasai"); // Bahasa Indonesia
-		languageMap.put("ie", "interlingua");
-		languageMap.put("is", "icelandic");
-		languageMap.put("it", "italian");
-		languageMap.put("la", "latin"); 
-		languageMap.put("lo", "lao"); 
-		languageMap.put("lt", "lithuanian"); 
-		languageMap.put("lv", "latvian");
-		languageMap.put("ml", "malayalam"); 
-		languageMap.put("mr", "marathi"); 
-		languageMap.put("ms", "bahasam"); // Bahasa Melayu
-		languageMap.put("nb", "norsk");
-		languageMap.put("nl", "dutch"); 
-		languageMap.put("nn", "nynorsk");
-		languageMap.put("oc", "occitan");
-		languageMap.put("pl", "polish");
-		languageMap.put("pt", "portuges"); 
-		languageMap.put("pt-BR", "brazilian"); 
-		languageMap.put("ro", "romanian"); 
-		languageMap.put("ru", "russian"); 
-		languageMap.put("sa", "sanskrit"); 
-		languageMap.put("sk", "slovak"); 
-		languageMap.put("sl", "slovenian");
-		languageMap.put("sq", "albanian");
-		languageMap.put("sr", "serbian"); 
-		languageMap.put("sv", "swedish");
-		languageMap.put("syr", "syriac");
-		languageMap.put("ta", "tamil");
-		languageMap.put("te", "telugu");
-		languageMap.put("th", "thai");
-		languageMap.put("tk", "turkmen");
-		languageMap.put("tr", "turkish");
-		languageMap.put("uk", "ukrainian");
-		languageMap.put("ur", "urdu");
-		languageMap.put("vi", "vietnamese");
-		// TODO: Which language is samin?? One guess could be sami with the n for north?
-		//languageMap.put("??", "samin");
+		languageMap.put("am", "amharic"); // CTL
+		languageMap.put("ar", "arabic"); // CTL
+		languageMap.put("ast", "asturian"); // LCG
+		languageMap.put("bg", "bulgarian"); // LCG 
+		languageMap.put("bn", "bengali"); // CTL
+		languageMap.put("bo", "tibetan"); // CTL
+		languageMap.put("br", "breton"); // LCG
+		languageMap.put("ca", "catalan");  // LCG
+		languageMap.put("cop", "coptic");  // LCG
+		languageMap.put("cs", "czech"); // LCG
+		languageMap.put("cy", "welsh"); // LCG
+		languageMap.put("da", "danish"); // LCG
+		languageMap.put("de", "german");  // LCG
+		languageMap.put("dsb", "lsorbian"); // LCG
+		languageMap.put("dv", "divehi"); // CTL
+		languageMap.put("el", "greek");  // LCG
+		languageMap.put("en", "english"); // LCG
+		languageMap.put("eo", "esperanto");  // LCG
+		languageMap.put("es", "spanish"); // LCG
+		languageMap.put("et", "estonian");  // LCG
+		languageMap.put("eu", "basque");  // LCG
+		languageMap.put("fa", "farsi");  // CTL
+		languageMap.put("fi", "finnish");  // LCG
+		languageMap.put("fr", "french");  // LCG
+		languageMap.put("fur", "friulan");  // LCG
+		languageMap.put("ga", "irish"); // LCG
+		languageMap.put("gd", "scottish");  // LCG
+		languageMap.put("gl", "galician");  // LCG
+		languageMap.put("grc", "greek"); // LCG
+		languageMap.put("he", "hebrew"); // CTL
+		languageMap.put("hi", "hindi"); // CTL
+		languageMap.put("hr", "croatian"); // LCG
+		languageMap.put("hsb", "usorbian"); // LCG
+		languageMap.put("hu", "magyar");  // LCG
+		languageMap.put("hy", "armenian"); // LCG
+		languageMap.put("id", "bahasai"); // LCG? (Bahasa Indonesia)
+		languageMap.put("ie", "interlingua"); // LCG
+		languageMap.put("is", "icelandic"); // LCG
+		languageMap.put("it", "italian"); // LCG
+		languageMap.put("km", "khmer"); // CTL
+		languageMap.put("kn", "kannada"); // CTL
+		languageMap.put("ko", "korean"); // CJK
+		languageMap.put("la", "latin");  // LCG
+		languageMap.put("lo", "lao"); // CTL
+		languageMap.put("lt", "lithuanian"); // LCG
+		languageMap.put("lv", "latvian"); // LCG
+		languageMap.put("ml", "malayalam"); // CTL
+		languageMap.put("mr", "marathi"); // CTL
+		languageMap.put("ms", "bahasam"); // LCG? (Bahasa Melayu)
+		languageMap.put("nb", "norsk"); // LCG
+		languageMap.put("nl", "dutch");  // LCG
+		languageMap.put("nn", "nynorsk"); // LCG
+		languageMap.put("nqo", "nko"); // CTL
+		languageMap.put("oc", "occitan"); // LCG
+		languageMap.put("pl", "polish"); // LCG
+		languageMap.put("pms", "piedmontese"); // LCG
+		languageMap.put("pt", "portuges");  // LCG
+		languageMap.put("pt-BR", "brazilian");  // LCG
+		languageMap.put("rm", "romansh");  // LCG
+		languageMap.put("ro", "romanian");  // LCG
+		languageMap.put("ru", "russian");  // LCG
+		languageMap.put("sa", "sanskrit"); // CTL
+		languageMap.put("sk", "slovak");  // LCG
+		languageMap.put("sl", "slovenian"); // LCG
+		languageMap.put("sq", "albanian"); // LCG
+		languageMap.put("sr", "serbian");  // LCG
+		languageMap.put("sv", "swedish"); // LCG
+		languageMap.put("syr", "syriac"); // CTL
+		languageMap.put("ta", "tamil"); // CTL
+		languageMap.put("te", "telugu"); // CTL
+		languageMap.put("th", "thai"); // CTL
+		languageMap.put("tk", "turkmen"); // LCG
+		languageMap.put("tr", "turkish"); // LCG
+		languageMap.put("uk", "ukrainian"); // LCG
+		languageMap.put("ur", "urdu"); // CTL
+		languageMap.put("vi", "vietnamese"); // LCG
+		languageMap.put("sme", "samin"); // LCG (north sami)
 		
 		variantMap = new HashMap<String,String>();
 		// English variants
@@ -118,6 +126,28 @@ public class Polyglossia {
 		// Greek variants
 		variantMap.put("el", "monotonic");
 		variantMap.put("grc", "ancient"); // Supported in OOo since 3.2
+		
+		ctlLanguages = new HashSet<String>();
+		ctlLanguages.add("am");
+		ctlLanguages.add("ar");
+		ctlLanguages.add("bn");
+		ctlLanguages.add("bo");
+		ctlLanguages.add("dv");
+		ctlLanguages.add("fa");
+		ctlLanguages.add("he");
+		ctlLanguages.add("hi");
+		ctlLanguages.add("km");
+		ctlLanguages.add("kn");
+		ctlLanguages.add("lo");
+		ctlLanguages.add("ml");
+		ctlLanguages.add("mr");
+		ctlLanguages.add("nqo");
+		ctlLanguages.add("sa");
+		ctlLanguages.add("syr");
+		ctlLanguages.add("ta");
+		ctlLanguages.add("te");
+		ctlLanguages.add("th");
+		ctlLanguages.add("ur");
 	}
 	
 	private static String getEntry(Map<String,String> map, String sLocale, String sLang) {
@@ -212,5 +242,15 @@ public class Polyglossia {
 				return sCommand;
 			}
 		}
+	}
+	
+	/** Test whether a given language uses complex text layout
+	 * 
+	 * @param sLang
+	 * @param sCountry
+	 * @return
+	 */
+	public boolean isCTL(String sLang, String sCountry) {
+		return ctlLanguages.contains(sLang);
 	}
 }

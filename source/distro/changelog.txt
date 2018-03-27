@@ -1,5 +1,15 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] Added support for the polyglossia CTL languages amharic, arabic,
+  bengali, tibetan, divehi, hindi, khmer, kannada, lao, malayalam, marathi,
+  nko, sanskrit, syriac, tamil, telugu, thai and urdu (syriac is currently
+  not supported by LO). Previously only farsi and hebrew were supported.
+  CTL languages are always exported as monolingual, disregarding the option
+  multilingual.
+
+[w2l] Added support for the polyglossia languages friulan, piedmontese and
+  romansh (only the former is currently supported by LO)
+
 [all] New focus: Merged the extensions writer2latex.oxt and writer2xhtml.oxt
 
 [core] New feature: Configuration files can now define parameters. Parameters
