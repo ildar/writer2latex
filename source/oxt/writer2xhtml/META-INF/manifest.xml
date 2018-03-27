@@ -10,14 +10,6 @@
      manifest:media-type="application/vnd.sun.star.configuration-data"/>
 
     <manifest:file-entry
-     manifest:full-path="ToolbarOptionPages.xcu"
-     manifest:media-type="application/vnd.sun.star.configuration-data"/>
-
-     <manifest:file-entry
-     manifest:full-path="W2XDialogs2/"
-     manifest:media-type="application/vnd.sun.star.basic-library"/>
-	 
-    <manifest:file-entry
 	 manifest:full-path="help"
 	 manifest:media-type="application/vnd.sun.star.help"/>
      

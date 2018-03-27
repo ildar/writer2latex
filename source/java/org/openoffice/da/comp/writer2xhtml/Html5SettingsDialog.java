@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26)
+ *  Version 2.0 (2018-03-27)
  *
  */ 
  
@@ -51,7 +51,7 @@ import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 /** This class provides a uno component which implements the configuration
  *  of the writer2xhtml toolbar
  */
-public final class ToolbarSettingsDialog
+public final class Html5SettingsDialog
     extends WeakBase
     implements XServiceInfo, XContainerWindowEventHandler {
 	
@@ -62,14 +62,14 @@ public final class ToolbarSettingsDialog
     
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2xhtml.ToolbarSettingsDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.Html5SettingsDialog";
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.ToolbarSettingsDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.Hhtml5SettingsDialog";
 
     /** Create a new ToolbarSettingsDialog */
-    public ToolbarSettingsDialog(XComponentContext xContext) {
+    public Html5SettingsDialog(XComponentContext xContext) {
         this.xContext = xContext;
         filePicker = new FilePicker(xContext);
     }

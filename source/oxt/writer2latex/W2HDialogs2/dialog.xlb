@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE library:library PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "library.dtd">
-<library:library xmlns:library="http://openoffice.org/2000/library" library:name="W2XDialogs2" library:readonly="false" library:passwordprotected="false">
+<library:library xmlns:library="http://openoffice.org/2000/library" library:name="W2HDialogs2" library:readonly="false" library:passwordprotected="false">
  <library:element library:name="ConfigurationRoot"/>
  <library:element library:name="General"/>
  <library:element library:name="Template"/>
@@ -14,6 +14,6 @@
  <library:element library:name="LoadDefaults"/>
  <library:element library:name="EpubOptions"/>
  <library:element library:name="EpubMetadata"/>
- <library:element library:name="ToolbarSettings"/>
+ <library:element library:name="Html5Settings"/>
  <library:element library:name="ToolbarConfigurationRoot"/>
 </library:library>

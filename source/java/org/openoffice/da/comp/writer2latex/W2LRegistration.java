@@ -19,12 +19,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26) 
+ *  Version 2.0 (2018-03-27) 
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex;
 
+import org.openoffice.da.comp.writer2xhtml.Html5SettingsDialog;
 import org.openoffice.da.comp.writer2xhtml.W2XExportFilter;
 import org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog;
 
@@ -128,6 +129,12 @@ public class W2LRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(Html5SettingsDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Html5SettingsDialog.class,
+            Html5SettingsDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         else if (implName.equals(LogViewerDialog.__implementationName) ) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(LogViewerDialog.class,
             LogViewerDialog.__serviceName,
@@ -176,6 +183,8 @@ public class W2LRegistration {
             	ApplicationsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(BibliographyDialog.__implementationName,
                 BibliographyDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Html5SettingsDialog.__implementationName,
+                Html5SettingsDialog.__serviceName, regKey) & 
             FactoryHelper.writeRegistryServiceInfo(LogViewerDialog.__implementationName,
                 LogViewerDialog.__serviceName, regKey) &    
         	FactoryHelper.writeRegistryServiceInfo(BibTeXDialog.__implementationName,

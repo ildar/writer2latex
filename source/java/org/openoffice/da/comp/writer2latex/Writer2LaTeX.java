@@ -160,11 +160,8 @@ public final class Writer2LaTeX extends WeakBase
     // The actual commands...
     
     private void processHTML5() {
-    	System.out.println("Process html5");
     	createXhtmlUNOPublisher();
-    	System.out.println("Got the publisher "+(xhtmlUnoPublisher!=null));
     	xhtmlUnoPublisher.publish(TargetFormat.html5);
-    	System.out.println("Did publish");
     }
     
     private void process() {

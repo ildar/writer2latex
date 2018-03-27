@@ -26,6 +26,7 @@
       </prop>
       <prop oor:name="Label">
         <value xml:lang="en-US">Writer2LaTeX toolbar</value>
+        <value xml:lang="da">Writer2LaTeX værktøjslinje</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ToolbarConfigurationRoot.xdl</value>
@@ -42,7 +43,8 @@
             <value>org.openoffice.da.writer2latex.toolbar.applications</value>
           </prop>
           <prop oor:name="Label">
-            <value xml:lang="en-US">Applications</value>
+            <value xml:lang="en-US">LaTeX Applications</value>
+            <value xml:lang="da">LaTeX-programmer</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Applications.xdl</value>
@@ -58,6 +60,7 @@
           </prop>
           <prop oor:name="Label">
             <value xml:lang="en-US">Bibliography</value>
+            <value xml:lang="en-US">Litteraturliste</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Bibliography.xdl</value>
@@ -66,6 +69,22 @@
             <value>org.openoffice.da.writer2latex.BibliographyDialog</value>
           </prop>
         </node>
+        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.html5" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2latex.toolbar.html5</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">HTML5 settings</value>
+            <value xml:lang="en-US">HTML5-indstillinger</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Html5Settings.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+            <value>org.openoffice.da.writer2latex.Html5SettingsDialog</value>
+          </prop>
+        </node>        
       </node>
     </node>
   </node>

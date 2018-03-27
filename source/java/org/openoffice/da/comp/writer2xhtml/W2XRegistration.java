@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26) 
+ *  Version 2.0 (2018-03-27) 
  */ 
  
 package org.openoffice.da.comp.writer2xhtml;
@@ -64,12 +64,6 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(ToolbarSettingsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(ToolbarSettingsDialog.class,
-            ToolbarSettingsDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
         
         return xSingleServiceFactory;
     }
@@ -85,9 +79,7 @@ public class W2XRegistration {
     public static boolean __writeRegistryServiceInfo(XRegistryKey regKey) {
         return
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
-                ConfigurationDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(ToolbarSettingsDialog.__implementationName,
-                ToolbarSettingsDialog.__serviceName, regKey);
+                ConfigurationDialog.__serviceName, regKey);
     }
 }
 
