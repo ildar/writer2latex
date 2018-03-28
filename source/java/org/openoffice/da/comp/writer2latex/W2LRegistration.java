@@ -25,6 +25,7 @@
  
 package org.openoffice.da.comp.writer2latex;
 
+import org.openoffice.da.comp.writer2xhtml.Html5ConfigurationDialog;
 import org.openoffice.da.comp.writer2xhtml.Html5SettingsDialog;
 import org.openoffice.da.comp.writer2xhtml.W2XExportFilter;
 import org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog;
@@ -96,6 +97,12 @@ public class W2LRegistration {
         else if (implName.equals(ConfigurationDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(ConfigurationDialog.class,
             ConfigurationDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
+        else if (implName.equals(Html5ConfigurationDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Html5ConfigurationDialog.class,
+            Html5ConfigurationDialog.__serviceName,
             multiFactory,						    
             regKey);
         }
@@ -173,6 +180,8 @@ public class W2LRegistration {
                 W2LStarMathConverter.__serviceName, regKey) &
         	FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
                 ConfigurationDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Html5ConfigurationDialog.__implementationName,
+                Html5ConfigurationDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(Writer2LaTeX.__implementationName,
                 Writer2LaTeX.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(TeXImportFilter.__implementationName,

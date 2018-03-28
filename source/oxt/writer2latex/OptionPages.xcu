@@ -12,20 +12,23 @@
         <node oor:name="org.openoffice.da.writer2latex.configuration" 
           oor:op="fuse">
         </node>
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration" 
+          oor:op="fuse">
+        </node>
       </node>
     </node>
   </node>
   
   <node oor:name="Nodes">
 
-	<!-- We define a single root node -->
+	<!-- The first root node -->
     <node oor:name="org.openoffice.da.writer2latex.configuration" 
       oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.configuration</value>
       </prop>
       <prop oor:name="Label">
-        <value xml:lang="en-US">Writer2LaTeX</value>
+        <value xml:lang="en-US">Writer2LaTeX - LaTeX</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ConfigurationRoot.xdl</value>
@@ -35,7 +38,7 @@
       </prop>
 
       <node oor:name="Leaves">
-      	<!-- and the root node has several leaves -->
+      	<!-- the root node has several leaves -->
 
         <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" 
           oor:op="fuse">
@@ -237,6 +240,183 @@
 
 	  </node>
     </node>
+    
+    <!-- This is the other root node -->
+    <node oor:name="org.openoffice.da.writer2xhtml.configuration" 
+      oor:op="fuse"> 
+      <prop oor:name="Id">
+        <value>org.openoffice.da.writer2xhtml.configuration</value>
+      </prop>
+      <prop oor:name="Label">
+        <value xml:lang="en-US">Writer2LaTeX - HTML5</value>
+      </prop>
+      <prop oor:name="OptionsPage">
+        <value>%origin%/W2HDialogs2/ConfigurationRoot.xdl</value>
+      </prop>
+      <prop oor:name="EventHandlerService">
+        <value></value>
+      </prop>
+
+      <node oor:name="Leaves">
+      	<!-- the root node has several leaves -->
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.general" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.general</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>0</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">General</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/General.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.template" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.template</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>1</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Template</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Template.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.stylesheets" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.stylesheets</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>2</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Style sheets</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Stylesheets.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles1" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.styles1</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>3</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Master styles</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Styles1.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles2" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.styles2</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>4</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Other styles</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Styles2.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.formatting" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.formatting</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>5</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Formatting</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Formatting.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.content" 
+          oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2xhtml.configuration.content</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2xhtml.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>6</value>
+          </prop>
+          <prop oor:name="Label">
+            <value xml:lang="en-US">Content</value>
+          </prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2HDialogs2/Content.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+	  </node>
+    </node>
+    
   </node>
   
 </oor:component-data>

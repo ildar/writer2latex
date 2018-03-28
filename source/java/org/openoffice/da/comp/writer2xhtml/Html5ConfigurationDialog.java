@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-18)
+ *  Version 2.0 (2018-03-27)
  *
  */ 
 
@@ -37,7 +37,7 @@ import writer2latex.api.ConverterFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.uno.XComponentContext;
 
-public class ConfigurationDialog extends ConfigurationDialogBase implements XServiceInfo {
+public class Html5ConfigurationDialog extends ConfigurationDialogBase implements XServiceInfo {
 
     // Implement the interface XServiceInfo
 
@@ -65,12 +65,12 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     // Configure the base class
     @Override protected String getMIMEType() { return "text/html"; }
     
-    @Override protected String getDialogLibraryName() { return "W2XDialogs2"; }
+    @Override protected String getDialogLibraryName() { return "W2HDialogs2"; }
     
     @Override protected String getConfigFileName() { return "writer2xhtml.xml"; }
     
     /** Construct a new <code>ConfigurationDialog</code> */
-    public ConfigurationDialog(XComponentContext xContext) {
+    public Html5ConfigurationDialog(XComponentContext xContext) {
     	super(xContext);
     	    	
     	pageHandlers.put("General", new GeneralHandler());

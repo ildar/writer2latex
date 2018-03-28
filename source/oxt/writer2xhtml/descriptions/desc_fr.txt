@@ -1,1 +1,0 @@
-Writer2xhtml permet d'exporter les documents Writer vers HTML5+MathML

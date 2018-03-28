@@ -1,1 +1,0 @@
-Writer2xhtml contiene filtros de Writer para exportar a HTML5+MathML

@@ -2,12 +2,12 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.9.1 (2018-03-26)
+  # version 1.9.1 (2018-03-27)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
 
-    <!-- set this property to the location of your SO/OOo installation -->
+    <!-- set these properties to the location of the java support files in your LO installation -->
 	<property name="OFFICE_CLASSES" location="/usr/share/java" />
 	<property name="URE_CLASSES" location="/usr/share/java" />
 
@@ -23,7 +23,7 @@
           jar
               Create the standalone jar file.
           oxt
-              Create extension packages for OOo
+              Create extension packages for LO
           distro
               Create the distribution packages
           javadoc
@@ -91,7 +91,7 @@
 
     <target name="jar"
             depends="compile"
-            description="Create writer2latex jar file containing all compiled classes except OOo components and test cases.">
+            description="Create writer2latex jar file containing all compiled classes except LO components and test cases.">
 	    <!-- make a jar from the classes not matching magic testcase identifiers-->
         <mkdir dir="${target.lib}"/>
         <jar jarfile="${target.lib}/${jarfile}.jar">
@@ -102,7 +102,7 @@
 		    		<include name="**/*.xml"/>
 		    		<include name="**/*.properties"/>
                 	<include name="**/*.class"/>
-                    <!-- do not include OOo components in standalone library -->
+                    <!-- do not include LO components in standalone library -->
                 	<exclude name="org/openoffice/**/*"/>
                 </patternset>
             </fileset>
@@ -116,10 +116,10 @@
         </jar>
     </target>
 	
-    <!-- Create extension package for OOo 2.0.4+ -->
+    <!-- Create extension packages for LO -->
     <target name="oxt"
             depends="jar"
-            description="Create extension package for installation with OOo 2.0.4+">
+            description="Create extension package for installation with LO">
         <mkdir dir="${target.lib}"/>
         <mkdir dir="${tmp}"/>
 
@@ -161,64 +161,12 @@
         <!-- delete the jar for this extension -->
         <delete file="${tmp}/writer2latex-filter.jar" />
 		
-		
-        <!-- Second extension: writer2xhtml.oxt -->
-
-        <!-- Create jar with relevant files  -->
-        <jar jarfile="${tmp}/writer2xhtml-filter.jar">
-            <fileset dir="${classes}">
-                <patternset>
-                    <exclude name="**/*Test.class"/>
-                    <exclude name="**/AllTests.class"/>
-                	<include name="org/openoffice/da/comp/w2lcommon/**/*.class"/>
-                	<include name="org/openoffice/da/comp/w2lcommon/**/*.properties"/>
-                	<include name="org/openoffice/da/comp/writer2xhtml/**/*.class"/>
-                	<include name="writer2latex/api/**/*.class"/>
-                	<include name="writer2latex/base/**/*.class"/>
-                	<include name="writer2latex/office/**/*.class"/>
-                	<include name="writer2latex/util/**/*.class"/>
-                	<include name="writer2latex/xhtml/**/*.class"/>
-                	<include name="writer2latex/xhtml/**/*.xml"/>
-                	<include name="writer2latex/xhtml/**/*.properties"/>
-                	<include name="writer2latex/xmerge/**/*.class"/>
-                	<!-- include the portions of w2l necessary to convert formulas -->
-                	<include name="writer2latex/latex/StarMathConverter.class"/>
-                	<include name="writer2latex/latex/CharClasses.class"/>
-                	<include name="writer2latex/latex/Token.class"/>
-                   	<include name="writer2latex/latex/TGroup.class"/>
-                   	<include name="writer2latex/latex/SmTokenTableEntry.class"/>
-                   	<include name="writer2latex/latex/SmTokenTable.class"/>
-                   	<include name="writer2latex/latex/SmToken.class"/>
-                	<include name="writer2latex/latex/LaTeXDocumentPortion.class"/>
-                	<include name="writer2latex/latex/LaTeXConfig.class"/>
-                	<include name="writer2latex/latex/util/HeadingMap.class"/>
-                    <include name="writer2latex/latex/util/StyleMap.class"/>
-                	<include name="writer2latex/latex/i18n/*.class"/>
-                </patternset>
-            </fileset>
-            <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
-                <!-- OOo needs this to register the filter: -->
-                <attribute name="RegistrationClassName" value="org.openoffice.da.comp.writer2xhtml.W2XRegistration" />
-                <attribute name="Class-Path" value="jaxp.jar parser.jar"/>
-            </manifest>
-        </jar>
-
-        <!-- Pack extension -->
-        <zip destfile="${target.lib}/writer2xhtml.oxt">
-            <zipfileset dir="source/oxt/writer2xhtml" prefix="" />
-            <zipfileset dir="${tmp}" includes="writer2xhtml-filter.jar" />
-        </zip>
-		
-        <!-- delete the jar for this extension -->
-        <delete file="${tmp}/writer2xhtml-filter.jar" />
-
-        <!-- Third extension: w2lconfig.oxt -->
+        <!-- Second extension: w2lconfig.oxt -->
     	
     	<!-- Pack extension -->
         <zip destfile="${target.lib}/w2lconfig.oxt" basedir="source/oxt/w2lconfig"/>
 
-        <!-- Fourth extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
+        <!-- Third extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
 
         <zip destfile="${target.lib}/xhtml-config-sample.oxt" basedir="source/oxt/xhtml-config-sample"/>
             
