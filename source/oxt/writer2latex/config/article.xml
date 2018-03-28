@@ -20,10 +20,10 @@
   <parameter name="duplex" values="oneside,twoside">
   	<value-map value="oneside"/>
   </parameter>
-  <parameter name="draft" values="final,draft">
+  <parameter name="status" values="final,draft">
   	<value-map value="final"/>
   </parameter>
-  <parameter name="titlepage" values="notitlepage,titlepage">
+  <parameter name="title" values="notitlepage,titlepage">
   	<value-map value="notitlepage"/>
   </parameter>
   <parameter name="columns" values="onecolumn,twocolumn">
@@ -42,7 +42,7 @@
   <!-- Options. These can be adjusted to add support for various packages -->
   <option name="no_preamble" value="false" />
   <option name="documentclass" value="article" />
-  <option name="global_options" value="{%typesize,papersize,orientation,duplex,draft,titlepage,columns,equationnumbers,equationalignment,bibliography%}" />
+  <option name="global_options" value="{%typesize,papersize,orientation,duplex,status,title,columns,equationnumbers,equationalignment,bibliography%}" />
   <option name="backend" value="generic" />
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="true" />

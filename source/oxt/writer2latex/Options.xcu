@@ -189,7 +189,222 @@
                 </prop>
             </node>
         </node>
-    
+        
+        <!-- Declare display names for parameters (Note that names and
+        values share the same name space) -->
+        <node oor:name="ParameterStrings">
+            <node oor:name="typesize" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Type size</value>
+                    <value xml:lang="da">Skriftstørrelse</value>
+                </prop>
+            </node>
+            <node oor:name="10pt" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">10 pt</value>
+                    <value xml:lang="da">10 pkt</value>
+                </prop>
+            </node>
+            <node oor:name="11pt" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">11 pt</value>
+                    <value xml:lang="da">11 pkt</value>
+                </prop>
+            </node>
+            <node oor:name="12pt" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">12 pt</value>
+                    <value xml:lang="da">12 pkt</value>
+                </prop>
+            </node>
+            <node oor:name="papersize" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Paper size</value>
+                    <value xml:lang="da">Papirstørrelse</value>
+                </prop>
+            </node>
+            <node oor:name="letterpaper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Letter</value>
+                    <value xml:lang="da">Letter</value>
+                </prop>
+            </node>
+            <node oor:name="legalpaper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Legal</value>
+                    <value xml:lang="da">Legal</value>
+                </prop>
+            </node>
+            <node oor:name="executivepaper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Executive</value>
+                    <value xml:lang="da">Executive</value>
+                </prop>
+            </node>
+            <node oor:name="a4paper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">A4</value>
+                    <value xml:lang="da">A4</value>
+                </prop>
+            </node>
+            <node oor:name="a5paper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">A5</value>
+                    <value xml:lang="da">A5</value>
+                </prop>
+            </node>
+            <node oor:name="b5paper" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">B5</value>
+                    <value xml:lang="da">B5</value>
+                </prop>
+            </node>
+            <node oor:name="orientation" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Paper orientation</value>
+                    <value xml:lang="da">Papirretning</value>
+                </prop>
+            </node>
+            <node oor:name="portrait" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Portrait</value>
+                    <value xml:lang="da">Stående (portræt)</value>
+                </prop>
+            </node>
+            <node oor:name="landscape" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Landscape</value>
+                    <value xml:lang="da">Liggende (landskab)</value>
+                </prop>
+            </node>
+            <node oor:name="duplex" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Duplex</value>
+                    <value xml:lang="da">Duplex</value>
+                </prop>
+            </node>
+            <node oor:name="oneside" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Single-sided</value>
+                    <value xml:lang="da">Enkeltsidet</value>
+                </prop>
+            </node>
+            <node oor:name="twoside" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Double-sided</value>
+                    <value xml:lang="da">Dobbeltsidet</value>
+                </prop>
+            </node>  
+            <node oor:name="status" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Status</value>
+                    <value xml:lang="da">Status</value>
+                </prop>
+            </node>  
+            <node oor:name="final" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Final</value>
+                    <value xml:lang="da">Endelig</value>
+                </prop>
+            </node>  
+            <node oor:name="draft" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Draft</value>
+                    <value xml:lang="da">Udkast</value>
+                </prop>
+            </node>  
+            <node oor:name="title" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Title</value>
+                    <value xml:lang="da">Titel</value>
+                </prop>
+            </node>  
+            <node oor:name="notitlepage" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">No title page</value>
+                    <value xml:lang="da">Ingen titelside</value>
+                </prop>
+            </node>  
+            <node oor:name="titlepage" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">On separate title side</value>
+                    <value xml:lang="da">På separat titelside</value>
+                </prop>
+            </node>  
+            <node oor:name="columns" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Columns</value>
+                    <value xml:lang="da">Spalter</value>
+                </prop>
+            </node>  
+            <node oor:name="onecolumn" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">One column</value>
+                    <value xml:lang="da">En spalte</value>
+                </prop>
+            </node>  
+            <node oor:name="twocolumn" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Two columns</value>
+                    <value xml:lang="da">To spalter</value>
+                </prop>
+            </node>
+            <node oor:name="equationnumbers" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Equation numbers</value>
+                    <value xml:lang="da">Formelnummerering</value>
+                </prop>
+            </node>  
+            <node oor:name="reqno" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">To the right</value>
+                    <value xml:lang="da">Til højre</value>
+                </prop>
+            </node>  
+            <node oor:name="leqno" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">To the left</value>
+                    <value xml:lang="da">Til venstre</value>
+                </prop>
+            </node>
+            <node oor:name="equationalignment" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Equation alignment</value>
+                    <value xml:lang="da">Formeljustering</value>
+                </prop>
+            </node>  
+            <node oor:name="centereqn" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Centered</value>
+                    <value xml:lang="da">Centreret</value>
+                </prop>
+            </node>  
+            <node oor:name="fleqn" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Flush left</value>
+                    <value xml:lang="da">Venstrestillet</value>
+                </prop>
+            </node>
+            <node oor:name="bibliography" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Bibliography</value>
+                    <value xml:lang="da">Litteraturliste</value>
+                </prop>
+            </node>  
+            <node oor:name="leftbib" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">No indentation</value>
+                    <value xml:lang="da">Ingen indrykning</value>
+                </prop>
+            </node>  
+            <node oor:name="openbib" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">With indentation</value>
+                    <value xml:lang="da">Med indrykning</value>
+                </prop>
+            </node>  
+       </node>
+        
     	<!-- Declare default settings for the export dialog -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>2</value> <!-- Default -->

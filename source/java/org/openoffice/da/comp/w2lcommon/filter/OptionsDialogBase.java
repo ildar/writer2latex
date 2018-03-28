@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26)
+ *  Version 2.0 (2018-03-28)
  *
  */ 
  
@@ -185,10 +185,12 @@ public abstract class OptionsDialogBase extends DialogBase implements
     // Configuration parameter names likewise, the mapping being
     // config item -> param item -> param name
     private Map<Short,String[]> paramNames = new HashMap<Short,String[]>();
+    private Map<Short,String[]> paramDisplayNames = new HashMap<Short,String[]>();
     
     // And finally parameter values likewise, the mapping being
     // config item -> param item -> param value item -> param value name
     private Map<Short, Map<Short,String[]>> paramValues = new HashMap<Short,Map<Short,String[]>>();
+    private Map<Short, Map<Short,String[]>> paramDisplayValues = new HashMap<Short,Map<Short,String[]>>();
     
     // Current value of configuration names and parameters
     private Map<Short,Short> currentParamNames = new HashMap<Short,Short>();
@@ -233,10 +235,14 @@ public abstract class OptionsDialogBase extends DialogBase implements
             }
         }
         
+        // Load display names for parameters
+        loadParameterDisplayNames(xProps);
+        
         // Populate the config list box and select an item 
         setListBoxStringItemList("Config",sConfigs);
         adjustListBoxVisibleItems("Config");
         selectConfig(xProps);
+        
                 
         // Get current parameter values from registry
         createDefaultCurrentParameterValues();
@@ -264,6 +270,69 @@ public abstract class OptionsDialogBase extends DialogBase implements
         }
     }
     
+    private void loadParameterDisplayNames(XPropertySet xProps) {
+    	Map<String,String> displayNames = new HashMap<String,String>();
+    	
+        // Get name access to all parameter display names in the registry
+        Object templates = XPropertySetHelper.getPropertyValue(xProps,"ParameterStrings");
+        XNameAccess xParameters = (XNameAccess)
+            UnoRuntime.queryInterface(XNameAccess.class,templates);
+        String[] sNames = xParameters.getElementNames();
+        
+        // Iterate over the parameters
+        for (int i=0; i<sNames.length; i++) {
+            try {
+                Object parameter = xParameters.getByName(sNames[i]);
+                XPropertySet xParProps = (XPropertySet)
+                    UnoRuntime.queryInterface(XPropertySet.class,parameter);
+                String sDisplayName = XPropertySetHelper.getPropertyValueAsString(xParProps,"DisplayName");
+                displayNames.put(sNames[i], sDisplayName);
+            }
+            catch (Exception e) {
+            	// ignore, we will do without display name
+            }
+        }
+        
+        // Collect display names
+        for (Short nConfigItem : paramNames.keySet()) { // iterate over all configs
+        	
+        	// For parameter names
+        	String[] sParamNames = paramNames.get(nConfigItem);
+        	int nParamCount = sParamNames.length;
+        	String[] sParamDisplayNames = new String[nParamCount];
+        	for (int i=0; i<nParamCount; i++) { // iterate over all parameter names for this config
+        		if (displayNames.containsKey(sParamNames[i])) {
+        			sParamDisplayNames[i]=displayNames.get(sParamNames[i]);
+        		}
+        		else {
+        			sParamDisplayNames[i]=sParamNames[i];        			
+        		}
+        	}
+        	paramDisplayNames.put(nConfigItem, sParamDisplayNames);
+        	
+        	// For parameter values HashMap<Short,Map<Short,String[]>>();
+        	Map<Short,String[]> paramValueMap = new HashMap<Short,String[]>();
+        	
+        	for (short nParamNameItem : paramValues.get(nConfigItem).keySet()) { // iterate over all parameter names
+        		String[] sParamValues = paramValues.get(nConfigItem).get(nParamNameItem);
+            	int nParamValueCount = sParamValues.length;
+            	String[] sParamDisplayValues = new String[nParamValueCount];
+            	for (int i=0; i<nParamValueCount; i++) { // iterate over all parameter values for this parameter
+            		if (displayNames.containsKey(sParamValues[i])) {
+            			sParamDisplayValues[i]=displayNames.get(sParamValues[i]);
+            		}
+            		else {
+            			sParamDisplayValues[i]=sParamValues[i];        			
+            		}
+            	}
+            	paramValueMap.put(nParamNameItem, sParamDisplayValues);
+        	}
+        	
+        	paramDisplayValues.put(nConfigItem, paramValueMap);
+        }
+        
+    }
+
     private void createDefaultCurrentParameterValues() {
     	int nConfigs = sConfigNames.length;
     	for (short nConfig=0; nConfig<nConfigs; nConfig++) {
@@ -564,7 +633,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
     protected void updateParameters() {
     	short nConfigItem = getListBoxSelectedItem("Config");
     	if (paramNames.get(nConfigItem).length>0) {
-            setListBoxStringItemList("ParameterName", paramNames.get(nConfigItem));
+            setListBoxStringItemList("ParameterName", paramDisplayNames.get(nConfigItem));
             setListBoxSelectedItem("ParameterName", currentParamNames.get(nConfigItem));
             adjustListBoxVisibleItems("ParameterName");
         	loadParameterValues();
@@ -592,7 +661,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
     protected void loadParameterValues() {
     	short nConfigItem = getListBoxSelectedItem("Config");
     	short nParamNameItem = getListBoxSelectedItem("ParameterName");
-        setListBoxStringItemList("ParameterValue", paramValues.get(nConfigItem).get(nParamNameItem));
+        setListBoxStringItemList("ParameterValue", paramDisplayValues.get(nConfigItem).get(nParamNameItem));
         setListBoxSelectedItem("ParameterValue", currentParamValues.get(nConfigItem).get(nParamNameItem));
         adjustListBoxVisibleItems("ParameterValue");
     }

@@ -51,6 +51,14 @@
                 </prop>
             </node>
         </node>
+        <node oor:name="ParameterStrings">
+            <node oor:name="style" oor:op="replace">
+                <prop oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Style</value>
+                    <value xml:lang="da">Typografi</value>
+                </prop>
+            </node>
+        </node>      
     </node>
 </oor:component-data>
 

@@ -16,6 +16,9 @@
             <prop oor:name="TemplateName" oor:type="xs:string" />
             <prop oor:name="ConfigName" oor:type="xs:string" />
         </group>
+        <group oor:name="Parameter">
+        	<prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true" />
+        </group>
     </templates>
     <component>
         <group oor:name="LaTeXOptions">
@@ -56,7 +59,8 @@
             <prop oor:name="IgnoreDoubleSpaces" oor:type="xs:boolean" />
             <!-- Configurations -->
             <set oor:name="Configurations" oor:node-type="Configuration" />
-            <set oor:name="Templates" oor:node-type="Template" />			
+            <set oor:name="Templates" oor:node-type="Template" />
+            <set oor:name="ParameterStrings" oor:node-type="Parameter" />		
         </group>
         <group oor:name="XhtmlOptions">
             <!-- General -->
@@ -92,6 +96,7 @@
             <!-- Configurations -->
             <set oor:name="Configurations" oor:node-type="Configuration" />
             <set oor:name="Templates" oor:node-type="Template" />			
+            <set oor:name="ParameterStrings" oor:node-type="Parameter" />		
         </group>
     </component>
 </oor:component-schema>		
