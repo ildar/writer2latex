@@ -3,12 +3,12 @@
 	<meta>
         <topic id="writer2xhtml-settings" indexer="include">
             <title xml-lang="en-US">Toolbar Settings</title>
-            <filename>org.openoffice.da.writer2xhtml.oxt/settings.xhp</filename>
+            <filename>org.openoffice.da.writer2latex.oxt/html5settings.xhp</filename>
         </topic>
     </meta>
     <body>
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SettingsDialog" id="bm_settingsdialog"/>
-        <paragraph role="heading" level="1" xml-lang="en-US">Writer2xhtml Toolbar Settings</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">HTML5 Settings</paragraph>
         
         <section id="howtoget" xml-lang="en-US">
         	Select <emph>Tools - Options - Writer2xhtml toolbar - Settings</emph>

@@ -14,7 +14,7 @@
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/export.xhp"
           name="Export LaTeX files">File - Export</link></paragraph>
 
-        <paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX adds two entries to the <emph>File - Export</emph> 
+        <paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX adds three entries to the <emph>File - Export</emph> 
         menu in Writer</paragraph>
         <list type="unordered">
 			<listitem>
@@ -24,6 +24,10 @@
 			<listitem>
 		        <paragraph role="paragraph" xml-lang="en-US"><emph>BibTeX [Writer2LaTeX]</emph> to export the
 		        bibliographic references in the current document to BibTeX.</paragraph>
+			</listitem>
+			<listitem>
+		        <paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/html5export.xhp"
+          name="Export HTML5 files">HTML5 [Writer2LaTeX]</link></paragraph>
 			</listitem>
 		</list>
         
@@ -66,6 +70,22 @@
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex:EditCustomFormat" id="bm_editcustomformat"/>
         <paragraph role="paragraph" xml-lang="en-US">Edit the custom export format. This format is used if you select
         <emph>Custom</emph> as LaTeX format in the export dialog.</paragraph>
+        
+        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/html5export.xhp"
+          name="Export HTML5 files">Publish to HTML5</link></paragraph>
 
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:PublishAsXHTML" id="bm_processdocument"/>
+        <paragraph role="paragraph" xml-lang="en-US">Convert the document to a web page in HTML5 format
+        and display the result in the default browser.</paragraph>
+
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an HTML5 file</ahelp></paragraph>
+        
+        <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/Html5Configuration/Introduction.xhp"
+          name="Confguration">Edit custom style</link></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:EditCustomStyle" id="bm_editcustomstyle"/>
+        <paragraph role="paragraph" xml-lang="en-US">Edit the custom export style. This style is used if you select
+        <emph>Custom</emph> as style in the export dialog.</paragraph>
+	
 	</body>
 </helpdocument>

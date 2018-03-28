@@ -3,7 +3,7 @@
 	<meta>
         <topic id="writer2xhtml-export-writer" indexer="include">
             <title xml-lang="en-US">HTML5 Export</title>
-            <filename>org.openoffice.da.writer2xhtml.oxt/export.xhp</filename>
+            <filename>org.openoffice.da.writer2latex.oxt/html5export.xhp</filename>
         </topic>
     </meta>
     <body>

@@ -25,8 +25,8 @@
         <value>org.openoffice.da.writer2latex.toolbar.configuration</value>
       </prop>
       <prop oor:name="Label">
-        <value xml:lang="en-US">Writer2LaTeX toolbar</value>
-        <value xml:lang="da">Writer2LaTeX værktøjslinje</value>
+        <value xml:lang="en-US">Writer2LaTeX</value>
+        <value xml:lang="da">Writer2LaTeX</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ToolbarConfigurationRoot.xdl</value>
@@ -49,8 +49,8 @@
             <value>0</value>
           </prop>
           <prop oor:name="Label">
-            <value xml:lang="en-US">Bibliography</value>
-            <value xml:lang="en-US">Litteraturliste</value>
+            <value xml:lang="en-US">BibTeX settings</value>
+            <value xml:lang="en-US">BibTeX-indstillinger</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Bibliography.xdl</value>

@@ -7,12 +7,14 @@
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/bibtex.xhp">BibTeX references</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/export.xhp">LaTeX export</topic>
       <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/logviewer.xhp">View log files</topic>
+      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/html5export.xhp">HTML5 export</topic>
       <!--<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/import.xhp">LaTeX import</topic>-->
       <node id="w2l01_writer_toolbar_configuration" title="Toolbar configuration">
-	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/applications.xhp">Applications</topic>
-	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/bibliography.xhp">Bibliography</topic>
+	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/bibliography.xhp">BibTeX settings</topic>
+	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/applications.xhp">LaTeX settings</topic>
+	      <topic id="writer2latex/org.openoffice.da.writer2latex.oxt/html5settings.xhp">HTML5 settings</topic>
       </node>
-      <node id="w2l01_writer_configuration" title="Custom format">
+      <node id="w2l01_writer_configuration" title="Custom LaTeX style">
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Introduction.xhp">Introduction</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Documentclass.xhp">Documentclass</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Headings.xhp">Headings</topic>
@@ -24,5 +26,16 @@
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Figures.xhp">Figures</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Textandmath.xhp">Text and math</topic>
       </node>
+      <node id="w2x01_configuration" title="Custom HTML5 style">
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Introduction.xhp">Introduction</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/General.xhp">General</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Template.xhp">Template</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Stylesheets.xhp">Style sheets</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Masterstyles.xhp">Master styles</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Otherstyles.xhp">Other styles</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Formatting.xhp">Formatting</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Content.xhp">Content</topic>
+      </node>      
+      
   </help_section>
 </tree_view>
