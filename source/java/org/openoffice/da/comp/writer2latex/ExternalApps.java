@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2018-03-06)
+ *  Version 2.0 (2018-03-30)
  *
  */ 
  
@@ -261,7 +261,7 @@ public class ExternalApps {
     	Object view;
     	try {
     		// Prepare registry view
-    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",false); //$NON-NLS-1$
+    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.Options/Applications",false); //$NON-NLS-1$
     	}
         catch (com.sun.star.uno.Exception e) {
             // Give up...

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-27)
+ *  Version 2.0 (2018-03-30)
  *
  */ 
  
@@ -55,7 +55,7 @@ public final class Html5SettingsDialog
     extends WeakBase
     implements XServiceInfo, XContainerWindowEventHandler {
 	
-	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Html5Settings";
+	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2LaTeX.Options/Html5Settings";
 
     private XComponentContext xContext;
     private FilePicker filePicker;

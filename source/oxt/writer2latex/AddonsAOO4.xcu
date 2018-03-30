@@ -110,7 +110,7 @@
 	                    <value>_self</value>
 	                </prop>
 	                <prop oor:name="URL" oor:type="xs:string">
-	                    <value>.uno:OptionsTreeDialog?OptionsPageURL:string=%origin%/W2XDialogs2/General.xdl</value>
+	                    <value>.uno:OptionsTreeDialog?OptionsPageURL:string=%origin%/W2HDialogs2/General.xdl</value>
 	                </prop>
 	                <prop oor:name="ImageIdentifier" oor:type="xs:string">
 	                    <value>%origin%/icons/customh</value>

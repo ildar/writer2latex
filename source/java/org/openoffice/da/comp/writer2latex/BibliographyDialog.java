@@ -2,7 +2,7 @@
  *
  *  BibliographyDialog.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-23)
+ *  Version 2.0 (2018-03-30)
  *
  */ 
  
@@ -59,7 +59,7 @@ public final class BibliographyDialog
     extends WeakBase
     implements XServiceInfo, XContainerWindowEventHandler {
 	
-	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/BibliographyOptions"; //$NON-NLS-1$
+	public static final String REGISTRY_PATH = "/org.openoffice.da.Writer2LaTeX.Options/BibliographyOptions"; //$NON-NLS-1$
 
     private XComponentContext xContext;
     private FolderPicker folderPicker;

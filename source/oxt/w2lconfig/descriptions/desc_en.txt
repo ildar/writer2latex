@@ -1,2 +1,0 @@
-This is a sample LaTeX configuration package for use with Writer2LaTeX.
-It installs a template and a configuration to write documents using the standard LaTeX letter template.

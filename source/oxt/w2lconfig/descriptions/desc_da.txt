@@ -1,2 +1,0 @@
-Dette er et eksempel på en LaTeX-konfigurationspakke til brug sammen med Writer2LaTeX.
-Den installerer en skabelon og en konfiguration til at skrive dokumenter med LaTeXs standard-brevskabelon
