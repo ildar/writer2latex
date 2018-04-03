@@ -2,7 +2,7 @@
  *
  *  Calc.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-02-19)
+ *  Version 2.0 (2018-03-31)
  *
  */
 package writer2latex.util;
@@ -102,6 +102,26 @@ public class Calc {
 	    else {
 	        // Or above -1px
 	        return Float.toString(fPixels>-1 ? -1 : fPixels)+"px";
+	    }
+	}
+
+	/** Convert a length to rem assuming that 1em=16px, which seems to be a
+	 *  suitable interpretation (the CSS spec does not prescribe anything)
+	 * 
+	 * @param sLength the length to convert
+	 * @return the converted length
+	 */
+	public static final String length2rem(String sLength) {
+	    if (sLength.equals("0")) { return "0"; }
+	    float fLength=getFloat(sLength.substring(0,sLength.length()-2),1);
+	    String sUnit=sLength.substring(sLength.length()-2);
+	    float fRems = 6.0F/getUpi(sUnit)*fLength;
+	    if (Math.abs(fRems)<0.01) {
+	        // Very small, treat as zero
+	        return "0";
+	    }
+	    else {
+	        return Float.toString(fRems)+"rem";
 	    }
 	}
 

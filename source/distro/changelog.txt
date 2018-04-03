@@ -1,5 +1,10 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2x] New option units with values rem (default), px and original.
+  This replaces the options convert_to_px, which corresponds to the values
+  px and original. For backwards compatibility, convert_to_px is still
+  accepted.
+
 [w2l] Added support for the polyglossia CTL languages amharic, arabic,
   bengali, tibetan, divehi, hindi, khmer, kannada, lao, malayalam, marathi,
   nko, sanskrit, syriac, tamil, telugu, thai and urdu (syriac is currently

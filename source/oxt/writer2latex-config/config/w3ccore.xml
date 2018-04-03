@@ -14,7 +14,7 @@
   <option name="table_formatting" value="ignore_all" />
   <option name="ignore_table_dimensions" value="true" />
   <option name="use_dublin_core" value="true" />
-  <option name="convert_to_px" value="true" />
+  <option name="units" value="px" />
   <option name="scaling" value="100%" />
   <option name="column_scaling" value="100%" />
   <option name="split_level" value="0" />

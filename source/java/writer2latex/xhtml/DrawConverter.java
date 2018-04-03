@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-02)
  *
  */
  
@@ -67,10 +67,7 @@ import writer2latex.office.MIMETypes;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.FormReader;
 import writer2latex.office.ControlReader;
-//import writer2latex.office.MasterPage;
-//import writer2latex.office.PageLayout;
 import writer2latex.office.OfficeReader;
-//import writer2latex.xhtml.XhtmlStyleMap;
 
 public class DrawConverter extends ConverterHelper {
 
@@ -97,7 +94,6 @@ public class DrawConverter extends ConverterHelper {
 	
     private FormReader form = null;
     private String sScale;
-    private boolean bConvertToPx;
     private int nImageSize;
     private boolean bEmbedSVG;
     private boolean bEmbedImg;
@@ -120,7 +116,6 @@ public class DrawConverter extends ConverterHelper {
         }
         bCollectFrames = ofr.isSpreadsheet();
         sScale = config.getXhtmlScaling();
-        bConvertToPx = config.xhtmlConvertToPx();
         nImageSize = config.imageSize();
         bEmbedSVG = config.embedSVG();
         bEmbedImg = config.embedImg();
@@ -567,7 +562,7 @@ public class DrawConverter extends ConverterHelper {
         			}
         			String sX = frame.getAttribute(XMLString.SVG_X);
         			if (sX!=null && sX.length()>0) {
-        				info.props.addValue("margin-left",scale(sX));
+        				info.props.addValue("margin-left",scale(Calc.truncateLength(sX)));
         			}
         		}
         	}
@@ -911,13 +906,13 @@ public class DrawConverter extends ConverterHelper {
 
     	String sWidth = getFrameWidth(node, style);
     	if (sWidth!=null) {
-    		props.addValue("width",scale(sWidth));
+    		props.addValue("width",scale(Calc.truncateLength(sWidth)));
     	}
 
     	if (!bOnlyWidth) {
     		String sHeight = getFrameHeight(node,style);
     		if (sHeight!=null) {
-    			props.addValue("height",scale(sHeight));
+    			props.addValue("height",scale(Calc.truncateLength(sHeight)));
     		}
     	}
     	
@@ -965,8 +960,8 @@ public class DrawConverter extends ConverterHelper {
     	}
     	
         props.addValue("position","absolute");
-        if (sX!=null && sX.length()>0) { props.addValue("left",scale(sX)); }
-        if (sY!=null && sY.length()>0) { props.addValue("top",scale(sY)); }
+        if (sX!=null && sX.length()>0) { props.addValue("left",scale(Calc.truncateLength(sX))); }
+        if (sY!=null && sY.length()>0) { props.addValue("top",scale(Calc.truncateLength(sY))); }
         
     }
 	
@@ -1076,15 +1071,6 @@ public class DrawConverter extends ConverterHelper {
                "dynamic".equals(sWrap) || "run-through".equals(sWrap);
     }
 	
-    // TODO: Move to ConverterHelper.java
-    private String scale(String s) {
-        if (bConvertToPx) {
-            return Calc.length2px(Calc.multiply(sScale,Calc.truncateLength(s)));
-        }
-        else {
-            return Calc.multiply(sScale,Calc.truncateLength(s));
-        }
-    }
 }
 
 

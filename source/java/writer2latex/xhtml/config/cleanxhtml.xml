@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- cleanxhtml.xml 2018-03-15
+<!-- cleanxhtml.xml 2018-04-03
      This is a sample configuration file for Writer2xhtml.
      The options are set to produce a clean XHTML file using
      standard XHTML elements, without any style information. -->
@@ -13,7 +13,7 @@
   <option name="table_formatting" value="ignore_all" />
   <option name="ignore_table_dimensions" value="true" />
   <option name="use_dublin_core" value="true" />
-  <option name="convert_to_px" value="true" />
+  <option name="units" value="px" />
   <option name="scaling" value="100%" />
   <option name="column_scaling" value="100%" />
   <option name="split_level" value="0" />

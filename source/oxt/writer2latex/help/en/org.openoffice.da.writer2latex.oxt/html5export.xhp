@@ -44,6 +44,27 @@
     	<link href="http://writer2latex.sourceforge.net" name="Link to the Writer2LaTeX Website">web site for Writer2xhtml</link>.
     	An example configuration package <emph>xhtml-config-sample.oxt</emph> is provided.</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Units" id="bm_options_units"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:Units" visibility="hidden">Select the units to use for dimensions in the HTML5 document, either the original units, pixels or relative units (recommended)</ahelp></paragraph>
+	    <paragraph role="heading" level="3" xml-lang="en-US">Units</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME, font sizes are usually given in points and other dimensions
+	    in e.g. cm or inches. Use this option to select how to convert units.</paragraph>
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Original</emph> will use the same units as in the source documents.
+				This is generally not recommended, except for printing purposes.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Pixels (px)</emph> will convert all units to pixels
+				(roughly 1/96 of an inch). This will ususally create an HTML5 document suitable for viewing on a desktop conmputer.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Relative (rem)</emph> will convert all units to relative units
+				(rem). This is the recommended setting, which will create an HTML5 document suitable for viewing on any device.
+				The browser selects a suitable base size.</paragraph>
+			</listitem>
+        </list>
+
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsScaling" id="bm_options_scaling"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsScaling" visibility="hidden">Select a scaling to apply to all dimensions in the document</ahelp></paragraph>
        	<paragraph role="heading" level="3" xml-lang="en-US">Scaling</paragraph>
@@ -53,15 +74,6 @@
     	dimensions. Thus with the setting 140, all dimensions will be 40% larger than in the original document. Depending on the
     	style you have selected and on the setting for image size below, some dimensions may be unaffected by
     	this option.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsConvertToPx" id="bm_options_converttopx"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsConvertToPx" visibility="hidden">Check this if you want to convert all units to px rather than using the original units</ahelp></paragraph>
-	    <paragraph role="heading" level="3" xml-lang="en-US">Convert units to px (pixels)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME, font sizes are usually given in points and other dimensions
-	    in e.g. cm or inches.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">For HTML5 it is recommended to use the unit px instead, and using this option you can require that
-    	all dimensions are converted to px.</paragraph>
-    	<paragraph role="paragraph" xml-lang="en-US">If you choose not to check this option, the original units will always be used.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsMultilingual" id="bm_configmultilingual"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsMultilingual" visibility="hidden">Check this if you want to include language information for all used languages in the document</ahelp></paragraph>

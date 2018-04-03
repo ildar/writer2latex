@@ -72,8 +72,8 @@
             <prop oor:name="Config" oor:type="xs:short" />
             <prop oor:name="ConfigName" oor:type="xs:string" />
             <prop oor:name="Parameters" oor:type="xs:string" />
+            <prop oor:name="Units" oor:type="xs:short" />
             <prop oor:name="Scaling" oor:type="xs:int" />
-            <prop oor:name="ConvertToPx" oor:type="xs:boolean" />
             <prop oor:name="Multilingual" oor:type="xs:boolean" />
             
             <!-- Files -->

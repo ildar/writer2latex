@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-02)
  *
  */
 
@@ -28,6 +28,7 @@ package writer2latex.xhtml;
 import org.w3c.dom.Element;
 
 import writer2latex.office.OfficeReader;
+import writer2latex.util.Calc;
 
 /** A <code>ConverterHelper</code> is responsible for conversion of some specific content into XHTML. 
  */
@@ -37,6 +38,11 @@ class ConverterHelper {
 	OfficeReader ofr;
     XhtmlConfig config;
     Converter converter;
+    
+    // Scaling and unit transformation to use
+    private String sScale;
+    private String sColScale;
+    private int nUnits;
 	
     /** Construct a new converter helper based on a 
      * 
@@ -48,6 +54,10 @@ class ConverterHelper {
         this.ofr = ofr;
         this.config = config;
         this.converter = converter;
+        
+        sScale = config.getXhtmlScaling();
+        sColScale = config.getXhtmlColumnScaling();
+        nUnits = config.units();
     }
     
     // Convenience accessor methods to other converter helpers (only needed to save some typing)
@@ -97,13 +107,30 @@ class ConverterHelper {
             hnode.setAttribute("style",info.props.toString());
         }
         if (info.sLang!=null) {
+            // polyglot HTML5 requires both
             hnode.setAttribute("xml:lang",info.sLang);
-            // polyglot HTML5
             hnode.setAttribute("lang",info.sLang);
         }
         if (info.sDir!=null) {
             hnode.setAttribute("dir",info.sDir);
         }
     }
+    
+    protected String scale(String s) {
+    	switch (nUnits) {
+    	case XhtmlConfig.PX:
+            return Calc.length2px(Calc.multiply(sScale,s));
+    	case XhtmlConfig.REM:
+            return Calc.length2rem(Calc.multiply(sScale,s));
+    	case XhtmlConfig.ORIGINAL:
+    	default:
+            return Calc.multiply(sScale,s);
+        }
+    }
+	
+    protected String colScale(String s) {
+        return scale(Calc.multiply(sColScale,s));
+    }
+	
 
 }

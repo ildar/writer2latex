@@ -6,13 +6,12 @@
   <dlg:menulist dlg:id="Config" dlg:tab-index="4" dlg:left="75" dlg:top="20" dlg:width="86" dlg:height="12" dlg:help-text="&amp;6.XhtmlOptions.Config.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsConfig" dlg:spin="true" dlg:linecount="10">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ConfigChange" script:language="UNO"/>
   </dlg:menulist>
-  <dlg:text dlg:id="ScalingLabel" dlg:tab-index="25" dlg:left="12" dlg:top="50" dlg:width="75" dlg:height="12" dlg:help-text="&amp;17.XhtmlOptions.ScalingLabel.HelpText" dlg:value="&amp;18.XhtmlOptions.ScalingLabel.Label"/>
-  <dlg:numericfield dlg:id="Scaling" dlg:tab-index="7" dlg:left="115" dlg:top="48" dlg:width="30" dlg:height="12" dlg:help-text="&amp;19.XhtmlOptions.Scaling.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsScaling" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="100" dlg:value-min="1" dlg:value-max="1000" dlg:value-step="10" dlg:spin="true"/>
-  <dlg:text dlg:id="ScalingPercentLabel" dlg:tab-index="26" dlg:left="152" dlg:top="50" dlg:width="10" dlg:height="12" dlg:help-text="&amp;20.XhtmlOptions.ScalingPercentLabel.HelpText" dlg:value="&amp;21.XhtmlOptions.ScalingPercentLabel.Label"/>
+  <dlg:text dlg:id="ScalingLabel" dlg:tab-index="25" dlg:left="12" dlg:top="64" dlg:width="75" dlg:height="12" dlg:help-text="&amp;17.XhtmlOptions.ScalingLabel.HelpText" dlg:value="&amp;18.XhtmlOptions.ScalingLabel.Label"/>
+  <dlg:numericfield dlg:id="Scaling" dlg:tab-index="8" dlg:left="115" dlg:top="62" dlg:width="30" dlg:height="12" dlg:help-text="&amp;19.XhtmlOptions.Scaling.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsScaling" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="100" dlg:value-min="1" dlg:value-max="1000" dlg:value-step="10" dlg:spin="true"/>
+  <dlg:text dlg:id="ScalingPercentLabel" dlg:tab-index="26" dlg:left="152" dlg:top="64" dlg:width="10" dlg:height="12" dlg:help-text="&amp;20.XhtmlOptions.ScalingPercentLabel.HelpText" dlg:value="&amp;21.XhtmlOptions.ScalingPercentLabel.Label"/>
   <dlg:text dlg:id="ColumnScalingLabel" dlg:tab-index="27" dlg:left="193" dlg:top="106" dlg:width="100" dlg:height="12" dlg:help-text="&amp;22.XhtmlOptions.ColumnScalingLabel.HelpText" dlg:value="&amp;23.XhtmlOptions.ColumnScalingLabel.Label"/>
   <dlg:numericfield dlg:id="ColumnScaling" dlg:tab-index="19" dlg:left="296" dlg:top="104" dlg:width="30" dlg:height="12" dlg:help-text="&amp;24.XhtmlOptions.ColumnScaling.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsColumnScaling" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="100" dlg:value-min="1" dlg:value-max="1000" dlg:value-step="10" dlg:spin="true"/>
   <dlg:text dlg:id="ColumnScalingPercentLabel" dlg:tab-index="28" dlg:left="333" dlg:top="106" dlg:width="10" dlg:height="12" dlg:help-text="&amp;25.XhtmlOptions.ColumnScalingPercentLabel.HelpText" dlg:value="&amp;26.XhtmlOptions.ColumnScalingPercentLabel.Label"/>
-  <dlg:checkbox dlg:id="ConvertToPx" dlg:tab-index="8" dlg:left="12" dlg:top="64" dlg:width="149" dlg:height="12" dlg:help-text="&amp;27.XhtmlOptions.ConvertToPx.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsConvertToPx" dlg:value="&amp;28.XhtmlOptions.ConvertToPx.Label" dlg:checked="true"/>
   <dlg:checkbox dlg:id="OriginalImageSize" dlg:tab-index="16" dlg:left="193" dlg:top="64" dlg:width="149" dlg:height="12" dlg:help-text="&amp;29.XhtmlOptions.OriginalImageSize.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsOriginalImageSize" dlg:value="&amp;30.XhtmlOptions.OriginalImageSize.Label" dlg:checked="false"/>
   <dlg:text dlg:id="SpecialContentLabel" dlg:tab-index="29" dlg:left="186" dlg:top="8" dlg:width="156" dlg:height="12" dlg:help-text="&amp;31.XhtmlOptions.SpecialContentLabel.HelpText" dlg:value="&amp;32.XhtmlOptions.SpecialContentLabel.Label"/>
   <dlg:checkbox dlg:id="Notes" dlg:tab-index="14" dlg:left="193" dlg:top="22" dlg:width="149" dlg:height="12" dlg:help-text="&amp;33.XhtmlOptions.Notes.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsNotes" dlg:value="&amp;34.XhtmlOptions.Notes.Label" dlg:checked="true"/>
@@ -54,15 +53,23 @@
   <dlg:checkbox dlg:id="UseMathjax" dlg:tab-index="20" dlg:left="193" dlg:top="120" dlg:width="149" dlg:height="12" dlg:help-text="&amp;144.XhtmlOptions.UseMathjax.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsUseMathjax" dlg:value="&amp;145.XhtmlOptions.UseMathjax.Label" dlg:checked="false"/>
   <dlg:fixedline dlg:id="FixedLine1" dlg:tab-index="34" dlg:left="179" dlg:top="10" dlg:width="2" dlg:height="180" dlg:help-text="&amp;146.XhtmlOptions.FixedLine1.HelpText" dlg:value="&amp;147.XhtmlOptions.FixedLine1.Label" dlg:align="vertical"/>
   <dlg:menulist dlg:id="ParameterName" dlg:tab-index="5" dlg:left="12" dlg:top="34" dlg:width="60" dlg:height="12" dlg:help-text="&amp;149.XhtmlOptions.ParameterName.HelpText" dlg:spin="true">
-     <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterNameChange" script:language="UNO"/>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterNameChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:menulist dlg:id="ParameterValue" dlg:tab-index="6" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-text="&amp;151.XhtmlOptions.ParameterValue.HelpText" dlg:spin="true">
-    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterValueChange" script:language="UNO"/>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterValueChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:checkbox dlg:id="Multilingual" dlg:tab-index="9" dlg:left="12" dlg:top="78" dlg:width="149" dlg:height="12" dlg:help-text="&amp;154.XhtmlOptions.Multilingual.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsMultilingual" dlg:value="&amp;155.XhtmlOptions.Multilingual.Label" dlg:checked="false"/>
   <dlg:text dlg:id="GeneralLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="156" dlg:height="12" dlg:help-text="&amp;156.XhtmlOptions.GeneralLabel.HelpText" dlg:value="&amp;157.XhtmlOptions.GeneralLabel.Label"/>
   <dlg:text dlg:id="FigTableMathLabel" dlg:tab-index="35" dlg:left="186" dlg:top="50" dlg:width="156" dlg:height="12" dlg:help-text="&amp;160.XhtmlOptions.FigTableMathLabel.HelpText" dlg:value="&amp;161.XhtmlOptions.FigTableMathLabel.Label"/>
   <dlg:checkbox dlg:id="EmbedSVG" dlg:tab-index="17" dlg:left="193" dlg:top="78" dlg:width="149" dlg:height="12" dlg:help-text="&amp;164.XhtmlOptions.EmbedSVG.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedSVG" dlg:value="&amp;165.XhtmlOptions.EmbedSVG.Label" dlg:checked="false"/>
   <dlg:checkbox dlg:id="EmbedImg" dlg:tab-index="18" dlg:left="193" dlg:top="92" dlg:width="149" dlg:height="12" dlg:help-text="&amp;168.XhtmlOptions.EmbedImg.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedImg" dlg:value="&amp;169.XhtmlOptions.EmbedImg.Label" dlg:checked="false"/>
+  <dlg:text dlg:id="UnitsLabel" dlg:tab-index="36" dlg:left="12" dlg:top="50" dlg:width="60" dlg:height="12" dlg:help-text="&amp;172.XhtmlOptions.UnitsLabel.HelpText" dlg:value="&amp;173.XhtmlOptions.UnitsLabel.Label"/>
+  <dlg:menulist dlg:id="Units" dlg:tab-index="7" dlg:left="75" dlg:top="48" dlg:width="86" dlg:height="12" dlg:help-text="&amp;175.XhtmlOptions.Units.HelpText" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Units" dlg:spin="true" dlg:linecount="3">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="&amp;179.Units.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;180.Units.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;181.Units.StringItemList"/>
+   </dlg:menupopup>
+  </dlg:menulist>
  </dlg:bulletinboard>
 </dlg:window>

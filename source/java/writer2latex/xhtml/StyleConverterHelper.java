@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-02)
  *
  */
 
@@ -29,7 +29,6 @@ import writer2latex.office.OfficeReader;
 import writer2latex.office.OfficeStyleFamily;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
-import writer2latex.util.Calc;
 import writer2latex.util.ExportNameCollection;
 
 /**
@@ -48,11 +47,6 @@ public abstract class StyleConverterHelper extends ConverterHelper {
     protected boolean bConvertStyles = true;
     protected boolean bConvertHard = true;
 	
-    // Scaling and unit transformation to use
-    private String sScale;
-    private String sColScale;
-    private boolean bConvertToPx;
-	
     /** Create a new <code>StyleConverterHelper</code>
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
@@ -60,24 +54,8 @@ public abstract class StyleConverterHelper extends ConverterHelper {
      */
     public StyleConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
-        sScale = config.getXhtmlScaling();
-        sColScale = config.getXhtmlColumnScaling();
-        bConvertToPx = config.xhtmlConvertToPx();
     }
 
-    protected String scale(String s) {
-        if (bConvertToPx) {
-            return Calc.length2px(Calc.multiply(sScale,s));
-        }
-        else {
-            return Calc.multiply(sScale,s);
-        }
-    }
-	
-    protected String colScale(String s) {
-        return scale(Calc.multiply(sColScale,s));
-    }
-	
     /** Apply the writing direction (ltr or rtl) attribute from a style
      *  @param style the OpenDocument style to use
      *  @param info the <code>StyleInfo</code> object to add information to

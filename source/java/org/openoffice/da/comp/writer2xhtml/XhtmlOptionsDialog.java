@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26)
+ *  Version 2.0 (2018-04-02)
  *
  */ 
  
@@ -73,11 +73,11 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Load settings from the registry to the dialog */
     protected void loadSettings(XPropertySet xProps) {
         // General
+        loadListBoxOption(xProps, "Units");
         int nScaling = loadNumericOption(xProps, "Scaling");
         if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
         	setNumericFieldValue("Scaling",100);
         }
-        loadCheckBoxOption(xProps, "ConvertToPx");
         loadCheckBoxOption(xProps, "Multilingual");
 
         // Files
@@ -112,8 +112,16 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     /** Save settings from the dialog to the registry and create FilterData */
     protected void saveSettings(XPropertySet xProps, PropertyHelper filterData) {
         // General
+        short nUnits = saveListBoxOption(xProps, "Units");
+        if (!isLocked("units")) {
+	    	switch (nUnits) {
+	    	case 0: filterData.put("units", "original"); break;
+	    	case 1: filterData.put("units", "px"); break;
+	    	case 2:
+	    	default: filterData.put("units", "rem");
+	    	}
+        }
         saveNumericOptionAsPercentage(xProps, filterData, "Scaling", "scaling");
-        saveCheckBoxOption(xProps, filterData, "ConvertToPx", "convert_to_px");
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
         
         // Files
@@ -178,8 +186,8 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     private void enableControls() {
         // General
         setControlEnabled("ScalingLabel",!isLocked("scaling"));
+        setControlEnabled("Units",!isLocked("units"));
         setControlEnabled("Scaling",!isLocked("scaling"));
-        setControlEnabled("ConvertToPx",!isLocked("convert_to_px"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
 
         // Files

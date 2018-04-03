@@ -584,11 +584,11 @@
         <prop oor:name="Parameters" oor:type="xs:string">
             <value></value>
         </prop>        
+        <prop oor:name="Units" oor:type="xs:short">
+            <value>2</value> <!-- relative -->
+        </prop>
         <prop oor:name="Scaling" oor:type="xs:int">
             <value>100</value>
-        </prop>
-        <prop oor:name="ConvertToPx" oor:type="xs:boolean">
-            <value>true</value>
         </prop>
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>

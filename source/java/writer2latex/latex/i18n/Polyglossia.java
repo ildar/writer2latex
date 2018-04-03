@@ -39,84 +39,100 @@ public class Polyglossia {
 	
 	static {  
 		languageMap = new HashMap<String,String>();
-		languageMap.put("am", "amharic"); // CTL
-		languageMap.put("ar", "arabic"); // CTL
-		languageMap.put("ast", "asturian"); // LCG
-		languageMap.put("bg", "bulgarian"); // LCG 
-		languageMap.put("bn", "bengali"); // CTL
-		languageMap.put("bo", "tibetan"); // CTL
-		languageMap.put("br", "breton"); // LCG
-		languageMap.put("ca", "catalan");  // LCG
-		languageMap.put("cop", "coptic");  // LCG
-		languageMap.put("cs", "czech"); // LCG
-		languageMap.put("cy", "welsh"); // LCG
-		languageMap.put("da", "danish"); // LCG
-		languageMap.put("de", "german");  // LCG
-		languageMap.put("dsb", "lsorbian"); // LCG
-		languageMap.put("dv", "divehi"); // CTL
-		languageMap.put("el", "greek");  // LCG
-		languageMap.put("en", "english"); // LCG
-		languageMap.put("eo", "esperanto");  // LCG
-		languageMap.put("es", "spanish"); // LCG
-		languageMap.put("et", "estonian");  // LCG
-		languageMap.put("eu", "basque");  // LCG
-		languageMap.put("fa", "farsi");  // CTL
-		languageMap.put("fi", "finnish");  // LCG
-		languageMap.put("fr", "french");  // LCG
-		languageMap.put("fur", "friulan");  // LCG
-		languageMap.put("ga", "irish"); // LCG
-		languageMap.put("gd", "scottish");  // LCG
-		languageMap.put("gl", "galician");  // LCG
-		languageMap.put("grc", "greek"); // LCG
-		languageMap.put("he", "hebrew"); // CTL
-		languageMap.put("hi", "hindi"); // CTL
-		languageMap.put("hr", "croatian"); // LCG
-		languageMap.put("hsb", "usorbian"); // LCG
-		languageMap.put("hu", "magyar");  // LCG
-		languageMap.put("hy", "armenian"); // LCG
-		languageMap.put("id", "bahasai"); // LCG? (Bahasa Indonesia)
-		languageMap.put("ie", "interlingua"); // LCG
-		languageMap.put("is", "icelandic"); // LCG
-		languageMap.put("it", "italian"); // LCG
-		languageMap.put("km", "khmer"); // CTL
-		languageMap.put("kn", "kannada"); // CTL
-		languageMap.put("ko", "korean"); // CJK
-		languageMap.put("la", "latin");  // LCG
-		languageMap.put("lo", "lao"); // CTL
-		languageMap.put("lt", "lithuanian"); // LCG
-		languageMap.put("lv", "latvian"); // LCG
-		languageMap.put("ml", "malayalam"); // CTL
-		languageMap.put("mr", "marathi"); // CTL
-		languageMap.put("ms", "bahasam"); // LCG? (Bahasa Melayu)
-		languageMap.put("nb", "norsk"); // LCG
-		languageMap.put("nl", "dutch");  // LCG
-		languageMap.put("nn", "nynorsk"); // LCG
-		languageMap.put("nqo", "nko"); // CTL
-		languageMap.put("oc", "occitan"); // LCG
-		languageMap.put("pl", "polish"); // LCG
-		languageMap.put("pms", "piedmontese"); // LCG
-		languageMap.put("pt", "portuges");  // LCG
-		languageMap.put("pt-BR", "brazilian");  // LCG
-		languageMap.put("rm", "romansh");  // LCG
-		languageMap.put("ro", "romanian");  // LCG
-		languageMap.put("ru", "russian");  // LCG
-		languageMap.put("sa", "sanskrit"); // CTL
-		languageMap.put("sk", "slovak");  // LCG
-		languageMap.put("sl", "slovenian"); // LCG
-		languageMap.put("sq", "albanian"); // LCG
-		languageMap.put("sr", "serbian");  // LCG
-		languageMap.put("sv", "swedish"); // LCG
-		languageMap.put("syr", "syriac"); // CTL
-		languageMap.put("ta", "tamil"); // CTL
-		languageMap.put("te", "telugu"); // CTL
-		languageMap.put("th", "thai"); // CTL
-		languageMap.put("tk", "turkmen"); // LCG
-		languageMap.put("tr", "turkish"); // LCG
-		languageMap.put("uk", "ukrainian"); // LCG
-		languageMap.put("ur", "urdu"); // CTL
-		languageMap.put("vi", "vietnamese"); // LCG
-		languageMap.put("sme", "samin"); // LCG (north sami)
 		
+		// Part 1: Western languages (latin, cyrillic, greek, armenian scripts)
+		
+		// Latin script
+		languageMap.put("ast", "asturian");
+		languageMap.put("bg", "bulgarian");
+		languageMap.put("br", "breton");
+		languageMap.put("ca", "catalan");
+		languageMap.put("cs", "czech");
+		languageMap.put("cy", "welsh");
+		languageMap.put("da", "danish");
+		languageMap.put("de", "german");
+		languageMap.put("dsb", "lsorbian"); // Lower sorbian
+		languageMap.put("en", "english");
+		languageMap.put("eo", "esperanto");
+		languageMap.put("es", "spanish");
+		languageMap.put("et", "estonian");
+		languageMap.put("eu", "basque");
+		languageMap.put("fi", "finnish");
+		languageMap.put("fr", "french");
+		languageMap.put("fur", "friulan");
+		languageMap.put("ga", "irish");
+		languageMap.put("gd", "scottish");
+		languageMap.put("gl", "galician");
+		languageMap.put("hr", "croatian");
+		languageMap.put("hsb", "usorbian"); // Upper sorbian
+		languageMap.put("hu", "magyar");
+		languageMap.put("id", "bahasai"); // Bahasa Indonesia
+		languageMap.put("ie", "interlingua");
+		languageMap.put("is", "icelandic");
+		languageMap.put("it", "italian");
+		languageMap.put("la", "latin");
+		languageMap.put("lt", "lithuanian");
+		languageMap.put("lv", "latvian");
+		languageMap.put("ms", "bahasam"); // Bahasa Melayu
+		languageMap.put("nb", "norsk");
+		languageMap.put("nl", "dutch");
+		languageMap.put("nn", "nynorsk");
+		languageMap.put("oc", "occitan");
+		languageMap.put("pl", "polish");
+		languageMap.put("pms", "piedmontese");
+		languageMap.put("pt", "portuges");
+		languageMap.put("pt-BR", "brazilian");
+		languageMap.put("rm", "romansh");
+		languageMap.put("ro", "romanian");
+		languageMap.put("sk", "slovak");
+		languageMap.put("sl", "slovenian");
+		languageMap.put("sq", "albanian");
+		languageMap.put("sv", "swedish");
+		languageMap.put("tr", "turkish");
+		languageMap.put("vi", "vietnamese");
+		languageMap.put("sme", "samin"); // North sami
+		
+		// Cyrillic and latin script (both variants are in use)
+		languageMap.put("sr", "serbian");
+		languageMap.put("tk", "turkmen");
+
+		// Cyrillic script
+		languageMap.put("ru", "russian");
+		languageMap.put("uk", "ukrainian");
+		
+		// Greek script
+		languageMap.put("cop", "coptic");
+		languageMap.put("el", "greek");
+		languageMap.put("grc", "greek");
+
+		// Armenian script (Note: not supported by Latin Modern)
+		languageMap.put("hy", "armenian");
+		
+		// Part 2: CTL
+		languageMap.put("am", "amharic"); // Amharic script
+		languageMap.put("ar", "arabic"); // Arabic script		
+		languageMap.put("bn", "bengali"); // Bengali script
+		languageMap.put("bo", "tibetan"); // Tibetan script
+		languageMap.put("dv", "divehi"); // Maldivian, Thaana script
+		languageMap.put("fa", "farsi"); // Persian script (Note: extension of Arabic)
+		languageMap.put("he", "hebrew"); // Hebrew
+		languageMap.put("hi", "hindi"); // Devanagari
+		languageMap.put("km", "khmer"); // Khmer script
+		languageMap.put("kn", "kannada"); // Kannada script
+		languageMap.put("lo", "lao"); // Lao or Thai script
+		languageMap.put("ml", "malayalam"); // Malayalam script
+		languageMap.put("mr", "marathi"); // Devanagari 
+		languageMap.put("nqo", "nko"); // N'ko script
+		languageMap.put("sa", "sanskrit"); // Devanagari
+		languageMap.put("syr", "syriac"); // Syriac alphabet
+		languageMap.put("ta", "tamil"); // Tamil alphabet or Arwi script
+		languageMap.put("te", "telugu"); // Telugu script
+		languageMap.put("th", "thai"); // Thai script
+		languageMap.put("ur", "urdu"); // Urdu script (Note: Extension of Persian)
+		
+		// Part 3: CJK
+		languageMap.put("ko", "korean"); // CJK
+
 		variantMap = new HashMap<String,String>();
 		// English variants
 		variantMap.put("en-US", "american");
