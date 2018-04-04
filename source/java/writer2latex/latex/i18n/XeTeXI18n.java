@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-27)
+ *  Version 2.0 (2018-04-03)
  * 
  */
 
@@ -33,12 +33,19 @@ import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
 import writer2latex.latex.util.BeforeAfter;
 
+
 /** This class takes care of i18n in XeLaTeX
  */
 public class XeTeXI18n extends I18n {
+	
+    protected String sDefaultCTLLanguage=null; // The default CTL ISO language to use
+    protected String sDefaultCTLCountry=null; // The default CTL ISO country to use
+    protected String sDefaultCJKLanguage=null; // The default CJK ISO language to use
+    protected String sDefaultCJKCountry=null; // The default CJK ISO country to use
 
+    private int nScript;
     private Polyglossia polyglossia;
-    private boolean bCTL;
+    // TODO: Add a use_xepersian option, using polyglossia if false
     private boolean bUseXepersian;
     private String sLTRCommand=null;
     private String sRTLCommand=null;
@@ -50,27 +57,56 @@ public class XeTeXI18n extends I18n {
      */
     public XeTeXI18n(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
     	super(ofr,config,palette);
+    	    	
+        // Read the default CTL and CJK languages from the default paragraph style
+        if (ofr!=null) {
+            StyleWithProperties style = ofr.getDefaultParStyle();
+            if (style!=null) { 
+                sDefaultCTLLanguage = style.getProperty(XMLString.STYLE_LANGUAGE_COMPLEX);
+                sDefaultCTLCountry = style.getProperty(XMLString.STYLE_COUNTRY_COMPLEX);
+                sDefaultCJKLanguage = style.getProperty(XMLString.STYLE_LANGUAGE_ASIAN);
+                sDefaultCJKCountry = style.getProperty(XMLString.STYLE_COUNTRY_ASIAN);
+            }
+        }
+        
+        // Determine main script type
+    	nScript = config.getScript();
+        if (nScript==LaTeXConfig.AUTO) {
+        	if (sDefaultCJKLanguage!=null && sDefaultCJKLanguage.length()>0) {
+        		nScript = LaTeXConfig.CJK;
+        	}
+        	else if (sDefaultCTLLanguage!=null && sDefaultCTLLanguage.length()>0) {
+        		nScript = LaTeXConfig.CTL;
+        	}
+        	else {
+        		nScript = LaTeXConfig.WESTERN;
+        	}
+        }
+
+        // Define main language for polyglossia
+        polyglossia = new Polyglossia();
     	
-    	// TODO: Add a use_xepersian option, using polyglossia if false
-    	// For CTL languages currently only monolingual documents are supported
-    	// For LCG languages, multilingual documents are supported using polyglossia
-    	polyglossia = new Polyglossia();
-    	
-    	// Identify script type and set default language
-    	bCTL = polyglossia.isCTL(sDefaultCTLLanguage, sDefaultCTLCountry);
-    	if (bCTL) {
-        	polyglossia.applyLanguage(sDefaultCTLLanguage, sDefaultCTLCountry);
+    	switch (nScript) {
+    	case LaTeXConfig.CJK:
+        	// Use xeCJK:
+    		break;
+    	case LaTeXConfig.CTL:
         	// For farsi, we load xepersian.sty
         	bUseXepersian = "fa".equals(sDefaultCTLLanguage);
         	if (bUseXepersian) {
         		sLTRCommand = "\\lr";
         		sRTLCommand = "\\rl";
         	}
-    	}
-    	else {
+        	else {
+        		// For other CTL languages, we use polyglossia
+            	polyglossia.applyLanguage(sDefaultCTLLanguage, sDefaultCTLCountry);
+        	}
+        	break;
+    	case LaTeXConfig.WESTERN:
+    	default:
+    		// For western languages, we use polyglossia
     		polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
     	}
-
     }
 	
     /** Add declarations to the preamble to load the required packages
@@ -84,35 +120,60 @@ public class XeTeXI18n extends I18n {
     		.append("\\usepackage{xunicode}").nl()
     		.append("\\usepackage{xltxtra}").nl();
     	
-    	// xepersian.sty and polyglossia (or rather bidi) should be loaded as the last package
+    	// Load xeCJK
+    	if (nScript==LaTeXConfig.CJK) {
+    		pack.append("\\usepackage{xeCJK}").nl();
+    	}
+    	
+    	// Load xepersian or polyglossia 
+    	// These packages (or rather bidi) should be loaded as the last package
 		// We put them in the declarations part to achieve this
     	if (bUseXepersian) { // For farsi, use xepersian rather than polyglossia
     		decl.append("\\usepackage{xepersian}").nl();
     	}
-    	else {
+    	else if (nScript!=LaTeXConfig.CJK){
     		String[] polyglossiaDeclarations = polyglossia.getDeclarations();
     		for (String s: polyglossiaDeclarations) {
     			decl.append(s).nl();
     		}
     	}
-
     	// Set the default font if this is a CTL document
-    	if (bCTL) {
+    	if (nScript==LaTeXConfig.CTL) {
 			if ("he".equals(sDefaultCTLLanguage)) { // Use a default font set for hebrew
 				decl.append("\\setmainfont[Script=Hebrew]{Frank Ruehl CLM}").nl();
 				decl.append("\\setsansfont[Script=Hebrew]{Nachlieli CLM}").nl();
 				decl.append("\\setmonofont[Script=Hebrew]{Miriam Mono CLM}").nl();
 			}
 			else { // Use default CTL font for other languages
-	    		StyleWithProperties defaultStyle = ofr.getDefaultParStyle();	
-				if (defaultStyle!=null) {
-					String sDefaultCTLFont = defaultStyle.getProperty(XMLString.STYLE_FONT_NAME_COMPLEX);
-					if (sDefaultCTLFont!=null) {
-			    		decl.append("\\settextfont{").append(sDefaultCTLFont).append("}").nl();
-					}
+				String sFont = getDefaultFontFamily(XMLString.STYLE_FONT_NAME_COMPLEX,XMLString.STYLE_FONT_FAMILY_COMPLEX);
+				if (sFont!=null) {
+		    		decl.append("\\settextfont{").append(sFont).append("}").nl();
 				}
 			}
     	}
+    	else if (nScript==LaTeXConfig.CJK) {
+			String sFont = getDefaultFontFamily(XMLString.STYLE_FONT_NAME_ASIAN,XMLString.STYLE_FONT_FAMILY_ASIAN);
+			if (sFont!=null) {
+	    		decl.append("\\setCJKmainfont{").append(sFont).append("}").nl();
+			}
+    	}
+    }
+    
+	// Get the default font (or null if no default font exists)
+    private String getDefaultFontFamily(String sXMLStyleName, String sXMLStyleFamily) {
+		StyleWithProperties defaultStyle = ofr.getDefaultParStyle();	
+		if (defaultStyle!=null) {
+            // Get font family information from font declaration or from style
+            String sStyleName = defaultStyle.getProperty(sXMLStyleName);
+            if (sStyleName!=null) {
+                FontDeclaration fd = (FontDeclaration) ofr.getFontDeclarations().getStyle(sStyleName);
+                if (fd!=null) {
+                    return fd.getFontFamily();
+                }
+            }
+            return defaultStyle.getProperty(XMLString.FO_FONT_FAMILY);
+		}
+		return null;
     }
     
     /** Apply a language
@@ -122,8 +183,8 @@ public class XeTeXI18n extends I18n {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     public void applyLanguage(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba) {
-    	// TODO: Support multilingual CTL documents
-        if (!bCTL && !bAlwaysUseDefaultLang && style!=null) {
+    	// TODO: Support multilingual CTL and CJK documents
+        if (nScript==LaTeXConfig.WESTERN && !bAlwaysUseDefaultLang && style!=null) {
             String sISOLang = style.getProperty(XMLString.FO_LANGUAGE,bInherit);
             String sISOCountry = style.getProperty(XMLString.FO_COUNTRY, bInherit);
             if (sISOLang!=null) {
@@ -232,7 +293,5 @@ public class XeTeXI18n extends I18n {
     	
     }
     
-
-	
 
 }

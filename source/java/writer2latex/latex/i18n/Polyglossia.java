@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-27) 
+ *  Version 2.0 (2018-04-03) 
  * 
  */
 
@@ -35,7 +35,7 @@ import java.util.Set;
 public class Polyglossia {
 	private static Map<String,String> languageMap;
 	private static Map<String,String> variantMap;
-	private static Set<String> ctlLanguages;
+	//private static Set<String> ctlLanguages;
 	
 	static {  
 		languageMap = new HashMap<String,String>();
@@ -143,7 +143,7 @@ public class Polyglossia {
 		variantMap.put("el", "monotonic");
 		variantMap.put("grc", "ancient"); // Supported in OOo since 3.2
 		
-		ctlLanguages = new HashSet<String>();
+		/*ctlLanguages = new HashSet<String>();
 		ctlLanguages.add("am");
 		ctlLanguages.add("ar");
 		ctlLanguages.add("bn");
@@ -163,7 +163,7 @@ public class Polyglossia {
 		ctlLanguages.add("ta");
 		ctlLanguages.add("te");
 		ctlLanguages.add("th");
-		ctlLanguages.add("ur");
+		ctlLanguages.add("ur");*/
 	}
 	
 	private static String getEntry(Map<String,String> map, String sLocale, String sLang) {
@@ -266,7 +266,7 @@ public class Polyglossia {
 	 * @param sCountry
 	 * @return
 	 */
-	public boolean isCTL(String sLang, String sCountry) {
+	/*public boolean isCTL(String sLang, String sCountry) {
 		return ctlLanguages.contains(sLang);
-	}
+	}*/
 }

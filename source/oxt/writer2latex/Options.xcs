@@ -33,6 +33,7 @@
             <prop oor:name="Parameters" oor:type="xs:string" />
             <prop oor:name="Backend" oor:type="xs:short" />
             <prop oor:name="Inputencoding" oor:type="xs:short" />
+            <prop oor:name="Script" oor:type="xs:short" />
             <prop oor:name="Multilingual" oor:type="xs:boolean" />
             <prop oor:name="Font" oor:type="xs:short" />
             <prop oor:name="GreekMath" oor:type="xs:boolean" />

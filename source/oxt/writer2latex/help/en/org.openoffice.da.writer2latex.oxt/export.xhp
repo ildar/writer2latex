@@ -103,9 +103,21 @@
 		<emph>West European (ISO 8859-1)</emph>, <emph>East European (ISO 8859-2)</emph>, <emph>Latin/Greek (ISO 8859-7)</emph>,
 		<emph>Microsoft East European (Cp1250)</emph>, <emph>Microsoft Cyrillic (Cp1251)</emph>, <emph>Russian (koi8-r)</emph>
 		and <emph>Unicode (UTF8)</emph>.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">If you have selected XeTeX as your backed, the character encoding is always UTF-8.
-		XeTeX is needed for asian (CJK) and bidirectional (CTL) scripts.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">This option is not available if you have selected XeTeX as your backed.
+		In this case the character encoding is always UTF-8.</paragraph>
         
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsScript" id="bm_options_script"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Script</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsScript" visibility="hidden">Select the main script used in the document</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME Writer, languages are divided according to the script type: Western languages are based on the Latin, Cyrillic, Greek
+        or Armenian alphabet. Languages with Complex Text Layout uses scripts which are bi-directional and/or uses context sensitive
+        character shapes. Asian languages refer to Chinese, Japanese and Corean.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Accordingly you can select either <emph>Automatic</emph> (the script is automatically
+		selected based on the language settings in the document),
+		<emph>Western</emph>, <emph>Complex (CTL)</emph> or <emph>Asian (CJK)</emph>.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">This option is only available if you have selected XeTeX as your backend.
+		The other backends supports Western scripts only.</paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsMultilingual" id="bm_options_multilingual"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Enable multilingual support</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsMultilingual" visibility="hidden">Check this if your document contains text in more than one language</ahelp></paragraph>

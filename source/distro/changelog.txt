@@ -4,6 +4,11 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
   This replaces the options convert_to_px, which corresponds to the values
   px and original. For backwards compatibility, convert_to_px is still
   accepted.
+  
+[w2l] New option script to select the main script type for the document.
+  The value can be either auto (default, select based on document languages),
+  western (latin, cyrillic, greek or armenian), ctl (any CTL script), cjk
+  (any CJK script)
 
 [w2l] Added support for the polyglossia CTL languages amharic, arabic,
   bengali, tibetan, divehi, hindi, khmer, kannada, lao, malayalam, marathi,

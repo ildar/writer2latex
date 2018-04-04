@@ -244,7 +244,6 @@ public class ClassicI18n extends I18n {
         // identify the default language
 
         nDefaultFontenc = getFontenc(sDefaultLanguage);
-		
         // Unicode stuff
         ucparser = new UnicodeStringParser();
 

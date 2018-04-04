@@ -421,6 +421,9 @@
         <prop oor:name="Inputencoding" oor:type="xs:short">
             <value>1</value> <!-- latin1 -->
         </prop>
+        <prop oor:name="Script" oor:type="xs:short">
+            <value>0</value> <!-- auto -->
+        </prop>
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>

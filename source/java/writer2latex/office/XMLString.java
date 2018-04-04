@@ -2,7 +2,7 @@
  *
  *  XMLString.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-18)
+ *  Version 2.0 (2018-04-03)
  *
  */
 
@@ -167,8 +167,10 @@ public class XMLString {
     public static final String STYLE_PAGE_USAGE="style:page-usage";
     public static final String STYLE_PAGE_NUMBER="style:page-number";
     public static final String STYLE_FONT_FAMILY_COMPLEX="style:font-family-complex";
+    public static final String STYLE_FONT_FAMILY_ASIAN="style:font-family-asian";
     public static final String STYLE_FONT_NAME="style:font-name";
     public static final String STYLE_FONT_NAME_COMPLEX="style:font-name-complex";
+    public static final String STYLE_FONT_NAME_ASIAN="style:font-name-asian";
     public static final String STYLE_FONT_PITCH="style:font-pitch";
     public static final String STYLE_FONT_FAMILY_GENERIC="style:font-family-generic";
     public static final String STYLE_TEXT_BACKGROUND_COLOR="style:text-background-color";

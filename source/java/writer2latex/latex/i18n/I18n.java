@@ -2,7 +2,7 @@
  *
  *  I18n.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-05-09) 
+ *  Version 2.0 (2018-04-03) 
  * 
  */
 
@@ -38,6 +38,7 @@ import writer2latex.latex.util.BeforeAfter;
  *  and XeTeX, we use two different classes
  */
 public abstract class I18n {
+	
     // **** Global variables ****
 	
 	// The office reader
@@ -46,15 +47,14 @@ public abstract class I18n {
     // Configuration items
     protected LaTeXConfig config;
     protected ReplacementTrie stringReplace;
-    protected boolean bGreekMath; // Use math mode for Greek letters
+    protected int nScript; // Main script
     protected boolean bAlwaysUseDefaultLang; // Ignore sLang parameter to convert()
+    protected boolean bGreekMath; // Use math mode for Greek letters
 
     // Collected data
-    protected String sDefaultCTLLanguage; // The default CTL ISO language to use
-    protected String sDefaultCTLCountry; // The default CTL ISO country to use
-    protected String sDefaultLanguage; // The default LCG ISO language to use
-    protected String sDefaultCountry; // The default LCG ISO country to use
-    protected HashSet<String> languages = new HashSet<String>(); // All LCG languages used
+    protected HashSet<String> languages = new HashSet<String>(); // All western languages used
+    protected String sDefaultLanguage; // The default western ISO language to use
+    protected String sDefaultCountry; // The default western ISO country to use
 
     // **** Constructors ****
 
@@ -70,26 +70,18 @@ public abstract class I18n {
         // Set up config items
         this.config = config;
         stringReplace = config.getStringReplace();
-        bGreekMath = config.greekMath();
         bAlwaysUseDefaultLang = !config.multilingual();
+        bGreekMath = config.greekMath();
         
-        // Default language
+        // Read the default languages from the default paragraph style
         if (ofr!=null) {
-            if (config.multilingual()) {
-                // Read the default language from the default paragraph style
-                StyleWithProperties style = ofr.getDefaultParStyle();
-                if (style!=null) { 
-                    sDefaultLanguage = style.getProperty(XMLString.FO_LANGUAGE);
-                    sDefaultCountry = style.getProperty(XMLString.FO_COUNTRY);
-                    sDefaultCTLLanguage = style.getProperty(XMLString.STYLE_LANGUAGE_COMPLEX);
-                    sDefaultCTLCountry = style.getProperty(XMLString.STYLE_COUNTRY_COMPLEX);
-                }
-            }
-            else {
-                // the most common language is the only language
-                sDefaultLanguage = ofr.getMajorityLanguage();
-            }
+	        StyleWithProperties style = ofr.getDefaultParStyle();
+	        if (style!=null) { 
+	            sDefaultLanguage = style.getProperty(XMLString.FO_LANGUAGE);
+	            sDefaultCountry = style.getProperty(XMLString.FO_COUNTRY);
+	        }
         }
+        // We must have a default western language
         if (sDefaultLanguage==null) { sDefaultLanguage="en"; }
     }
 	
@@ -100,7 +92,7 @@ public abstract class I18n {
     public abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
 	
     /** Apply a language language
-     *  @param style the OOo style to read attributes from
+     *  @param style the LO style to read attributes from
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
@@ -119,22 +111,22 @@ public abstract class I18n {
     /** Convert a string of characters into LaTeX
      *  @param s the source string
      *  @param bMathMode true if the string should be rendered in math mode
-     *  @param sLang the ISO language of the string
+     *  @param sLang the western ISO language of the string
      *  @return the LaTeX string
      */
     public abstract String convert(String s, boolean bMathMode, String sLang);
     
-    /** Get the default language (either the document language or the most used language)
+    /** Get the default western language (either the document language or the most used language)
      * 
-     *  @return the default language
+     *  @return the default western language
      */
     public String getDefaultLanguage() {
     	return sDefaultLanguage;
     }
     
-    /** Get the default country
+    /** Get the default western country
      * 
-     *  @return the default country
+     *  @return the default western country
      */
     public String getDefaultCountry() {
     	return sDefaultCountry;

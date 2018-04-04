@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-20)
+ *  Version 2.0 (2018-04-03)
  *
  */
 
@@ -48,7 +48,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 73; }
+    protected int getOptionCount() { return 74; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -85,6 +85,12 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public static final int PDFTEX = 2;
     public static final int UNSPECIFIED = 3;
     public static final int XETEX = 4;
+    
+    // Main script
+    public static final int AUTO = 0;
+    public static final int WESTERN = 1;
+    public static final int CTL = 2;
+    public static final int CJK = 3;
 	
     // Formatting (must be ordered)
     public static final int IGNORE_ALL = 0;
@@ -116,73 +122,74 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int DOCUMENTCLASS = 3;
     private static final int GLOBAL_OPTIONS = 4;
     private static final int INPUTENCODING = 5;
-    private static final int MULTILINGUAL = 6;
-    private static final int GREEK_MATH = 7;
-    private static final int USE_OOOMATH = 8;
-    private static final int USE_PIFONT = 9;
-    private static final int USE_IFSYM = 10;
-    private static final int USE_WASYSYM = 11;
-    private static final int USE_BBDING = 12;
-    private static final int USE_EUROSYM = 13;
-    private static final int USE_TIPA = 14;
-    private static final int USE_COLOR = 15;
-    private static final int USE_COLORTBL = 16;
-    private static final int USE_GEOMETRY = 17;
-    private static final int USE_FANCYHDR = 18;
-    private static final int USE_TITLESEC = 19;
-    private static final int USE_TITLETOC = 20;
-    private static final int USE_HYPERREF = 21;
-    private static final int USE_CAPTION = 22;
-    private static final int USE_LONGTABLE = 23;
-    private static final int USE_SUPERTABULAR = 24;
-    private static final int USE_TABULARY = 25;
-    private static final int USE_ENDNOTES = 26;
-    private static final int USE_ULEM = 27;
-    private static final int USE_LASTPAGE = 28;
-    private static final int USE_TITLEREF = 29;
-    private static final int USE_BIBTEX = 30;
-    private static final int BIBTEX_STYLE = 31;
-    private static final int EXTERNAL_BIBTEX_FILES = 32;
-    private static final int BIBTEX_ENCODING = 33;
-    private static final int ZOTERO_BIBTEX_FILES = 34;
-    private static final int JABREF_BIBTEX_FILES = 35;
-    private static final int INCLUDE_ORIGINAL_CITATIONS = 36;
-    private static final int USE_NATBIB = 37;
-    private static final int NATBIB_OPTIONS = 38;
-    private static final int FONT = 39;
-    private static final int FORMATTING = 40;
-    private static final int PAGE_FORMATTING = 41;
-    private static final int OTHER_STYLES = 42;
-    private static final int IMAGE_CONTENT = 43;
-	private static final int TABLE_CONTENT = 44;
-	private static final int TABLE_FIRST_HEAD_STYLE = 45;
-	private static final int TABLE_HEAD_STYLE = 46;
-	private static final int TABLE_FOOT_STYLE = 47;
-	private static final int TABLE_LAST_FOOT_STYLE = 48;
-    private static final int IGNORE_HARD_PAGE_BREAKS = 49;
-    private static final int IGNORE_HARD_LINE_BREAKS = 50;
-    private static final int IGNORE_EMPTY_PARAGRAPHS =51;
-    private static final int IGNORE_DOUBLE_SPACES = 52;
-    private static final int DISPLAY_HIDDEN_TEXT = 53;
-    private static final int ALIGN_FRAMES = 54;
-    private static final int FLOAT_FIGURES = 55; 
-    private static final int FLOAT_TABLES = 56; 
-    private static final int FLOAT_OPTIONS = 57;
-    private static final int FIGURE_SEQUENCE_NAME = 58; 
-    private static final int TABLE_SEQUENCE_NAME = 59; 
-    private static final int IMAGE_OPTIONS = 60;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 61;
-    private static final int ORIGINAL_IMAGE_SIZE = 62;
-    private static final int SIMPLE_TABLE_LIMIT = 63;
-    private static final int NOTES = 64;
-    private static final int METADATA = 65;
-    private static final int TABSTOP = 66;
-    private static final int WRAP_LINES_AFTER = 67;
-    private static final int SPLIT_LINKED_SECTIONS = 68;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 69;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 70;
-    private static final int OLD_MATH_COLORS = 71;
-    private static final int DEBUG = 72;
+    private static final int SCRIPT = 6;
+    private static final int MULTILINGUAL = 7;
+    private static final int GREEK_MATH = 8;
+    private static final int USE_OOOMATH = 9;
+    private static final int USE_PIFONT = 10;
+    private static final int USE_IFSYM = 11;
+    private static final int USE_WASYSYM = 12;
+    private static final int USE_BBDING = 13;
+    private static final int USE_EUROSYM = 14;
+    private static final int USE_TIPA = 15;
+    private static final int USE_COLOR = 16;
+    private static final int USE_COLORTBL = 17;
+    private static final int USE_GEOMETRY = 18;
+    private static final int USE_FANCYHDR = 19;
+    private static final int USE_TITLESEC = 20;
+    private static final int USE_TITLETOC = 21;
+    private static final int USE_HYPERREF = 22;
+    private static final int USE_CAPTION = 23;
+    private static final int USE_LONGTABLE = 24;
+    private static final int USE_SUPERTABULAR = 25;
+    private static final int USE_TABULARY = 26;
+    private static final int USE_ENDNOTES = 27;
+    private static final int USE_ULEM = 28;
+    private static final int USE_LASTPAGE = 29;
+    private static final int USE_TITLEREF = 30;
+    private static final int USE_BIBTEX = 31;
+    private static final int BIBTEX_STYLE = 32;
+    private static final int EXTERNAL_BIBTEX_FILES = 33;
+    private static final int BIBTEX_ENCODING = 34;
+    private static final int ZOTERO_BIBTEX_FILES = 35;
+    private static final int JABREF_BIBTEX_FILES = 36;
+    private static final int INCLUDE_ORIGINAL_CITATIONS = 37;
+    private static final int USE_NATBIB = 38;
+    private static final int NATBIB_OPTIONS = 39;
+    private static final int FONT = 40;
+    private static final int FORMATTING = 41;
+    private static final int PAGE_FORMATTING = 42;
+    private static final int OTHER_STYLES = 43;
+    private static final int IMAGE_CONTENT = 44;
+	private static final int TABLE_CONTENT = 45;
+	private static final int TABLE_FIRST_HEAD_STYLE = 46;
+	private static final int TABLE_HEAD_STYLE = 47;
+	private static final int TABLE_FOOT_STYLE = 48;
+	private static final int TABLE_LAST_FOOT_STYLE = 49;
+    private static final int IGNORE_HARD_PAGE_BREAKS = 50;
+    private static final int IGNORE_HARD_LINE_BREAKS = 51;
+    private static final int IGNORE_EMPTY_PARAGRAPHS =52;
+    private static final int IGNORE_DOUBLE_SPACES = 53;
+    private static final int DISPLAY_HIDDEN_TEXT = 54;
+    private static final int ALIGN_FRAMES = 55;
+    private static final int FLOAT_FIGURES = 56; 
+    private static final int FLOAT_TABLES = 57; 
+    private static final int FLOAT_OPTIONS = 58;
+    private static final int FIGURE_SEQUENCE_NAME = 59; 
+    private static final int TABLE_SEQUENCE_NAME = 60; 
+    private static final int IMAGE_OPTIONS = 61;
+    private static final int REMOVE_GRAPHICS_EXTENSION = 62;
+    private static final int ORIGINAL_IMAGE_SIZE = 63;
+    private static final int SIMPLE_TABLE_LIMIT = 64;
+    private static final int NOTES = 65;
+    private static final int METADATA = 66;
+    private static final int TABSTOP = 67;
+    private static final int WRAP_LINES_AFTER = 68;
+    private static final int SPLIT_LINKED_SECTIONS = 69;
+    private static final int SPLIT_TOPLEVEL_SECTIONS = 70;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 71;
+    private static final int OLD_MATH_COLORS = 72;
+    private static final int DEBUG = 73;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -225,6 +232,15 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = ClassicI18n.readInputenc(sValue);
+            }
+        };
+        options[SCRIPT] = new IntegerOption("script","auto") {
+            public void setString(String sValue) {
+                super.setString(sValue);
+                if ("auto".equals(sValue)) nValue = AUTO;
+                if ("western".equals(sValue)) nValue = WESTERN;
+                if ("ctl".equals(sValue)) nValue = CTL;
+                if ("cjk".equals(sValue)) nValue = CJK;
             }
         };
         options[MULTILINGUAL] = new BooleanOption("multilingual","true");
@@ -659,6 +675,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public String getGlobalOptions() { return replaceParameters(options[GLOBAL_OPTIONS].getString()); }
     public int getBackend() { return ((IntegerOption) options[BACKEND]).getValue(); }
     public int getInputencoding() { return ((IntegerOption) options[INPUTENCODING]).getValue(); }
+    public int getScript() { return ((IntegerOption) options[SCRIPT]).getValue(); }
     public boolean multilingual() { return ((BooleanOption) options[MULTILINGUAL]).getValue(); }
     public boolean greekMath() { return ((BooleanOption) options[GREEK_MATH]).getValue(); }
     public boolean noPreamble() { return ((BooleanOption) options[NO_PREAMBLE]).getValue(); }

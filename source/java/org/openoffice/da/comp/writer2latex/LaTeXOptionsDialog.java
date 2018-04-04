@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-25)
+ *  Version 2.0 (2018-04-04)
  *  
  */
 
@@ -44,6 +44,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         { "generic", "pdftex", "dvips", "xetex", "unspecified" };
     private static final String[] INPUTENCODING_VALUES =
         { "ascii", "latin1", "latin2", "iso-8859-7", "cp1250", "cp1251", "koi8-r", "utf8" };
+    private static final String[] SCRIPT_VALUES =
+        { "auto", "western", "ctl", "cjk" };
     private static final String[] NOTES_VALUES =
         { "ignore", "comment", "marginpar", "pdfannotation" };
     private static final String[] FLOATOPTIONS_VALUES =
@@ -104,6 +106,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // General
         loadListBoxOption(xProps,"Backend");
         loadListBoxOption(xProps,"Inputencoding");
+        loadListBoxOption(xProps,"Script");
         loadCheckBoxOption(xProps,"Multilingual");
         setListBoxStringItemList("Font", FONT_NAMES);
         loadListBoxOption(xProps,"Font");
@@ -149,6 +152,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         // General
         saveListBoxOption(xProps, filterData, "Backend", "backend", BACKEND_VALUES );
         saveListBoxOption(xProps, filterData, "Inputencoding", "inputencoding", INPUTENCODING_VALUES);
+        saveListBoxOption(xProps, filterData, "Script", "script", SCRIPT_VALUES);
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
         saveListBoxOption(xProps, filterData, "Font", "font", FONT_VALUES);
         saveCheckBoxOption(xProps, filterData, "GreekMath", "greek_math");
@@ -253,6 +257,10 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         	// backend=xetex locks the encoding to utf8
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
+        else if ("script".equals(sOptionName)) {
+        	// backend!=xetex locks the script to western
+        	return getListBoxSelectedItem("Backend")!=3 || super.isLocked(sOptionName);
+        }
         else if ("font".equals(sOptionName)) {
         	// backend=xetex does not (currently) use the font option
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
@@ -291,6 +299,8 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("Backend",!isLocked("backend"));
         setControlEnabled("InputencodingLabel",!isLocked("inputencoding"));
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
+        setControlEnabled("ScriptLabel",!isLocked("script"));
+        setControlEnabled("Script",!isLocked("script"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
         setControlEnabled("FontLabel",!isLocked("font"));
         setControlEnabled("Font",!isLocked("font"));
@@ -336,6 +346,21 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("IgnoreHardLineBreaks",!isLocked("ignore_hard_line_breaks"));
         setControlEnabled("IgnoreEmptyParagraphs",!isLocked("ignore_empty_paragraphs"));
         setControlEnabled("IgnoreDoubleSpaces",!isLocked("ignore_double_spaces"));
+        
+        // Visibility of controls
+    	if (getListBoxSelectedItem("Backend")==3) { // XeTeX
+    		setControlVisible("InputencodingLabel",false);
+    		setControlVisible("Inputencoding",false);
+    		setControlVisible("ScriptLabel",true);
+    		setControlVisible("Script",true);
+    	}
+    	else {
+    		setControlVisible("InputencodingLabel",true);
+    		setControlVisible("Inputencoding",true);
+    		setControlVisible("ScriptLabel",false);
+    		setControlVisible("Script",false);
+    	}
+    	
     }
 	
     private void enableBibtexStyle() {
