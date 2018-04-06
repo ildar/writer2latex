@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-27)
+ *  Version 2.0 (2018-04-06)
  *
  */ 
 
@@ -413,8 +413,6 @@ public class Html5ConfigurationDialog extends ConfigurationDialogBase implements
         		config.getOption("table_formatting").equals("convert_all") ||
         		config.getOption("table_formatting").equals("ignore_styles"));
     		
-    		checkBoxFromConfig(dlg, "IgnoreTableDimensions", "ignore_table_dimensions");
-    		
     		listBoxFromConfig(dlg, "ListFormatting", "list_formatting", sListExportValues, (short) 0);
 
     		textFieldFromConfig(dlg, "MaxWidth", "max_width");
@@ -429,8 +427,6 @@ public class Html5ConfigurationDialog extends ConfigurationDialogBase implements
     		config.setOption("section_formatting", dlg.getCheckBoxStateAsBoolean("SectionFormatting") ? "convert_all" : "ignore_all");
     		config.setOption("table_formatting", dlg.getCheckBoxStateAsBoolean("TableFormatting") ? "convert_all" : "ignore_all");
     		
-    		checkBoxToConfig(dlg, "IgnoreTableDimensions", "ignore_table_dimensions");
-
     		listBoxToConfig(dlg, "ListFormatting", "list_formatting", sListExportValues);
 
     		textFieldToConfig(dlg, "MaxWidth", "max_width");

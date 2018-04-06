@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-02)
+ *  Version 2.0 (2018-04-06)
  *
  */
  
@@ -89,7 +89,7 @@ public class DrawConverter extends ConverterHelper {
     public static final int CENTERED = 3;
     
     /** Identifies objects that should fill the entire screen */
-    public static final int FULL_SCREEN = 4;
+    //public static final int FULL_SCREEN = 4;
     
 	
     private FormReader form = null;
@@ -463,7 +463,7 @@ public class DrawConverter extends ConverterHelper {
         	// Now style it
         	StyleInfo info = new StyleInfo();
         	String sStyleName = Misc.getAttribute(frame, XMLString.DRAW_STYLE_NAME);
-        	if (nMode!=FULL_SCREEN) { getFrameSc().applyStyle(sStyleName,info); }
+        	/*if (nMode!=FULL_SCREEN)*/ { getFrameSc().applyStyle(sStyleName,info); }
         	applyImageSize(frame,info.props,nMode,false);
 
         	// Apply placement
@@ -907,9 +907,15 @@ public class DrawConverter extends ConverterHelper {
     	String sWidth = getFrameWidth(node, style);
     	if (sWidth!=null) {
     		props.addValue("width",scale(Calc.truncateLength(sWidth)));
+    		if (config.units()==XhtmlConfig.REM) {
+    			// We try to create an adaptive layout
+    			props.addValue("max-width", "100%");
+    		}
     	}
 
-    	if (!bOnlyWidth) {
+    	if (!bOnlyWidth && config.units()!=XhtmlConfig.REM) {
+    		// We don't export height if using rem units, because we also
+    		// add max-width:100%
     		String sHeight = getFrameHeight(node,style);
     		if (sHeight!=null) {
     			props.addValue("height",scale(Calc.truncateLength(sHeight)));
@@ -926,19 +932,22 @@ public class DrawConverter extends ConverterHelper {
     	case XhtmlConfig.ABSOLUTE:
     		return applySize(node, props, bOnlyWidth);
     	case XhtmlConfig.RELATIVE:
-    		if (nMode==FULL_SCREEN) {
+    		/*if (nMode==FULL_SCREEN) {
     			props.addValue("max-width","100%");
     			props.addValue("height","100%");
     		}
-    		else {
+    		else {*/
     			String sWidth = getFrameWidth(node, ofr.getFrameStyle(node.getAttribute(XMLString.DRAW_STYLE_NAME)));			
     			if (sWidth!=null) {    
     				props.addValue("width", Calc.divide(Calc.multiply(sScale,Calc.truncateLength(sWidth)),converter.getContentWidth()));
     			}
     			return sWidth;
-    		}
+    		//}
     	case XhtmlConfig.NONE:
-    		// Nothing to do :-)
+    		// Nothing to do, except if we use rem units
+    		if (config.units()==XhtmlConfig.REM) {
+    			props.addValue("max-width", "100%");
+    		}
     		return getFrameWidth(node, ofr.getFrameStyle(node.getAttribute(XMLString.DRAW_STYLE_NAME)));
     	}
 		return null;
@@ -988,14 +997,14 @@ public class DrawConverter extends ConverterHelper {
                 hnodeBlock.appendChild(centerdiv);
                 centerdiv.appendChild(object);
                 break;
-            case FULL_SCREEN:
+            /*case FULL_SCREEN:
             	if (hnodeBlock!=null) {
             		Element div = converter.createElement("div");
             		div.setAttribute("style", "text-align:center");
             		hnodeBlock.appendChild(div);
             		div.appendChild(object);
             	}
-            	break;
+            	break;*/
             case FLOATING:
                 boolean bWrap = false;
                 String sAlign = "center";

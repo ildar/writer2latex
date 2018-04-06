@@ -39,6 +39,10 @@ import writer2latex.api.MIMETypes;
  *  HTML5 export
  */
 public class XhtmlOptionsDialog extends OptionsDialogBase {
+	
+    // Translate list box items to configuration option values 
+    private static final String[] SIZE_VALUES =
+        { "auto", "relative", "none" };
     
     /** The component will be registered under this name.
      */
@@ -91,9 +95,10 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         loadCheckBoxOption(xProps, "UseDublinCore");
 			
         // Figures, tables and formulas
-        loadCheckBoxOption(xProps, "OriginalImageSize");
+        loadListBoxOption(xProps, "ImageSize");
         loadCheckBoxOption(xProps, "EmbedSVG");
         loadCheckBoxOption(xProps, "EmbedImg");
+        loadListBoxOption(xProps, "TableSize");
         int nColumnScaling = loadNumericOption(xProps, "ColumnScaling");
         if (nColumnScaling<=1) {
         	setNumericFieldValue("ColumnScaling",100);
@@ -144,11 +149,10 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         saveCheckBoxOption(xProps, filterData, "UseDublinCore", "use_dublin_core");
   		
         // Figures, tables and formulas
-        saveCheckBoxOption(xProps, "OriginalImageSize");
-        // TODO: Support "relative"
-        filterData.put("image_size", getCheckBoxStateAsBoolean("OriginalImageSize") ? "none" : "absolute");
+        saveListBoxOption(xProps, filterData, "ImageSize", "image_size", SIZE_VALUES);
         saveCheckBoxOption(xProps, filterData, "EmbedSVG","embed_svg");
         saveCheckBoxOption(xProps, filterData, "EmbedImg","embed_img");
+        saveListBoxOption(xProps, filterData, "TableSize", "table_size", SIZE_VALUES);
         saveNumericOptionAsPercentage(xProps, filterData, "ColumnScaling", "column_scaling");
         saveCheckBoxOption(xProps, filterData, "UseMathjax", "use_mathjax");
 
@@ -204,9 +208,10 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
         setControlEnabled("UseDublinCore",!isLocked("use_dublin_core"));
 
         // Figures, tables and formulas
-        setControlEnabled("OriginalImageSize",!isLocked("image_size") && !isLocked("original_image_size"));
+        setControlEnabled("ImageSize",!isLocked("image_size") && !isLocked("original_image_size"));
         setControlEnabled("EmbedSVG",!isLocked("embed_svg"));
         setControlEnabled("EmbedImg",!isLocked("embed_img"));
+        setControlEnabled("TableSize",!isLocked("table_size"));
         setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling"));
         setControlEnabled("ColumnScaling",!isLocked("column_scaling"));
         setControlEnabled("UseMathjax",!isLocked("use_mathjax"));

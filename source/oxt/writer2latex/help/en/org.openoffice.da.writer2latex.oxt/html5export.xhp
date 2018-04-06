@@ -72,7 +72,7 @@
     	(e.g. font sizes) than the original document.</paragraph>
     	<paragraph role="paragraph" xml-lang="en-US">Using this option you can define a percentage used to scale all
     	dimensions. Thus with the setting 140, all dimensions will be 40% larger than in the original document. Depending on the
-    	style you have selected and on the setting for image size below, some dimensions may be unaffected by
+    	style you have selected and on the settings for image size and tables size below, some dimensions may be unaffected by
     	this option.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsMultilingual" id="bm_configmultilingual"/>
@@ -135,14 +135,25 @@
 
         <paragraph role="heading" level="2" xml-lang="en-US">Figures, tables and formulas</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsOriginalImageSize" id="bm_options_originalimagesize"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsOriginalImageSize" visibility="hidden">Check this to use the natural size of images rather than the size defined in the document</ahelp></paragraph>
-		<section id="originalimagesize">
-    	    <paragraph role="heading" level="3" xml-lang="en-US">Use original image size</paragraph>
-	        <paragraph role="paragraph" xml-lang="en-US">Often images in a %PRODUCTNAME document are scaled up or down from their original size.
-    	    Normally the same scaling will be used in the exported document, but if you select this option, the original (unscaled) image
-        	size will be used.</paragraph>
-        </section>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ImageSize" id="bm_options_imagesize"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:ImageSize" visibility="hidden">Select how to handle the size of images, either by using the size defined in the document, define as a percentage of the screen width or by using the natural dimensions of the image</ahelp></paragraph>
+	    <paragraph role="heading" level="3" xml-lang="en-US">Image size</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Often images in a %PRODUCTNAME document are scaled up or down from their original size.
+		Using this option you can select how to handle image sizes.</paragraph>
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Automatic</emph> will export a size based on the size defined
+				in the Writer document. The image will thus have a fixed size in the HTML5 document.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Relative to page width</emph> will calculate the width of the
+				image relative to the page. The image will thus occupy a fixed percentage of the screen width.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Do not export</emph> will not export image dimensions. The
+				image will thus have the natural, unscaled size.</paragraph>
+			</listitem>
+        </list>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EmbedSvg" id="bm_options_embedsvg"/>
 
@@ -158,6 +169,26 @@
         raster images will be embedded directly in the HTML5 document (base64 encoded). Otherwise they will be included in a separate file.
         This is not recommended for documents with large images.</paragraph>
         
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:TableSize" id="bm_options_tablesize"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:TableSize" visibility="hidden">Select how to handle the size of tables, either by using the size defined in the document, define as a percentage of the screen width or by leaving the layout to the browser</ahelp></paragraph>
+	    <paragraph role="heading" level="3" xml-lang="en-US">Table size</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Using this option you can select how to handle table sizes.</paragraph>
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Automatic</emph> will export a size based on the size defined
+				in the Writer document. The table will thus either have a fixed size in the HTML5 document or occupy a fixed percentage
+				of the screen width.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Relative to page width</emph> will calculate the width of the
+				table relative to the page. The table will thus occupy a fixed percentage of the screen width.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Do not export</emph> will not export table dimensions.The browser
+				will thus layout the table according to the content.</paragraph>
+			</listitem>
+        </list>
+
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsColumnScaling" id="bm_options_columnscaling"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsColumnScaling" visibility="hidden">Select a scaling to apply to all column dimensions in the document</ahelp></paragraph>
     	<paragraph role="heading" level="3" xml-lang="en-US">Column scaling</paragraph>

@@ -617,14 +617,17 @@
             <value>true</value>
         </prop>
         <!-- Figures, tables and formulas -->
-        <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
-            <value>false</value>
+        <prop oor:name="ImageSize" oor:type="xs:short">
+            <value>0</value> <!-- auto -->
         </prop>
         <prop oor:name="EmbedSVG" oor:type="xs:boolean">
             <value>false</value>
         </prop>
         <prop oor:name="EmbedImg" oor:type="xs:boolean">
             <value>false</value>
+        </prop>
+        <prop oor:name="TableSize" oor:type="xs:short">
+            <value>0</value> <!-- auto -->
         </prop>
         <prop oor:name="ColumnScaling" oor:type="xs:int">
             <value>100</value>

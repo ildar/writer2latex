@@ -54,11 +54,6 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Convert table formatting</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export table formatting.</paragraph>
 
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:IgnoreTableDimensions" id="bm_configignoretabledimensions"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Ignore table dimensions</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you do not want table dimensions (table width, column width and
-        row height) to be exported, but want to leave the layout of the tables to the browser.</paragraph>
-
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ListFormatting" id="bm_configlistformatting"/>
         <paragraph role="heading" level="3" xml-lang="en-US">List formatting</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Choose how to export list formatting.</paragraph>

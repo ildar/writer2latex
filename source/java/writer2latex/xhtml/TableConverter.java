@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-06)
  *
  */
 
@@ -344,12 +344,21 @@ public class TableConverter extends ConverterHelper {
                         	sWidth=Calc.divide(sWidth, converter.getContentWidth(), true);
                         	info.props.addValue("width",sWidth);
                         }
-                        else {
+                        else { // Absolute width
                         	info.props.addValue("width",getTableSc().colScale(sWidth));
+                        	if (config.units()==XhtmlConfig.REM) {
+                        		// We try to create an adaptive layout
+                        		info.props.addValue("max-width","100%");
+                        	}
                         }
                     }
                 }
             }
+        }
+        else if (config.units()==XhtmlConfig.REM) {
+        	// Even if we don't export table width we do add this
+        	// to create an adaptive layout
+        	info.props.addValue("max-width","100%");
         }
 
         // Writer uses a separating border model, Calc a collapsing:

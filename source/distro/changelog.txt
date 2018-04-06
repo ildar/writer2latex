@@ -30,12 +30,16 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
   Currently in w2l, global_options and custom_preamble can have parameters,
   and in w2x, custom_stylesheet can have parameters.
   In the filter dialogs, parameters are set in two new list boxes right below
-  the configuration list box. 
+  the configuration list box.
+  
+[w2x extension] All three values of the option image_size can now be set
+  in the filter dialog 
 
-[w2x extension] The options multilingual, embed_svg and embed_img can now be
-  set in filter dialog, and are thus removed from the configuration settings.
-  To make room for this, the dialog layout was change to a two column layout,
-  resembling the LaTeX dialog as far as possible.
+[w2x extension] The options multilingual, embed_svg, embed_img and table_size
+  can now be set in the filter dialog, and are thus removed from the
+  configuration settings. Also all three values for table_size are supported.
+  To make room for these changes, the dialog layout was changed to a two
+  column layout, resembling the LaTeX dialog as far as possible.
 
 [filter] Export button is now first in tab order. This implies that Export
   can be started immediately with the Enter button if no settings need to be
