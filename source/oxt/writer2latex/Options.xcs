@@ -51,13 +51,14 @@
             <prop oor:name="Notes" oor:type="xs:short" />
             <prop oor:name="Metadata" oor:type="xs:boolean" />
             <prop oor:name="DisplayHiddenText" oor:type="xs:boolean" />
-            <!-- Figures and tables -->
+            <!-- Figures, tables and indexes -->
             <prop oor:name="OriginalImageSize" oor:type="xs:boolean"/>
             <prop oor:name="OptimizeSimpleTables" oor:type="xs:boolean"/>
             <prop oor:name="SimpleTableLimit" oor:type="xs:int"/>
             <prop oor:name="FloatTables" oor:type="xs:boolean"/>
             <prop oor:name="FloatFigures" oor:type="xs:boolean"/>
             <prop oor:name="FloatOptions" oor:type="xs:short"/>
+            <prop oor:name="ConvertIndexNames" oor:type="xs:boolean"/>
             <!-- AutoCorrect -->
             <prop oor:name="IgnoreHardPageBreaks" oor:type="xs:boolean" />
             <prop oor:name="IgnoreHardLineBreaks" oor:type="xs:boolean" />

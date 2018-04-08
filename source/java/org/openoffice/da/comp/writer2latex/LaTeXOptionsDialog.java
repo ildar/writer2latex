@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-04)
+ *  Version 2.0 (2018-04-08)
  *  
  */
 
@@ -129,13 +129,14 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         loadCheckBoxOption(xProps,"Metadata");
         loadCheckBoxOption(xProps,"DisplayHiddenText");
 		
-        // Figures and tables
+        // Figures, tables and indexes
         loadCheckBoxOption(xProps,"OriginalImageSize");
         loadCheckBoxOption(xProps,"OptimizeSimpleTables");
         loadNumericOption(xProps,"SimpleTableLimit");
         loadCheckBoxOption(xProps,"FloatTables");
         loadCheckBoxOption(xProps,"FloatFigures");
         loadListBoxOption(xProps,"FloatOptions");
+        loadCheckBoxOption(xProps,"ConvertIndexNames");
 
         // AutoCorrect
         loadCheckBoxOption(xProps,"IgnoreHardPageBreaks");
@@ -205,6 +206,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         saveCheckBoxOption(xProps, filterData, "FloatTables", "float_tables");
         saveCheckBoxOption(xProps, filterData, "FloatFigures", "float_figures");
         saveListBoxOption(xProps, filterData, "FloatOptions", "float_options", FLOATOPTIONS_VALUES);
+        saveCheckBoxOption(xProps, filterData, "ConvertIndexNames", "convert_index_names");
 
         // AutoCorrect
         saveCheckBoxOption(xProps, filterData, "IgnoreHardPageBreaks", "ignore_hard_page_breaks");
@@ -328,7 +330,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
         setControlEnabled("Metadata",!isLocked("metadata"));
         setControlEnabled("DisplayHiddenText",!isLocked("display_hidden_text"));
 
-        // Figures and tables
+        // Figures, tables and indexes
         setControlEnabled("OriginalImageSize",!isLocked("original_image_size"));
         setControlEnabled("OptimizeSimpleTables",!isLocked("simple_table_limit"));
         boolean bOptimizeSimpleTables = getCheckBoxStateAsBoolean("OptimizeSimpleTables");
@@ -340,6 +342,7 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
             getCheckBoxStateAsBoolean("FloatTables");
         setControlEnabled("FloatOptionsLabel",!isLocked("float_options") && bFloat);
         setControlEnabled("FloatOptions",!isLocked("float_options") && bFloat);
+        setControlEnabled("ConvertIndexNames",!isLocked("convert_index_names"));
 
         // AutoCorrect
         setControlEnabled("IgnoreHardPageBreaks",!isLocked("ignore_hard_page_breaks"));

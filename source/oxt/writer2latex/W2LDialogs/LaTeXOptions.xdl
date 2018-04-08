@@ -90,16 +90,16 @@
     <dlg:menuitem dlg:value="&amp;136.FloatOptions.StringItemList"/>
    </dlg:menupopup>
   </dlg:menulist>
-  <dlg:text dlg:id="AutoCorrectLabel" dlg:tab-index="42" dlg:left="186" dlg:top="162" dlg:width="156" dlg:height="12" dlg:help-text="&amp;96.LaTeXOptions.AutoCorrectLabel.HelpText" dlg:value="&amp;97.LaTeXOptions.AutoCorrectLabel.Label"/>
-  <dlg:checkbox dlg:id="IgnoreHardPageBreaks" dlg:tab-index="43" dlg:left="193" dlg:top="176" dlg:width="149" dlg:height="12" dlg:help-text="&amp;98.LaTeXOptions.IgnoreHardPageBreaks.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreHardPageBreaks" dlg:value="&amp;99.LaTeXOptions.IgnoreHardPageBreaks.Label" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="IgnoreHardLineBreaks" dlg:tab-index="44" dlg:left="193" dlg:top="190" dlg:width="149" dlg:height="12" dlg:help-text="&amp;100.LaTeXOptions.IgnoreHardLineBreaks.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreHardLineBreaks" dlg:value="&amp;101.LaTeXOptions.IgnoreHardLineBreaks.Label" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="IgnoreEmptyParagraphs" dlg:tab-index="45" dlg:left="193" dlg:top="204" dlg:width="149" dlg:height="12" dlg:help-text="&amp;102.LaTeXOptions.IgnoreEmptyParagraphs.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreEmptyParagraphs" dlg:value="&amp;103.LaTeXOptions.IgnoreEmptyParagraphs.Label" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="IgnoreDoubleSpaces" dlg:tab-index="46" dlg:left="193" dlg:top="218" dlg:width="149" dlg:height="12" dlg:help-text="&amp;104.LaTeXOptions.IgnoreDoubleSpaces.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreDoubleSpaces" dlg:value="&amp;105.LaTeXOptions.IgnoreDoubleSpaces.Label" dlg:checked="false"/>
+  <dlg:text dlg:id="AutoCorrectLabel" dlg:tab-index="43" dlg:left="186" dlg:top="176" dlg:width="156" dlg:height="12" dlg:help-text="&amp;96.LaTeXOptions.AutoCorrectLabel.HelpText" dlg:value="&amp;97.LaTeXOptions.AutoCorrectLabel.Label"/>
+  <dlg:checkbox dlg:id="IgnoreHardPageBreaks" dlg:tab-index="44" dlg:left="193" dlg:top="190" dlg:width="149" dlg:height="12" dlg:help-text="&amp;98.LaTeXOptions.IgnoreHardPageBreaks.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreHardPageBreaks" dlg:value="&amp;99.LaTeXOptions.IgnoreHardPageBreaks.Label" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="IgnoreHardLineBreaks" dlg:tab-index="45" dlg:left="193" dlg:top="204" dlg:width="149" dlg:height="12" dlg:help-text="&amp;100.LaTeXOptions.IgnoreHardLineBreaks.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreHardLineBreaks" dlg:value="&amp;101.LaTeXOptions.IgnoreHardLineBreaks.Label" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="IgnoreEmptyParagraphs" dlg:tab-index="46" dlg:left="193" dlg:top="218" dlg:width="149" dlg:height="12" dlg:help-text="&amp;102.LaTeXOptions.IgnoreEmptyParagraphs.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreEmptyParagraphs" dlg:value="&amp;103.LaTeXOptions.IgnoreEmptyParagraphs.Label" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="IgnoreDoubleSpaces" dlg:tab-index="47" dlg:left="193" dlg:top="232" dlg:width="149" dlg:height="12" dlg:help-text="&amp;104.LaTeXOptions.IgnoreDoubleSpaces.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsIgnoreDoubleSpaces" dlg:value="&amp;105.LaTeXOptions.IgnoreDoubleSpaces.Label" dlg:checked="false"/>
   <dlg:button dlg:id="ExportButton" dlg:tab-index="1" dlg:left="5" dlg:top="256" dlg:width="60" dlg:height="13" dlg:help-text="&amp;106.LaTeXOptions.ExportButton.HelpText" dlg:tabstop="true" dlg:value="&amp;107.LaTeXOptions.ExportButton.Label" dlg:button-type="ok"/>
   <dlg:button dlg:id="CancelButton" dlg:tab-index="2" dlg:left="75" dlg:top="256" dlg:width="60" dlg:height="13" dlg:help-text="&amp;108.LaTeXOptions.CancelButton.HelpText" dlg:value="&amp;109.LaTeXOptions.CancelButton.Label" dlg:button-type="cancel"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="3" dlg:left="282" dlg:top="256" dlg:width="60" dlg:height="13" dlg:help-url="org.openoffice.da.writer2latex.oxt:Options" dlg:value="Help" dlg:button-type="help"/>
   <dlg:checkbox dlg:id="DisplayHiddenText" dlg:tab-index="32" dlg:left="193" dlg:top="50" dlg:width="149" dlg:height="12" dlg:help-text="&amp;147.LaTeXOptions.DisplayHiddenText.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:DisplayHiddenText" dlg:value="&amp;148.LaTeXOptions.DisplayHiddenText.Label" dlg:checked="false"/>
-  <dlg:text dlg:id="FontLabel" dlg:tab-index="47" dlg:left="12" dlg:top="92" dlg:width="60" dlg:height="12" dlg:help-text="&amp;151.LaTeXOptions.FontLabel.HelpText" dlg:value="&amp;152.LaTeXOptions.FontLabel.Label"/>
+  <dlg:text dlg:id="FontLabel" dlg:tab-index="48" dlg:left="12" dlg:top="92" dlg:width="60" dlg:height="12" dlg:help-text="&amp;151.LaTeXOptions.FontLabel.HelpText" dlg:value="&amp;152.LaTeXOptions.FontLabel.Label"/>
   <dlg:menulist dlg:id="Font" dlg:tab-index="15" dlg:left="75" dlg:top="90" dlg:width="86" dlg:height="12" dlg:help-text="&amp;154.LaTeXOptions.Font.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsFont" dlg:spin="true" dlg:linecount="10"/>
   <dlg:menulist dlg:id="ParameterName" dlg:tab-index="7" dlg:left="12" dlg:top="34" dlg:width="60" dlg:height="12" dlg:help-text="&amp;156.LaTeXOptions.ParameterName.HelpText" dlg:spin="true">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterNameChange" script:language="UNO"/>
@@ -107,7 +107,7 @@
   <dlg:menulist dlg:id="ParameterValue" dlg:tab-index="8" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-text="&amp;158.LaTeXOptions.ParameterValue.HelpText" dlg:spin="true">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ParameterValueChange" script:language="UNO"/>
   </dlg:menulist>
-  <dlg:text dlg:id="ScriptLabel" dlg:tab-index="48" dlg:left="12" dlg:top="64" dlg:width="60" dlg:height="12" dlg:help-text="&amp;169.LaTeXOptions.ScriptLabel.HelpText" dlg:value="&amp;170.LaTeXOptions.ScriptLabel.Label"/>
+  <dlg:text dlg:id="ScriptLabel" dlg:tab-index="49" dlg:left="12" dlg:top="64" dlg:width="60" dlg:height="12" dlg:help-text="&amp;169.LaTeXOptions.ScriptLabel.HelpText" dlg:value="&amp;170.LaTeXOptions.ScriptLabel.Label"/>
   <dlg:menulist dlg:id="Script" dlg:tab-index="13" dlg:left="75" dlg:top="62" dlg:width="86" dlg:height="12" dlg:help-text="&amp;172.LaTeXOptions.Script.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsScript" dlg:spin="true" dlg:linecount="4">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="&amp;184.Script.StringItemList"/>
@@ -116,5 +116,6 @@
     <dlg:menuitem dlg:value="&amp;187.Script.StringItemList"/>
    </dlg:menupopup>
   </dlg:menulist>
+  <dlg:checkbox dlg:id="ConvertIndexNames" dlg:tab-index="42" dlg:left="193" dlg:top="161" dlg:width="149" dlg:height="12" dlg:help-text="&amp;190.LaTeXOptions.ConvertIndexNames.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsConvertIndexNames" dlg:value="&amp;191.LaTeXOptions.ConvertIndexNames.Label" dlg:checked="false"/>
  </dlg:bulletinboard>
 </dlg:window>

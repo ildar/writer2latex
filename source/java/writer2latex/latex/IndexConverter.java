@@ -2,7 +2,7 @@
  *
  *  IndexConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-18)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -94,12 +94,7 @@ public class IndexConverter extends ConverterHelper {
             else {
                 int nLevel = Misc.getPosInteger(source.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
                 ldp.append("\\setcounter{tocdepth}{"+nLevel+"}").nl();
-                Element title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
-                if (title!=null) {
-                    ldp.append("\\renewcommand\\contentsname{");
-                    palette.getInlineCv().traversePCDATA(title,ldp,oc);
-                    ldp.append("}").nl();
-                }
+                convertIndexName(source, "\\contentsname", ldp, oc);
             }
         }
         ldp.append("\\tableofcontents").nl();
@@ -113,6 +108,10 @@ public class IndexConverter extends ConverterHelper {
      */
     public void handleLOF (Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (config.noIndex()) { return; }
+        Element source = Misc.getChildByTagName(node,XMLString.TEXT_ILLUSTRATION_INDEX_SOURCE);
+        if (source!=null) {
+            convertIndexName(source, "\\listfigurename", ldp, oc);
+        }
         ldp.append("\\listoffigures").nl();
     }
 
@@ -124,6 +123,10 @@ public class IndexConverter extends ConverterHelper {
      */
     public void handleLOT (Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (config.noIndex()) { return; }
+        Element source = Misc.getChildByTagName(node,XMLString.TEXT_TABLE_INDEX_SOURCE);
+        if (source!=null) {
+            convertIndexName(source, "\\listtablename", ldp, oc);
+        }
         ldp.append("\\listoftables").nl();
     }
 
@@ -158,8 +161,28 @@ public class IndexConverter extends ConverterHelper {
      */
     public void handleAlphabeticalIndex (Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (config.noIndex()) { return; }
+        Element source = Misc.getChildByTagName(node,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE);
+        if (source!=null) {
+            convertIndexName(source, "\\indexname", ldp, oc);
+        }
         ldp.append("\\printindex").nl();
         bContainsAlphabeticalIndex = true;
+    }
+    
+    /** Convert the name of an index to LaTeX
+     * 
+     * @param indexSource the source of the index in the office document
+     * @param sLaTeXCmd the LaTeX command defining the index name
+     * @param ldp the LaTeX document portion to which the definition should be added
+     * @param oc the current context
+     */
+    protected void convertIndexName(Element indexSource, String sLaTeXCmd, LaTeXDocumentPortion ldp, Context oc) {
+        Element title = Misc.getChildByTagName(indexSource,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+        if (title!=null && config.convertIndexNames()) {
+            ldp.append("\\renewcommand").append(sLaTeXCmd).append("{");
+            palette.getInlineCv().traversePCDATA(title,ldp,oc);
+            ldp.append("}").nl();
+        }
     }
 
 

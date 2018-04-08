@@ -2,7 +2,7 @@
  *
  *  BibConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2017 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-27)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -193,12 +193,23 @@ class BibConverter extends ConverterHelper {
      */
     void handleBibliography(Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (!config.noIndex()) {
+            Element source = Misc.getChildByTagName(node,XMLString.TEXT_BIBLIOGRAPHY_SOURCE);
+            if (source!=null) {
+            	// Unfortunately the index name depends on the documentclass
+            	// For now we only handle the standard classes article, report and book
+            	if ("article".equals(config.getDocumentclass())) {
+            		palette.getIndexCv().convertIndexName(source, "\\refname", ldp, oc);
+            	}
+            	else if ("book".equals(config.getDocumentclass()) || "report".equals(config.getDocumentclass())) {
+            		palette.getIndexCv().convertIndexName(source, "\\bibname", ldp, oc);
+            	}
+            }
+        	
 	        if (config.useBibtex()) { // Export using BibTeX
 	        	handleBibliographyAsBibTeX(ldp);
 	        }
 	        else { // Export as thebibliography environment
 	        	ThebibliographyGenerator bibCv = new ThebibliographyGenerator(ofr);
-	            Element source = Misc.getChildByTagName(node,XMLString.TEXT_BIBLIOGRAPHY_SOURCE);
 	        	bibCv.handleBibliography(source, ldp, oc);
 	        }
         }

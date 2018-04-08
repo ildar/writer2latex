@@ -302,7 +302,7 @@
         <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will export all text in the
         document, even if it is currently hidden.</paragraph>
 
-        <paragraph role="heading" level="2" xml-lang="en-US">Figures and tables</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Figures, tables and indexes</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsOriginalImageSize" id="bm_options_originalimagesize"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">Use original image size</paragraph>
@@ -407,6 +407,13 @@
 		</list>
 		<paragraph role="paragraph" xml-lang="en-US">In all cases it might happen that LaTeX creates some special pages which only
 		contains floats. This will usually be the case if there are many floats compared to the amount of text.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsConvertIndexNames" id="bm_options_convertindexnames"/>
+		<paragraph role="heading" level="3" xml-lang="en-US">Convert index names</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsConvertIndexNames" visibility="hidden">Check this if you want to export the title names of table of contents, bibliography and other indexes</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">All indexes (table of contents, list of figures, list of tables, alphabetical
+		index and bibliography) has a name, which is shown as title. Check this option to export these names. Otherwise
+		the default names defined in LaTeX will be used.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">AutoCorrect</paragraph>
 		

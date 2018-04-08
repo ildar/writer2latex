@@ -1,5 +1,11 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] New option convert_index_names to toggle the export of index names
+  for table of content (\contentsname), list of figures (\listfigurename),
+  list of tables (\listtablename), alphabetical index (\indexname), ...
+  (The old behaviour was inconsistent: Only \contentsname was exported, and
+  this happended always)
+
 [w2x] The option encoding no longer supports UTF-16 and ISO-8859-1, leaving
   only UTF-8 and US-ASCII. The HTML5 specification strongly encourages the
   use of UTF-8, but US-ASCII is kept since it is compatible with UTF-8.

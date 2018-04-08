@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-03)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -48,7 +48,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 74; }
+    protected int getOptionCount() { return 75; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -160,36 +160,37 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int FORMATTING = 41;
     private static final int PAGE_FORMATTING = 42;
     private static final int OTHER_STYLES = 43;
-    private static final int IMAGE_CONTENT = 44;
-	private static final int TABLE_CONTENT = 45;
-	private static final int TABLE_FIRST_HEAD_STYLE = 46;
-	private static final int TABLE_HEAD_STYLE = 47;
-	private static final int TABLE_FOOT_STYLE = 48;
-	private static final int TABLE_LAST_FOOT_STYLE = 49;
-    private static final int IGNORE_HARD_PAGE_BREAKS = 50;
-    private static final int IGNORE_HARD_LINE_BREAKS = 51;
-    private static final int IGNORE_EMPTY_PARAGRAPHS =52;
-    private static final int IGNORE_DOUBLE_SPACES = 53;
-    private static final int DISPLAY_HIDDEN_TEXT = 54;
-    private static final int ALIGN_FRAMES = 55;
-    private static final int FLOAT_FIGURES = 56; 
-    private static final int FLOAT_TABLES = 57; 
-    private static final int FLOAT_OPTIONS = 58;
-    private static final int FIGURE_SEQUENCE_NAME = 59; 
-    private static final int TABLE_SEQUENCE_NAME = 60; 
-    private static final int IMAGE_OPTIONS = 61;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 62;
-    private static final int ORIGINAL_IMAGE_SIZE = 63;
-    private static final int SIMPLE_TABLE_LIMIT = 64;
-    private static final int NOTES = 65;
-    private static final int METADATA = 66;
-    private static final int TABSTOP = 67;
-    private static final int WRAP_LINES_AFTER = 68;
-    private static final int SPLIT_LINKED_SECTIONS = 69;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 70;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 71;
-    private static final int OLD_MATH_COLORS = 72;
-    private static final int DEBUG = 73;
+    private static final int CONVERT_INDEX_NAMES = 44;
+    private static final int IMAGE_CONTENT = 45;
+	private static final int TABLE_CONTENT = 46;
+	private static final int TABLE_FIRST_HEAD_STYLE = 47;
+	private static final int TABLE_HEAD_STYLE = 48;
+	private static final int TABLE_FOOT_STYLE = 49;
+	private static final int TABLE_LAST_FOOT_STYLE = 50;
+    private static final int IGNORE_HARD_PAGE_BREAKS = 51;
+    private static final int IGNORE_HARD_LINE_BREAKS = 52;
+    private static final int IGNORE_EMPTY_PARAGRAPHS =53;
+    private static final int IGNORE_DOUBLE_SPACES = 54;
+    private static final int DISPLAY_HIDDEN_TEXT = 55;
+    private static final int ALIGN_FRAMES = 56;
+    private static final int FLOAT_FIGURES = 57; 
+    private static final int FLOAT_TABLES = 58; 
+    private static final int FLOAT_OPTIONS = 59;
+    private static final int FIGURE_SEQUENCE_NAME = 60; 
+    private static final int TABLE_SEQUENCE_NAME = 61; 
+    private static final int IMAGE_OPTIONS = 62;
+    private static final int REMOVE_GRAPHICS_EXTENSION = 63;
+    private static final int ORIGINAL_IMAGE_SIZE = 64;
+    private static final int SIMPLE_TABLE_LIMIT = 65;
+    private static final int NOTES = 66;
+    private static final int METADATA = 67;
+    private static final int TABSTOP = 68;
+    private static final int WRAP_LINES_AFTER = 69;
+    private static final int SPLIT_LINKED_SECTIONS = 70;
+    private static final int SPLIT_TOPLEVEL_SECTIONS = 71;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 72;
+    private static final int OLD_MATH_COLORS = 73;
+    private static final int DEBUG = 74;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -303,6 +304,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             }
         };
         options[OTHER_STYLES] = new ContentHandlingOption("other_styles","accept");
+        options[CONVERT_INDEX_NAMES] = new BooleanOption("convert_index_names", "false");
         options[IMAGE_CONTENT] = new ContentHandlingOption("image_content","accept");
         options[TABLE_CONTENT] = new ContentHandlingOption("table_content","accept");
         options[TABLE_FIRST_HEAD_STYLE] = new Option("table_first_head_style","");
@@ -719,6 +721,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public int formatting() { return ((IntegerOption) options[FORMATTING]).getValue(); }
     public int pageFormatting() { return ((IntegerOption) options[PAGE_FORMATTING]).getValue(); }
     public int otherStyles() { return ((IntegerOption) options[OTHER_STYLES]).getValue(); }
+    public boolean convertIndexNames() { return ((BooleanOption) options[CONVERT_INDEX_NAMES]).getValue(); }
     public int imageContent() { return ((IntegerOption) options[IMAGE_CONTENT]).getValue(); }
     public int tableContent() { return ((IntegerOption) options[TABLE_CONTENT]).getValue(); }
     public String getTableFirstHeadStyle() { return options[TABLE_FIRST_HEAD_STYLE].getString(); }
