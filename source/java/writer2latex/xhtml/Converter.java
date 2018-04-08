@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-10)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -106,7 +106,7 @@ public class Converter extends ConverterBase {
 
     // override methods to read template
     @Override public void readTemplate(InputStream is) throws IOException {
-        template = new XhtmlDocument("Template");
+        template = new XhtmlDocument("Template",config);
         template.read(is);
     }
 	
@@ -505,8 +505,7 @@ public class Converter extends ConverterBase {
 	
     // Prepare next output file
     public Element nextOutFile() {
-        htmlDoc = new XhtmlDocument(getOutFileName(++nOutFileIndex,false));
-        htmlDoc.setConfig(config);
+        htmlDoc = new XhtmlDocument(getOutFileName(++nOutFileIndex,false),config);
         if (template!=null) { htmlDoc.readFromTemplate(template); }
         else if (bNeedHeaderFooter) { htmlDoc.createHeaderFooter(); }
         outFiles.add(nOutFileIndex,htmlDoc);

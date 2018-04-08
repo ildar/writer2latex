@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-31)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -179,7 +179,16 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         };
         options[NO_DOCTYPE] = new BooleanOption("no_doctype","false");
         options[ADD_BOM] = new BooleanOption("add_bom","false");
-        options[ENCODING] = new Option("encoding","UTF-8");
+        options[ENCODING] = new Option("encoding","UTF-8") {
+        	@Override public void setString(String sValue) {
+        		if ("US-ASCII".equalsIgnoreCase(sValue)) {
+        			super.setString(sValue);
+        		}
+        		else {
+        			super.setString("UTF-8");
+        		}
+        	}
+        };
         options[USE_NAMED_ENTITIES] = new BooleanOption("use_named_entities","false");
         options[HEXADECIMAL_ENTITIES] = new BooleanOption("hexadecimal_entities","true");
         options[PRETTY_PRINT] = new BooleanOption("pretty_print","true");

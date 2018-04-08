@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- cleanxhtml.xml 2018-04-03
-     This is a sample configuration file for Writer2xhtml.
-     The options are set to produce a clean XHTML file using
-     standard XHTML elements, without any style information. -->
+<!-- cleanxhtml.xml 2018-04-06
+     This is a sample configuration file for Writer2LaTeX.
+     The options are set to produce a clean HTML5 file using
+     standard HTML5 elements, without any style information. -->
 
 <config>
   <!-- options -->
@@ -11,7 +11,7 @@
   <option name="frame_formatting" value="ignore_all" />
   <option name="section_formatting" value="ignore_all" />
   <option name="table_formatting" value="ignore_all" />
-  <option name="ignore_table_dimensions" value="true" />
+  <option name="table_size" value="none" />
   <option name="use_dublin_core" value="true" />
   <option name="units" value="px" />
   <option name="scaling" value="100%" />

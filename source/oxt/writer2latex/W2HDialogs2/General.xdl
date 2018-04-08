@@ -4,11 +4,9 @@
  <dlg:bulletinboard>
   <dlg:checkbox dlg:id="NoDoctype" dlg:tab-index="0" dlg:left="10" dlg:top="8" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:NoDoctype" dlg:value="Do not include DOCTYPE" dlg:checked="false"/>
   <dlg:text dlg:id="EncodingLabel" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="110" dlg:height="12" dlg:value="Encoding"/>
-  <dlg:menulist dlg:id="Encoding" dlg:tab-index="2" dlg:left="130" dlg:top="20" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Encoding" dlg:spin="true" dlg:linecount="4">
+  <dlg:menulist dlg:id="Encoding" dlg:tab-index="2" dlg:left="130" dlg:top="20" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Encoding" dlg:spin="true" dlg:linecount="2">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="UTF-8"/>
-    <dlg:menuitem dlg:value="UTF-16"/>
-    <dlg:menuitem dlg:value="ISO-8859-1"/>
     <dlg:menuitem dlg:value="US-ASCII"/>
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:EncodingChange" script:language="UNO"/>

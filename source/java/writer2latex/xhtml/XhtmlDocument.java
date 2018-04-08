@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-08)
  *
  */
 
@@ -223,8 +223,9 @@ public class XhtmlDocument extends DOMDocument {
      *  Constructor. This constructor also creates the DOM (minimal: root, head,
      *  title and body node only)
      *  @param  name  name of this document
+     *  @param  config the configuration to use 
      */
-    public XhtmlDocument(String name) {
+    public XhtmlDocument(String name, XhtmlConfig config) {
         super(name,".html");
 
         // create DOM
@@ -251,8 +252,33 @@ public class XhtmlDocument extends DOMDocument {
         	// The newDocumentBuilder() method may in theory throw this, but this will not happen
             e.printStackTrace();
         }
+        
+        setConfig(config);
     }
     
+    private void setConfig(XhtmlConfig config) {
+        sEncoding = config.xhtmlEncoding();
+        if ("US-ASCII".equals(sEncoding)) {
+            cLimit = 127;
+        }
+        else {
+            cLimit = 65535;
+        }
+        
+        bAddBOM = config.xhtmlAddBOM() && sEncoding.equals("UTF-8");
+        bNoDoctype = config.xhtmlNoDoctype();
+        bPrettyPrint = config.prettyPrint();
+        bUseNamedEntities = config.useNamedEntities();
+        bHexadecimalEntities = config.hexadecimalEntities();
+        
+        String[] sTemplateIds = config.templateIds().split(",");
+        int nIdCount = sTemplateIds.length;
+        if (nIdCount>0 && sTemplateIds[0].trim().length()>0) sContentId = sTemplateIds[0].trim(); else sContentId = "content";
+        if (nIdCount>1) sHeaderId = sTemplateIds[1].trim(); else sHeaderId = "header";
+        if (nIdCount>2) sFooterId = sTemplateIds[2].trim(); else sFooterId = "footer";
+        if (nIdCount>3) sPanelId = sTemplateIds[3].trim(); else sPanelId = "panel";
+    }
+		
     @Override public String getMIMEType() {
     	return "text/html";
     }
@@ -426,36 +452,6 @@ public class XhtmlDocument extends DOMDocument {
         }
     }
     
-    public void setConfig(XhtmlConfig config) {
-        sEncoding = config.xhtmlEncoding().toUpperCase();
-        if ("UTF-16".equals(sEncoding)) {
-            cLimit = 65535;
-        }
-        else if ("ISO-8859-1".equals(sEncoding)) {
-            cLimit = 255;
-        }
-        else if ("US-ASCII".equals(sEncoding)) {
-            cLimit = 127;
-        }
-        else {
-            sEncoding = "UTF-8";
-            cLimit = 65535;
-        }
-        
-        bAddBOM = config.xhtmlAddBOM() && sEncoding.equals("UTF-8");
-        bNoDoctype = config.xhtmlNoDoctype();
-        bPrettyPrint = config.prettyPrint();
-        bUseNamedEntities = config.useNamedEntities();
-        bHexadecimalEntities = config.hexadecimalEntities();
-        
-        String[] sTemplateIds = config.templateIds().split(",");
-        int nIdCount = sTemplateIds.length;
-        if (nIdCount>0 && sTemplateIds[0].trim().length()>0) sContentId = sTemplateIds[0].trim(); else sContentId = "content";
-        if (nIdCount>1) sHeaderId = sTemplateIds[1].trim(); else sHeaderId = "header";
-        if (nIdCount>2) sFooterId = sTemplateIds[2].trim(); else sFooterId = "footer";
-        if (nIdCount>3) sPanelId = sTemplateIds[3].trim(); else sPanelId = "panel";
-    }
-		
     public String getEncoding() { return sEncoding; }
 	
     public String getFileExtension() { return super.getFileExtension(); }

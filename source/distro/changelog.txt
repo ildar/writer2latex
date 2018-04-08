@@ -1,5 +1,9 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2x] The option encoding no longer supports UTF-16 and ISO-8859-1, leaving
+  only UTF-8 and US-ASCII. The HTML5 specification strongly encourages the
+  use of UTF-8, but US-ASCII is kept since it is compatible with UTF-8.
+
 [w2x] New option units with values rem (default), px and original.
   This replaces the options convert_to_px, which corresponds to the values
   px and original. For backwards compatibility, convert_to_px is still

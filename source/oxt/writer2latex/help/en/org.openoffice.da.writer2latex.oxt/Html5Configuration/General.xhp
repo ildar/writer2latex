@@ -22,9 +22,9 @@
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Encoding" id="bm_configencoding"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Encoding</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select the character encoding to use for the HTML5 document. Currently supported
-        encodings are <emph>UTF-8</emph> (recommended), <emph>UTF-16</emph>, <emph>ISO-8859-1</emph> and <emph>US-ASCII</emph>.
-        Characters not supported by the encoding are exported as numeric character entities.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select the character encoding to use for the HTML5 document. It is strongly
+        recommended to use <emph>UTF-8</emph>. If for some reason you cannot use UTF-8, <emph>US-ASCII</emph> is provided
+        as an alternative. In this case, other characters are exported as numeric character entities.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:AddBOM" id="bm_configaddbom"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Add Byte Order Mark (BOM)</paragraph>
@@ -34,8 +34,8 @@
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:HexadecimalEntities" id="bm_confighexadecimalentities"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Numeric character entities</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select how to export numeric character entities. You can use either
-        <emph>hexadecimal</emph> or <emph>decimal</emph> numbers. This is not relevant if you use UTF-8 or UTF-16.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select how to export numeric character entities (US-ASCII only). You can use either
+        <emph>hexadecimal</emph> or <emph>decimal</emph> numbers.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:UseNamedEntities" id="bm_configusenamedentities"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use named character entities</paragraph>

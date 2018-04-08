@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-06)
+ *  Version 2.0 (2018-04-08)
  *
  */ 
 
@@ -99,7 +99,7 @@ public class Html5ConfigurationDialog extends ConfigurationDialogBase implements
 			"ins", "kbd", "samp", "small", "strong", "sub", "sup", "tt", "var", "q" };
 
     private class GeneralHandler extends PageHandler {
-    	private final String[] sEncodingValues = { "UTF-8", "UTF-16", "ISO-8859-1", "US-ASCII" };
+    	private final String[] sEncodingValues = { "UTF-8", "US-ASCII" };
     	
     	@Override protected void setControls(DialogAccess dlg) {
     		checkBoxFromConfig(dlg, "NoDoctype", "no_doctype");
@@ -142,8 +142,8 @@ public class Html5ConfigurationDialog extends ConfigurationDialogBase implements
     	private void encodingChange(DialogAccess dlg) {
     		int nEncoding = dlg.getListBoxSelectedItem("Encoding");
     		dlg.setControlEnabled("AddBOM", nEncoding==0); // Only for UTF-8
-    		dlg.setControlEnabled("HexadecimalEntitiesLabel", nEncoding>1); // Not for UNICODE
-    		dlg.setControlEnabled("HexadecimalEntities", nEncoding>1); // Not for UNICODE
+    		dlg.setControlEnabled("HexadecimalEntitiesLabel", nEncoding==1); // Only for US-ASCII
+    		dlg.setControlEnabled("HexadecimalEntities", nEncoding==1); // Only for US-ASCII
     	}
     	
     }
