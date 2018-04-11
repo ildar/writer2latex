@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-26)
+ *  Version 2.0 (2018-04-11)
  *
  */ 
  
@@ -34,7 +34,6 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
 import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
@@ -161,12 +160,12 @@ public final class Writer2LaTeX extends WeakBase
     
     private void processHTML5() {
     	createXhtmlUNOPublisher();
-    	xhtmlUnoPublisher.publish(TargetFormat.html5);
+    	xhtmlUnoPublisher.publish();
     }
     
     private void process() {
     	createUNOPublisher();
-    	unoPublisher.publish(TargetFormat.latex);
+    	unoPublisher.publish();
     }
     
 	private void viewLog() {
@@ -235,13 +234,13 @@ public final class Writer2LaTeX extends WeakBase
         
 	private void createXhtmlUNOPublisher() {
     	if (xhtmlUnoPublisher==null) { 
-    		xhtmlUnoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX"); //$NON-NLS-1$
+    		xhtmlUnoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame);
     	}		
 	}
 	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 
-    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame,"Writer2LaTeX"); //$NON-NLS-1$
+    		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame);
     	}		
 	}
     	

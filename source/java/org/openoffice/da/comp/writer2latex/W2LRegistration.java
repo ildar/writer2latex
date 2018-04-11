@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-27) 
+ *  Version 2.0 (2018-04-09) 
  *
  */ 
  
@@ -27,7 +27,6 @@ package org.openoffice.da.comp.writer2latex;
 
 import org.openoffice.da.comp.writer2xhtml.Html5ConfigurationDialog;
 import org.openoffice.da.comp.writer2xhtml.Html5SettingsDialog;
-import org.openoffice.da.comp.writer2xhtml.W2XExportFilter;
 import org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog;
 
 import com.sun.star.lang.XMultiServiceFactory;
@@ -73,12 +72,6 @@ public class W2LRegistration {
         else if (implName.equals(LaTeXOptionsDialog.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(LaTeXOptionsDialog.class,
             LaTeXOptionsDialog.__serviceName,
-            multiFactory,						    
-            regKey);
-        }
-        else if (implName.equals(W2XExportFilter.__implementationName) ) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(W2XExportFilter.class,
-            W2XExportFilter.__serviceName,
             multiFactory,						    
             regKey);
         }
@@ -172,8 +165,6 @@ public class W2LRegistration {
                 W2LExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(LaTeXOptionsDialog.__implementationName,
                 LaTeXOptionsDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,
-                W2XExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
                 XhtmlOptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2LStarMathConverter.__implementationName,

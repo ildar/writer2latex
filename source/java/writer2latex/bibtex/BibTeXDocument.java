@@ -2,7 +2,7 @@
  *
  *  BibTeXDocument.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-01)
+ *  Version 2.0 (2018-04-09)
  *
  */
 
@@ -128,7 +128,7 @@ public class BibTeXDocument implements OutputFile {
     public void write(OutputStream os) throws IOException {
         // BibTeX files are plain ascii
         OutputStreamWriter osw = new OutputStreamWriter(os,"ASCII");
-        osw.write("%% This file was converted to BibTeX by Writer2BibTeX ver. "+ConverterFactory.getVersion()+".\n");
+        osw.write("%% This file was converted to BibTeX by Writer2LaTeX ver. "+ConverterFactory.getVersion()+".\n");
         osw.write("%% See http://writer2latex.sourceforge.net for more info.\n");
         osw.write("\n");
         Enumeration<BibMark> enumeration = entries.elements();

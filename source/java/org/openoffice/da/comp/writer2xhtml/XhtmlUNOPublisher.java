@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-22)
+ *  Version 2.0 (2018-04-11)
  *  
  */
 package org.openoffice.da.comp.writer2xhtml;
@@ -45,17 +45,23 @@ import com.sun.star.uno.XComponentContext;
 
 public class XhtmlUNOPublisher extends UNOPublisher {
 	
-    public XhtmlUNOPublisher(XComponentContext xContext, XFrame xFrame, String sAppName) {
-    	super(xContext, xFrame, sAppName);
+    public XhtmlUNOPublisher(XComponentContext xContext, XFrame xFrame) {
+    	super(xContext, xFrame);
     }
     
+    protected String getTargetExtension() {
+    	return ".html"; //$NON-NLS-1$
+    }
     
-	/** Display the converted document depending on user settings
-	 * 
-	 *  @param sURL the URL of the converted document
-	 *  @param format the target format
-	 */
-    @Override protected void postProcess(String sURL, TargetFormat format) {
+    protected String getDialogName() { 
+    	return "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog";  //$NON-NLS-1$
+	}
+
+    protected  String getFilterName() {
+    	return "org.openoffice.da.writer2html5"; //$NON-NLS-1$
+   	}
+
+    protected void postProcess(String sURL) {
     	// format is not used as we only handle HTML5
     	RegistryHelper registry = new RegistryHelper(xContext);
     	

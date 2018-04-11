@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-11)
  *  
  */
 package org.openoffice.da.comp.w2lcommon.filter;
@@ -46,13 +46,14 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XModifiable;
 
-/** This class converts an open office document to another format
+/** This is an abstract base class to <emph>publish</emph> a Office document
+ *  to a specific format. This involves exporting and post processing of the
+ *  document. Usually the final step will be to display the result with a
+ *  view application.
  */
-public class UNOPublisher {
+public abstract class UNOPublisher {
 	
-    public enum TargetFormat { html5, latex };
-    
-    private String sAppName;
+    private static String DISPLAY_NAME = "Writer2LaTeX";
     
     protected XComponentContext xContext;
     protected XFrame xFrame;
@@ -63,12 +64,10 @@ public class UNOPublisher {
      * 
      * @param xContext the component context from which new UNO services are instantiated
      * @param xFrame the current frame
-     * @param sAppName the name of the application using the <code>UNOPublisher</code>
      */
-    public UNOPublisher(XComponentContext xContext, XFrame xFrame, String sAppName) {
+    public UNOPublisher(XComponentContext xContext, XFrame xFrame) {
     	this.xContext = xContext;
     	this.xFrame = xFrame;
-    	this.sAppName = sAppName;
         // Get the model for the document from the frame
         XController xController = xFrame.getController();
         if (xController!=null) {
@@ -76,6 +75,53 @@ public class UNOPublisher {
         }
     }
     
+    /** Get the file extension of the converted document
+     * 
+     * @return the file extension, including dot
+     */
+    protected abstract String getTargetExtension();
+      
+    /** Get the implementation name of the filter dialog
+     * 
+     * @return the filter dialog name
+     */
+    protected abstract String getDialogName(); 
+    
+    /** Get the filter name for the export
+     * 
+     * @return the filter name
+     */
+    protected abstract String getFilterName();
+
+    /** Post process the document after conversion.
+     * 
+     *  @param sTargetURL URL of the converted document
+     *  @param format the target format
+     */
+    protected abstract void postProcess(String sTargetURL);
+
+    /** Filter the file name to avoid unwanted characters. The subclass may
+     *  override this if desired, the default implementation does nothing.
+     * 
+     * @param sFileName the original file name
+     * @return the filtered file name
+     */	
+    protected String filterFileName(String sFileName) {
+    	return sFileName;
+    }
+    
+    /** Post process the media properties after displaying the dialog.
+     *  The subclass may override this if desired, the default implementation
+     *  does nothing.
+     * 
+     * @param mediaProps the media properties as set by the dialog
+     * @return the updated media properties
+     */
+    protected PropertyValue[] postProcessMediaProps(PropertyValue[] mediaProps) {
+    	return mediaProps;
+    }
+    
+        
     /** Publish the document associated with this <code>UNOPublisher</code>. This involves five steps:
      *  (1) Check that the document is saved in the local file system.
      *  (2) Display the options dialog.
@@ -86,13 +132,13 @@ public class UNOPublisher {
      * @param format the target format
      * @return true if the publishing was successful
      */
-    public boolean publish(TargetFormat format) {
-        if (documentSaved() && updateMediaProperties(format)) {
+    public boolean publish() {
+        if (documentSaved() && updateMediaProperties()) {
 	        // Create a (somewhat coarse grained) status indicator/progress bar
 	        XStatusIndicatorFactory xFactory = (com.sun.star.task.XStatusIndicatorFactory)
 	            UnoRuntime.queryInterface(com.sun.star.task.XStatusIndicatorFactory.class, xFrame);
 	        XStatusIndicator xStatus = xFactory.createStatusIndicator();
-	        xStatus.start(sAppName,10);
+	        xStatus.start(DISPLAY_NAME,10);
 	        xStatus.setValue(1); // At least we have started, that's 10% :-)
 	        
             try {
@@ -119,50 +165,24 @@ public class UNOPublisher {
 	        catch (IOException e) {
 	            xStatus.end();
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
+	            msgBox.showMessage(DISPLAY_NAME,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
 	            return false;
 	        }
 	        catch (com.sun.star.uno.Exception e) {
 	            xStatus.end();
 	            MessageBox msgBox = new MessageBox(xContext, xFrame);
-	            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
+	            msgBox.showMessage(DISPLAY_NAME,Messages.getString("UNOPublisher.failexport")); //$NON-NLS-1$
 	            return false;
 			}
 	        xStatus.setValue(7); // Document is converted, that's 70%
 	        
-	        postProcess(getTargetURL(format),format);
+	        postProcess(getTargetURL());
 	        
 	        xStatus.setValue(10); // Export is finished (The user will usually not see this...)
 	        xStatus.end();
 	        return true;
 	    }
         return false;
-    }
-    
-    /** Filter the file name to avoid unwanted characters
-     * 
-     * @param sFileName the original file name
-     * @return the filtered file name
-     */	
-    protected String filterFileName(String sFileName) {
-    	return sFileName;
-    }
-    
-    /** Post process the media properties after displaying the dialog
-     * 
-     * @param mediaProps the media properties as set by the dialog
-     * @return the updated media properties
-     */
-    protected PropertyValue[] postProcessMediaProps(PropertyValue[] mediaProps) {
-    	return mediaProps;
-    }
-    
-    /** Post process the document after conversion.
-     * 
-     *  @param sTargetURL URL of the converted document
-     *  @param format the target format
-     */
-    protected void postProcess(String sTargetURL, TargetFormat format) {
     }
     
     /** Check that the document is saved in a location, we can use
@@ -173,17 +193,17 @@ public class UNOPublisher {
         String sDocumentUrl = xModel.getURL();
         if (sDocumentUrl.length()==0) { // The document has no location
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.savedocument")); //$NON-NLS-1$
+            msgBox.showMessage(DISPLAY_NAME,Messages.getString("UNOPublisher.savedocument")); //$NON-NLS-1$
             return false;
         }
         else if (!".odt".equals(Misc.getFileExtension(sDocumentUrl)) && !".fodt".equals(Misc.getFileExtension(sDocumentUrl)) && !".ods".equals(Misc.getFileExtension(sDocumentUrl)) && !".fods".equals(Misc.getFileExtension(sDocumentUrl))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.saveodt")); //$NON-NLS-1$
+            msgBox.showMessage(DISPLAY_NAME,Messages.getString("UNOPublisher.saveodt")); //$NON-NLS-1$
             return false;        	        	
         }
         else if (!sDocumentUrl.startsWith("file:")) { //$NON-NLS-1$
             MessageBox msgBox = new MessageBox(xContext, xFrame);
-            msgBox.showMessage(sAppName,Messages.getString("UNOPublisher.savefilesystem")); //$NON-NLS-1$
+            msgBox.showMessage(DISPLAY_NAME,Messages.getString("UNOPublisher.savefilesystem")); //$NON-NLS-1$
             return false;        	
         }
         else if (System.getProperty("os.name").startsWith("Windows")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -191,7 +211,7 @@ public class UNOPublisher {
     		Pattern windowsPattern = Pattern.compile("^file:///[A-Za-z][|:].*"); //$NON-NLS-1$
     		if (!windowsPattern.matcher(sDocumentUrl).matches()) {
                 MessageBox msgBox = new MessageBox(xContext, xFrame);
-                msgBox.showMessage(sAppName,
+                msgBox.showMessage(DISPLAY_NAME,
                 		Messages.getString("UNOPublisher.savedrivename")); //$NON-NLS-1$
                 return false;        		
     		}
@@ -238,25 +258,25 @@ public class UNOPublisher {
     	return null;
     }
     
-    protected String getTargetURL(TargetFormat format) {
-    	return getTargetPath()+getTargetFileName()+getTargetExtension(format);
+    protected String getTargetURL() {
+    	return getTargetPath()+getTargetFileName()+getTargetExtension();
     }
     
-    private void prepareMediaProperties(TargetFormat format) {
+    private void prepareMediaProperties() {
         // Create inital media properties
         mediaProps = new PropertyValue[2];
         mediaProps[0] = new PropertyValue();
         mediaProps[0].Name = "FilterName"; //$NON-NLS-1$
-        mediaProps[0].Value = getFilterName(format);
+        mediaProps[0].Value = getFilterName();
         mediaProps[1] = new PropertyValue();
         mediaProps[1].Name = "URL"; //$NON-NLS-1$
-        mediaProps[1].Value = getTargetURL(format);
+        mediaProps[1].Value = getTargetURL();
     }
     
-    private boolean updateMediaProperties(TargetFormat format) {
-    	prepareMediaProperties(format);
+    private boolean updateMediaProperties() {
+    	prepareMediaProperties();
     	
-    	String sDialogName = getDialogName(format);
+    	String sDialogName = getDialogName();
     	if (sDialogName!=null) {
 	    	try {
 	            // Display options dialog
@@ -284,30 +304,6 @@ public class UNOPublisher {
     	// No dialog exists, or the dialog was cancelled
     	mediaProps = null;
     	return false;
-    }
-    
-    private static String getTargetExtension(TargetFormat format) {
-    	switch (format) {
-    	case html5: return ".html"; //$NON-NLS-1$
-    	case latex: return ".tex"; //$NON-NLS-1$
-    	default: return ""; //$NON-NLS-1$
-    	}
-    }
-      
-    private static String getDialogName(TargetFormat format) {
-    	switch (format) {
-    	case html5: return "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog"; //$NON-NLS-1$
-    	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$
-    	default: return null;
-    	}
-    }
-    
-    private static String getFilterName(TargetFormat format) {
-    	switch (format) {
-    	case html5: return "org.openoffice.da.writer2html5"; //$NON-NLS-1$
-    	case latex: return "org.openoffice.da.writer2latex"; //$NON-NLS-1$
-    	default: return ""; //$NON-NLS-1$
-    	}
     }
 
 }

@@ -2,7 +2,7 @@
  *
  *  LaTeXUNOPublisher.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2015-07-23)
+ *  Version 2.0 (2018-04-11)
  *  
  */
 package org.openoffice.da.comp.writer2latex;
@@ -51,10 +51,22 @@ public class LaTeXUNOPublisher extends UNOPublisher {
 	private String sBibinputs=null;
 	private String sBackend = "generic"; //$NON-NLS-1$
 	
-    public LaTeXUNOPublisher(XComponentContext xContext, XFrame xFrame, String sAppName) {
-    	super(xContext, xFrame, sAppName);
+    public LaTeXUNOPublisher(XComponentContext xContext, XFrame xFrame) {
+    	super(xContext, xFrame);
     }
     
+    protected String getTargetExtension() {
+    	return ".tex"; //$NON-NLS-1$
+    }
+    
+    protected String getDialogName() { 
+    	return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";  //$NON-NLS-1$
+	}
+
+    protected  String getFilterName() {
+    	return "org.openoffice.da.writer2latex"; //$NON-NLS-1$
+   	}
+
     /** Get the directory containing the BibTeX files (as defined in the registry)
      * 
      * @return the directory
@@ -142,7 +154,7 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     
 	/** Postprocess the converted document with LaTeX and display the result
 	 */
-    @Override protected void postProcess(String sURL, TargetFormat format) {
+    protected void postProcess(String sURL) {
         if (texify==null) { texify = new TeXify(xContext); }
         File file = new File(Misc.urlToFile(getTargetPath()),getTargetFileName());
         
