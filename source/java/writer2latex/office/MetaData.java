@@ -2,7 +2,7 @@
  *
  *  MetaData.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 2.0 (2018-04-12)
  *
  */
 
@@ -32,14 +32,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import writer2latex.util.*;
-//import writer2latex.office.*;
-
+import writer2latex.util.CSVList;
+import writer2latex.util.Misc;
 
 /**
  *  <p>This class represents the metadata of an OOo Writer document.</p>
  */
-public class MetaData implements writer2latex.api.MetaData {
+public class MetaData {
     // Dublin Core
     private String sTitle = "";
     private String sCreator = "";

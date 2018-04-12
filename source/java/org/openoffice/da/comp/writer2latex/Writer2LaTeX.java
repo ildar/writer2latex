@@ -35,7 +35,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
-import org.openoffice.da.comp.writer2latex.html5.XhtmlUNOPublisher;
+import org.openoffice.da.comp.writer2latex.html5.Html5UNOPublisher;
 import org.openoffice.da.comp.writer2latex.latex.LaTeXUNOPublisher;
 import org.openoffice.da.comp.writer2latex.util.MessageBox;
 import org.openoffice.da.comp.writer2latex.util.RegistryHelper;
@@ -57,7 +57,7 @@ public final class Writer2LaTeX extends WeakBase
     private final XComponentContext m_xContext;
     private XFrame m_xFrame;
     private LaTeXUNOPublisher unoPublisher = null;
-    private XhtmlUNOPublisher xhtmlUnoPublisher = null;
+    private Html5UNOPublisher xhtmlUnoPublisher = null;
 	
     public static final String __implementationName = Writer2LaTeX.class.getName();
     public static final String __serviceName = "com.sun.star.frame.ProtocolHandler";  //$NON-NLS-1$
@@ -236,7 +236,7 @@ public final class Writer2LaTeX extends WeakBase
         
 	private void createXhtmlUNOPublisher() {
     	if (xhtmlUnoPublisher==null) { 
-    		xhtmlUnoPublisher = new XhtmlUNOPublisher(m_xContext,m_xFrame);
+    		xhtmlUnoPublisher = new Html5UNOPublisher(m_xContext,m_xFrame);
     	}		
 	}
 	

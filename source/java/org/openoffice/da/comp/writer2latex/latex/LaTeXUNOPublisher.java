@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-11)
+ *  Version 2.0 (2018-04-12)
  *  
  */
 package org.openoffice.da.comp.writer2latex.latex;
@@ -62,7 +62,7 @@ public class LaTeXUNOPublisher extends UNOPublisher {
     }
     
     protected String getDialogName() { 
-    	return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";  //$NON-NLS-1$
+    	return "org.openoffice.da.comp.writer2latex.LaTeXFilterDialog";  //$NON-NLS-1$
 	}
 
     protected  String getFilterName() {

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-11)
+ *  Version 2.0 (2018-04-12)
  *  
  */
 package org.openoffice.da.comp.writer2latex.base;
@@ -27,6 +27,7 @@ package org.openoffice.da.comp.writer2latex.base;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.openoffice.da.comp.writer2latex.Messages;
 import org.openoffice.da.comp.writer2latex.util.MessageBox;
 
 import writer2latex.util.Misc;

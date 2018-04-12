@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  XhtmlUNOPublisher.java
+ *  Html5UNOPublisher.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-11)
+ *  Version 2.0 (2018-04-12)
  *  
  */
 package org.openoffice.da.comp.writer2latex.html5;
@@ -43,9 +43,9 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-public class XhtmlUNOPublisher extends UNOPublisher {
+public class Html5UNOPublisher extends UNOPublisher {
 	
-    public XhtmlUNOPublisher(XComponentContext xContext, XFrame xFrame) {
+    public Html5UNOPublisher(XComponentContext xContext, XFrame xFrame) {
     	super(xContext, xFrame);
     }
     
@@ -54,7 +54,7 @@ public class XhtmlUNOPublisher extends UNOPublisher {
     }
     
     protected String getDialogName() { 
-    	return "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog";  //$NON-NLS-1$
+    	return "org.openoffice.da.comp.writer2latex.Html5FilterDialog";  //$NON-NLS-1$
 	}
 
     protected  String getFilterName() {

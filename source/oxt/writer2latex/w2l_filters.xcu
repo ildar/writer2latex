@@ -15,7 +15,7 @@
 		<prop oor:name="FileFormatVersion"><value>0</value></prop>
 		<prop oor:name="Type"><value>writer_latex_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.LaTeXFilterDialog</value></prop>
 		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2latex.W2LExportFilter unused com.sun.star.comp.Writer.XMLOasisImporter com.sun.star.comp.Writer.XMLOasisExporter staroffice/sxw application/x-latex</value></prop>
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
@@ -68,7 +68,7 @@
 		<prop oor:name="FileFormatVersion"><value>0</value></prop>
 		<prop oor:name="Type"><value>writer_html5_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.Html5FilterDialog</value></prop>
 		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2latex.W2LExportFilter unused com.sun.star.comp.Writer.XMLOasisImporter com.sun.star.comp.Writer.XMLOasisExporter staroffice/sxw text/html</value></prop>
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>

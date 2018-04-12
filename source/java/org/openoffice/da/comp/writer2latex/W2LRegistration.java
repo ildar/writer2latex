@@ -29,10 +29,10 @@ import org.openoffice.da.comp.writer2latex.bibtex.BibTeXDialog;
 import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
 import org.openoffice.da.comp.writer2latex.html5.Html5ConfigurationDialog;
 import org.openoffice.da.comp.writer2latex.html5.Html5SettingsDialog;
-import org.openoffice.da.comp.writer2latex.html5.XhtmlOptionsDialog;
+import org.openoffice.da.comp.writer2latex.html5.Html5FilterDialog;
 import org.openoffice.da.comp.writer2latex.latex.ApplicationsDialog;
 import org.openoffice.da.comp.writer2latex.latex.ConfigurationDialog;
-import org.openoffice.da.comp.writer2latex.latex.LaTeXOptionsDialog;
+import org.openoffice.da.comp.writer2latex.latex.LaTeXFilterDialog;
 import org.openoffice.da.comp.writer2latex.latex.LogViewerDialog;
 import org.openoffice.da.comp.writer2latex.latex.TeXDetectService;
 import org.openoffice.da.comp.writer2latex.latex.TeXImportFilter;
@@ -78,15 +78,15 @@ public class W2LRegistration {
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(LaTeXOptionsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(LaTeXOptionsDialog.class,
-            LaTeXOptionsDialog.__serviceName,
+        else if (implName.equals(LaTeXFilterDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(LaTeXFilterDialog.class,
+            LaTeXFilterDialog.__serviceName,
             multiFactory,						    
             regKey);
         }
-        else if (implName.equals(XhtmlOptionsDialog.__implementationName)) {
-            xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialog.class,
-            XhtmlOptionsDialog.__serviceName,
+        else if (implName.equals(Html5FilterDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(Html5FilterDialog.class,
+            Html5FilterDialog.__serviceName,
             multiFactory,						    
             regKey);
         }
@@ -172,10 +172,10 @@ public class W2LRegistration {
         return
             FactoryHelper.writeRegistryServiceInfo(W2LExportFilter.__implementationName,
                 W2LExportFilter.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(LaTeXOptionsDialog.__implementationName,
-                LaTeXOptionsDialog.__serviceName, regKey) &
-            FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
-                XhtmlOptionsDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(LaTeXFilterDialog.__implementationName,
+                LaTeXFilterDialog.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Html5FilterDialog.__implementationName,
+                Html5FilterDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2LStarMathConverter.__implementationName,
                 W2LStarMathConverter.__serviceName, regKey) &
         	FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  XhtmlOptionsDialog.java
+ *  Html5FilterDialog.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-02)
+ *  Version 2.0 (2018-04-12)
  *
  */ 
  
@@ -30,7 +30,7 @@ import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.writer2latex.W2LRegistration;
-import org.openoffice.da.comp.writer2latex.base.OptionsDialogBase;
+import org.openoffice.da.comp.writer2latex.base.FilterDialogBase;
 import org.openoffice.da.comp.writer2latex.util.PropertyHelper;
 
 import writer2latex.api.MIMETypes;
@@ -38,7 +38,7 @@ import writer2latex.api.MIMETypes;
 /** This class provides a uno component which implements a filter ui for the
  *  HTML5 export
  */
-public class XhtmlOptionsDialog extends OptionsDialogBase {
+public class Html5FilterDialog extends FilterDialogBase {
 	
     // Translate list box items to configuration option values 
     private static final String[] SIZE_VALUES =
@@ -46,11 +46,11 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2latex.XhtmlOptionsDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.Html5FilterDialog";
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.XhtmlOptionsDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.Html5FilterDialog";
 	
     public String getDialogLibraryName() { return "W2HDialogs"; }
 	
@@ -69,7 +69,7 @@ public class XhtmlOptionsDialog extends OptionsDialogBase {
     }
 
     /** Create a new XhtmlOptionsDialog */
-    public XhtmlOptionsDialog(XComponentContext xContext) {
+    public Html5FilterDialog(XComponentContext xContext) {
         super(xContext);
         xMSF = W2LRegistration.xMultiServiceFactory;
     }

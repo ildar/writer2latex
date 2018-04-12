@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  LaTeXOptionsDialog.java
+ *  LaTeXFilterDialog.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-08)
+ *  Version 2.0 (2018-04-12)
  *  
  */
 
@@ -30,7 +30,7 @@ import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.writer2latex.W2LRegistration;
-import org.openoffice.da.comp.writer2latex.base.OptionsDialogBase;
+import org.openoffice.da.comp.writer2latex.base.FilterDialogBase;
 import org.openoffice.da.comp.writer2latex.util.PropertyHelper;
 
 import writer2latex.api.MIMETypes;
@@ -38,7 +38,7 @@ import writer2latex.api.MIMETypes;
 /** This class provides a UNO component which implements a filter ui for the
  *  LaTeX export
  */
-public class LaTeXOptionsDialog extends OptionsDialogBase {
+public class LaTeXFilterDialog extends FilterDialogBase {
 
     // Translate list box items to configuration option values 
     private static final String[] BACKEND_VALUES =
@@ -72,18 +72,18 @@ public class LaTeXOptionsDialog extends OptionsDialogBase {
     
     /** The component will be registered under this name.
      */
-    public static String __serviceName = "org.openoffice.da.writer2latex.LaTeXOptionsDialog";
+    public static String __serviceName = "org.openoffice.da.writer2latex.LaTeXFilterDialog";
 
     /** The component should also have an implementation name.
      *  The subclass should override this with a suitable name
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog";
+    public static String __implementationName = "org.openoffice.da.comp.writer2latex.LaTeXFilterDialog";
 
     public String getDialogLibraryName() { return "W2LDialogs"; }
 	
 
     /** Create a new LaTeXOptionsDialog */
-    public LaTeXOptionsDialog(XComponentContext xContext) {
+    public LaTeXFilterDialog(XComponentContext xContext) {
         super(xContext);
         xMSF = W2LRegistration.xMultiServiceFactory;
     }

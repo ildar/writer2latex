@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  OptionsDialogBase.java
+ *  FilterDialogBase.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-28)
+ *  Version 2.0 (2018-04-12)
  *
  */ 
  
@@ -62,7 +62,7 @@ import writer2latex.api.ConverterFactory;
 
 /** This class provides an abstract uno component which implements a filter ui
  */
-public abstract class OptionsDialogBase extends DialogBase implements
+public abstract class FilterDialogBase extends DialogBase implements
         XPropertyAccess { // Filter ui requires XExecutableDialog + XPropertyAccess
 	
     //////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ public abstract class OptionsDialogBase extends DialogBase implements
     protected abstract String getMIME();
 	
     /** Create a new OptionsDialogBase */
-    public OptionsDialogBase(XComponentContext xContext) {
+    public FilterDialogBase(XComponentContext xContext) {
         super(xContext);
         this.xMSF = null; // must be set properly by subclass
     }
