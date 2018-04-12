@@ -34,10 +34,12 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
-import org.openoffice.da.comp.writer2xhtml.XhtmlUNOPublisher;
+import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
+import org.openoffice.da.comp.writer2latex.html5.XhtmlUNOPublisher;
+import org.openoffice.da.comp.writer2latex.latex.LaTeXUNOPublisher;
+import org.openoffice.da.comp.writer2latex.util.MessageBox;
+import org.openoffice.da.comp.writer2latex.util.RegistryHelper;
+import org.openoffice.da.comp.writer2latex.util.XPropertySetHelper;
        
 /** This class implements the ui (dispatch) commands provided by the Writer2LaTeX toolbar.
  *  The actual processing is done by the core classes <code>UNOPublisher</code>,

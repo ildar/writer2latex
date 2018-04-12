@@ -25,9 +25,18 @@
  
 package org.openoffice.da.comp.writer2latex;
 
-import org.openoffice.da.comp.writer2xhtml.Html5ConfigurationDialog;
-import org.openoffice.da.comp.writer2xhtml.Html5SettingsDialog;
-import org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog;
+import org.openoffice.da.comp.writer2latex.bibtex.BibTeXDialog;
+import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
+import org.openoffice.da.comp.writer2latex.html5.Html5ConfigurationDialog;
+import org.openoffice.da.comp.writer2latex.html5.Html5SettingsDialog;
+import org.openoffice.da.comp.writer2latex.html5.XhtmlOptionsDialog;
+import org.openoffice.da.comp.writer2latex.latex.ApplicationsDialog;
+import org.openoffice.da.comp.writer2latex.latex.ConfigurationDialog;
+import org.openoffice.da.comp.writer2latex.latex.LaTeXOptionsDialog;
+import org.openoffice.da.comp.writer2latex.latex.LogViewerDialog;
+import org.openoffice.da.comp.writer2latex.latex.TeXDetectService;
+import org.openoffice.da.comp.writer2latex.latex.TeXImportFilter;
+import org.openoffice.da.comp.writer2latex.latex.W2LStarMathConverter;
 
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XSingleServiceFactory;

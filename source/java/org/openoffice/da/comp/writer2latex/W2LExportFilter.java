@@ -35,8 +35,8 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.xml.XExportFilter;
 import com.sun.star.xml.sax.XDocumentHandler;
 
-import org.openoffice.da.comp.w2lcommon.filter.UNOConverter;
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
+import org.openoffice.da.comp.writer2latex.base.UNOConverter;
+import org.openoffice.da.comp.writer2latex.util.MessageBox;
 
 import writer2latex.util.SimpleDOMBuilder;
 
