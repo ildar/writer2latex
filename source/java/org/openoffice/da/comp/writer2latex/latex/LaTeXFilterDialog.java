@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-12)
+ *  Version 2.0 (2018-04-14)
  *  
  */
 
@@ -269,8 +269,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
         else if ("greek_math".equals(sOptionName)) {
-        	// this option has no effect if backend=xetex
-        	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
+        	return super.isLocked(sOptionName);
         }
         else if ("additional_symbols".equals(sOptionName)) {
             // additional_symbols is disabled for backend=xetex

@@ -1,5 +1,7 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] The option greek_math now also works if the backend is xetex
+
 [w2l] New option convert_index_names to toggle the export of index names
   for table of content (\contentsname), list of figures (\listfigurename),
   list of tables (\listtablename), alphabetical index (\indexname), ...

@@ -13,6 +13,64 @@
      (http://www.alanwood.net/demos/wingdings.html)
 -->
 <symbols>
+<!-- First part is for XeTeX -->
+<symbol-set name="xetex" fontenc="any">
+	<!-- Unicode block: ASCII -->
+	<symbol char="0023" text="\#" math="\#"/> <!-- Parameter -->
+	<symbol char="0024" text="\$" math="\$"/> <!-- Math shift -->
+	<symbol char="0025" text="\%" math="\%"/> <!-- Comment -->
+	<symbol char="0026" text="\&amp;" math="\&amp;"/> <!-- Alignment tab -->
+	<symbol char="002D" text="-" math="-" protect="-" />
+	<symbol char="005C" text="\textbackslash{}" math="\backslash "/> <!-- Escape -->
+	<symbol char="005E" text="\^{}" math="\hat{}"/> <!-- Superscript -->
+	<symbol char="005F" text="\_" math="\_"/> <!-- Subscript -->
+	<symbol char="007B" text="\{" math="\{"/> <!-- Begin group -->
+	<symbol char="007D" text="\}" math="\}"/> <!-- End group -->
+	<symbol char="007E" text="\textasciitilde{}" math="\tilde{}"/>  <!-- Make non-breaking spaces visible -->
+	<symbol char="2010" text="-" protect="-" />
+	
+	<!-- Unicode block: Greek and Coptic (math mode)  -->
+	<symbol char="0393" math="\Gamma " />
+	<symbol char="0394" math="\Delta " />
+	<symbol char="0398" math="\Theta " />
+	<symbol char="039B" math="\Lambda " />
+	<symbol char="039E" math="\Xi " />
+	<symbol char="03A0" math="\Pi " />
+	<symbol char="03A3" math="\Sigma " />
+	<symbol char="03A6" math="\Phi " />
+	<symbol char="03A8" math="\Psi " />
+	<symbol char="03A9" math="\Omega " />
+	<symbol char="03B1" math="\alpha " />
+	<symbol char="03B2" math="\beta " />
+	<symbol char="03B3" math="\gamma " />
+	<symbol char="03B4" math="\delta " />
+	<symbol char="03B5" math="\varepsilon " />
+	<symbol char="03B6" math="\zeta " />
+	<symbol char="03B7" math="\eta " />
+	<symbol char="03B8" math="\theta " />
+	<symbol char="03B9" math="\iota " />
+	<symbol char="03BA" math="\kappa " />
+	<symbol char="03BB" math="\lambda " />
+	<symbol char="03BC" math="\mu " />
+	<symbol char="03BD" math="\nu " />
+	<symbol char="03BE" math="\xi " />
+	<symbol char="03C0" math="\pi " />
+	<symbol char="03C1" math="\rho " />
+	<symbol char="03C2" math="\varsigma " />
+	<symbol char="03C3" math="\sigma " />
+	<symbol char="03C4" math="\tau " />
+	<symbol char="03C5" math="\upsilon " />
+	<symbol char="03C6" math="\varphi " />
+	<symbol char="03C7" math="\chi " />
+	<symbol char="03C8" math="\psi " />
+	<symbol char="03C9" math="\omega " />
+	<symbol char="03D1" math="\vartheta " />
+	<symbol char="03D5" math="\varphi " />
+	<symbol char="03D6" math="\varpi " />
+	<symbol char="03DB" math="\varsigma " />
+	<symbol char="03F1" math="\varrho " />
+	<symbol char="03F5" math="\epsilon " />
+</symbol-set>
 
 <!--
 ****************************************

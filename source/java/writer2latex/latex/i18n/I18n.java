@@ -19,13 +19,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-03) 
+ *  Version 2.0 (2018-04-14) 
  * 
  */
 
 package writer2latex.latex.i18n;
 
+import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Stack;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import writer2latex.office.*;
 import writer2latex.latex.LaTeXConfig;
@@ -55,6 +61,11 @@ public abstract class I18n {
     protected HashSet<String> languages = new HashSet<String>(); // All western languages used
     protected String sDefaultLanguage; // The default western ISO language to use
     protected String sDefaultCountry; // The default western ISO country to use
+    
+    // Unicode translation
+    protected UnicodeTable table; // currently active table (top of stack)
+    private Hashtable<String,UnicodeTable> tableSet; // all tables
+    private Stack<UnicodeTable> tableStack; // stack of active tables
 
     // **** Constructors ****
 
@@ -84,6 +95,25 @@ public abstract class I18n {
         // We must have a default western language
         if (sDefaultLanguage==null) { sDefaultLanguage="en"; }
     }
+    
+    protected void readSymbols(String sSymbols) {
+        tableSet = new Hashtable<String,UnicodeTable>();
+        UnicodeTableHandler handler=new UnicodeTableHandler(tableSet, sSymbols);
+        SAXParserFactory factory=SAXParserFactory.newInstance();
+        InputStream is = this.getClass().getResourceAsStream("symbols.xml");
+        try {
+            SAXParser saxParser=factory.newSAXParser();
+            saxParser.parse(is,handler);
+        }
+        catch (Throwable t){
+		    System.err.println("Oops - Unable to read symbols.xml");
+            t.printStackTrace();
+        }
+        // put root table at top of stack
+        tableStack = new Stack<UnicodeTable>();
+        tableStack.push(tableSet.get("root"));
+        table = tableSet.get("root");
+    }
 	
     /** Add declarations to the preamble to load the required packages
      *  @param pack usepackage declarations
@@ -99,14 +129,31 @@ public abstract class I18n {
      */
     public abstract void applyLanguage(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba);
 
+    /** Get the number of characters defined in the current table
+     *  (for informational purposes only)
+     *  @return the number of characters
+     */
+    public int getCharCount() { return table.getCharCount(); }
+	
     /** Push a font to the font stack
      *  @param sName the name of the font
      */
-    public abstract void pushSpecialTable(String sName);
+    public void pushSpecialTable(String sName) {
+        // If no name is specified we should keep the current table
+        // Otherwise try to find the table, and use root if it's not available
+        if (sName!=null) {
+            table = tableSet.get(sName);
+            if (table==null) { table = tableSet.get("root"); }
+        }
+        tableStack.push(table);
+    }
 	
     /** Pop a font from the font stack
      */
-    public abstract void popSpecialTable();
+    public void popSpecialTable() {
+        tableStack.pop();
+        table = tableStack.peek();
+    }
 	
     /** Convert a string of characters into LaTeX
      *  @param s the source string

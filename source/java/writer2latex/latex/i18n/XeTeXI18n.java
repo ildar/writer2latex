@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-03)
+ *  Version 2.0 (2018-04-14)
  * 
  */
 
@@ -107,6 +107,8 @@ public class XeTeXI18n extends I18n {
     		// For western languages, we use polyglossia
     		polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
     	}
+
+    	readSymbols("xetex");
     }
 	
     /** Add declarations to the preamble to load the required packages
@@ -199,19 +201,6 @@ public class XeTeXI18n extends I18n {
         }
     }
 
-    /** Push a font to the font stack
-     *  @param sName the name of the font
-     */
-    public void pushSpecialTable(String sName) {
-    	// TODO
-    }
-	
-    /** Pop a font from the font stack
-     */
-    public void popSpecialTable() {
-    	// TODO
-    }
-	
     /** Convert a string of characters into LaTeX
      *  @param s the source string
      *  @param bMathMode true if the string should be rendered in math mode
@@ -219,13 +208,14 @@ public class XeTeXI18n extends I18n {
      *  @return the LaTeX string
      */
     public String convert(String s, boolean bMathMode, String sLang){
+    	boolean bGreekText = "el".equals(sLang);
     	StringBuilder buf = new StringBuilder();
     	int nLen = s.length();
         char c;
         if (bMathMode) {
         	// No string replace or writing direction in math mode
         	for (int i=0; i<nLen; i++) {
-        		convert(s.charAt(i),buf);
+        		convert(s.charAt(i),buf,false,bGreekText);
         	}        	
         }
         else if (!bUseXepersian) {
@@ -238,7 +228,7 @@ public class XeTeXI18n extends I18n {
         		}
         		else {
         			c = s.charAt(i++);
-        			convert (c,buf);
+        			convert(c,buf,true,bGreekText);
         		}
         	}
         }
@@ -264,7 +254,7 @@ public class XeTeXI18n extends I18n {
 					nCurrentLevel=nLevel;
 					nNestingLevel--;
 				}
-				convert(s.charAt(i),buf);
+				convert(s.charAt(i),buf,true,bGreekText);
 			}
 			while (nNestingLevel>0) {
 				buf.append("}");
@@ -275,23 +265,23 @@ public class XeTeXI18n extends I18n {
         return buf.toString();
     }
     
-    private void convert(char c, StringBuilder buf) {
-		switch (c) {
-		case '#' : buf.append("\\#"); break; // Parameter
-		case '$' : buf.append("\\$"); break; // Math shift
-		case '%' : buf.append("\\%"); break; // Comment
-		case '&' : buf.append("\\&"); break; // Alignment tab
-		case '\\' : buf.append("\\textbackslash{}"); break; // Escape
-		case '^' : buf.append("\\^{}"); break; // Superscript
-		case '_' : buf.append("\\_"); break; // Subscript
-		case '{' : buf.append("\\{"); break; // Begin group
-		case '}' : buf.append("\\}"); break; // End group
-		case '~' : buf.append("\\textasciitilde{}"); break; // Active (non-breaking space)
-		case '\u00A0' : buf.append('~'); break; // Make non-breaking spaces visible
-		default: buf.append(c);
-	}
-    	
+    private void convert(char c, StringBuilder buf, boolean bTextMode, boolean bGreekText) {
+    	if (bTextMode && table.hasTextChar(c)) {
+    		// Text character with translation
+    		buf.append(table.getTextChar(c));
+    	}
+    	else if (bTextMode && bGreekMath && (!bGreekText) && (Character.UnicodeBlock.of(c)==Character.UnicodeBlock.GREEK) && table.hasMathChar(c)) {
+    		// Greek letter as symbol
+    		buf.append("$").append(table.getMathChar(c)).append("$");
+    	}
+    	else if ((!bTextMode) && table.hasMathChar(c)) {
+    		// Math character with translation
+    		buf.append(table.getMathChar(c));
+    	}
+    	else {
+    		// Character which does not require any special treatment
+    		buf.append(c);
+    	}
     }
     
-
 }

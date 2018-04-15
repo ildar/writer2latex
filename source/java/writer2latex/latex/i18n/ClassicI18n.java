@@ -2,7 +2,7 @@
  *
  *  ClassicI18n.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,19 +19,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-05-12) 
+ *  Version 2.0 (2018-04-14) 
  * 
  */
 
 package writer2latex.latex.i18n;
 
-import java.io.InputStream;
 import java.util.Hashtable;
-import java.util.Stack;
 import java.util.Iterator;
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
 
 import writer2latex.util.CSVList;
 import writer2latex.latex.LaTeXConfig;
@@ -220,9 +215,6 @@ public class ClassicI18n extends I18n {
     // **** Global variables ****
 
     // Unicode translation
-    private Hashtable<String,UnicodeTable> tableSet; // all tables
-    private UnicodeTable table; // currently active table (top of stack)
-    private Stack<UnicodeTable> tableStack; // stack of active tables
     private UnicodeStringParser ucparser; // Unicode string parser
 
     // Collected data
@@ -258,23 +250,7 @@ public class ClassicI18n extends I18n {
         if (config.usePifont()) sSymbols+="|dingbats";
         if (config.useEurosym()) sSymbols+="|eurosym";
         if (config.useTipa()) sSymbols+="|tipa";
-
-        tableSet = new Hashtable<String,UnicodeTable>();
-        UnicodeTableHandler handler=new UnicodeTableHandler(tableSet, sSymbols);
-        SAXParserFactory factory=SAXParserFactory.newInstance();
-        InputStream is = this.getClass().getResourceAsStream("symbols.xml");
-        try {
-            SAXParser saxParser=factory.newSAXParser();
-            saxParser.parse(is,handler);
-        }
-        catch (Throwable t){
-		    System.err.println("Oops - Unable to read symbols.xml");
-            t.printStackTrace();
-        }
-        // put root table at top of stack
-        tableStack = new Stack<UnicodeTable>();
-        tableStack.push(tableSet.get("root"));
-        table = tableSet.get("root");
+        readSymbols(sSymbols);
     }
 	
     /** Construct a new I18n for general use
@@ -484,32 +460,6 @@ public class ClassicI18n extends I18n {
         }
     }
 
-    /** Push a font to the font stack
-     *  @param sName the name of the font
-     */
-    public void pushSpecialTable(String sName) {
-        // If no name is specified we should keep the current table
-        // Otherwise try to find the table, and use root if it's not available
-        if (sName!=null) {
-            table = tableSet.get(sName);
-            if (table==null) { table = tableSet.get("root"); }
-        }
-        tableStack.push(table);
-    }
-	
-    /** Pop a font from the font stack
-     */
-    public void popSpecialTable() {
-        tableStack.pop();
-        table = tableStack.peek();
-    }
-
-    /** Get the number of characters defined in the current table
-     *  (for informational purposes only)
-     *  @return the number of characters
-     */
-    public int getCharCount() { return table.getCharCount(); }
-	
     /** Convert a string of characters into LaTeX
      *  @param s the source string
      *  @param bMathMode true if the string should be rendered in math mode
