@@ -2,7 +2,7 @@
  *
  *  UnicodeTableHandler.java
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,23 +19,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2010-05-11) 
+ *  Version 2.0 (2018-04-15) 
  * 
  */
 
 package writer2latex.latex.i18n;
 
-import java.util.Hashtable;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** Helper classs: SAX handler to parse symbols.xml from jar
+/** Helper class: SAX handler to parse symbols.xml from jar
  */
 public class UnicodeTableHandler extends DefaultHandler{
-    private Hashtable<String,UnicodeTable> tableSet; // collection of all tables
+    private Map<String,UnicodeTable> tableSet; // collection of all tables
     private UnicodeTable table; // the current table
-    private String sSymbolSets;
+    private Set<String> symbolSets; // the symbol sets to read
+    private boolean bUnicode;
+    
+    // Parse variables
     private boolean bGlobalReadThisSet;
     private boolean bReadThisSet;
     private int nGlobalFontencs = 0; // The global fontencodings for current symbol set
@@ -44,12 +52,28 @@ public class UnicodeTableHandler extends DefaultHandler{
     
     /** Create a new <code>UnicodeTableHandler</code>
      * 
-     * @param tableSet		the <code>Hashtable</code> to fill with tables read from the file
-     * @param sSymbolSets	string containing table names to read (separated by |)
+     * @param tableSet		the <code>Map</code> to fill with tables read from the file
+     * @param symbolSets	the <code>Set</code> of table names to read from the file
+     * @param bUnicode		flag to identify full unicode support, which implies
+     * 						that all positions not in the table are fully supported
      */
-    public UnicodeTableHandler(Hashtable<String,UnicodeTable> tableSet, String sSymbolSets){
-        this.sSymbolSets = sSymbolSets;
+    public UnicodeTableHandler(Map<String,UnicodeTable> tableSet, Set<String> symbolSets, boolean bUnicode){
+        this.symbolSets = symbolSets;
         this.tableSet = tableSet;
+        this.bUnicode = bUnicode;
+    }
+    
+    public void parse() {
+        SAXParserFactory factory=SAXParserFactory.newInstance();
+        InputStream is = this.getClass().getResourceAsStream("symbols.xml");
+        try {
+            SAXParser saxParser=factory.newSAXParser();
+            saxParser.parse(is,this);
+        }
+        catch (Throwable t){
+		    System.err.println("Oops - Unable to read symbols.xml");
+            t.printStackTrace();
+        }
     }
     
     public void startElement(String nameSpace, String localName, String qName, Attributes attributes){
@@ -60,7 +84,7 @@ public class UnicodeTableHandler extends DefaultHandler{
         }
         else if (qName.equals("symbol-set")) {
             // start a new symbol set; maybe we want to include it?
-            bGlobalReadThisSet = sSymbolSets.indexOf(attributes.getValue("name")) >= 0;
+            bGlobalReadThisSet = symbolSets.contains(attributes.getValue("name"));
             bReadThisSet = bGlobalReadThisSet;
             // Change global and current fontencodings
             nGlobalFontencs = ClassicI18n.readFontencs(attributes.getValue("fontenc"));
@@ -73,7 +97,7 @@ public class UnicodeTableHandler extends DefaultHandler{
 
             // Read it if it requires nothing, or something we read
             bGlobalReadThisSet = attributes.getValue("requires")==null ||
-                                 sSymbolSets.indexOf(attributes.getValue("requires")) >= 0;
+                                 symbolSets.contains(attributes.getValue("requires"));
             bReadThisSet = bGlobalReadThisSet;
             b8bit = "true".equals(attributes.getValue("eight-bit"));
             // Change global and current fontencodings
@@ -83,7 +107,7 @@ public class UnicodeTableHandler extends DefaultHandler{
         else if (qName.equals("symbol-subset")) {
             // Do we requires something here?
             if (attributes.getValue("requires")!=null) {
-                bReadThisSet = sSymbolSets.indexOf(attributes.getValue("requires")) >= 0;
+                bReadThisSet = symbolSets.contains(attributes.getValue("requires"));
             }
             // Change current fontencodings
             nFontencs = ClassicI18n.readFontencs(attributes.getValue("fontenc"));
@@ -97,11 +121,20 @@ public class UnicodeTableHandler extends DefaultHandler{
                     if (table.getCharType(eqc)!=UnicodeCharacter.UNKNOWN) {
                         table.addCharType(c,table.getCharType(eqc));
                     }
+                    else if (bUnicode) {
+                    	table.addCharType(c,UnicodeCharacter.UNKNOWN);
+                    }
                     if (table.hasMathChar(eqc)) {
                         table.addMathChar(c,table.getMathChar(eqc));
                     }
+                    else if (bUnicode) {
+                    	table.addMathChar(c, Character.toString(eqc));
+                    }
                     if (table.hasTextChar(eqc)) {
                         table.addTextChar(c,table.getTextChar(eqc),table.getFontencs(eqc),table.getProtectChar(eqc));
+                    }
+                    else if (bUnicode) {
+                    	table.addTextChar(c, Character.toString(eqc), ClassicI18n.readFontencs("any"), '\u0000');
                     }
                 }
                 else {

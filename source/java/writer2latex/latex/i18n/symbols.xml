@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- This is a datafile used by Writer2LaTeX
-     Version 1.4 (2014-08-05)
+     Version 2.0 (2018-04-15)
 
 	 The definitions for greek characters are contributed by interzone, info@interzone.gr
      and extended by Johannis Likos. Additional bugfixes by Alexej Kryukov
@@ -1057,6 +1057,7 @@ PART I: Common symbols, ascii only
 <symbol char="20A9" text="{\textwon}" />
 <symbol char="20AB" text="{\textdong}" />
 <symbol char="20AC" text="{\texteuro}" />
+
 <!-- unicode block: Letterlike symbols -->
 <symbol char="2100" text="a/c" />
 <symbol char="2101" text="a/s" />

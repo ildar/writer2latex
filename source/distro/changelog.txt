@@ -1,5 +1,12 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] The special font tables, which maps characters in the private use area
+  as well as 8 bit fonts to proper unicode positions are now applied also if
+  the backend is xetex
+
+[w2l] The options use_pifont, use_ifsym, use_wasysym, use_bbding, use_eurosym
+  and use_tipa now also works if the backend is xetex
+
 [w2l] The option greek_math now also works if the backend is xetex
 
 [w2l] New option convert_index_names to toggle the export of index names

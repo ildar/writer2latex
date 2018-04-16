@@ -201,7 +201,7 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsAdditionalSymbols" id="bm_options_additonalsymbols"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Support additional symbols</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsAdditionalSymbols" visibility="hidden">Check this to add support for additonal symbols (e.g. phonetic symbols, smileys)</ahelp></paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">If you select this option (not available if XeTeX is the backend),
+        <paragraph role="paragraph" xml-lang="en-US">If you select this option,
         LaTeX will load some additional packages containing support for various symbols:
         A better looking euro-symbol, phonetic characters, dingbats and various other
         symbols and geometric shapes.</paragraph>

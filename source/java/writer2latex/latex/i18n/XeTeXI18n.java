@@ -19,13 +19,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-14)
+ *  Version 2.0 (2018-04-15)
  * 
  */
 
 package writer2latex.latex.i18n;
 
 import java.text.Bidi;
+import java.util.HashSet;
+import java.util.Set;
 
 import writer2latex.office.*;
 import writer2latex.latex.LaTeXConfig;
@@ -34,7 +36,24 @@ import writer2latex.latex.ConverterPalette;
 import writer2latex.latex.util.BeforeAfter;
 
 
-/** This class takes care of i18n in XeLaTeX
+/** This class (and the helpers in the same package) takes care of i18n in
+ *  Writer2LaTeX. In XeLaTeX, i18n is simpler than in Classic LaTeX:
+ *  Input encoding is always UTF-8, and font encoding is mostly UTF-8.
+ *  Languages is handled with polyglossia, xepersian and xeCJK.
+ *  The class XeTeXI18n thus manages these, and like the classic version
+ *  implements a Unicode->LaTeX translation that can handle unicode
+ *  characters which requires a special treatment.
+ *  The translation is table driven, using symbols.xml (embedded in the jar)
+ *  Various sections of symbols.xml handles different cases:
+ *  <ul>
+ *    <li>common symbols which has a special meaning i LaTeX</li>
+ *    <li>additional symbol fonts such as wasysym, dingbats etc.</li>
+ *    <li>font-specific symbols, eg. for 8-bit fonts/private use area</li>
+ *  </ul>
+ *  The class uses the packages polyglossia, xepersia, xeCJK, fontspec,
+ *  xunicode, xltxtra, 
+ *  tipa, bbding, ifsym, pifont, eurosym, amsmath, wasysym, amssymb, amsfonts
+ *  in various combinations depending on the configuration.
  */
 public class XeTeXI18n extends I18n {
 	
@@ -108,7 +127,9 @@ public class XeTeXI18n extends I18n {
     		polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
     	}
 
-    	readSymbols("xetex");
+    	Set<String> symbols = new HashSet<>();
+    	symbols.add("xetex");
+    	readSymbols(symbols,true);
     }
 	
     /** Add declarations to the preamble to load the required packages
@@ -116,11 +137,10 @@ public class XeTeXI18n extends I18n {
      *  @param decl other declarations
      */
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    	useSymbolFonts(pack);
+    	
     	// Load standard packages
-    	pack.append("\\usepackage{amsmath,amssymb,amsfonts}").nl()
-    		.append("\\usepackage{fontspec}").nl()
-    		.append("\\usepackage{xunicode}").nl()
-    		.append("\\usepackage{xltxtra}").nl();
+    	pack.append("\\usepackage{fontspec,xunicode,xltxtra}").nl();
     	
     	// Load xeCJK
     	if (nScript==LaTeXConfig.CJK) {

@@ -19,21 +19,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-14) 
+ *  Version 2.0 (2018-04-16) 
  * 
  */
 
 package writer2latex.latex.i18n;
 
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import writer2latex.office.*;
+import writer2latex.util.CSVList;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
@@ -58,13 +57,13 @@ public abstract class I18n {
     protected boolean bGreekMath; // Use math mode for Greek letters
 
     // Collected data
-    protected HashSet<String> languages = new HashSet<String>(); // All western languages used
+    protected Set<String> languages = new HashSet<>(); // All western languages used
     protected String sDefaultLanguage; // The default western ISO language to use
     protected String sDefaultCountry; // The default western ISO country to use
     
     // Unicode translation
     protected UnicodeTable table; // currently active table (top of stack)
-    private Hashtable<String,UnicodeTable> tableSet; // all tables
+    private Map<String,UnicodeTable> tableSet; // all tables
     private Stack<UnicodeTable> tableStack; // stack of active tables
 
     // **** Constructors ****
@@ -96,23 +95,22 @@ public abstract class I18n {
         if (sDefaultLanguage==null) { sDefaultLanguage="en"; }
     }
     
-    protected void readSymbols(String sSymbols) {
-        tableSet = new Hashtable<String,UnicodeTable>();
-        UnicodeTableHandler handler=new UnicodeTableHandler(tableSet, sSymbols);
-        SAXParserFactory factory=SAXParserFactory.newInstance();
-        InputStream is = this.getClass().getResourceAsStream("symbols.xml");
-        try {
-            SAXParser saxParser=factory.newSAXParser();
-            saxParser.parse(is,handler);
-        }
-        catch (Throwable t){
-		    System.err.println("Oops - Unable to read symbols.xml");
-            t.printStackTrace();
-        }
+    protected void readSymbols(Set<String> symbols, boolean bUnicode) {
+    	// Add additional symbols as per configuration
+        if (config.useWasysym()) symbols.add("wasysym");
+        if (config.useBbding()) symbols.add("bbding");
+        if (config.useIfsym()) symbols.add("ifsym");
+        if (config.usePifont()) symbols.add("dingbats");
+        if (config.useEurosym()) symbols.add("eurosym");
+        if (config.useTipa()) symbols.add("tipa");
+    	// Parse symbols
+        tableSet = new Hashtable<>();
+        UnicodeTableHandler handler=new UnicodeTableHandler(tableSet, symbols, bUnicode);
+        handler.parse();
         // put root table at top of stack
-        tableStack = new Stack<UnicodeTable>();
-        tableStack.push(tableSet.get("root"));
         table = tableSet.get("root");
+        tableStack = new Stack<>();
+        tableStack.push(table);
     }
 	
     /** Add declarations to the preamble to load the required packages
@@ -121,6 +119,51 @@ public abstract class I18n {
      */
     public abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
 	
+    /** Load symbol font packages common for classic and modern
+     * 
+     * @param ldp the document portion to which declarations are added
+     */
+    protected void useSymbolFonts(LaTeXDocumentPortion ldp) {
+        if (config.useTipa()) {
+            ldp.append("\\usepackage[noenc]{tipa}").nl()
+               .append("\\usepackage{tipx}").nl();
+        }
+
+        // Has to avoid some nameclashes
+        if (config.useBbding()) {
+            ldp.append("\\usepackage{bbding}").nl()
+               .append("\\let\\bbCross\\Cross\\let\\Cross\\undefined").nl()
+               .append("\\let\\bbSquare\\Square\\let\\Square\\undefined").nl()
+               .append("\\let\\bbTrianbleUp\\TriangleUp\\let\\TriangleUp\\undefined").nl()
+               .append("\\let\\bbTrianlgeDown\\TriangleDown\\let\\TriangleDown\\undefined").nl();
+        }    	
+
+        if (config.useIfsym()) {
+	        ldp.append("\\usepackage[geometry,weather,misc,clock]{ifsym}").nl();
+	    }
+        
+        // Remaining packages does not need any options
+        CSVList packages = new CSVList(",");
+
+        if (config.usePifont()) { packages.addValue("pifont"); }
+
+        if (config.useEurosym()) { packages.addValue("eurosym"); }
+
+        // Always use amsmath
+        packages.addValue("amsmath");
+
+        // wasysym *must* be loaded between amsmath and amsfonts!
+	    if (config.useWasysym()) { 
+	    	packages.addValue("wasysym");
+	    }
+	
+	    // Always use amssymb, amsfonts
+	    packages.addValue("amssymb");
+	    packages.addValue("amsfonts");
+	    
+	    ldp.append("\\usepackage{").append(packages.toString()).append("}").nl();
+    }
+        
     /** Apply a language language
      *  @param style the LO style to read attributes from
      *  @param bDecl true if declaration form is required

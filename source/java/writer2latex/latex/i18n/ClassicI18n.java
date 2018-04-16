@@ -25,8 +25,10 @@
 
 package writer2latex.latex.i18n;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 
 import writer2latex.util.CSVList;
 import writer2latex.latex.LaTeXConfig;
@@ -38,7 +40,7 @@ import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 
 /** This class (and the helpers in the same package) takes care of i18n in
- *  Writer2LaTeX.  In classic LaTeX, i18n is a mixture of inputencodings, fontencodings
+ *  Writer2LaTeX. In classic LaTeX, i18n is a mixture of inputencodings, fontencodings
  *  and babel languages. The class ClassicI18n thus manages these, and in particular
  *  implements a Unicode->LaTeX translation that can handle different
  *  inputencodings and fontencodings.
@@ -239,18 +241,13 @@ public class ClassicI18n extends I18n {
         // Unicode stuff
         ucparser = new UnicodeStringParser();
 
-        String sSymbols="ascii"; // always load common symbols
+        Set<String> symbols = new HashSet<>();
+        symbols.add("ascii"); // always load common symbols
         if (config.getInputencoding()!=ASCII) {
-            sSymbols+="|"+writeInputenc(config.getInputencoding());
+            symbols.add(writeInputenc(config.getInputencoding()));
         }
 
-        if (config.useWasysym()) sSymbols+="|wasysym";
-        if (config.useBbding()) sSymbols+="|bbding";
-        if (config.useIfsym()) sSymbols+="|ifsym";
-        if (config.usePifont()) sSymbols+="|dingbats";
-        if (config.useEurosym()) sSymbols+="|eurosym";
-        if (config.useTipa()) sSymbols+="|tipa";
-        readSymbols(sSymbols);
+        readSymbols(symbols, false);
     }
 	
     /** Construct a new I18n for general use
@@ -267,6 +264,7 @@ public class ClassicI18n extends I18n {
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
     	useInputenc(pack);
     	useSymbolFonts(pack);
+    	useTextcomp(pack);
     	useTextFonts(pack);
     	useBabel(pack);
     }
@@ -328,41 +326,11 @@ public class ClassicI18n extends I18n {
         }	
     }
     
-    private void useSymbolFonts(LaTeXDocumentPortion ldp) {
-        if (config.useTipa()) {
-            ldp.append("\\usepackage[noenc]{tipa}").nl()
-               .append("\\usepackage{tipx}").nl();
-        }
-
-        // Has to avoid some nameclashes
-        if (config.useBbding()) {
-            ldp.append("\\usepackage{bbding}").nl()
-               .append("\\let\\bbCross\\Cross\\let\\Cross\\undefined").nl()
-               .append("\\let\\bbSquare\\Square\\let\\Square\\undefined").nl()
-               .append("\\let\\bbTrianbleUp\\TriangleUp\\let\\TriangleUp\\undefined").nl()
-               .append("\\let\\bbTrianlgeDown\\TriangleDown\\let\\TriangleDown\\undefined").nl();
-        }    	
-
-        if (config.useIfsym()) {
-	        ldp.append("\\usepackage[geometry,weather,misc,clock]{ifsym}").nl();
-	    }
-
-        if (config.usePifont()) { ldp.append("\\usepackage{pifont}").nl(); }
-
-        if (config.useEurosym()) { ldp.append("\\usepackage{eurosym}").nl(); }
-
-        // Always use amsmath
-        ldp.append("\\usepackage{amsmath}").nl();
-
-        // wasysym *must* be loaded between amsmath and amsfonts!
-	    if (config.useWasysym()) { 
-	        ldp.append("\\usepackage{wasysym}").nl();
-	    }
-	
-	    // Always use amssymb, amsfonts, textcomp (always!)
-	    ldp.append("\\usepackage{amssymb,amsfonts,textcomp}").nl();
+    private void useTextcomp(LaTeXDocumentPortion ldp) {
+	    // Always use textcomp
+	    ldp.append("\\usepackage{textcomp}").nl();    	
     }
-    
+
     private void useTextFonts(LaTeXDocumentPortion ldp) {
         // usepackage fontenc
         CSVList fontencs = new CSVList(',');
