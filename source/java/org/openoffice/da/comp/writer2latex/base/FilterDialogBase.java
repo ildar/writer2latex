@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-12)
+ *  Version 2.0 (2018-04-17)
  *
  */ 
  
@@ -254,7 +254,7 @@ public abstract class FilterDialogBase extends DialogBase implements
     	// Load the configuration from the URL and get the parameters
         ConverterHelper helper = new ConverterHelper(xContext);
         Config config = ConverterFactory.createConfig(getMIME());
-        helper.readConfig(config, sConfigURL);
+        helper.readConfig(sConfigURL, config);
         Map<String,List<String>> configParameters = config.getParameters();
         
         // Get the parameter names from the config and store them

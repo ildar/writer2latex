@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-12)
+ *  Version 2.0 (2018-04-17)
  *  
  */
 package org.openoffice.da.comp.writer2latex.latex;
@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.openoffice.da.comp.writer2latex.Messages;
+import org.openoffice.da.comp.writer2latex.base.ConverterHelper;
 import org.openoffice.da.comp.writer2latex.base.UNOPublisher;
 import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
 import org.openoffice.da.comp.writer2latex.util.MessageBox;
@@ -35,6 +36,9 @@ import org.openoffice.da.comp.writer2latex.util.PropertyHelper;
 import org.openoffice.da.comp.writer2latex.util.RegistryHelper;
 import org.openoffice.da.comp.writer2latex.util.XPropertySetHelper;
 
+import writer2latex.api.Config;
+import writer2latex.api.ConverterFactory;
+import writer2latex.api.MIMETypes;
 import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
@@ -42,6 +46,7 @@ import writer2latex.util.Misc;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;
+import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -98,7 +103,6 @@ public class LaTeXUNOPublisher extends UNOPublisher {
      *  determine the backend and the BIBINPUTS directory
      */
     @Override protected PropertyValue[] postProcessMediaProps(PropertyValue[] mediaProps) {
-        sBackend = "generic"; //$NON-NLS-1$
         sBibinputs = null;
 
         PropertyHelper mediaHelper = new PropertyHelper(mediaProps);
@@ -106,10 +110,20 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         if (filterData instanceof PropertyValue[]) {
         	PropertyHelper filterHelper = new PropertyHelper((PropertyValue[])filterData);
         	
-            // Get the backend
+        	// Get the backend
+        	sBackend = "generic"; //$NON-NLS-1$
             Object backend = filterHelper.get("backend"); //$NON-NLS-1$
             if (backend instanceof String) {
                 sBackend = (String) backend;
+            }
+            else { // The backend is not set directly in the filter data, try to get from configuration
+	            Object cfg = filterHelper.get("ConfigURL");
+	            if (cfg!=null && AnyConverter.isString(cfg)) {
+	            	Config config = ConverterFactory.createConfig(MIMETypes.LATEX);
+	            	ConverterHelper converterHelper = new ConverterHelper(xContext);
+	                converterHelper.readConfig(AnyConverter.toString(cfg),config);
+	                sBackend = config.getOption("backend");
+	            }
             }
             
             // Set the bibliography options according to the settings
@@ -162,17 +176,19 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         
         boolean bResult = true;
         
+    	System.out.println("trying to texify");
         try {
-            if (sBackend=="pdftex") { //$NON-NLS-1$
+            if ("pdftex".equals(sBackend)) { //$NON-NLS-1$
+            	System.out.println("trying to pdftexify");
                 bResult = texify.process(file, sBibinputs, TeXify.PDFTEX, true);
             }
-            else if (sBackend=="dvips") { //$NON-NLS-1$
+            else if ("dvips".equals(sBackend)) { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.DVIPS, true);
             }
-            else if (sBackend=="xetex") { //$NON-NLS-1$
+            else if ("xetex".equals(sBackend)) { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.XETEX, true);
             }
-            else if (sBackend=="generic") { //$NON-NLS-1$
+            else if ("generic".equals(sBackend)) { //$NON-NLS-1$
             	bResult = texify.process(file, sBibinputs, TeXify.GENERIC, true);
             }
         }

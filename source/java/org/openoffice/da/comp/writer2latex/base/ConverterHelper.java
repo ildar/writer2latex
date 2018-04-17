@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-21)
+ *  Version 2.0 (2018-04-17)
  *
  */
 
@@ -27,15 +27,17 @@ package org.openoffice.da.comp.writer2latex.base;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.openoffice.da.comp.writer2latex.util.MacroExpander;
 
 import writer2latex.api.Config;
+import writer2latex.api.Converter;
 
-import com.sun.star.io.NotConnectedException;
 import com.sun.star.io.XInputStream;
+import com.sun.star.io.XOutputStream;
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
-import com.sun.star.ucb.CommandAbortedException;
+import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
 import com.sun.star.ucb.XSimpleFileAccess2;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -88,7 +90,13 @@ public class ConverterHelper {
     }
     
     
-    public void readConfig(Config config, String sURL) {
+    /** Read a configuration from an URL. Macros in the URL will be expanded
+     *  and variables in the URL will be substituted.
+     * 
+     * @param sURL the URL
+     * @param config the Writer2LaTeX configuration to read from the URL
+     */
+    public void readConfig(String sURL, Config config) {
         if (sURL!=null) {
             if (sURL.startsWith("*")) {
             	// internal configuration
@@ -100,8 +108,7 @@ public class ConverterHelper {
                 }
             }
             else if (sfa2!=null) {
-            	// First get the real URL by expanding macros and substituting
-            	// variables
+            	// First get the real URL by expanding macros and substituting variables
                 String sRealURL = expander.expandMacros(substituteVariables(sURL));
 
                 try {
@@ -113,19 +120,67 @@ public class ConverterHelper {
                         xIs.closeInput();
                     }
                 }
-                catch (IOException e) {
-                    // Ignore
-                }
-                catch (NotConnectedException e) {
-                    // Ignore
-                }
-                catch (CommandAbortedException e) {
-                    // Ignore
-                }
-                catch (com.sun.star.uno.Exception e) {
+                catch (IOException | com.sun.star.uno.Exception e) {
                     // Ignore
                 }
             }
+        }
+    }
+    
+    /** Read a configuration from an URL. Macros in the URL will be expanded
+     *  and variables in the URL will be substituted.
+     * 
+     * @param sURL the URL
+     * @param config the Writer2LaTeX configuration to write to the URL
+     */
+	public void writeConfig(String sURL, Config config) {
+		if (sURL!=null && sfa2!=null) {
+			try {
+            	// First get the real URL by expanding macros and substituting variables
+                String sRealURL = expander.expandMacros(substituteVariables(sURL));
+
+                //Remove the file if it exists
+	           	if (sfa2.exists(sRealURL)) {
+	           		sfa2.kill(sRealURL);
+	           	}
+	           	
+	           	// Then write the new contents
+	            XOutputStream xOs = sfa2.openFileWrite(sRealURL);
+	            if (xOs!=null) {
+	            	OutputStream os = new XOutputStreamToOutputStreamAdapter(xOs);
+	                config.write(os);
+	                os.close();
+	                xOs.closeOutput();
+	            }
+	        }
+	        catch (IOException | com.sun.star.uno.Exception e) {
+	            // ignore
+	        }
+	    }
+	}
+
+    /**Read a configuration from an URL. Macros in the URL will be expanded
+     *  and variables in the URL will be substituted.
+     * 
+     * @param sURL the URL
+     * @param converter the Writer2LaTeX converter to read the template from the URL
+     */
+    public void readTemplate(String sURL, Converter converter) {
+        if (sURL!=null && sfa2!=null) {
+	    	// First get the real URL by expanding macros and substituting variables
+	        String sRealURL = expander.expandMacros(substituteVariables(sURL));
+	        try {
+	            XInputStream xIs = sfa2.openFileRead(sRealURL);
+	            if (xIs!=null) {
+	                InputStream is = new XInputStreamToInputStreamAdapter(xIs);
+	                converter.readTemplate(is);
+	                is.close();
+	                xIs.closeInput();
+	            }
+	        }
+	        catch (IOException | com.sun.star.uno.Exception e) {
+	            // ignore
+	        }
         }
     }
     

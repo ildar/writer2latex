@@ -2,7 +2,7 @@
  *
  *  ConfigurationDialogBase.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  Writer2LaTeX is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-09)
+ *  Version 2.0 (2018-04-17)
  *
  */ 
 
@@ -38,7 +38,6 @@ import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialogProvider2;
 import com.sun.star.awt.XWindow;
 import com.sun.star.container.NoSuchElementException;
-import com.sun.star.io.NotConnectedException;
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
 import com.sun.star.lang.XMultiComponentFactory;
@@ -69,9 +68,6 @@ import org.openoffice.da.comp.writer2latex.util.StyleNameProvider;
  */
 public abstract class ConfigurationDialogBase extends WeakBase implements XContainerWindowEventHandler {
 	
-	// The full path to the configuration file we handle
-	private String sConfigFileName = null;
-	
 	// The component context
 	protected XComponentContext xContext;
 	
@@ -86,6 +82,9 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 	
 	// The configuration implementation
 	protected Config config;
+	
+	// Helper to read/write configuration
+	private ConverterHelper converterHelper;
 	
 	// The individual page handlers (the subclass must populate this)
 	protected Map<String,PageHandler> pageHandlers = new HashMap<String,PageHandler>();
@@ -117,20 +116,23 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
        catch (com.sun.star.uno.Exception e) {
            // failed to get SimpleFileAccess service (should not happen)
        }
-
-       // Create the config file name
+       
+       // Get the PathSubstitution service
+       xPathSub = null;
        try {
            Object psObject = xContext.getServiceManager().createInstanceWithContext(
               "com.sun.star.util.PathSubstitution", xContext);
            xPathSub = (XStringSubstitution) UnoRuntime.queryInterface(XStringSubstitution.class, psObject);
-           sConfigFileName = xPathSub.substituteVariables("$(user)/"+getConfigFileName(), false);
        }
        catch (com.sun.star.uno.Exception e) {
            // failed to get PathSubstitution service (should not happen)
-       }
+       }     
        
        // Create the configuration
-       config = ConverterFactory.createConverter(getMIMEType()).getConfig();
+       config = ConverterFactory.createConfig(getMIMEType());
+       
+       // Create helper for configuration
+       converterHelper = new ConverterHelper(xContext);
        
 	}
        	
@@ -162,16 +164,17 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 	}
 	
 	private boolean handleExternalEvent(DialogAccess dlg, String sTitle, Object aEventObject) throws com.sun.star.uno.Exception {
+		String sConfigURL = "$(user)/"+getConfigFileName();
 		try {
 			String sMethod = AnyConverter.toString(aEventObject);
 			if (sMethod.equals("ok")) {
-				loadConfig(); // The file may have been changed by other pages, thus we reload
+				converterHelper.readConfig(sConfigURL, config); // The file may have been changed by other pages, thus we reload
 				pageHandlers.get(sTitle).getControls(dlg);
-				saveConfig();
+				converterHelper.writeConfig(sConfigURL, config);
 				return true;
 			}
 			else if (sMethod.equals("back") || sMethod.equals("initialize")) {
-				loadConfig();
+				converterHelper.readConfig(sConfigURL, config);
 				pageHandlers.get(sTitle).setControls(dlg);
 				return true;
 			}
@@ -182,66 +185,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		}
 		return false;
 	}
-	
-	// Load the user configuration from file
-	private void loadConfig() {
-		if (sfa2!=null && sConfigFileName!=null) {
-			try {
-				XInputStream xIs = sfa2.openFileRead(sConfigFileName);
-	            if (xIs!=null) {
-	            	InputStream is = new XInputStreamToInputStreamAdapter(xIs);
-	                config.read(is);
-	                is.close();
-	                xIs.closeInput();
-	            }
-	        }
-	        catch (IOException e) {
-	            // ignore
-	        }
-	        catch (NotConnectedException e) {
-	            // ignore
-	        }
-	        catch (CommandAbortedException e) {
-	            // ignore
-	        }
-	        catch (com.sun.star.uno.Exception e) {
-	            // ignore
-	        }
-	    }
-	}
-	   
-	// Save the user configuration
-	private void saveConfig() {
-		if (sfa2!=null && sConfigFileName!=null) {
-			try {
-				//Remove the file if it exists
-	           	if (sfa2.exists(sConfigFileName)) {
-	           		sfa2.kill(sConfigFileName);
-	           	}
-	           	// Then write the new contents
-	            XOutputStream xOs = sfa2.openFileWrite(sConfigFileName);
-	            if (xOs!=null) {
-	            	OutputStream os = new XOutputStreamToOutputStreamAdapter(xOs);
-	                config.write(os);
-	                os.close();
-	                xOs.closeOutput();
-	            }
-	        }
-	        catch (IOException e) {
-	            // ignore
-	        }
-	        catch (NotConnectedException e) {
-	            // ignore
-	        }
-	        catch (CommandAbortedException e) {
-	            // ignore
-	        }
-	        catch (com.sun.star.uno.Exception e) {
-	            // ignore
-	        }
-	    }
-	}
-	
+		
 	// Inner class to handle the individual option pages
 	protected abstract class PageHandler {
 		protected abstract void getControls(DialogAccess dlg);
@@ -325,12 +269,17 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		
 		public CustomFileHandler() {
 			super();
+			System.out.println("Starting custom file handler");
 			try {
+				System.out.println("The file name is "+getFileName());
 				sCustomFileName = xPathSub.substituteVariables("$(user)/"+getFileName(), false);
+				System.out.println("The new file name is "+sCustomFileName);
 			}
 			catch (NoSuchElementException e) {
 				sCustomFileName = getFileName();
+				System.out.println("Failed, the file name is "+sCustomFileName);
 			}
+			System.out.println("Custom file handler ready");
 		}
 		
 		// The subclass must provide these

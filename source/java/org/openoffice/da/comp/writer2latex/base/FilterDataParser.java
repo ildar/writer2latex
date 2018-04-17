@@ -19,28 +19,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-22)
+ *  Version 2.0 (2018-04-17)
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex.base;
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.Enumeration;
 
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.io.NotConnectedException;
-import com.sun.star.io.XInputStream;
-import com.sun.star.ucb.CommandAbortedException;
-import com.sun.star.ucb.XSimpleFileAccess2;
 import com.sun.star.uno.AnyConverter;
-import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
-import com.sun.star.util.XStringSubstitution;
-
-import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
-
 import org.openoffice.da.comp.writer2latex.util.PropertyHelper;
 
 import writer2latex.api.Converter;
@@ -51,37 +40,11 @@ import writer2latex.api.Converter;
  *  All errors are silently ignored
  */
 public class FilterDataParser {
-	// TODO: Use JSON format
     
-    //private static XComponentContext xComponentContext = null;
-    
-    private XSimpleFileAccess2 sfa2;
-    private XStringSubstitution xPathSub;
+    private XComponentContext xComponentContext = null;
     
     public FilterDataParser(XComponentContext xComponentContext) {
-        //this.xComponentContext = xComponentContext;
-
-        // Get the SimpleFileAccess service
-        sfa2 = null;
-        try {
-            Object sfaObject = xComponentContext.getServiceManager().createInstanceWithContext(
-                "com.sun.star.ucb.SimpleFileAccess", xComponentContext);
-            sfa2 = (XSimpleFileAccess2) UnoRuntime.queryInterface(XSimpleFileAccess2.class, sfaObject);
-        }
-        catch (com.sun.star.uno.Exception e) {
-            // failed to get SimpleFileAccess service (should not happen)
-        }
-        
-        // Get the PathSubstitution service
-        xPathSub = null;
-        try {
-            Object psObject = xComponentContext.getServiceManager().createInstanceWithContext(
-               "com.sun.star.util.PathSubstitution", xComponentContext);
-            xPathSub = (XStringSubstitution) UnoRuntime.queryInterface(XStringSubstitution.class, psObject);
-        }
-        catch (com.sun.star.uno.Exception e) {
-            // failed to get PathSubstitution service (should not happen)
-        }     
+        this.xComponentContext = xComponentContext;
     }
     
     /** Apply the given FilterOptions property to the given converter.
@@ -137,86 +100,15 @@ public class FilterDataParser {
         PropertyHelper props = new PropertyHelper(filterData);
         
         // Get the special properties TemplateURL and ConfigURL
+        ConverterHelper converterHelper = new ConverterHelper(xComponentContext);
         Object tpl = props.get("TemplateURL");
-        String sTemplate = null;
         if (tpl!=null && AnyConverter.isString(tpl)) {
-            try {
-                sTemplate = substituteVariables(AnyConverter.toString(tpl));
-            }
-            catch (com.sun.star.lang.IllegalArgumentException e) {
-                // Failed to convert to String; should not happen - ignore   
-            }
+        	converterHelper.readTemplate(AnyConverter.toString(tpl), converter);
         }
         
         Object cfg = props.get("ConfigURL");
-        String sConfig = null;
         if (cfg!=null && AnyConverter.isString(cfg)) {
-            try {
-                sConfig = substituteVariables(AnyConverter.toString(cfg));
-            }
-            catch (com.sun.star.lang.IllegalArgumentException e) {
-                // Failed to convert to String; should not happen - ignore   
-            }
-        }
-
-        // Load the template from the specified URL, if any
-        if (sfa2!=null && sTemplate!=null && sTemplate.length()>0) {
-            try {
-                XInputStream xIs = sfa2.openFileRead(sTemplate);
-                if (xIs!=null) {
-                    InputStream is = new XInputStreamToInputStreamAdapter(xIs);
-                    converter.readTemplate(is);
-                    is.close();
-                    xIs.closeInput();
-                }
-            }
-            catch (IOException e) {
-                // ignore
-            }
-            catch (NotConnectedException e) {
-                // ignore
-            }
-            catch (CommandAbortedException e) {
-                // ignore
-            }
-            catch (com.sun.star.uno.Exception e) {
-                // ignore
-            }
-        }
-        
-        // Load the configuration from the specified URL, if any
-        if (sConfig!=null) {
-            if (sConfig.startsWith("*")) { // internal configuration
-                try {
-                    converter.getConfig().readDefaultConfig(sConfig.substring(1)); 
-                }
-                catch (IllegalArgumentException e) {
-                    // ignore
-                }
-            }
-            else if (sfa2!=null) { // real URL
-                try {
-                    XInputStream xIs = sfa2.openFileRead(sConfig);;
-                    if (xIs!=null) {
-                        InputStream is = new XInputStreamToInputStreamAdapter(xIs);
-                        converter.getConfig().read(is);
-                        is.close();
-                        xIs.closeInput();
-                    }
-                }
-                catch (IOException e) {
-                    // Ignore
-                }
-                catch (NotConnectedException e) {
-                    // Ignore
-                }
-                catch (CommandAbortedException e) {
-                    // Ignore
-                }
-                catch (com.sun.star.uno.Exception e) {
-                    // Ignore
-                }
-            }
+            converterHelper.readConfig(AnyConverter.toString(cfg), converter.getConfig());
         }
         
         // Read further configuration properties
@@ -238,22 +130,6 @@ public class FilterDataParser {
         }
     }
     
-    private String substituteVariables(String sUrl) {
-        if (xPathSub!=null) {
-            try {
-                return xPathSub.substituteVariables(sUrl, false);
-            }
-            catch (com.sun.star.container.NoSuchElementException e) {
-                // Found an unknown variable, no substitution
-                // (This will only happen if false is replaced by true above)
-                return sUrl;
-            }
-        }
-        else { // Not path substitution available
-            return sUrl;
-        }
-    }
-    	
 }
 
 
