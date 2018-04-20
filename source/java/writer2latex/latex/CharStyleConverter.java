@@ -2,7 +2,7 @@
  *
  *  CharStyleConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,13 +19,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-30)
+ *  Version 2.0 (2018-04-19)
  *
  */
 
 package writer2latex.latex;
-
-import java.util.Hashtable;
 
 import writer2latex.util.*;
 import writer2latex.office.*;
@@ -33,21 +31,19 @@ import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.StyleMap;
 
-/** This class creates LaTeX code from OOo character formatting
-   Character formatting in OOo includes font, font effects/decorations and color.
-   In addition it includes color and language/country information, this is however handled
-   by the classes <code>writer2latex.latex.ColorConverter</code> and 
-   <code>writer2latex.latex.style.I18n</code> 
+/** This class creates LaTeX code from ODF character formatting
+   Character formatting in ODF includes font, font effects/decorations and color.
+   In addition it includes language/country information. Color is handled by the
+   class <code>writer2latex.latex.ColorConverter</code> and language/country and
+   font family is handled by the classes
+   <code>writer2latex.latex.style.ClassicI18n</code> and
+   <code>writer2latex.latex.style.XeTeXI18n</code>
  */
 public class CharStyleConverter extends StyleConverter {
 
-    // Cache of converted font declarations
-    private Hashtable<String, String> fontDecls = new Hashtable<String, String>();
-	
     // Which formatting should we export?
     private boolean bIgnoreHardFontsize;
     private boolean bIgnoreFontsize;
-    private boolean bIgnoreFont;
     private boolean bIgnoreAll;
     private boolean bUseUlem;
     // Do we need actually use ulem.sty or \textsubscript?
@@ -63,8 +59,6 @@ public class CharStyleConverter extends StyleConverter {
 
         // No character formatting at all:
         bIgnoreAll = config.formatting()==LaTeXConfig.IGNORE_ALL;
-        // No font family or size:
-        bIgnoreFont = config.formatting()<=LaTeXConfig.IGNORE_MOST;
         // No fontsize:
         bIgnoreFontsize = config.formatting()<=LaTeXConfig.CONVERT_BASIC;
         // No hard fontsize
@@ -161,7 +155,7 @@ public class CharStyleConverter extends StyleConverter {
             if (sName!=null) {
                 FontDeclaration fd = ofr.getFontDeclaration(sName);
                 if (fd!=null) {
-                    return fd.getFontFamily();
+                    return fd.getFirstFontFamily();
                 }             
             }
         }
@@ -185,7 +179,7 @@ public class CharStyleConverter extends StyleConverter {
     }
 
     /** <p>Apply all font attributes (family, series, shape, size and color).</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributesfrom
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
@@ -194,7 +188,7 @@ public class CharStyleConverter extends StyleConverter {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
         if (style==null) { return; }
         applyNfssSize(style,bDecl,bInherit,ba,context);
-        applyNfssFamily(style,bDecl,bInherit,ba,context);
+        palette.getI18n().applyFontFamily(style,bDecl,bInherit,ba,context);
         applyNfssSeries(style,bDecl,bInherit,ba,context);
         applyNfssShape(style,bDecl,bInherit,ba,context);
         palette.getColorCv().applyColor(style,bDecl,bInherit,ba,context);
@@ -208,37 +202,8 @@ public class CharStyleConverter extends StyleConverter {
         palette.getColorCv().applyNormalColor(ba);
     }
 
-    /** <p>Apply default font attributes (family, series, shape, size and color).</p>
-     *  @param style the OOo style to read attributesfrom
-     *  @param ldp the <code>LaTeXDocumentPortion</code> to add LaTeX code to.
-     */
-    public void applyDefaultFont(StyleWithProperties style, LaTeXDocumentPortion ldp) {
-        if (style==null) { return; }
-
-        String s = convertFontDeclaration(style.getProperty(XMLString.STYLE_FONT_NAME));
-        if (s!=null){
-            ldp.append("\\renewcommand\\familydefault{\\")
-               .append(s).append("default}").nl();
-        } // TODO: Else read props directly from the style
-
-        s = nfssSeries(style.getProperty(XMLString.FO_FONT_WEIGHT));
-        if (s!=null) {
-            ldp.append("\\renewcommand\\seriesdefault{\\")
-               .append(s).append("default}").nl();
-        }
-
-        s = nfssShape(style.getProperty(XMLString.FO_FONT_VARIANT),
-                             style.getProperty(XMLString.FO_FONT_STYLE));
-        if (s!=null) {
-            ldp.append("\\renewcommand\\shapedefault{\\")
-               .append(s).append("default}").nl();
-        }
-       
-        palette.getColorCv().setNormalColor(style.getProperty(XMLString.FO_COLOR),ldp);
-    }
-	
-    /** <p>Apply font effects (position, underline, crossout, change case.</p>
-     *  @param style the OOo style to read attributesfrom
+    /** <p>Apply font effects (position, underline, cross out, change case.</p>
+     *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
@@ -252,27 +217,8 @@ public class CharStyleConverter extends StyleConverter {
 	
     // Remaining methods are private
 
-    /** <p>Apply font family.</p>
-     *  @param style the OOo style to read attributesfrom
-     *  @param bDecl true if declaration form is required
-     *  @param bInherit true if inherited properties should be used
-     *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
-     */
-    private void applyNfssFamily(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
-        // Note: if bDecl is true, nothing will be put in the "after" part of ba.
-        if (style==null || bIgnoreFont) { return; }
-        String sFontName=style.getProperty(XMLString.STYLE_FONT_NAME,bInherit);
-        if (sFontName!=null){
-            String sFamily = convertFontDeclaration(sFontName);
-            if (sFamily==null) { return; }
-            if (sFamily.equals(convertFontDeclaration(context.getFontName()))) { return; }
-            if (bDecl) { ba.add("\\"+sFamily+"family",""); }
-            else { ba.add("\\text"+sFamily+"{","}"); }
-        } // TODO: Else read props directly from the style
-    }
-
     /** <p>Apply font series.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
@@ -301,7 +247,7 @@ public class CharStyleConverter extends StyleConverter {
     }
 
     /** <p>Apply font shape.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
@@ -336,7 +282,7 @@ public class CharStyleConverter extends StyleConverter {
     }
         
     /** <p>Apply font size.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
@@ -355,7 +301,7 @@ public class CharStyleConverter extends StyleConverter {
     // Remaining methods are not context-sensitive
 
     /** <p>Apply text position.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
@@ -379,7 +325,7 @@ public class CharStyleConverter extends StyleConverter {
     }
 	
     /** <p>Apply text underline.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
@@ -393,8 +339,8 @@ public class CharStyleConverter extends StyleConverter {
         if (s!=null) { bNeedUlem = true; ba.add(s+"{","}"); }
     }
 
-    /** <p>Apply text crossout.</p>
-     *  @param style the OOo style to read attributesfrom
+    /** <p>Apply text cross out.</p>
+     *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
@@ -409,7 +355,7 @@ public class CharStyleConverter extends StyleConverter {
     }
 
     /** <p>Apply change case.</p>
-     *  @param style the OOo style to read attributesfrom
+     *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
@@ -420,38 +366,10 @@ public class CharStyleConverter extends StyleConverter {
         if (s!=null) { ba.add(s+"{","}"); }
     }
 
-    /** <p>Convert font declarations to LaTeX.</p>
-     *  <p>It returns a generic LaTeX font family (rm, tt, sf).</p>
-     *  <p>It returns null if the font declaration doesn't exist.</p>
-     *  @param  sName the name of the font declaration
-     *  @return <code>String</code> with a LaTeX generic fontfamily
-     */
-    private String convertFontDeclaration(String sName) {
-        FontDeclaration fd = ofr.getFontDeclaration(sName);
-        if (fd==null) { return null; }
-        if (!fontDecls.containsKey(sName)) {
-            String sFontFamily = fd.getFontFamily();
-            String sFontPitch = fd.getFontPitch();
-            String sFontFamilyGeneric = fd.getFontFamilyGeneric();			
-            fontDecls.put(sName,nfssFamily(sFontFamily,sFontFamilyGeneric,sFontPitch));
-        }
-        return fontDecls.get(sName);
-    }
-
     // The remaining methods are static helpers to convert single style properties
 
     // Font change. These methods return the declaration form if the paramater
     // bDecl is true, and otherwise the command form
-    
-    private static final String nfssFamily(String sFontFamily, String sFontFamilyGeneric,
-                                   String sFontPitch){
-        // Note: Defaults to rm
-        // TODO: What about decorative, script, system?
-        if ("fixed".equals(sFontPitch)) return "tt";
-        else if ("modern".equals(sFontFamilyGeneric)) return "tt";
-        else if ("swiss".equals(sFontFamilyGeneric)) return "sf";
-        else return "rm";
-    }
     
     private static final String nfssSeries(String sFontWeight){
         if (sFontWeight==null) return null;

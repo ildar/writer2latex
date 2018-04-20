@@ -1,5 +1,16 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+todo: opdater manual, incl. locked options, opdater hjælpefil
+overvej locked options i forhold til at label er delt..
+og hvad skete der lige med cjk
+
+[w2l] New option fontspec with values original, original+math and default.
+  This is used for font selection if backend is xetex. The first two options
+  use the original default font i the document while the last uses default
+  fonts (Latin Modern)
+
+[all] Support for the old SXW format has been dropped
+
 [w2l] The special font tables, which maps characters in the private use area
   as well as 8 bit fonts to proper unicode positions are now applied also if
   the backend is xetex
@@ -34,7 +45,8 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
   nko, sanskrit, syriac, tamil, telugu, thai and urdu (syriac is currently
   not supported by LO). Previously only farsi and hebrew were supported.
   CTL languages are always exported as monolingual, disregarding the option
-  multilingual.
+  multilingual. Arabic, hebrew, farsi and urdu does however support
+  bidirectional text
 
 [w2l] Added support for the polyglossia languages friulan, piedmontese and
   romansh (only the former is currently supported by LO)

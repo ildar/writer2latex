@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-16) 
+ *  Version 2.0 (2018-04-20) 
  * 
  */
 
@@ -37,6 +37,7 @@ import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
 import writer2latex.latex.util.BeforeAfter;
+import writer2latex.latex.util.Context;
 
 /** This abstract class takes care of i18n in the LaTeX export.
  *  Since i18n is handled quite differently in LaTeX "Classic"
@@ -55,6 +56,7 @@ public abstract class I18n {
     protected int nScript; // Main script
     protected boolean bAlwaysUseDefaultLang; // Ignore sLang parameter to convert()
     protected boolean bGreekMath; // Use math mode for Greek letters
+    private boolean bIgnoreFont; // Do not convert font family
 
     // Collected data
     protected Set<String> languages = new HashSet<>(); // All western languages used
@@ -65,7 +67,10 @@ public abstract class I18n {
     protected UnicodeTable table; // currently active table (top of stack)
     private Map<String,UnicodeTable> tableSet; // all tables
     private Stack<UnicodeTable> tableStack; // stack of active tables
-
+    
+    // Cache of converted font declarations
+    private Hashtable<String, String> fontDecls = new Hashtable<String, String>();
+	
     // **** Constructors ****
 
     /** Construct a new I18n as ConverterHelper
@@ -82,6 +87,7 @@ public abstract class I18n {
         stringReplace = config.getStringReplace();
         bAlwaysUseDefaultLang = !config.multilingual();
         bGreekMath = config.greekMath();
+        bIgnoreFont = config.formatting()<=LaTeXConfig.IGNORE_MOST;
         
         // Read the default languages from the default paragraph style
         if (ofr!=null) {
@@ -221,4 +227,58 @@ public abstract class I18n {
     public String getDefaultCountry() {
     	return sDefaultCountry;
     }
+    
+    // Font conversion
+    
+    /** Apply font family. The default implementation selects a generic font family,
+     *  \rmfamily, \sffamily, \ttfamily, resp. \textrm, \textsf, \texttt
+     *  
+     *  @param style the ODF style to read attributes from
+     *  @param bDecl true if declaration form is required (if true,
+     *  nothing will be put in the "after" part of ba) 
+     *  @param bInherit true if inherited properties should be used
+     *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
+     */
+    public void applyFontFamily(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
+        if (style!=null && !bIgnoreFont) {
+	        String sFontName=style.getProperty(XMLString.STYLE_FONT_NAME,bInherit);
+	        if (sFontName!=null){
+	            String sFamily = convertFontDeclaration(sFontName);
+	            if (sFamily!=null && !sFamily.equals(convertFontDeclaration(context.getFontName()))) {
+	            	if (bDecl) { ba.add("\\"+sFamily+"family",""); }
+	            	else { ba.add("\\text"+sFamily+"{","}"); }
+	            }
+	        }
+        }
+    }
+
+    
+    /** <p>Convert a font declaration to LaTeX.</p>
+     *  <p>It returns a generic LaTeX font family (rm, tt, sf).</p>
+     *  @param  sName the name of the font declaration
+     *  @return <code>String</code> with a LaTeX generic fontfamily
+     */
+    private String convertFontDeclaration(String sName) {
+        FontDeclaration fd = ofr.getFontDeclaration(sName);
+        if (fd!=null) {
+	        if (!fontDecls.containsKey(sName)) {
+	            String sFontPitch = fd.getFontPitch();
+	            String sFontFamilyGeneric = fd.getFontFamilyGeneric();			
+	            fontDecls.put(sName,nfssFamily(sFontFamilyGeneric,sFontPitch));
+	        }
+	        return fontDecls.get(sName);
+        }
+        return null;
+    }
+    
+    private static final String nfssFamily(String sFontFamilyGeneric, String sFontPitch){
+		// All the values roman, decorative, script and system maps to rm
+    	// because we have no LaTeX equivalent of the latter three
+		if ("fixed".equals(sFontPitch)) return "tt";
+		else if ("modern".equals(sFontFamilyGeneric)) return "tt";
+		else if ("swiss".equals(sFontFamilyGeneric)) return "sf";
+		else return "rm";
+    }
+
+
 }

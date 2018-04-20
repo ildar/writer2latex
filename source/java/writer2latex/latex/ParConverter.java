@@ -2,7 +2,7 @@
  *
  *  ParConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-08)
+ *  Version 2.0 (2018-04-20)
  *
  */
 
@@ -81,8 +81,6 @@ public class ParConverter extends StyleConverter {
 
         if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
             decl.append("% Paragraph styles").nl();
-            // First default paragraph style
-            palette.getCharSc().applyDefaultFont(ofr.getDefaultParStyle(),decl);
             super.appendDeclarations(pack,decl);
         }         
     }

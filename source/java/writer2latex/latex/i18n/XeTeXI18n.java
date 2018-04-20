@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-15)
+ *  Version 2.0 (2018-04-19)
  * 
  */
 
@@ -34,6 +34,7 @@ import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
 import writer2latex.latex.util.BeforeAfter;
+import writer2latex.latex.util.Context;
 
 
 /** This class (and the helpers in the same package) takes care of i18n in
@@ -63,11 +64,13 @@ public class XeTeXI18n extends I18n {
     protected String sDefaultCJKCountry=null; // The default CJK ISO country to use
 
     private int nScript;
+    private boolean bUseGenericFonts;
     private Polyglossia polyglossia;
     // TODO: Add a use_xepersian option, using polyglossia if false
     private boolean bUseXepersian;
-    private String sLTRCommand=null;
-    private String sRTLCommand=null;
+    private boolean bBidi = false;
+    private String sLTRCommand = null;
+    private String sRTLCommand = null;
 
     /** Construct a new XeTeXI18n as ConverterHelper
      *  @param ofr the OfficeReader to get language information from
@@ -101,6 +104,9 @@ public class XeTeXI18n extends I18n {
         		nScript = LaTeXConfig.WESTERN;
         	}
         }
+        
+        // Determine whether or not to use the generic fonts rm, sf and tt
+        bUseGenericFonts = config.fontspec().equals("default");
 
         // Define main language for polyglossia
         polyglossia = new Polyglossia();
@@ -110,14 +116,23 @@ public class XeTeXI18n extends I18n {
         	// Use xeCJK:
     		break;
     	case LaTeXConfig.CTL:
-        	// For farsi, we load xepersian.sty
-        	bUseXepersian = "fa".equals(sDefaultCTLLanguage);
-        	if (bUseXepersian) {
-        		sLTRCommand = "\\lr";
-        		sRTLCommand = "\\rl";
-        	}
-        	else {
-        		// For other CTL languages, we use polyglossia
+    		bBidi = polyglossia.isBidi(sDefaultCTLLanguage, sDefaultCTLCountry);
+    		System.out.println("This is bidi "+bBidi);
+    		if (bBidi) {
+            	if ("fa".equals(sDefaultCTLLanguage)) {
+                	// For farsi, we load xepersian.sty
+                	bUseXepersian = true ;
+            		sLTRCommand = "\\lr";
+            		sRTLCommand = "\\rl";
+            	}
+            	else {
+            		// Other bidi scripts uses bidi.sty (loaded by polyglossia)
+            		sLTRCommand = "\\LR";
+            		sRTLCommand = "\\RL";        			
+            	}
+    		}
+    		if (!bUseXepersian) {
+        		// Use polyglossia for all languages but farsi
             	polyglossia.applyLanguage(sDefaultCTLLanguage, sDefaultCTLCountry);
         	}
         	break;
@@ -138,15 +153,31 @@ public class XeTeXI18n extends I18n {
      */
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
     	useSymbolFonts(pack);
-    	
-    	// Load standard packages
-    	pack.append("\\usepackage{fontspec,xunicode,xltxtra}").nl();
-    	
+    	useBasePackages(pack);
+    	useLanguages(pack,decl);
+    	useFonts(decl);
+    }
+    
+	// Load standard packages
+    private void useBasePackages(LaTeXDocumentPortion pack) {
+    	System.out.println(config.fontspec());
+    	if (!config.fontspec().equals("original+math")) {
+    		System.out.println("Using fontspec");
+    		//pack.append("\\usepackage{fontspec,xunicode,xltxtra}").nl();
+    		pack.append("\\usepackage{fontspec}").nl();
+    	}
+    	else {
+    		System.out.println("Using mathspec");
+    		pack.append("\\usepackage{mathspec}").nl();
+    	}
+    }
+    
+    // Load
+    private void useLanguages(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
     	// Load xeCJK
     	if (nScript==LaTeXConfig.CJK) {
     		pack.append("\\usepackage{xeCJK}").nl();
     	}
-    	
     	// Load xepersian or polyglossia 
     	// These packages (or rather bidi) should be loaded as the last package
 		// We put them in the declarations part to achieve this
@@ -159,43 +190,69 @@ public class XeTeXI18n extends I18n {
     			decl.append(s).nl();
     		}
     	}
-    	// Set the default font if this is a CTL document
-    	if (nScript==LaTeXConfig.CTL) {
-			if ("he".equals(sDefaultCTLLanguage)) { // Use a default font set for hebrew
-				decl.append("\\setmainfont[Script=Hebrew]{Frank Ruehl CLM}").nl();
-				decl.append("\\setsansfont[Script=Hebrew]{Nachlieli CLM}").nl();
-				decl.append("\\setmonofont[Script=Hebrew]{Miriam Mono CLM}").nl();
-			}
-			else { // Use default CTL font for other languages
-				String sFont = getDefaultFontFamily(XMLString.STYLE_FONT_NAME_COMPLEX,XMLString.STYLE_FONT_FAMILY_COMPLEX);
-				if (sFont!=null) {
-		    		decl.append("\\settextfont{").append(sFont).append("}").nl();
-				}
-			}
-    	}
-    	else if (nScript==LaTeXConfig.CJK) {
-			String sFont = getDefaultFontFamily(XMLString.STYLE_FONT_NAME_ASIAN,XMLString.STYLE_FONT_FAMILY_ASIAN);
-			if (sFont!=null) {
-	    		decl.append("\\setCJKmainfont{").append(sFont).append("}").nl();
-			}
-    	}
     }
     
-	// Get the default font (or null if no default font exists)
-    private String getDefaultFontFamily(String sXMLStyleName, String sXMLStyleFamily) {
+    // Load fonts based on fontspec and script option
+    private void useFonts(LaTeXDocumentPortion decl) {
+    	switch (config.fontspec()) {
+    	case "original+math":
+    		// TODO: The font may not have greek letters
+    		useDefaultFont("\\setmathsfont(Digits,Latin,Greek)",XMLString.STYLE_FONT_NAME,decl);
+    	case "original":
+    		switch (nScript) {
+    		case LaTeXConfig.WESTERN:
+	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
+	    		break;
+    		case LaTeXConfig.CTL:
+	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
+	    		break;
+    		case LaTeXConfig.CJK:
+	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
+	    		useDefaultFont("\\setCJKmainfont",XMLString.STYLE_FONT_NAME_ASIAN,decl);
+	    	default:
+	    		// There are no other possible values
+    		}
+	    	break;
+    	case "default":
+    	default:
+    		// Do nothing, uses default fonts (Latin Modern)
+		}
+    }
+    
+	/*if ("he".equals(sDefaultCTLLanguage)) { // Use a default font set for hebrew
+	decl.append("\\setmainfont[Script=Hebrew]{Frank Ruehl CLM}").nl();
+	decl.append("\\setsansfont[Script=Hebrew]{Nachlieli CLM}").nl();
+	decl.append("\\setmonofont[Script=Hebrew]{Miriam Mono CLM}").nl();
+	}*/
+    
+    private void useDefaultFont(String sCommand, String sXMLStyleName, LaTeXDocumentPortion decl) {
+		String sFont = getDefaultFontFamily(sXMLStyleName);
+		System.out.println("Got "+sFont);
+		if (sFont!=null) {
+    		decl.append(sCommand).append("{").append(sFont).append("}").nl();
+		}    		    	
+    }
+    
+	// Get the default font for the specified script (or null if no default font exists)
+    private String getDefaultFontFamily(String sXMLStyleName) {
 		StyleWithProperties defaultStyle = ofr.getDefaultParStyle();	
 		if (defaultStyle!=null) {
-            // Get font family information from font declaration or from style
+            // Get font family information from font declaration
             String sStyleName = defaultStyle.getProperty(sXMLStyleName);
             if (sStyleName!=null) {
                 FontDeclaration fd = (FontDeclaration) ofr.getFontDeclarations().getStyle(sStyleName);
                 if (fd!=null) {
-                    return fd.getFontFamily();
+                    return fd.getFirstFontFamily();
                 }
             }
-            return defaultStyle.getProperty(XMLString.FO_FONT_FAMILY);
 		}
 		return null;
+    }
+    
+    public void applyFontFamily(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
+    	if (bUseGenericFonts) {
+    		super.applyFontFamily(style, bDecl, bInherit, ba, context);
+    	}
     }
     
     /** Apply a language
@@ -230,59 +287,76 @@ public class XeTeXI18n extends I18n {
     public String convert(String s, boolean bMathMode, String sLang){
     	boolean bGreekText = "el".equals(sLang);
     	StringBuilder buf = new StringBuilder();
-    	int nLen = s.length();
-        char c;
         if (bMathMode) {
-        	// No string replace or writing direction in math mode
-        	for (int i=0; i<nLen; i++) {
-        		convert(s.charAt(i),buf,false,bGreekText);
-        	}        	
+        	convertMath(s,buf,bGreekText);
         }
-        else if (!bUseXepersian) {
-        	int i = 0;
-        	while (i<nLen) {
-        		ReplacementTrieNode node = stringReplace.get(s,i,nLen);
-        		if (node!=null) {
-        			buf.append(node.getLaTeXCode());
-        			i += node.getInputLength();
-        		}
-        		else {
-        			c = s.charAt(i++);
-        			convert(c,buf,true,bGreekText);
-        		}
-        	}
+        else if (bBidi) {
+        	convertBidiText(s,buf,bGreekText);
         }
         else {
-        	// TODO: Add support for string replace
-			Bidi bidi = new Bidi(s,Bidi.DIRECTION_RIGHT_TO_LEFT);
-			int nCurrentLevel = bidi.getBaseLevel();
-			int nNestingLevel = 0;
-			for (int i=0; i<nLen; i++) {
-				int nLevel = bidi.getLevelAt(i);
-				if (nLevel>nCurrentLevel) {
-					if (nLevel%2==0) { // even is LTR
-						buf.append(sLTRCommand).append("{");
-					}
-					else { // odd is RTL
-						buf.append(sRTLCommand).append("{");						
-					}
-					nCurrentLevel=nLevel;
-					nNestingLevel++;
-				}
-				else if (nLevel<nCurrentLevel) {
-					buf.append("}");
-					nCurrentLevel=nLevel;
-					nNestingLevel--;
-				}
-				convert(s.charAt(i),buf,true,bGreekText);
-			}
-			while (nNestingLevel>0) {
-				buf.append("}");
-				nNestingLevel--;
-			}
+        	convertText(s,buf,bGreekText);
 		}
         
         return buf.toString();
+    }
+    
+    private void convertMath(String s, StringBuilder buf, boolean bGreekText) {
+    	// No string replace or writing direction in math mode
+    	int nLen = s.length();
+    	for (int i=0; i<nLen; i++) {
+    		convert(s.charAt(i),buf,false,bGreekText);
+    	}        	    	
+    }
+    
+    private void convertText(String s, StringBuilder buf, boolean bGreekText) {
+    	int i = 0;
+    	int nLen = s.length();
+    	while (i<nLen) {
+    		ReplacementTrieNode node = stringReplace.get(s,i,nLen);
+    		if (node!=null) {
+    			buf.append(node.getLaTeXCode());
+    			i += node.getInputLength();
+    		}
+    		else {
+    			convert(s.charAt(i++),buf,true,bGreekText);
+    		}
+    	}
+    }
+    
+    private void convertBidiText(String s, StringBuilder buf, boolean bGreekText){
+    	// TODO: Add support for string replace
+		Bidi bidi = new Bidi(s,Bidi.DIRECTION_DEFAULT_RIGHT_TO_LEFT);
+		int nCurrentLevel = bidi.getBaseLevel();
+		int nNestingLevel = 0;
+		if (nCurrentLevel%2==0) { // Base direction is LTR
+			buf.append(sLTRCommand).append("{");
+			nNestingLevel++;
+			System.out.println("LTR: "+s);
+		}
+    	int nLen = s.length();
+		for (int i=0; i<nLen; i++) {
+			int nLevel = bidi.getLevelAt(i);
+			if (nLevel>nCurrentLevel) {
+				if (nLevel%2==0) { // even is LTR
+					buf.append(sLTRCommand).append("{");
+				}
+				else { // odd is RTL
+					buf.append(sRTLCommand).append("{");						
+				}
+				nCurrentLevel=nLevel;
+				nNestingLevel++;
+			}
+			else if (nLevel<nCurrentLevel) {
+				buf.append("}");
+				nCurrentLevel=nLevel;
+				nNestingLevel--;
+			}
+			convert(s.charAt(i),buf,true,bGreekText);
+		}
+		while (nNestingLevel>0) {
+			buf.append("}");
+			nNestingLevel--;
+		}    	
     }
     
     private void convert(char c, StringBuilder buf, boolean bTextMode, boolean bGreekText) {

@@ -3253,7 +3253,7 @@ definitions to the range 00-FF.
 </special-symbol-set>
 
 <!-- Euclid Extra is a 8-bit font containing some mathematical symbols -->
-<special-symbol-set name="'Euclid Extra'" fontenc="any" eight-bit="true" math-mode="true">
+<special-symbol-set name="Euclid Extra" fontenc="any" eight-bit="true" math-mode="true">
   <symbol char="F03A" math="\sim " />
   <symbol char="F03B" math="\simeq " />
   <symbol char="F03C" math="\triangleleft " />
@@ -3272,7 +3272,7 @@ definitions to the range 00-FF.
 
 <!-- Euclid Fraktur is an ordinary unicode font, but numbers are oldstyle and
      letters (a-z) are fraktur -->
-<special-symbol-set name="'Euclid Fraktur'" fontenc="any" math-mode="true">
+<special-symbol-set name="Euclid Fraktur" fontenc="any" math-mode="true">
   <symbol char="0030" math="\mathfrak{0}" />
   <symbol char="0031" math="\mathfrak{1}" />
   <symbol char="0032" math="\mathfrak{2}" />
@@ -3343,7 +3343,7 @@ definitions to the range 00-FF.
 </special-symbol-set>
 
 <!-- Euclid Math One is an 8-bit font containing some mathematical symbols -->
-<special-symbol-set name="'Euclid Math One'" fontenc="any" eight-bit="true" math-mode="true">
+<special-symbol-set name="Euclid Math One" fontenc="any" eight-bit="true" math-mode="true">
   <symbol char="F020" math="" /> <!-- ignore space -->
   <symbol char="F021" math="\circleddash " />
   <symbol char="F022" math="\circledcirc " />
@@ -3496,7 +3496,7 @@ definitions to the range 00-FF.
 </special-symbol-set>
 
 <!-- Euclid Math Two is an 8-bit font containing some mathematical symbols -->
-<special-symbol-set name="'Euclid Math Two'" fontenc="any" eight-bit="true" math-mode="true">
+<special-symbol-set name="Euclid Math Two" fontenc="any" eight-bit="true" math-mode="true">
   <symbol char="F020" math="" /> <!-- ignore space -->
   <symbol char="F021" math="\vartriangle " />
   <symbol char="F022" math="\triangledown " />

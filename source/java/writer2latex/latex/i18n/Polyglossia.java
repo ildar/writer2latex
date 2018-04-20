@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  XeTeXI18n.java
+ *  Polyglossia.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-03) 
+ *  Version 2.0 (2018-04-19) 
  * 
  */
 
@@ -35,10 +35,12 @@ import java.util.Set;
 public class Polyglossia {
 	private static Map<String,String> languageMap;
 	private static Map<String,String> variantMap;
+	private static Set<String> bidi;
 	//private static Set<String> ctlLanguages;
 	
 	static {  
-		languageMap = new HashMap<String,String>();
+		languageMap = new HashMap<>();
+		bidi = new HashSet<>();
 		
 		// Part 1: Western languages (latin, cyrillic, greek, armenian scripts)
 		
@@ -123,12 +125,17 @@ public class Polyglossia {
 		languageMap.put("ml", "malayalam"); // Malayalam script
 		languageMap.put("mr", "marathi"); // Devanagari 
 		languageMap.put("nqo", "nko"); // N'ko script
-		languageMap.put("sa", "sanskrit"); // Devanagari
-		languageMap.put("syr", "syriac"); // Syriac alphabet
-		languageMap.put("ta", "tamil"); // Tamil alphabet or Arwi script
+		languageMap.put("sa", "sanskrit"); // Devanagari script
+		languageMap.put("syr", "syriac"); // Syriac script
+		languageMap.put("ta", "tamil"); // Tamil script or Arwi script
 		languageMap.put("te", "telugu"); // Telugu script
 		languageMap.put("th", "thai"); // Thai script
 		languageMap.put("ur", "urdu"); // Urdu script (Note: Extension of Persian)
+		
+		bidi.add("ar");
+		bidi.add("fa");
+		bidi.add("he");
+		bidi.add("ur");
 		
 		// Part 3: CJK
 		languageMap.put("ko", "korean"); // CJK
@@ -258,6 +265,16 @@ public class Polyglossia {
 				return sCommand;
 			}
 		}
+	}
+	
+	/** Test whether a given language needs bidrectional typesetting
+	 * 
+	 * @param sLang The language to test
+	 * @param sCountry The country
+	 * @return true if the language requires bidi
+	 */
+	public boolean isBidi(String sLang, String sCountry) {
+		return bidi.contains(sLang);
 	}
 	
 	/** Test whether a given language uses complex text layout

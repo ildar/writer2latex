@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-15)
+ *  Version 2.0 (2018-04-19)
  *  
  */
 
@@ -68,7 +68,9 @@ public class LaTeXFilterDialog extends FilterDialogBase {
     		"Palatino + PXfonts Math", "Palatino + Pazo Math", "Palatino + Euler Math",
     		"Times + TXfonts Math", "Times + Symbol",
     		"Arev Sans + Arev Math",
-    		"Bitstream Charter + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };    
+    		"Bitstream Charter + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };
+    private static final String[] FONTSPEC_VALUES =
+    	{ "original", "original+math", "default" };
     
     /** The component will be registered under this name.
      */
@@ -111,6 +113,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         loadCheckBoxOption(xProps,"Multilingual");
         setListBoxStringItemList("Font", FONT_NAMES);
         loadListBoxOption(xProps,"Font");
+        loadListBoxOption(xProps,"Fontspec");
         loadCheckBoxOption(xProps,"GreekMath");
         loadCheckBoxOption(xProps,"AdditionalSymbols");
 		
@@ -157,6 +160,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         saveListBoxOption(xProps, filterData, "Script", "script", SCRIPT_VALUES);
         saveCheckBoxOption(xProps, filterData, "Multilingual", "multilingual");
         saveListBoxOption(xProps, filterData, "Font", "font", FONT_VALUES);
+        saveListBoxOption(xProps, filterData, "Fontspec", "fontspec", FONTSPEC_VALUES);
         saveCheckBoxOption(xProps, filterData, "GreekMath", "greek_math");
         // AdditionalSymbols sets 5 different w2l options...
         saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_pifont");
@@ -268,6 +272,9 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         	// backend=xetex does not (currently) use the font option
         	return getListBoxSelectedItem("Backend")==3 || super.isLocked(sOptionName);
         }
+        else if ("fontspec".equals(sOptionName)) {
+        	return super.isLocked(sOptionName);
+        }
         else if ("greek_math".equals(sOptionName)) {
         	return super.isLocked(sOptionName);
         }
@@ -303,8 +310,9 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         setControlEnabled("ScriptLabel",!isLocked("script"));
         setControlEnabled("Script",!isLocked("script"));
         setControlEnabled("Multilingual",!isLocked("multilingual"));
-        setControlEnabled("FontLabel",!isLocked("font"));
+        setControlEnabled("FontLabel",!isLocked("font") || !isLocked("fontspec"));
         setControlEnabled("Font",!isLocked("font"));
+        setControlEnabled("Fontspec",!isLocked("fontspec"));
         setControlEnabled("GreekMath",!isLocked("greek_math"));
         setControlEnabled("AdditionalSymbols",!isLocked("additional_symbols"));
 
@@ -350,19 +358,13 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         setControlEnabled("IgnoreDoubleSpaces",!isLocked("ignore_double_spaces"));
         
         // Visibility of controls
-    	if (getListBoxSelectedItem("Backend")==3) { // XeTeX
-    		setControlVisible("InputencodingLabel",false);
-    		setControlVisible("Inputencoding",false);
-    		setControlVisible("ScriptLabel",true);
-    		setControlVisible("Script",true);
-    	}
-    	else {
-    		setControlVisible("InputencodingLabel",true);
-    		setControlVisible("Inputencoding",true);
-    		setControlVisible("ScriptLabel",false);
-    		setControlVisible("Script",false);
-    	}
-    	
+        boolean bXeTeX = getListBoxSelectedItem("Backend")==3; 
+		setControlVisible("InputencodingLabel",!bXeTeX);
+		setControlVisible("Inputencoding",!bXeTeX);
+		setControlVisible("Font",!bXeTeX);
+		setControlVisible("ScriptLabel",bXeTeX);
+		setControlVisible("Script",bXeTeX);
+		setControlVisible("Fontspec",bXeTeX);
     }
 	
     private void enableBibtexStyle() {

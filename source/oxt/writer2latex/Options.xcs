@@ -36,6 +36,7 @@
             <prop oor:name="Script" oor:type="xs:short" />
             <prop oor:name="Multilingual" oor:type="xs:boolean" />
             <prop oor:name="Font" oor:type="xs:short" />
+            <prop oor:name="Fontspec" oor:type="xs:short" />
             <prop oor:name="GreekMath" oor:type="xs:boolean" />
             <prop oor:name="AdditionalSymbols" oor:type="xs:boolean" />
             <!-- Bibliography -->

@@ -430,6 +430,9 @@
         <prop oor:name="Font" oor:type="xs:short">
             <value>0</value> <!-- Default (Computer Modern) -->
         </prop>
+        <prop oor:name="Fontspec" oor:type="xs:short">
+            <value>2</value> <!-- Default (Latin Modern) -->
+        </prop>
         <prop oor:name="GreekMath" oor:type="xs:boolean">
             <value>true</value>
         </prop>

@@ -130,6 +130,25 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Font</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:Font" visibility="hidden">Select a font scheme to use in the LaTeX document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this option to select a font scheme to use in the LaTeX document.
+        The possible values depends on the backend.
+        </paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you have selected XeTeX, you can select either of these values:
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Original</emph> Select this if you want to use the same
+				font as in the original document.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Orignal + Math</emph> Select this if you want to use the same
+				font as in the original document for text as well as for letters and numbers in mathematical formulas.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Default (Latin Modern)</emph> Select this to use the default
+				Latin Modern fonts in XeTeX.</paragraph>
+			</listitem>
+		</list>        
+        </paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">For other backends, you can choose from a fixed set of fonts:
         </paragraph>
         <list type="unordered">
 			<listitem>
