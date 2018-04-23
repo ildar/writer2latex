@@ -2,7 +2,7 @@
  *
  *	TextConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-07-23)
+ *  Version 2.0 (2018-04-22)
  *
  */
 
@@ -1355,25 +1355,13 @@ public class TextConverter extends ConverterHelper {
     
     // Does this style specify underline?
     private boolean isUnderline(StyleWithProperties style) {
-    	String s;
-        if (ofr.isOpenDocument()) {
-            s = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,false);
-        }
-        else {
-            s = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE,false);
-        }
+    	String s = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,false);
         return s!=null && !"none".equals(s);
     }
 	
     // Does this style specify overstrike?
     private boolean isOverstrike(StyleWithProperties style) {
-    	String s;
-        if (ofr.isOpenDocument()) {
-            s = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,false);
-        }
-        else {
-            s = style.getProperty(XMLString.STYLE_TEXT_CROSSING_OUT,false);
-        }
+    	String s = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,false);
         return s!=null && !"none".equals(s);
     }
 	

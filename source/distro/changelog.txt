@@ -1,8 +1,7 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-todo: opdater manual, incl. locked options, opdater hjælpefil
-overvej locked options i forhold til at label er delt..
-og hvad skete der lige med cjk
+[w2x] Improved support for text decoration (underline, strike through and
+  overline). Removed support for blinking text (deprecated in CSS3)
 
 [w2l] New option fontspec with values original, original+math and default.
   This is used for font selection if backend is xetex. The first two options

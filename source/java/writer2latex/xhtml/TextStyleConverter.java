@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-03-22)
  *
  */
 
@@ -219,6 +219,7 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
     //   - style:font-size-rel
     //   - text:display
     //   - text:condition
+    //   - style:text-blinking
     // Also all attributes for CJK and CTL text are currently ignored:
     //   style:font-name-*, style:font-family-*, style:font-family-generic-*,
     //   style:font-style-name-*, style:font-pitch-*, style:font-charset-*,
@@ -226,8 +227,6 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
     // The following attributes cannot be supported using CSS2:
     //   - style:text-outline
     //   - style:font-relief
-    //   - style:text-line-trough-* (formatting of line through)
-    //   - style:text-underline-* (formatting of underline)
     //   - style:letter-kerning 
     //   - style:text-combine-*
     //   - style:text-emphasis
@@ -332,31 +331,8 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
         s = style.getProperty(XMLString.FO_TEXT_SHADOW,bInherit);
         if (s!=null) { props.addValue("text-shadow",s); }
 	  
-        // Text decoration. Here OOo is more flexible that CSS2.
-        if (ofr.isOpenDocument()) {
-            s = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,bInherit);
-            s2 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,bInherit);
-        }
-        else {
-            s = style.getProperty(XMLString.STYLE_TEXT_CROSSING_OUT,bInherit);
-            s2 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE,bInherit);
-        }
-        s3 = style.getProperty(XMLString.STYLE_TEXT_BLINKING,bInherit);
-        // Issue: Since these three properties all maps to the single CSS property
-        // text-decoration, there is no way to turn on one kind of decoration and 
-        // turn another one off (without creating another inline element).
-        // If one decoration is turned of, we turn them all off:
-        if ("none".equals(s) || "none".equals(s2) || "false".equals(s3)) {
-            props.addValue("text-decoration","none");
-        }
-        else { // set the required properties
-            val = new CSVList(" "); // multivalue property!
-            if (s!=null && !"none".equals(s)) { val.addValue("line-through"); }
-            if (s2!=null && !"none".equals(s2)) { val.addValue("underline"); }
-            if (s3!=null && "true".equals(s3)) { val.addValue("blink"); }
-            if (!val.isEmpty()) { props.addValue("text-decoration",val.toString()); }  
-        }
-  
+        cssTextDecoration(style, props, bInherit);
+        
         // Letter spacing: This property fit with css
         s = style.getProperty(XMLString.FO_LETTER_SPACING,bInherit);
 	    if (s!=null) { props.addValue("letter-spacing",scale(s)); }
@@ -365,27 +341,123 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
         s = style.getProperty(XMLString.FO_TEXT_TRANSFORM,bInherit);
 	    if (s!=null) { props.addValue("text-transform",s); }
     }
+    
+    // Convert text decoration.
+    // In this case three different properties all maps to a single CSS property
+    // This implies that style and color cannot be set independently (without creating
+    // an additional inline element, which we don't want to do)
+    // Also in CSS text-decoration cannot be turned of on child elements
+    // We cannot support style:text-*-width, style:text-line-through-text and
+    // style:text-line-through-text-style in CSS.
+    // Also only a limited number of ODF line styles are supported in CSS
+    public void cssTextDecoration(StyleWithProperties style, CSVList props, boolean bInherit) {
+    	String sThrough = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,bInherit);
+    	String sUnder = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,bInherit);
+    	String sOver = style.getProperty(XMLString.STYLE_TEXT_OVERLINE_STYLE,bInherit);
+        if (active(sThrough) || active(sUnder) || active(sOver)) {
+        	// At least one decoration is active (not none)
+            CSVList val = new CSVList(" ");
+
+            // Select color from one of the decorations 
+            String sColor = null;
+            if (active(sThrough)) {
+            	sColor = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_COLOR, bInherit);
+            }
+            if (sColor==null && active(sUnder)) {
+            	sColor = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_COLOR, bInherit);
+            }
+            if (sColor==null && active(sOver)) {
+                sColor = style.getProperty(XMLString.STYLE_TEXT_OVERLINE_COLOR, bInherit);            		
+            }
+            if (sColor!=null && !"font-color".equals(sColor)) {
+            	val.addValue(sColor);
+            }
+            
+            // Select style from one of the decorations
+            String sStyle = null;
+            String sType = null;
+            if (active(sThrough)) {
+            	sStyle = sThrough;
+            	sType = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_TYPE, bInherit);
+            }
+            else if (active(sUnder)) {
+            	sStyle = sUnder;
+            	sType = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_TYPE, bInherit);
+            }
+            else if (active(sOver)) {
+            	sStyle = sOver;
+                sType = style.getProperty(XMLString.STYLE_TEXT_OVERLINE_TYPE, bInherit);            		
+            }
+            if (sStyle!=null) {
+            	switch (sStyle) {
+            	case "wave":
+            		val.addValue("wavy"); break;
+            	case "dash":
+            	case "long-dash":
+            	case "dot-dash":
+            		val.addValue("dashed"); break;
+            	case "dot-dot-dash":
+            	case "dotted":
+            		val.addValue("dotted"); break;
+            	case "solid":
+            	default:
+            		if ("double".equals(sType)) {
+            			val.addValue("double");
+            		}
+            		else {
+            			val.addValue("solid");
+            		}
+            	}
+            }
+            
+            // Select the required decorations  
+            if (active(sThrough)) { val.addValue("line-through"); }
+            if (active(sUnder)) { val.addValue("underline"); }
+            if (active(sOver)) { val.addValue("overline"); }
+            if (!val.isEmpty()) { props.addValue("text-decoration",val.toString()); }
+
+            // Select mode
+            String sMode = null;
+            if (active(sThrough)) {
+            	sMode = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_MODE, bInherit);
+            }
+            if (sMode==null && active(sUnder)) {
+            	sMode = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_MODE, bInherit);
+            }
+            if (sMode==null && active(sOver)) {
+                	sMode = style.getProperty(XMLString.STYLE_TEXT_OVERLINE_MODE, bInherit);            		
+            }
+            if (sMode!=null) {
+            	if (sMode.equals("skip-white-space")) {
+            		props.addValue("text-decoration-skip", "spaces");
+            	}
+            	else if (sMode.equals("continuous")) {
+            		props.addValue("text-decoration-skip", "none");            		
+            	}
+            }
+        }
+        else if (sThrough!=null || sUnder!=null || sOver!=null) {
+        	// At least one decoration set to none
+        	props.addValue("text-decoration", "none");
+        }
+    }
+    
+    // Test whether a given decoration is active (set and not none)
+    private boolean active(String sDecorationStyle) {
+    	return sDecorationStyle!=null && !"none".equals(sDecorationStyle);
+    }
 	
     public void cssTextBackground(StyleWithProperties style, CSVList props, boolean bInherit) {
         // Background color: This attribute fit with css when applied to inline text
-        String s =ofr.isOpenDocument() ?
-            style.getTextProperty(XMLString.FO_BACKGROUND_COLOR,bInherit) :
-            style.getTextProperty(XMLString.STYLE_TEXT_BACKGROUND_COLOR,bInherit);
+        String s = style.getTextProperty(XMLString.FO_BACKGROUND_COLOR,bInherit);
 	    if (s!=null) { props.addValue("background-color",s); }
     }
 	
     private void cssHyperlink(StyleWithProperties style, CSVList props) {
-        String s1,s2;
         // For hyperlinks, export text-decoration:none even if nothing is defined in source
-        if (ofr.isOpenDocument()) {
-            s1 = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,true);
-            s2 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,true);
-        }
-        else {
-            s1 = style.getProperty(XMLString.STYLE_TEXT_CROSSING_OUT,true);
-            s2 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE,true);
-        }
-        String s3 = style.getProperty(XMLString.STYLE_TEXT_BLINKING,true);
+        String s1 = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,true);
+        String s2 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,true);
+        String s3 = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,true);
         if (s1==null && s2==null && s3==null) {
             props.addValue("text-decoration","none");
         }

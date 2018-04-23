@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-19)
+ *  Version 2.0 (2018-04-22)
  *
  */
 
@@ -332,9 +332,7 @@ public class CharStyleConverter extends StyleConverter {
     private void applyUnderline(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
         if (style==null || !bUseUlem) { return; }
         if (bIgnoreAll) { return; }
-        String sTag = ofr.isOpenDocument() ?
-            XMLString.STYLE_TEXT_UNDERLINE_STYLE :
-            XMLString.STYLE_TEXT_UNDERLINE; 
+        String sTag = XMLString.STYLE_TEXT_UNDERLINE_STYLE; 
         String s = underline(style.getProperty(sTag, bInherit));
         if (s!=null) { bNeedUlem = true; ba.add(s+"{","}"); }
     }
@@ -347,9 +345,7 @@ public class CharStyleConverter extends StyleConverter {
     private void applyCrossout(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
         if (style==null || !bUseUlem) { return; }
         if (bIgnoreAll) { return; }
-        String sTag = ofr.isOpenDocument() ?
-            XMLString.STYLE_TEXT_LINE_THROUGH_STYLE :
-            XMLString.STYLE_TEXT_CROSSING_OUT; 
+        String sTag = XMLString.STYLE_TEXT_LINE_THROUGH_STYLE; 
         String s = crossout(style.getProperty(sTag, bInherit));
         if (s!=null) { bNeedUlem = true; ba.add(s+"{","}"); }
     }
