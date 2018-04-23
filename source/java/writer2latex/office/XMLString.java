@@ -19,13 +19,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-22)
+ *  Version 2.0 (2018-04-23)
  *
  */
 
 package writer2latex.office;
 
-/* XML strings (tags and attributes) in the OOo XML namespaces
+/* XML strings (tags and attributes) in the ODF XML namespaces
  * typosafe but not typesafe :-)
  */
 
@@ -191,6 +191,7 @@ public class XMLString {
 	public static final String STYLE_TEXT_LINE_THROUGH_MODE = "style:text-line-through-mode";
 	public static final String STYLE_TEXT_UNDERLINE_MODE = "style:text-underline-mode";
 	public static final String STYLE_TEXT_OVERLINE_MODE = "style:text-overline-mode";
+	public static final String STYLE_TEXT_LINE_THROUGH_TEXT = "style:text-line-through-text";
 	public static final String STYLE_AUTO_TEXT_INDENT = "style:auto-text-indent";
 	public static final String STYLE_TEXT_ALIGN_SOURCE = "style:text-align-source";
 	public static final String STYLE_NAME = "style:name";

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-22)
+ *  Version 2.0 (2018-04-23)
  *
  */
 
@@ -330,11 +330,14 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyUnderline(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style==null || !bUseUlem) { return; }
-        if (bIgnoreAll) { return; }
-        String sTag = XMLString.STYLE_TEXT_UNDERLINE_STYLE; 
-        String s = underline(style.getProperty(sTag, bInherit));
-        if (s!=null) { bNeedUlem = true; ba.add(s+"{","}"); }
+        if (style!=null && bUseUlem && !bIgnoreAll) {
+	        String sStyle = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,bInherit);
+	        String sType = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_TYPE,bInherit);
+	        String s = underline(sStyle, sType);
+	        if (s!=null) {
+	        	bNeedUlem = true; ba.add(s+"{","}");
+	        }
+        }
     }
 
     /** <p>Apply text cross out.</p>
@@ -343,11 +346,14 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyCrossout(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style==null || !bUseUlem) { return; }
-        if (bIgnoreAll) { return; }
-        String sTag = XMLString.STYLE_TEXT_LINE_THROUGH_STYLE; 
-        String s = crossout(style.getProperty(sTag, bInherit));
-        if (s!=null) { bNeedUlem = true; ba.add(s+"{","}"); }
+        if (style!=null && bUseUlem && !bIgnoreAll) {
+	        String sStyle = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,bInherit);
+	        String sText = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_TEXT,bInherit);
+	        String s = crossout(sStyle, sText);
+	        if (s!=null) {
+	        	bNeedUlem = true; ba.add(s+"{","}");
+	        }
+        }
     }
 
     /** <p>Apply change case.</p>
@@ -399,18 +405,38 @@ public class CharStyleConverter extends StyleConverter {
         return "\\textsuperscript";
     }
     
-    private static final String underline(String sUnderline) {
-        if (sUnderline==null) { return null; }
-        if (sUnderline.equals("none")) { return null; }
-        if (sUnderline.indexOf("wave")>=0) { return "\\uwave"; }
-        return "\\uline";
+    private static final String underline(String sStyle, String sType) {
+    	if (sStyle!=null) {
+    		switch(sStyle) {
+        	case "wave":
+        		return "\\uwave";
+        	case "dash":
+        	case "long-dash":
+        	case "dot-dash":
+        		return "\\dashuline";
+        	case "dot-dot-dash":
+        	case "dotted":
+        		return "\\dotuline";
+        	case "solid":
+        		if ("double".equals(sType)) {
+        			return "\\uuline";
+        		}
+        		else {
+        			return "\\uline";
+        		}
+        	case "none":
+        	default:
+        		return null;
+        	}
+    	}
+    	return null;
     }
-	
-    private static final String crossout(String sCrossout) {
-        if (sCrossout==null) { return null; }
-        if (sCrossout.equals("X")) { return "\\xout"; }
-        if (sCrossout.equals("slash")) { return "\\xout"; }
-        return "\\sout";
+    	
+    private static final String crossout(String sStyle, String sText) {
+    	if (sStyle!=null && sStyle!="none") {
+    		return sText!=null ? "\\xout" : "\\sout";
+    	}
+    	return null;
     }
 	
     private static final String changeCase(String sTextTransform){

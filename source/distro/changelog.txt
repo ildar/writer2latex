@@ -1,5 +1,8 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] Improved support for text decoration (underline, strike through), now
+  supporting all the decorations provided by ulem.sty
+
 [w2x] Improved support for text decoration (underline, strike through and
   overline). Removed support for blinking text (deprecated in CSS3)
 
