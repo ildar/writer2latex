@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-02)
  *
  */
 
@@ -32,7 +32,7 @@ import writer2latex.office.StyleWithProperties;
 import writer2latex.util.CSVList;
 
 /**
- * This class converts OpenDocument row styles to CSS2 styles.
+ * This class converts OpenDocument row styles to CSS styles.
  * Rows formatting includes <em>background</em>, and also <em>height</em>,
  * which is considered elsewhere.
  */
@@ -72,7 +72,8 @@ public class RowStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param bInherit true if properties should be inherited from parent style(s)
      */
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
-        getFrameSc().cssBackground(style,props,bInherit);
+    	
+        getFrameSc().cssBackground(StyleWithProperties.ROW,style,props,bInherit);
     }
 	
 }

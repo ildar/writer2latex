@@ -66,7 +66,7 @@ XTypeProvider {
 
 	/** Construct a new W2LExportFilter from a given component context
 	 * 
-	 * @param xComponentContext the component context used to instantiate new UNO services
+	 * @param xComponentContext1 the component context used to instantiate new UNO services
 	 */
     public W2LExportFilter(XComponentContext xComponentContext1) {
 		this.xComponentContext = xComponentContext1;

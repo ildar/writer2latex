@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-02)
  *
  */
 
@@ -32,9 +32,9 @@ import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 
 /**
- * This class converts OpenDocument table styles to CSS2 styles.
- * Table formatting includes <em>background</em>, <em>alignment</em>,
- * <em>margins</em>, and also <em>width</em>, which is considered elsewhere.
+ * This class converts OpenDocument table styles to CSS styles.
+ * Table formatting includes <em>background</em>, <em>shadow</em>, <em>alignment</em>,
+ * <em>margins</em>. Table <em>width</em> is handled elsewhere.
  */
 public class TableStyleConverter extends StyleWithPropertiesConverterHelper {
 
@@ -74,9 +74,10 @@ public class TableStyleConverter extends StyleWithPropertiesConverterHelper {
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
     	// Page break
     	getParSc().cssPageBreak(style, props, bInherit);
-        // Apply background
-        getFrameSc().cssBackground(style,props,bInherit);
-        // Table-specific properties
+        // Apply background and shadow
+        getFrameSc().cssBackground(StyleWithProperties.TABLE,style,props,bInherit);
+        getFrameSc().cssShadow(StyleWithProperties.TABLE,style,props,bInherit);
+        // Table-specific properties (this includes handling of margins)
         cssTable(style,props,bInherit);
     }
 	

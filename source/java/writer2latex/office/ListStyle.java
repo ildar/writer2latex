@@ -2,7 +2,7 @@
  *
  *  ListStyle.java
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2010-05-09)
+ *  Version 2.0 (2018-04-30)
  *
  */
 
@@ -117,11 +117,7 @@ public class ListStyle extends OfficeStyle {
         Node child = node.getFirstChild();
         while (child!=null) {
         	if (child.getNodeType()==Node.ELEMENT_NODE){
-        		if (child.getNodeName().equals(XMLString.STYLE_PROPERTIES)) {
-        			levelStyle[nLevel].loadFromDOM(child);
-        			loadLevelLabelPropertiesFromDOM(nLevel,node);
-                }
-                if (child.getNodeName().equals(XMLString.STYLE_LIST_LEVEL_PROPERTIES)) { // oasis
+                if (child.getNodeName().equals(XMLString.STYLE_LIST_LEVEL_PROPERTIES)) {
                     levelStyle[nLevel].loadFromDOM(child);
         			loadLevelLabelPropertiesFromDOM(nLevel,child);
                 }                                

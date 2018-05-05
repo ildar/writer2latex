@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-02)
  *
  */
 
@@ -142,7 +142,7 @@ public class PageStyleConverter extends StyleConverterHelper {
             if (pageLayout!=null) {
                 applyDirection(pageLayout,info);
                 cssPageSize(pageLayout,info.props);
-                getFrameSc().cssBackground(pageLayout,info.props,true);
+                getFrameSc().cssBackground(StyleWithProperties.PAGE,pageLayout,info.props,true);
             }
             // Next apply drawing-page style (draw background)
             StyleWithProperties drawingPage = ofr.getDrawingPageStyle(style.getProperty(XMLString.DRAW_STYLE_NAME));
@@ -165,7 +165,10 @@ public class PageStyleConverter extends StyleConverterHelper {
         			if (bConvertStyles) {
         				// Background color
         				StyleInfo pageInfo = new StyleInfo();
-        				getFrameSc().cssBackground(pageLayout,pageInfo.props,true);
+                        getFrameSc().cssBackground(StyleWithProperties.PAGE,pageLayout,pageInfo.props,true);
+                        getFrameSc().cssPadding(StyleWithProperties.PAGE,pageLayout,pageInfo.props,true);
+                        getFrameSc().cssBorder(StyleWithProperties.PAGE,pageLayout,pageInfo.props,true);
+                        getFrameSc().cssShadow(StyleWithProperties.PAGE,pageLayout,pageInfo.props,true);
         				if (pageInfo.hasAttributes()) {
         					buf.append(sIndent).append("body {").append(pageInfo.props.toString()).append("}")
         					.append(config.prettyPrint() ? "\n" : " ");

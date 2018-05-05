@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-04-30)
  *
  */
 
@@ -79,11 +79,9 @@ public class ParStyleConverter extends StyleWithPropertiesConverterHelper {
      */
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
     	cssPageBreak(style,props,bInherit);
-        getFrameSc().cssMargins(style,props,bInherit);
-        getFrameSc().cssBorder(style,props,bInherit);
-        getFrameSc().cssPadding(style,props,bInherit);
-        getFrameSc().cssBackgroundCommon(style,props,bInherit);
+        getFrameSc().cssBox(StyleWithProperties.PAR,style,props,bInherit);
         cssPar(style,props,bInherit);
+        // TODO: rename this to cssTextNoColor
         getTextSc().cssTextCommon(style,props,bInherit);
     }
 	
@@ -132,10 +130,6 @@ public class ParStyleConverter extends StyleWithPropertiesConverterHelper {
 		*/
         // TODO: style:line-height-at-least and stype:line-spacing
 		
-        // Background color fits with css (note: Paragraph property!)
-        s = style.getParProperty(XMLString.FO_BACKGROUND_COLOR,bInherit);
-        if (s!=null) { props.addValue("background-color",s); }
-
         // Indentation: Absolute values of this property fit with css...
         if (bInherit || style.getProperty(XMLString.FO_TEXT_INDENT,false)!=null) {
             s = style.getAbsoluteProperty(XMLString.FO_TEXT_INDENT);

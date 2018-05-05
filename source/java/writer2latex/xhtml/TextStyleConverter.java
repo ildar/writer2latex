@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-22)
+ *  Version 2.0 (2018-05-03)
  *
  */
 
@@ -45,7 +45,8 @@ import writer2latex.util.ExportNameCollection;
  * <li>TODO: Support style:use-window-font-color ("automatic color")</li>
  * <li>TODO: Support style:font-charset (other encoding)</li>
  * <li>TODO: Support style:font-size-rel</li>
- * <li>TODO: Support text:display and text:condition</li></ul>
+ * <li>TODO: Support text:display and text:condition</li>
+ * 
 
  */
 public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
@@ -236,9 +237,12 @@ public class TextStyleConverter extends StyleWithPropertiesConverterHelper {
     //   - fo:hyphenation-*
     //   
 
-    public void cssText(StyleWithProperties style, CSVList props, boolean bInherit) {
+    private void cssText(StyleWithProperties style, CSVList props, boolean bInherit) {
         cssTextCommon(style,props,bInherit);
         cssTextBackground(style,props,bInherit);
+        getFrameSc().cssPadding(StyleWithProperties.TEXT, style, props, bInherit);
+        getFrameSc().cssBorder(StyleWithProperties.TEXT, style, props, bInherit);
+        getFrameSc().cssShadow(StyleWithProperties.TEXT, style, props, bInherit);
     }
 	
     public void cssTextCommon(StyleWithProperties style, CSVList props, boolean bInherit) {

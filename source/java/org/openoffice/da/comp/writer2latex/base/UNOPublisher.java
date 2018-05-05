@@ -98,7 +98,6 @@ public abstract class UNOPublisher {
     /** Post process the document after conversion.
      * 
      *  @param sTargetURL URL of the converted document
-     *  @param format the target format
      */
     protected abstract void postProcess(String sTargetURL);
 
@@ -131,7 +130,6 @@ public abstract class UNOPublisher {
      *  (4) Convert the document.
      *  (5) Post process the document, e.g. displaying the result
      * 
-     * @param format the target format
      * @return true if the publishing was successful
      */
     public boolean publish() {

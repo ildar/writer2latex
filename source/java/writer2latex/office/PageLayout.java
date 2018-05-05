@@ -2,7 +2,7 @@
  *
  *  PageLayout.java
  *
- *  Copyright: 2002-2007 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 0.5 (2007-03-17)
+ *  Version 2.0 (2018-04-30)
  *
  */
 
@@ -63,10 +63,7 @@ public class PageLayout extends StyleWithProperties {
 
         Node hsNode = Misc.getChildByTagName(node,XMLString.STYLE_HEADER_STYLE);
         if (hsNode!=null) {
-            Node hsProperties = Misc.getChildByTagName(hsNode,XMLString.STYLE_PROPERTIES);
-            if (hsProperties==null) { // oasis:
-                hsProperties = Misc.getChildByTagName(hsNode,XMLString.STYLE_HEADER_FOOTER_PROPERTIES);
-            }
+            Node hsProperties = Misc.getChildByTagName(hsNode,XMLString.STYLE_HEADER_FOOTER_PROPERTIES);
             if (hsProperties!=null) {
                 bHasHeaderStyle = true;
                 headerStyle.loadFromDOM(hsProperties);
@@ -75,10 +72,7 @@ public class PageLayout extends StyleWithProperties {
 
         Node fsNode = Misc.getChildByTagName(node,XMLString.STYLE_FOOTER_STYLE);
         if (fsNode!=null) {
-            Node fsProperties = Misc.getChildByTagName(fsNode,XMLString.STYLE_PROPERTIES);
-            if (fsProperties==null) { // oasis:
-                fsProperties = Misc.getChildByTagName(fsNode,XMLString.STYLE_HEADER_FOOTER_PROPERTIES);
-            }
+            Node fsProperties = Misc.getChildByTagName(fsNode,XMLString.STYLE_HEADER_FOOTER_PROPERTIES);
             if (fsProperties!=null) {
                 bHasFooterStyle = true;
                 footerStyle.loadFromDOM(fsProperties);

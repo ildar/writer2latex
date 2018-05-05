@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-01)
  *
  */
 
@@ -93,7 +93,7 @@ public class PresentationStyleConverter extends FrameStyleConverter {
                 if (!style.isAutomatic()) {
                     // Apply style to paragraphs within a list item with this class
                     CSVList props = new CSVList(";");
-                    getFrameSc().cssMargins(style,props,true);
+                    getFrameSc().cssMargin(StyleWithProperties.GRAPHIC,style,props,true);
                     getParSc().cssPar(style,props,true);
                     getTextSc().cssTextCommon(style,props,true);
                     if (!props.isEmpty()) {

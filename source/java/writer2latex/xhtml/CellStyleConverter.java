@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-02)
  *
  */
 
@@ -72,10 +72,11 @@ public class CellStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param bInherit true if properties should be inherited from parent style(s)
      */
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
-        // Apply "inner" box properties (no margins)
-        getFrameSc().cssBorder(style,props,bInherit);
-        getFrameSc().cssPadding(style,props,bInherit);
-        getFrameSc().cssBackground(style,props,bInherit);
+        // Apply "inner" box properties (background, padding, border and shadow but no margins)
+        getFrameSc().cssBackground(StyleWithProperties.CELL,style,props,bInherit);
+        getFrameSc().cssPadding(StyleWithProperties.CELL,style,props,bInherit);
+        getFrameSc().cssBorder(StyleWithProperties.CELL,style,props,bInherit);
+        getFrameSc().cssShadow(StyleWithProperties.CELL,style,props,bInherit);
         // only relevant for spreadsheets
         getParSc().cssPar(style,props,bInherit); 
         getTextSc().cssTextCommon(style,props,bInherit);

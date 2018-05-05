@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-09)
+ *  Version 2.0 (2018-05-02)
  *
  */
 
@@ -76,7 +76,8 @@ public class SectionStyleConverter extends StyleWithPropertiesConverterHelper {
      *  @param bInherit true if properties should be inherited from parent style(s)
      */
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
-        getFrameSc().cssBox(style,props,bInherit);
+        getFrameSc().cssMargin(StyleWithProperties.SECTION,style,props,bInherit);
+        getFrameSc().cssBackground(StyleWithProperties.SECTION,style,props,bInherit);
     }
 
 }

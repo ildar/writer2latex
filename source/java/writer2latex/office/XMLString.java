@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-23)
+ *  Version 2.0 (2018-05-04)
  *
  */
 
@@ -34,7 +34,7 @@ public class XMLString {
 	public static final String DRAW_ = "draw:";
 	public static final String DRAW_PAGE = "draw:page";
 	public static final String DRAW_A = "draw:a";
-	public static final String DRAW_FRAME = "draw:frame"; // oasis
+	public static final String DRAW_FRAME = "draw:frame";
 	public static final String DRAW_IMAGE = "draw:image";
 	public static final String DRAW_OBJECT = "draw:object";
 	public static final String DRAW_OBJECT_OLE = "draw:object-ole";
@@ -47,6 +47,14 @@ public class XMLString {
 	public static final String DRAW_TEXT_STYLE_NAME = "draw:text-style-name";
 	public static final String DRAW_MASTER_PAGE_NAME = "draw:master-page-name";
 	public static final String DRAW_FILL_COLOR = "draw:fill-color";
+	public static final String DRAW_FILL = "draw:fill";
+	public static final String DRAW_OPACITY = "draw:opacity";
+	public static final String DRAW_STROKE = "draw:stroke";
+	public static final String DRAW_SHADOW = "draw:shadow";
+	public static final String DRAW_SHADOW_COLOR = "draw:shadow-color";
+	public static final String DRAW_SHADOW_OFFSET_X = "draw:shadow-offset-x";
+	public static final String DRAW_SHADOW_OFFSET_Y = "draw:shadow-offset-y";
+	public static final String DRAW_SHADOW_OPACITY = "draw:shadow-opacity";
 
 	// dc namespace - elements
 	public static final String DC_CREATOR = "dc:creator";
@@ -75,11 +83,11 @@ public class XMLString {
 	public static final String OFFICE_STYLES = "office:styles";
 	public static final String OFFICE_AUTOMATIC_STYLES = "office:automatic-styles";
 	public static final String OFFICE_FONT_DECLS = "office:font-decls";
-	public static final String OFFICE_FONT_FACE_DECLS = "office:font-face-decls"; // oasis
+	public static final String OFFICE_FONT_FACE_DECLS = "office:font-face-decls";
 	public static final String OFFICE_BODY = "office:body";
-	public static final String OFFICE_TEXT = "office:text"; // oasis
-	public static final String OFFICE_SPREADSHEET = "office:spreadsheet"; // oasis
-	public static final String OFFICE_PRESENTATION = "office:presentation"; // oasis
+	public static final String OFFICE_TEXT = "office:text";
+	public static final String OFFICE_SPREADSHEET = "office:spreadsheet";
+	public static final String OFFICE_PRESENTATION = "office:presentation";
 	public static final String OFFICE_FORMS = "office:forms";
 	public static final String OFFICE_ANNOTATION = "office:annotation";
 	public static final String OFFICE_BINARY_DATA = "office:binary-data";
@@ -87,7 +95,7 @@ public class XMLString {
 	// office namespace - attributes
 	public static final String OFFICE_TARGET_FRAME_NAME = "office:target-frame-name";
 	public static final String OFFICE_NAME = "office:name";
-	public static final String OFFICE_VALUE_TYPE = "office:value-type"; // oasis
+	public static final String OFFICE_VALUE_TYPE = "office:value-type";
 
 	// form namespace - elements
 	public static final String FORM_FORM = "form:form";
@@ -130,26 +138,25 @@ public class XMLString {
 
 	// style namespace - elements
 	public static final String STYLE_PAGE_MASTER = "style:page-master";
-	public static final String STYLE_PAGE_LAYOUT = "style:page-layout"; // oasis
+	public static final String STYLE_PAGE_LAYOUT = "style:page-layout"; 
 	public static final String STYLE_MASTER_PAGE = "style:master-page";
 	public static final String STYLE_FONT_DECL = "style:font-decl";
-	public static final String STYLE_FONT_FACE = "style:font-face"; // oasis
+	public static final String STYLE_FONT_FACE = "style:font-face"; 
 	public static final String STYLE_STYLE = "style:style";
 	public static final String STYLE_DEFAULT_STYLE = "style:default-style";
-	public static final String STYLE_PROPERTIES = "style:properties";
-	public static final String STYLE_TEXT_PROPERTIES = "style:text-properties"; // oasis
-	public static final String STYLE_PARAGRAPH_PROPERTIES = "style:paragraph-properties"; // oasis
-	public static final String STYLE_SECTION_PROPERTIES = "style:section-properties"; // oasis
-	public static final String STYLE_TABLE_PROPERTIES = "style:table-properties"; // oasis
-	public static final String STYLE_TABLE_ROW_PROPERTIES = "style:table-row-properties"; // oasis
-	public static final String STYLE_TABLE_COLUMN_PROPERTIES = "style:table-column-properties"; // oasis
-	public static final String STYLE_TABLE_CELL_PROPERTIES = "style:table-cell-properties"; // oasis
-	public static final String STYLE_GRAPHIC_PROPERTIES = "style:graphic-properties"; // oasis
-	public static final String STYLE_PAGE_LAYOUT_PROPERTIES = "style:page-layout-properties"; // oasis
-	public static final String STYLE_DRAWING_PAGE_PROPERTIES = "style:drawing-page-properties"; // oasis
-	public static final String STYLE_HEADER_FOOTER_PROPERTIES = "style:header-footer-properties"; // oasis
-	public static final String STYLE_LIST_LEVEL_LABEL_ALIGNMENT = "style:list-level-label-alignment"; // oasis
-																										// 1.2
+	//public static final String STYLE_PROPERTIES = "style:properties";
+	public static final String STYLE_TEXT_PROPERTIES = "style:text-properties"; 
+	public static final String STYLE_PARAGRAPH_PROPERTIES = "style:paragraph-properties"; 
+	public static final String STYLE_SECTION_PROPERTIES = "style:section-properties"; 
+	public static final String STYLE_TABLE_PROPERTIES = "style:table-properties"; 
+	public static final String STYLE_TABLE_ROW_PROPERTIES = "style:table-row-properties"; 
+	public static final String STYLE_TABLE_COLUMN_PROPERTIES = "style:table-column-properties"; 
+	public static final String STYLE_TABLE_CELL_PROPERTIES = "style:table-cell-properties"; 
+	public static final String STYLE_GRAPHIC_PROPERTIES = "style:graphic-properties"; 
+	public static final String STYLE_PAGE_LAYOUT_PROPERTIES = "style:page-layout-properties"; 
+	public static final String STYLE_DRAWING_PAGE_PROPERTIES = "style:drawing-page-properties"; 
+	public static final String STYLE_HEADER_FOOTER_PROPERTIES = "style:header-footer-properties"; 
+	public static final String STYLE_LIST_LEVEL_LABEL_ALIGNMENT = "style:list-level-label-alignment"; // 1.2
 	public static final String STYLE_BACKGROUND_IMAGE = "style:background-image";
 	public static final String STYLE_COLUMNS = "style:columns";
 	public static final String STYLE_HEADER = "style:header";
@@ -163,7 +170,7 @@ public class XMLString {
 	public static final String STYLE_NEXT_STYLE_NAME = "style:next-style-name";
 	public static final String STYLE_DISPLAY_NAME = "style:display-name";
 	public static final String STYLE_PAGE_MASTER_NAME = "style:page-master-name";
-	public static final String STYLE_PAGE_LAYOUT_NAME = "style:page-layout-name"; // oasis
+	public static final String STYLE_PAGE_LAYOUT_NAME = "style:page-layout-name"; 
 	public static final String STYLE_MASTER_PAGE_NAME = "style:master-page-name";
 	public static final String STYLE_PAGE_USAGE = "style:page-usage";
 	public static final String STYLE_PAGE_NUMBER = "style:page-number";
@@ -217,6 +224,7 @@ public class XMLString {
 	public static final String STYLE_WIDTH = "style:width";
 	public static final String STYLE_REL_WIDTH = "style:rel-width";
 	public static final String STYLE_COLOR = "style:color";
+	public static final String STYLE_SHADOW = "style:shadow";
 	public static final String STYLE_WRITING_MODE = "style:writing-mode";
 	public static final String STYLE_REPEAT = "style:repeat";
 	public static final String STYLE_POSITION = "style:position";
@@ -243,7 +251,7 @@ public class XMLString {
 	public static final String TABLE_COVERED_TABLE_CELL = "table:covered-table-cell";
 	// table namespace - attributes
 	public static final String TABLE_NAME = "table:name";
-	public static final String TABLE_IS_SUB_TABLE = "table:is-sub-table"; // oasis
+	public static final String TABLE_IS_SUB_TABLE = "table:is-sub-table"; 
 	public static final String TABLE_STYLE_NAME = "table:style-name";
 	public static final String TABLE_VISIBILITY = "table:visibility";
 	public static final String TABLE_DISPLAY = "table:display";
@@ -261,7 +269,7 @@ public class XMLString {
 	public static final String TEXT_ = "text:";
 	public static final String TEXT_FOOTNOTES_CONFIGURATION = "text:footnotes-configuration";
 	public static final String TEXT_ENDNOTES_CONFIGURATION = "text:endnotes-configuration";
-	public static final String TEXT_NOTES_CONFIGURATION = "text:notes-configuration"; // oasis
+	public static final String TEXT_NOTES_CONFIGURATION = "text:notes-configuration"; 
 	public static final String TEXT_BIBLIOGRAPHY_CONFIGURATION = "text:bibliography-configuration";
 	public static final String TEXT_SORT_KEY = "text:sort-key";
 	public static final String TEXT_SECTION_SOURCE = "text:section-source";
@@ -277,7 +285,7 @@ public class XMLString {
 	public static final String TEXT_SECTION = "text:section";
 	public static final String TEXT_P = "text:p";
 	public static final String TEXT_H = "text:h";
-	public static final String TEXT_LIST = "text:list"; // oasis
+	public static final String TEXT_LIST = "text:list"; 
 	public static final String TEXT_ORDERED_LIST = "text:ordered-list";
 	public static final String TEXT_UNORDERED_LIST = "text:unordered-list";
 	public static final String TEXT_LIST_ITEM = "text:list-item";
@@ -311,16 +319,16 @@ public class XMLString {
 	public static final String TEXT_SPAN = "text:span";
 	public static final String TEXT_FOOTNOTE = "text:footnote";
 	public static final String TEXT_ENDNOTE = "text:endnote";
-	public static final String TEXT_NOTE = "text:note"; // oasis
+	public static final String TEXT_NOTE = "text:note"; 
 	public static final String TEXT_FOOTNOTE_CITATION = "text:footnote-citation";
 	public static final String TEXT_FOOTNOTE_BODY = "text:footnote-body";
 	public static final String TEXT_ENDNOTE_CITATION = "text:endnote-citation";
 	public static final String TEXT_ENDNOTE_BODY = "text:endnote-body";
-	public static final String TEXT_NOTE_CITATION = "text:note-citation"; // oasis
-	public static final String TEXT_NOTE_BODY = "text:note-body"; // oasis
+	public static final String TEXT_NOTE_CITATION = "text:note-citation"; 
+	public static final String TEXT_NOTE_BODY = "text:note-body"; 
 	public static final String TEXT_S = "text:s";
 	public static final String TEXT_TAB_STOP = "text:tab-stop";
-	public static final String TEXT_TAB = "text:tab"; // oasis
+	public static final String TEXT_TAB = "text:tab"; 
 	public static final String TEXT_A = "text:a";
 	public static final String TEXT_LINE_BREAK = "text:line-break";
 	public static final String TEXT_PAGE_NUMBER = "text:page-number";
@@ -344,9 +352,8 @@ public class XMLString {
 	public static final String TEXT_BOOKMARK_REF = "text:bookmark-ref";
 	public static final String TEXT_FOOTNOTE_REF = "text:footnote-ref";
 	public static final String TEXT_ENDNOTE_REF = "text:endnote-ref";
-	public static final String TEXT_NOTE_REF = "text:note-ref"; // oasis
-	public static final String TEXT_SOFT_PAGE_BREAK = "text:soft-page-break"; // ODF
-																				// 1.1
+	public static final String TEXT_NOTE_REF = "text:note-ref"; 
+	public static final String TEXT_SOFT_PAGE_BREAK = "text:soft-page-break"; // ODF 1.1
 
 	// text namespace - attributes
 	public static final String TEXT_USE_OUTLINE_LEVEL = "text:use-outline-level";
@@ -389,12 +396,9 @@ public class XMLString {
 	public static final String TEXT_DISPLAY_OUTLINE_LEVEL = "text:display-outline-level";
 	public static final String TEXT_SEPARATION_CHARACTER = "text:separation-character";
 
-	public static final String TEXT_LIST_LEVEL_POSITION_AND_SPACE_MODE = "text:list-level-position-and-space-mode"; // oasis
-																													// 1.2
-	public static final String TEXT_LABEL_FOLLOWED_BY = "text:label-followed-by"; // oasis
-																					// 1.2
-	public static final String TEXT_LIST_TAB_STOP_POSITION = "text:list-tab-stop-position"; // oasis
-																							// 1.2
+	public static final String TEXT_LIST_LEVEL_POSITION_AND_SPACE_MODE = "text:list-level-position-and-space-mode"; // 1.2
+	public static final String TEXT_LABEL_FOLLOWED_BY = "text:label-followed-by"; // 1.2
+	public static final String TEXT_LIST_TAB_STOP_POSITION = "text:list-tab-stop-position"; // 1.2
 
 	public static final String TEXT_PREFIX = "text:prefix";
 	public static final String TEXT_SUFFIX = "text:suffix";
@@ -405,10 +409,7 @@ public class XMLString {
 	public static final String TEXT_SORT_ASCENDING = "text:sort-ascending";
 	public static final String TEXT_IDENTIFIER = "text:identifier";
 	public static final String TEXT_BIBLIOGRAPHY_TYPE = "text:bibliography-type";
-	public static final String TEXT_BIBILIOGRAPHIC_TYPE = "text:bibiliographic-type"; // bug
-																						// in
-																						// OOo
-																						// 1.0
+	public static final String TEXT_BIBILIOGRAPHIC_TYPE = "text:bibiliographic-type"; // bug in OOo 1.0
 	public static final String TEXT_BIBLIOGRAPHY_DATA_FIELD = "text:bibliography-data-field";
 	public static final String TEXT_ADDRESS = "text:address";
 	public static final String TEXT_ANNOTE = "text:annote";
@@ -459,6 +460,7 @@ public class XMLString {
 	public static final String FO_TEXT_ALIGN_LAST = "fo:text-align-last";
 	public static final String FO_BREAK_BEFORE = "fo:break-before";
 	public static final String FO_BREAK_AFTER = "fo:break-after";
+	public static final String FO_MARGIN = "fo:margin";
 	public static final String FO_MARGIN_LEFT = "fo:margin-left";
 	public static final String FO_MARGIN_RIGHT = "fo:margin-right";
 	public static final String FO_MARGIN_TOP = "fo:margin-top";
@@ -484,11 +486,11 @@ public class XMLString {
 	// svg namespace
 	public static final String SVG_DESC = "svg:desc";
 	public static final String SVG_TITLE = "svg:title";
-
-	public static final String SVG_FONT_FAMILY = "svg:font-family"; // oasis
-																	// (font
-																	// declarations
-																	// only)
+	
+	public static final String SVG_FONT_FAMILY = "svg:font-family"; 
+	public static final String SVG_STROKE_WIDTH = "svg:stroke-width";
+	public static final String SVG_STROKE_COLOR = "svg:stroke-color";
+	public static final String SVG_STROKE_OPACITY = "svg:stroke-opacity";
 	public static final String SVG_X = "svg:x";
 	public static final String SVG_Y = "svg:y";
 	public static final String SVG_HEIGHT = "svg:height";
@@ -503,5 +505,22 @@ public class XMLString {
 	public static final String MATH = "math";
 	public static final String SEMANTICS = "semantics";
 	public static final String ANNOTATION = "annotation";
+	
+	// loext namespace (LibreOffice specific)
+	// Elements
+	public static final String LOEXT_GRAPHIC_PROPERTIES = "loext:graphic-properties";
+	// Attributes
+	public static final String LOEXT_BORDER = "loext:border";
+	public static final String LOEXT_BORDER_LEFT = "loext:border-left";
+	public static final String LOEXT_BORDER_RIGHT = "loext:border-right";
+	public static final String LOEXT_BORDER_TOP = "loext:border-top";
+	public static final String LOEXT_BORDER_BOTTOM = "loext:border-bottom";
+	public static final String LOEXT_PADDING = "loext:padding";
+	public static final String LOEXT_PADDING_LEFT = "loext:padding-left";
+	public static final String LOEXT_PADDING_RIGHT = "loext:padding-right";
+	public static final String LOEXT_PADDING_TOP = "loext:padding-top";
+	public static final String LOEXT_PADDING_BOTTOM = "loext:padding-bottom";
+	public static final String LOEXT_SHADOW = "loext:shadow";
+
 
 }

@@ -2,7 +2,7 @@
  *
  *  StyleWithProperties.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,37 +19,51 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.0 (2008-11-22)
+ *  Version 2.0 (2018-05-04)
  */
  
 package writer2latex.office;
 
-//import org.w3c.dom.Element;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.w3c.dom.Node;
+
 import writer2latex.util.Calc;
-//import org.w3c.dom.NamedNodeMap;
-//import java.util.Hashtable;
 import writer2latex.util.Misc;
 
-/** <p> Class representing a style in OOo which contains a style:properties
-  * element </p> 
+/** <p> Class representing an ODF style which contains a style:properties element </p> 
   */
 public class StyleWithProperties extends OfficeStyle {
-    private final static int OLDPROPS = 0;
-    private final static int TEXT = 1;
-    private final static int PAR = 2;
-    private final static int SECTION = 3;
-    private final static int TABLE = 4;
-    private final static int COLUMN = 5;
-    private final static int ROW = 6;
-    private final static int CELL = 7;
-	private final static int GRAPHIC = 8;
-    private final static int PAGE = 9;
-    //private final static int DRAWPAGE = 10;
-    private final static int COUNT = 10;
+    public final static int TEXT = 0;
+    public final static int PAR = 1;
+    public final static int SECTION = 2;
+    public final static int TABLE = 3;
+    public final static int COLUMN = 4;
+    public final static int ROW = 5;
+    public final static int CELL = 6;
+    public final static int GRAPHIC = 7;
+    public final static int PAGE = 8;
+    private final static int COUNT = 9;
+    
+    // Map LO specific text properties to (proposed) ODF properties
+    private static Map<String,String> loextMap;
+    static {
+    	loextMap = new HashMap<>();
+    	loextMap.put(XMLString.LOEXT_BORDER,XMLString.FO_BORDER);
+    	loextMap.put(XMLString.LOEXT_BORDER_LEFT,XMLString.FO_BORDER_LEFT);
+    	loextMap.put(XMLString.LOEXT_BORDER_RIGHT,XMLString.FO_BORDER_RIGHT);
+    	loextMap.put(XMLString.LOEXT_BORDER_TOP,XMLString.FO_BORDER_TOP);
+    	loextMap.put(XMLString.LOEXT_BORDER_BOTTOM,XMLString.FO_BORDER_BOTTOM);
+    	loextMap.put(XMLString.LOEXT_PADDING,XMLString.FO_PADDING);
+    	loextMap.put(XMLString.LOEXT_PADDING_LEFT,XMLString.FO_PADDING_LEFT);
+    	loextMap.put(XMLString.LOEXT_PADDING_RIGHT,XMLString.FO_PADDING_RIGHT);
+    	loextMap.put(XMLString.LOEXT_PADDING_TOP,XMLString.FO_PADDING_TOP);
+    	loextMap.put(XMLString.LOEXT_PADDING_BOTTOM,XMLString.FO_PADDING_BOTTOM);
+    	loextMap.put(XMLString.LOEXT_SHADOW,XMLString.STYLE_SHADOW);
+    }
 	
     private PropertySet[] properties = new PropertySet[COUNT];
-    private boolean bIsOldProps = false;
 
     private PropertySet backgroundImageProperties = new PropertySet();
 
@@ -57,8 +71,7 @@ public class StyleWithProperties extends OfficeStyle {
 
     private boolean bHasFootnoteSep = false;
     private PropertySet footnoteSep = new PropertySet();
-
-
+    
     public StyleWithProperties() {
         for (int i=0; i<COUNT; i++) {
             properties[i] = new PropertySet();
@@ -72,11 +85,7 @@ public class StyleWithProperties extends OfficeStyle {
         while (child!=null) {
             if (child.getNodeType()==Node.ELEMENT_NODE) {
                 String sName = child.getNodeName();
-                if (XMLString.STYLE_PROPERTIES.equals(sName)) {
-                    bIsOldProps = true; // style:properties identifies old format
-                    loadPropertiesFromDOM(OLDPROPS,child);
-                }
-                else if (XMLString.STYLE_TEXT_PROPERTIES.equals(sName)) {
+                if (XMLString.STYLE_TEXT_PROPERTIES.equals(sName)) {
                     loadPropertiesFromDOM(TEXT,child);
                 }
                 else if (XMLString.STYLE_PARAGRAPH_PROPERTIES.equals(sName)) {
@@ -106,6 +115,11 @@ public class StyleWithProperties extends OfficeStyle {
                 else if (XMLString.STYLE_DRAWING_PAGE_PROPERTIES.equals(sName)) {
                     loadPropertiesFromDOM(PAGE,child);
                 }
+                // LO specifies graphic properties on paragraph styles with a private name space
+                // This is mapped to the standard graphic properties
+                else if (XMLString.LOEXT_GRAPHIC_PROPERTIES.equals(sName)) {
+                    loadPropertiesFromDOM(GRAPHIC,child);
+                }
             }
             child = child.getNextSibling();
         }
@@ -113,6 +127,14 @@ public class StyleWithProperties extends OfficeStyle {
 	
     private void loadPropertiesFromDOM(int nIndex,Node node) {
         properties[nIndex].loadFromDOM(node);
+        // Handle LO specific text properties
+        if (nIndex==TEXT) {
+	        for (String sLoext : loextMap.keySet()) {
+	        	if (properties[nIndex].containsProperty(sLoext)) {
+	        		properties[nIndex].setProperty(loextMap.get(sLoext), properties[nIndex].getProperty(sLoext));
+	        	}
+	        }
+        }
         // Several property sets may contain these complex properties, but only one per style:
         Node child = node.getFirstChild();
         while (child!=null) {
@@ -135,18 +157,26 @@ public class StyleWithProperties extends OfficeStyle {
         }
     }
 	
-    protected String getProperty(int nIndex, String sName, boolean bInherit) {
-        int nRealIndex = bIsOldProps ? OLDPROPS : nIndex;
-        if (properties[nRealIndex].containsProperty(sName)) {
-            String sValue = properties[nRealIndex].getProperty(sName);
-            return Calc.truncateLength(sValue);
-        }
-        else if (bInherit && getParentName()!=null) {
-            StyleWithProperties parentStyle = (StyleWithProperties) family.getStyle(getParentName());
-            if (parentStyle!=null) {
-                return parentStyle.getProperty(nIndex,sName,bInherit);
-            }
-        }
+    /** Get a property value
+     * 
+     * @param nIndex the property type
+     * @param sName the name of the property
+     * @param bInherit true if the value can be inherited from parent style
+     * @return the value, or null if the property is not set
+     */
+    public String getProperty(int nIndex, String sName, boolean bInherit) {
+    	if (0<=nIndex && nIndex<=COUNT) {
+	        if (properties[nIndex].containsProperty(sName)) {
+	            String sValue = properties[nIndex].getProperty(sName);
+	            return Calc.truncateLength(sValue);
+	        }
+	        else if (bInherit && getParentName()!=null) {
+	            StyleWithProperties parentStyle = (StyleWithProperties) family.getStyle(getParentName());
+	            if (parentStyle!=null) {
+	                return parentStyle.getProperty(nIndex,sName,bInherit);
+	            }
+	        }
+    	}
         return null; // no value
     }
 	
@@ -197,39 +227,47 @@ public class StyleWithProperties extends OfficeStyle {
         return getProperty(sProperty,true); 
     }
 	
-    protected String getAbsoluteProperty(int nIndex, String sProperty){
-        int nRealIndex = bIsOldProps ? OLDPROPS : nIndex;
-        if (properties[nRealIndex].containsProperty(sProperty)){
-            String sValue=(String) properties[nRealIndex].getProperty(sProperty);
-            if (sValue.endsWith("%")) {
-                StyleWithProperties parentStyle 
+    /** Get the value of a property which can be either relative (%) or absolute. If the value
+     *  is relative, it is resolved to an absolute value using the parent style(s).
+     * 
+     * @param nIndex the property type
+     * @param sProperty the name of the property
+     * @return the absolute value, or null if the property is not set
+     */
+    public String getAbsoluteProperty(int nIndex, String sProperty){
+    	if (0<=nIndex && nIndex<=COUNT) {
+	        if (properties[nIndex].containsProperty(sProperty)){
+	            String sValue=(String) properties[nIndex].getProperty(sProperty);
+	            if (sValue.endsWith("%")) {
+	                StyleWithProperties parentStyle 
+		                = (StyleWithProperties) family.getStyle(getParentName());
+	                if (parentStyle!=null) {
+	                    String sParentValue = parentStyle.getAbsoluteProperty(nIndex,sProperty);
+	                    if (sParentValue!=null) { return Calc.multiply(sValue,sParentValue); }
+	                }
+	                else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
+	                    StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
+	                    String sDefaultValue=(String) style.getProperty(nIndex,sProperty,false);
+	                    if (sValue !=null) { return Calc.multiply(sValue,sDefaultValue); }
+	                }
+	            }
+	            else {
+	                return Calc.truncateLength(sValue);
+	            }
+	        }
+	        else if (getParentName()!=null){
+	            StyleWithProperties parentStyle 
 	                = (StyleWithProperties) family.getStyle(getParentName());
-                if (parentStyle!=null) {
-                    String sParentValue = parentStyle.getAbsoluteProperty(nIndex,sProperty);
-                    if (sParentValue!=null) { return Calc.multiply(sValue,sParentValue); }
-                }
-                else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
-                    StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
-                    String sDefaultValue=(String) style.getProperty(nIndex,sProperty,false);
-                    if (sValue !=null) { return Calc.multiply(sValue,sDefaultValue); }
-                }
-            }
-            else {
-                return Calc.truncateLength(sValue);
-            }
-        }
-        else if (getParentName()!=null){
-            StyleWithProperties parentStyle 
-                = (StyleWithProperties) family.getStyle(getParentName());
-            if (parentStyle!=null) {
-                return parentStyle.getAbsoluteProperty(nIndex,sProperty);
-            }
-        }
-        else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
-            StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
-            String sValue=(String) style.getProperty(nIndex,sProperty,false);
-            if (sValue !=null) { return sValue; }
-        }
+	            if (parentStyle!=null) {
+	                return parentStyle.getAbsoluteProperty(nIndex,sProperty);
+	            }
+	        }
+	        else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
+	            StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
+	            String sValue=(String) style.getProperty(nIndex,sProperty,false);
+	            if (sValue !=null) { return sValue; }
+	        }
+    	}
         // no value!
         return null;
     }
