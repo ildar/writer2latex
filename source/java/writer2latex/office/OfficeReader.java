@@ -359,9 +359,6 @@ public class OfficeReader {
     // The first image in the document
     private Element firstImage = null;
 	
-    // Identify OASIS OpenDocument format
-    private boolean bOpenDocument = false;
-
     // Identify individual genres
     private boolean bText = false;
     private boolean bSpreadsheet = false;
@@ -380,7 +377,6 @@ public class OfficeReader {
      *  @return true if the url is internal to the package
      */
     public boolean isInPackage(String sUrl) {
-        if (!bOpenDocument && sUrl.startsWith("#")) { return true; } // old format
         if (sUrl.startsWith("./")) { sUrl=sUrl.substring(2); }
         return oooDoc.getEmbeddedObject(sUrl)!=null; 
     } 
@@ -778,11 +774,6 @@ public class OfficeReader {
         return links.contains(sName);
     }
 	
-    /** <p>Is this an OASIS OpenDocument or an OOo 1.0 document?
-     *  @return true if it's an OASIS OpenDocument
-     */
-    //public boolean isOpenDocument() { return bOpenDocument; }
-	
     /** <p>Is this an text document?
      *  @return true if it's a text document
      */
@@ -1084,52 +1075,21 @@ public class OfficeReader {
             // Now get the content and identify the type of document
             content = Misc.getChildByTagName(body,XMLString.OFFICE_TEXT);
             if (content!=null) { // OpenDocument Text
-                bOpenDocument = true; bText = true;
+            	bText = true;
             }
             else {
                 content = Misc.getChildByTagName(body,XMLString.OFFICE_SPREADSHEET);
                 if (content!=null) { // OpenDocument Spreadsheet
-                    bOpenDocument = true; bSpreadsheet = true;
+                    bSpreadsheet = true;
                 }
                 else {
                     content = Misc.getChildByTagName(body,XMLString.OFFICE_PRESENTATION);
                     if (content!=null) { // OpenDocument Presentation
-                        bOpenDocument = true; bPresentation = true;
+                    	bPresentation = true;
                     }
-                    else {
+                    else { // Something is wrong with this document, assume text and hope for the best...
                         content = body;
-                        // OOo 1.x file format - look through content to determine genre
-                        bSpreadsheet = true;
-                        bPresentation = false;
-                        Node child = body.getFirstChild();
-                        while (child!=null) {
-                            if (child.getNodeType()==Node.ELEMENT_NODE) {
-                                String sName = child.getNodeName();
-                                if (XMLString.TEXT_P.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                                else if (XMLString.TEXT_H.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                                else if (XMLString.TEXT_ORDERED_LIST.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                                else if (XMLString.TEXT_ORDERED_LIST.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                                else if (XMLString.TEXT_SECTION.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                                else if (XMLString.DRAW_PAGE.equals(sName)) {
-                                    bPresentation = true; bSpreadsheet = false;
-                                }
-                                else if (XMLString.DRAW_PAGE.equals(sName)) {
-                                    bSpreadsheet = false;
-                                }
-                            }
-                            child = child.getNextSibling();
-                        }
-                        bText = !bSpreadsheet && !bPresentation;
+                        bText = true;
                     }
                 }
             }                
