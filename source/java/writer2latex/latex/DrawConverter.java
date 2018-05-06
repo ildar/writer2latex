@@ -2,7 +2,7 @@
  *
  *  DrawConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 2.0 (2018-05-06)
  *
  */
  
@@ -54,8 +54,7 @@ public class DrawConverter extends ConverterHelper {
     private Stack<LinkedList<Element>> floatingFramesStack = new Stack<LinkedList<Element>>();
 	
     private Element getFrame(Element onode) {
-        if (ofr.isOpenDocument()) return (Element) onode.getParentNode();
-        else return onode;
+        return (Element) onode.getParentNode();
     }
 	
     public DrawConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
@@ -165,16 +164,12 @@ public class DrawConverter extends ConverterHelper {
                             e.printStackTrace();
                         }
 	                }
-                    else { // unsupported object
-                        boolean bIgnore = true;
-                        if (ofr.isOpenDocument()) { // look for replacement image
-                            Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);
-                            if (replacementImage!=null) {
-                                handleDrawImage(replacementImage,ldp,oc);
-                                bIgnore = false;
-                            }
+                    else { // unsupported object, look for replacement image
+                        Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);
+                        if (replacementImage!=null) {
+                            handleDrawImage(replacementImage,ldp,oc);
                         }
-                        if (bIgnore) { 
+                        else { 
                             ldp.append("[Warning: object ignored]");
                         }
                     }
@@ -193,16 +188,12 @@ public class DrawConverter extends ConverterHelper {
                    .append("$");
                 if (Character.isLetterOrDigit(OfficeReader.getNextChar(node))) { ldp.append(" "); }
             }
-            else { // unsupported object
-                boolean bIgnore = true;
-                if (ofr.isOpenDocument()) { // look for replacement image
-                    Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);
-                    if (replacementImage!=null) {
-                        handleDrawImage(replacementImage,ldp,oc);
-                        bIgnore = false;
-                    }
+            else { // unsupported object, look for replacement image
+                Element replacementImage = Misc.getChildByTagName(getFrame(node),XMLString.DRAW_IMAGE);
+                if (replacementImage!=null) {
+                    handleDrawImage(replacementImage,ldp,oc);
                 }
-                if (bIgnore) { 
+                else { 
                     ldp.append("[Warning: object ignored]");
                 }
             }

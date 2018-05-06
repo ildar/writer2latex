@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-02)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -86,9 +86,7 @@ public class CellStyleConverter extends StyleWithPropertiesConverterHelper {
 	
     private void cssCell(StyleWithProperties style, CSVList props, boolean bInherit){
         // Vertical align: Some values fit with css
-        String s = ofr.isOpenDocument() ? 
-            style.getProperty(XMLString.STYLE_VERTICAL_ALIGN,bInherit) :
-            style.getProperty(XMLString.FO_VERTICAL_ALIGN,bInherit);
+        String s = style.getProperty(XMLString.STYLE_VERTICAL_ALIGN,bInherit);
         if ("middle".equals(s)) { props.addValue("vertical-align","middle"); }
         else if ("bottom".equals(s)) { props.addValue("vertical-align","bottom"); }
         else if ("top".equals(s)) { props.addValue("vertical-align","top"); }

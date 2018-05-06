@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-06)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -297,10 +297,8 @@ public class TableConverter extends ConverterHelper {
                 		if (nColSpan==1) {
                 			sTotalWidth = view.getCellWidth(nRow,nCol);
                 		}
-                		String sValueType = ofr.isOpenDocument() ?
-                				Misc.getAttribute(cell,XMLString.OFFICE_VALUE_TYPE) :
-                					Misc.getAttribute(cell,XMLString.TABLE_VALUE_TYPE);
-                				applyCellStyle(view.getCellStyleName(nRow,nCol), view.getRelTableWidth()!=null, sTotalWidth, sValueType, td, subTable!=null);
+                		String sValueType = Misc.getAttribute(cell,XMLString.OFFICE_VALUE_TYPE);
+           				applyCellStyle(view.getCellStyleName(nRow,nCol), view.getRelTableWidth()!=null, sTotalWidth, sValueType, td, subTable!=null);
                 	}
                 	else if (XMLString.TABLE_COVERED_TABLE_CELL.equals(cell.getNodeName())) {
                 		// covered table cells are not part of xhtml table model

@@ -2,7 +2,7 @@
  *
  *  HeadingConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-14)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -83,9 +83,7 @@ public class HeadingConverter extends ConverterHelper {
         }
 
         // Get the level
-        int nLevel = ofr.isOpenDocument() ?
-            Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_OUTLINE_LEVEL),1) :
-            Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_LEVEL),1);
+        int nLevel = Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_OUTLINE_LEVEL),1);
         boolean bUnNumbered = "true".equals(Misc.getAttribute(node,XMLString.TEXT_IS_LIST_HEADER));
 
         // Get the heading map

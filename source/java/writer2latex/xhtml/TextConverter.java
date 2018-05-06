@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-22)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -1460,9 +1460,7 @@ public class TextConverter extends ConverterHelper {
     }
 
     protected int getOutlineLevel(Element node) {
-        return ofr.isOpenDocument() ?
-            Misc.getPosInteger(node.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1):
-            Misc.getPosInteger(node.getAttribute(XMLString.TEXT_LEVEL),1);
+        return Misc.getPosInteger(node.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
     }
 
 }

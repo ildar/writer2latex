@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -33,7 +33,7 @@ import org.w3c.dom.NamedNodeMap;
 import writer2latex.office.*;
 import writer2latex.util.Misc;
 
-/** This class converts formulas: Either as MathML, as an image or as plain text (StarMath or LaTeX format)
+/** This class converts formulas: Either as MathML or as LaTeX
  */
 public class MathConverter extends ConverterHelper {
 	
@@ -50,11 +50,10 @@ public class MathConverter extends ConverterHelper {
 	
     /** Convert a formula
      * 
-     * @param image image version of the formula (or null if no image is available)
      * @param onode the math node
      * @param hnode the xhtml node to which content should be added
      */
-    public void convert(Element image, Element onode, Node hnode, boolean bAllowDisplayStyle) {
+    public void convert(Element onode, Node hnode, boolean bAllowDisplayStyle) {
     	convertAsMathML(onode,hnode,bAllowDisplayStyle);
     }
     

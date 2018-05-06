@@ -2,7 +2,7 @@
  *
  *  OfficeReader.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 2.0 (2018-04-06)
  *
  */
 
@@ -392,7 +392,7 @@ public class OfficeReader {
      * @return the corrected link
      */
     public String fixRelativeLink(String sLink) {
-        if (isOpenDocument() && isPackageFormat() && sLink.startsWith("../")) {
+        if (isPackageFormat() && sLink.startsWith("../")) {
             return sLink.substring(3);
         }
         return sLink;
@@ -781,7 +781,7 @@ public class OfficeReader {
     /** <p>Is this an OASIS OpenDocument or an OOo 1.0 document?
      *  @return true if it's an OASIS OpenDocument
      */
-    public boolean isOpenDocument() { return bOpenDocument; }
+    //public boolean isOpenDocument() { return bOpenDocument; }
 	
     /** <p>Is this an text document?
      *  @return true if it's a text document
@@ -1157,13 +1157,7 @@ public class OfficeReader {
             //collectMasterPage(getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME)));
         }
         else if (sName.equals(XMLString.TEXT_H)) {
-        	int nLevel;
-        	if (node.hasAttribute(XMLString.TEXT_OUTLINE_LEVEL)) {
-        		nLevel = Misc.getPosInteger(node.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
-        	}
-        	else {
-        		nLevel = Misc.getPosInteger(node.getAttribute(XMLString.TEXT_LEVEL),1);
-        	}
+        	int nLevel = Misc.getPosInteger(node.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
         	nParLevel = nLevel;
             StyleWithProperties style = getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
             //collectMasterPage(style);

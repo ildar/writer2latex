@@ -256,7 +256,7 @@ public class XMLString {
 	public static final String TABLE_VISIBILITY = "table:visibility";
 	public static final String TABLE_DISPLAY = "table:display";
 	public static final String TABLE_DEFAULT_CELL_STYLE_NAME = "table:default-cell-style-name";
-	public static final String TABLE_VALUE_TYPE = "table:value-type";
+	//public static final String TABLE_VALUE_TYPE = "table:value-type";
 	public static final String TABLE_NUMBER_COLUMNS_REPEATED = "table:number-columns-repeated";
 	public static final String TABLE_NUMBER_ROWS_REPEATED = "table:number-rows-repeated";
 	public static final String TABLE_NUMBER_ROWS_SPANNED = "table:number-rows-spanned";
@@ -455,7 +455,7 @@ public class XMLString {
 	public static final String FO_FONT_VARIANT = "fo:font-variant";
 	public static final String FO_FONT_STYLE = "fo:font-style";
 	public static final String FO_LETTER_SPACING = "fo:letter-spacing";
-	public static final String FO_VERTICAL_ALIGN = "fo:vertical-align";
+	//public static final String FO_VERTICAL_ALIGN = "fo:vertical-align";
 	public static final String FO_TEXT_ALIGN = "fo:text-align";
 	public static final String FO_TEXT_ALIGN_LAST = "fo:text-align-last";
 	public static final String FO_BREAK_BEFORE = "fo:break-before";

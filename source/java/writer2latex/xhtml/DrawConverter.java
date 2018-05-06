@@ -19,24 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-06)
+ *  Version 2.0 (2018-05-06)
  *
  */
  
- /* TODO (impress2xhtml)
-  * Support master page content!
-  * New option: xhtml_draw_scaling: scale all draw objects this percentage
-  * (applies to applySize in this class + page size in PageStyleConverter)
-  * Certain options should have a fixed value for impress2xhtml:
-  *   original_image_size: always false
-  *   xhtml_formatting: always "convert_all"
-  *   xhtml_frame_formatting: always "convert_all"
-  *   xhtml_use_list_hack: always "true" (until list merge is fixed..)
-  * apply hard draw page background (see below)
-  * apply z-order for draw objects (frames)
-  * export notes (part of draw-page)
-  * export list-style-image for image bullets!
-  */
 package writer2latex.xhtml;
 
 import java.util.HashMap;
@@ -223,8 +209,7 @@ public class DrawConverter extends ConverterHelper {
     }
 	
     private Element getFrame(Element onode) {
-        if (ofr.isOpenDocument()) return (Element) onode.getParentNode();
-        else return onode;
+        return (Element) onode.getParentNode();
     }
         
     public void flushFrames(Element hnode) {
@@ -322,13 +307,9 @@ public class DrawConverter extends ConverterHelper {
                 if (MIMETypes.MATH.equals(object.getType()) || MIMETypes.ODF.equals(object.getType())) { // Formula!
                     EmbeddedXMLObject xmlObject = (EmbeddedXMLObject) object;
                     // Document settings = object.getSettingsDOM();
-                    Element replacementImage = null;
-                    if (ofr.isOpenDocument()) { // look for replacement image
-                        replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
-                    }
                     try {
                         hnode.appendChild(converter.createTextNode(" "));
-                        getMathCv().convert(replacementImage,xmlObject.getContentDOM().getDocumentElement(),hnode,bNoTextPar);
+                        getMathCv().convert(xmlObject.getContentDOM().getDocumentElement(),hnode,bNoTextPar);
                         hnode.appendChild(converter.createTextNode(" "));
                     }
                     catch (SAXException e) {
@@ -338,17 +319,13 @@ public class DrawConverter extends ConverterHelper {
                         e.printStackTrace();
                     }
                 }
-                else { // unsupported object
-                    boolean bIgnore = true;
-                    if (ofr.isOpenDocument()) { // look for replacement image
-                        Element replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
-                        if (replacementImage!=null) {
-                            handleDrawImage(replacementImage,hnodeBlock,hnodeInline,nMode);
-                            bIgnore = false;
-                        }
+                else { // unsupported object, look for replacement image
+                    Element replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
+                    if (replacementImage!=null) {
+                        handleDrawImage(replacementImage,hnodeBlock,hnodeInline,nMode);
                     }
-                    if (bIgnore) { 
-                        hnode.appendChild( converter.createTextNode("[Warning: object ignored]"));
+                    else { 
+                    hnode.appendChild( converter.createTextNode("[Warning: object ignored]"));
                     }
                 }
             }
@@ -362,25 +339,17 @@ public class DrawConverter extends ConverterHelper {
             	formula = Misc.getChildByTagName(onode,XMLString.MATH_MATH);
             }
             if (formula != null) {
-            	Element replacementImage = null;
-                if (ofr.isOpenDocument()) { // look for replacement image
-                    replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
-                }
                 hnode.appendChild(converter.createTextNode(" "));
-                getMathCv().convert(replacementImage,formula,hnode,bNoTextPar);
+                getMathCv().convert(formula,hnode,bNoTextPar);
                 hnode.appendChild(converter.createTextNode(" "));
             }
-            else { // unsupported object
-                boolean bIgnore = true;
-                if (ofr.isOpenDocument()) { // look for replacement image
-                    Element replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
-                    if (replacementImage!=null) {
-                        handleDrawImage(replacementImage,hnodeBlock,hnodeInline,nMode);
-                        bIgnore = false;
-                    }
+            else { // unsupported object, look for replacement image
+                Element replacementImage = Misc.getChildByTagName(getFrame(onode),XMLString.DRAW_IMAGE);
+                if (replacementImage!=null) {
+                    handleDrawImage(replacementImage,hnodeBlock,hnodeInline,nMode);
                 }
-                if (bIgnore) { 
-                    hnode.appendChild( converter.createTextNode("[Warning: object ignored]"));
+                else { 
+                	hnode.appendChild( converter.createTextNode("[Warning: object ignored]"));
                 }
             }
         }
@@ -597,9 +566,7 @@ public class DrawConverter extends ConverterHelper {
     private void handleDrawControl(Element onode, Element hnodeBlock, Element hnodeInline, int nMode) {
         // Get the control, if possible
         if (form==null) { return; }
-        ControlReader control = ofr.isOpenDocument() ?
-            ofr.getForms().getControl(Misc.getAttribute(onode,XMLString.DRAW_CONTROL)) :
-            ofr.getForms().getControl(Misc.getAttribute(onode,XMLString.FORM_ID));
+        ControlReader control = ofr.getForms().getControl(Misc.getAttribute(onode,XMLString.DRAW_CONTROL));
         if (control==null || control.getOwnerForm()!=form) { return; }
 
         // Create the control element
