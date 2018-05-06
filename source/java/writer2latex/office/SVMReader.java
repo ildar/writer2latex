@@ -2,7 +2,7 @@
  *
  *  SVMReader.java
  *
- *  Copyright: 2004 by Urban Widmark
+ *  Copyright: 2004-2018 by Urban Widmark, Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 0.4 (2004-02-26)
+ *  Version 2.0 (2018-05-06)
  *
  */
 
@@ -27,7 +27,7 @@ package writer2latex.office;
 
 /** This class contains a static method to extract EPS data from an SVM file */
 public final class SVMReader {
-
+	
     /* Notes on SVM file format:
 	
      Relevant OO 1.1.0 Source Files include:
@@ -175,9 +175,10 @@ public final class SVMReader {
     public static final boolean readSVM(byte[] blob, int[] offlen) {
     	int pos = 57;
 		int nCount = getInt(blob, pos);
-		pos += 4;
 
-		for (int i=0; i<nCount; i++) {
+    	// For now we only understand files where the EPS entry is the first MetaAction
+		if (nCount>0) {
+			pos += 4;
 	    	int type = getShort(blob, pos);
 	    	pos += 2;
 
@@ -203,13 +204,13 @@ public final class SVMReader {
 
 	        offlen[0] = pos;
 	    	offlen[1] = size;
+	    	
+	    	return true;
 
-	    	// For now we only understand files where the EPS entry is
-	    	// the first MetaAction
-	    	break;
+	    	//break;
 		}
 
-		return true;
+		return false;
     }
 
     private static int getInt(byte[] blob, int pos)
