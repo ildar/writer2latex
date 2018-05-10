@@ -81,7 +81,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
                     CSVList props = new CSVList(";");
                     cssMargin(StyleWithProperties.GRAPHIC,style,props,true);
                     getParSc().cssPar(style,props,true);
-                    getTextSc().cssTextCommon(style,props,true);
+                    getTextSc().cssTextBlock(style,props,true);
                     if (!props.isEmpty()) {
                         buf.append(sIndent)
                            .append(getDefaultTagName(null))
@@ -125,7 +125,7 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
      */
     public void applyProperties(StyleWithProperties style, CSVList props, boolean bInherit) {
         cssBox(StyleWithProperties.GRAPHIC,style,props,bInherit);
-        getTextSc().cssTextCommon(style,props,bInherit); // only in presentations
+        getTextSc().cssTextBlock(style,props,bInherit); // only in presentations
     }
 	
     ////////////////////////////////////////////////////////////////////////////

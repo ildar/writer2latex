@@ -71,8 +71,14 @@ public abstract class StyleConverterHelper extends ConverterHelper {
      *  @param info the <code>StyleInfo</code> object to add information to
      */
     protected static void applyLang(StyleWithProperties style, StyleInfo info) {
-        String sLang = style.getProperty(XMLString.FO_LANGUAGE);
-        String sCountry = style.getProperty(XMLString.FO_COUNTRY);
+        // Language, country and script are defined by the following attributes
+        // For western languages: fo:language, fo:country, fo:script and style:rfc-language-tag
+        // For asian languages: style:language-asian, style:country-asian, style:script-asian, style:rfc-language-tag-asian
+        // Finally for compex languages: style:language-complex, style:country-complex, style:script-complex, style:script-type and
+        // style:rfc-language-tag-complex
+        // Currently we handle only fo:language and fo:country and 
+        String sLang = style.getTextProperty(XMLString.FO_LANGUAGE,true);
+        String sCountry = style.getTextProperty(XMLString.FO_COUNTRY,true);
         if (sLang!=null) {
             if (sCountry==null || sCountry.equals("none")) { info.sLang = sLang; }
             else { info.sLang = sLang+"-"+sCountry; }

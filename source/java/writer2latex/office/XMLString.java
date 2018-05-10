@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-04)
+ *  Version 2.0 (2018-05-10)
  *
  */
 
@@ -181,6 +181,7 @@ public class XMLString {
 	public static final String STYLE_FONT_NAME_ASIAN = "style:font-name-asian";
 	public static final String STYLE_FONT_PITCH = "style:font-pitch";
 	public static final String STYLE_FONT_FAMILY_GENERIC = "style:font-family-generic";
+	public static final String STYLE_FONT_SIZE_REL = "style:font-size-rel";
 	public static final String STYLE_TEXT_BACKGROUND_COLOR = "style:text-background-color";
 	public static final String STYLE_USE_WINDOW_FONT_COLOR = "style:use-window-font-color";
 	//public static final String STYLE_TEXT_CROSSING_OUT = "style:text-crossing-out";
@@ -205,6 +206,10 @@ public class XMLString {
 	public static final String STYLE_PARENT_STYLE_NAME = "style:parent-style-name";
 	public static final String STYLE_FAMILY = "style:family";
 	public static final String STYLE_TEXT_POSITION = "style:text-position";
+	public static final String STYLE_TEXT_ROTATION_ANGLE = "style:text-rotation-angle";
+	//public static final String STYLE_TEXT_ROTATION_SCALE = "style:text-rotation-scale";
+	public static final String STYLE_LETTER_KERNING = "style:letter-kerning";
+	public static final String STYLE_TEXT_SCALE = "style:text-scale";
 	public static final String STYLE_LIST_STYLE_NAME = "style:list-style-name";
 	public static final String STYLE_LIST_LEVEL_PROPERTIES = "style:list-level-properties";
 	public static final String STYLE_NUM_PREFIX = "style:num-prefix";
@@ -455,6 +460,7 @@ public class XMLString {
 	public static final String FO_FONT_VARIANT = "fo:font-variant";
 	public static final String FO_FONT_STYLE = "fo:font-style";
 	public static final String FO_LETTER_SPACING = "fo:letter-spacing";
+	public static final String FO_HYPHENATE = "fo:hyphenate";
 	//public static final String FO_VERTICAL_ALIGN = "fo:vertical-align";
 	public static final String FO_TEXT_ALIGN = "fo:text-align";
 	public static final String FO_TEXT_ALIGN_LAST = "fo:text-align-last";

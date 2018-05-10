@@ -313,7 +313,52 @@ public class StyleWithProperties extends OfficeStyle {
         }
         return null; // no value
     }
-	
+    
+    /** Get the font size. This is a special case which combines the two properties
+     *  <code>fo:font-size</code> and <code>style:font-size-rel</code>.
+     *  This method resolves the font size to an absolute size
+     * 
+     * @return the absolute value, or null if the property is not set
+     */
+    public String getAbsoluteFontSize(){
+        if (properties[TEXT].containsProperty(XMLString.STYLE_FONT_SIZE_REL)) {
+        	// Size specified as e.g. +3pt or -2pt
+        	String sValue= properties[TEXT].getProperty(XMLString.STYLE_FONT_SIZE_REL);
+        	String sParentValue = getAbsoluteParentFontSize();
+       		if (sParentValue!=null) {
+       			return Calc.add(Calc.truncateLength(sValue),sParentValue);
+       		}
+        }
+        else if (properties[TEXT].containsProperty(XMLString.FO_FONT_SIZE)) {
+          	String sValue=(String) properties[TEXT].getProperty(XMLString.FO_FONT_SIZE);
+            if (sValue.endsWith("%")) {
+            	// Size specified as a percentage
+                String sParentValue = getAbsoluteParentFontSize();
+                if (sParentValue!=null) {
+                	return Calc.multiply(sValue,sParentValue);
+                }
+            }
+            else {
+            	// Absolute size
+                return Calc.truncateLength(sValue);
+            }
+        }
+        // If we failed, return the parent size
+        return getAbsoluteParentFontSize();
+    }
+
+    private String getAbsoluteParentFontSize() {
+        StyleWithProperties parentStyle = (StyleWithProperties) family.getStyle(getParentName());
+        if (parentStyle!=null) {
+            return parentStyle.getAbsoluteFontSize();
+        }
+        else if (getFamily()!=null && getFamily().getDefaultStyle()!=null) {
+            StyleWithProperties style = (StyleWithProperties) getFamily().getDefaultStyle();
+            return Calc.truncateLength(style.getProperty(TEXT,XMLString.FO_FONT_SIZE,false));
+        }
+        return null;
+    }
+    	
     // Get a length property that defaults to 0cm
     public String getAbsoluteLength(String sProperty) {
         String s = getAbsoluteProperty(sProperty);

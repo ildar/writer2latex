@@ -82,7 +82,7 @@ public class ParStyleConverter extends StyleWithPropertiesConverterHelper {
         getFrameSc().cssBox(StyleWithProperties.PAR,style,props,bInherit);
         cssPar(style,props,bInherit);
         // TODO: rename this to cssTextNoColor
-        getTextSc().cssTextCommon(style,props,bInherit);
+        getTextSc().cssTextBlock(style,props,bInherit);
     }
 	
     public String getTextBackground(String sStyleName) {

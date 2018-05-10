@@ -1,18 +1,19 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[w2l] Improved support for box properties, including shadow and transparency.
+[w2x] Improved support for box properties, including shadow and transparency.
 
 [w2l] Improved support for text decoration (underline, strike through), now
   supporting all the decorations provided by ulem.sty
 
-[w2x] Improved support for character formatting: Text decoration (extended
-  support for underline, strike through and overline). Box properties
-  (support for padding, border and shadow for text spans).
+[w2x] Improved support for character formatting: Extended support for text
+  decoration (underline, strike through and overline). Added support for box
+  properties (padding, border and shadow for text spans), rotated text,
+  relative font size changes (e.g. +2pt, -2pt), font kerning and hyphenation.
   Removed support for blinking text (deprecated in CSS3)
 
 [w2l] New option fontspec with values original, original+math and default.
   This is used for font selection if backend is xetex. The first two options
-  use the original default font i the document while the last uses default
+  use the original default font in the document while the last uses default
   fonts (Latin Modern)
 
 [all] Support for the old SXW format has been dropped

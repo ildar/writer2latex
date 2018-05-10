@@ -95,7 +95,7 @@ public class PresentationStyleConverter extends FrameStyleConverter {
                     CSVList props = new CSVList(";");
                     getFrameSc().cssMargin(StyleWithProperties.GRAPHIC,style,props,true);
                     getParSc().cssPar(style,props,true);
-                    getTextSc().cssTextCommon(style,props,true);
+                    getTextSc().cssTextBlock(style,props,true);
                     if (!props.isEmpty()) {
                         buf.append(sIndent)
                            .append("li.outline")

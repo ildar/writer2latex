@@ -79,7 +79,7 @@ public class CellStyleConverter extends StyleWithPropertiesConverterHelper {
         getFrameSc().cssShadow(StyleWithProperties.CELL,style,props,bInherit);
         // only relevant for spreadsheets
         getParSc().cssPar(style,props,bInherit); 
-        getTextSc().cssTextCommon(style,props,bInherit);
+        getTextSc().cssTextBlock(style,props,bInherit);
         // Cell-specific properties (vertical alignment)
         cssCell(style,props,bInherit);
     }
