@@ -776,7 +776,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         config = new LaTeXConfig();
         i18n = new ClassicI18n(config);
         configSymbols = config.getMathSymbols();
-        bUseColor = config.useColor();
+        bUseColor = config.useXcolor();
         createNumberPattern();
     }
 
@@ -784,7 +784,7 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         this.config = config;
         this.i18n = i18n;
         configSymbols = config.getMathSymbols();
-        bUseColor = config.useColor();
+        bUseColor = config.useXcolor();
         createNumberPattern();
     }
 

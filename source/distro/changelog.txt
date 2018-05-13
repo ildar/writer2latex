@@ -1,5 +1,9 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] New option use_xcolor to xcolor.sty. This replaces use_color (which is
+  still accepted, but will load xcolor.sty). Also, colors are exported using
+  the HTML color model of xcolor
+
 [w2x] Improved support for box properties, including shadow and transparency.
 
 [w2l] Improved support for text decoration (underline, strike through), now

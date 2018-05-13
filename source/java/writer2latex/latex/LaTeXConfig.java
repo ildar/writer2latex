@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-19)
+ *  Version 2.0 (2018-05-13)
  *
  */
 
@@ -54,15 +54,16 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// II. Override getter and setter methods for simple options in order to: 
     //  - Treat the custom preamble like a regular option, even though the xml representation is different
-    //  - Be backwards compatible (renamed the option keep_image_size) 
+    //  - Be backwards compatible (renamed the options keep_image_size, use_color) 
     
     @Override public void setOption(String sName,String sValue) {
     	if (sName.equals("custom-preamble")) {
     		sCustomPreamble = sValue;
     	}
     	else {
-    		// this option has been renamed:
+    		// these options have been renamed:
     		if (sName.equals("keep_image_size")) { sName = "original_image_size"; }
+    		else if (sName.equals("use_color")) { sName = "use_xcolor"; }
     		super.setOption(sName, sValue);
     	}
     }
@@ -132,7 +133,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int USE_BBDING = 13;
     private static final int USE_EUROSYM = 14;
     private static final int USE_TIPA = 15;
-    private static final int USE_COLOR = 16;
+    private static final int USE_XCOLOR = 16;
     private static final int USE_COLORTBL = 17;
     private static final int USE_GEOMETRY = 18;
     private static final int USE_FANCYHDR = 19;
@@ -254,7 +255,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[USE_BBDING] = new BooleanOption("use_bbding","false");
         options[USE_EUROSYM] = new BooleanOption("use_eurosym","false");
         options[USE_TIPA] = new BooleanOption("use_tipa","false");
-        options[USE_COLOR] = new BooleanOption("use_color","true");
+        options[USE_XCOLOR] = new BooleanOption("use_xcolor","true");
         options[USE_COLORTBL] = new BooleanOption("use_colortbl","false");
         options[USE_GEOMETRY] = new BooleanOption("use_geometry","false");
         options[USE_FANCYHDR] = new BooleanOption("use_fancyhdr","false");
@@ -693,7 +694,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useBbding() { return ((BooleanOption) options[USE_BBDING]).getValue(); }
     public boolean useEurosym() { return ((BooleanOption) options[USE_EUROSYM]).getValue(); }
     public boolean useTipa() { return ((BooleanOption) options[USE_TIPA]).getValue(); }
-    public boolean useColor() { return ((BooleanOption) options[USE_COLOR]).getValue(); }
+    public boolean useXcolor() { return ((BooleanOption) options[USE_XCOLOR]).getValue(); }
     public boolean useColortbl() { return ((BooleanOption) options[USE_COLORTBL]).getValue(); }
     public boolean useGeometry() { return ((BooleanOption) options[USE_GEOMETRY]).getValue(); }
     public boolean useFancyhdr() { return ((BooleanOption) options[USE_FANCYHDR]).getValue(); }

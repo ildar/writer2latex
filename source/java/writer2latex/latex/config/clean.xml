@@ -13,7 +13,7 @@
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="false" />
   <option name="use_ooomath" value="false" />
-  <option name="use_color" value="true" />
+  <option name="use_xcolor" value="true" />
   <option name="use_colortbl" value="false" />
   <option name="use_geometry" value="true" />
   <option name="use_fancyhdr" value="false" />

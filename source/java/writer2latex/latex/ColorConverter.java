@@ -2,7 +2,7 @@
  *
  *  ColorConverter.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,11 +19,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.0 (2008-11-23)
+ *  Version 2.0 (2018-05-11)
  *
  */
 
 package writer2latex.latex;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
@@ -33,36 +38,72 @@ import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
 
-/** This class converts color 
+/** This class converts color using <code>xcolor.sty</code>
  */
 public class ColorConverter extends ConverterHelper {
-
-    private static final int RED = 0;
-    private static final int GREEN = 1;
-    private static final int BLUE = 2;
+	
+	// TODO: Add option to support dvipsnames, svgnames and x11names
+	
+	// Do we use color at all?
+	private boolean bUseColor;
     
-    private boolean bUseColor;
+	// Pattern to syntax check color values
+    private Matcher colorMatcher;
 
-    /** <p>Constructs a new <code>CharStyleConverter</code>.</p>
+    // Map of named colors in xcolor.sty
+    private Map<String,String> namedColors = new HashMap<>();
+
+    /** Constructs a new <code>ColorConverter</code>
+     * 
+     * @param ofr the office reader for the source document
+     * @param config the converter configuration to use
+     * @param palette the converter palette to access other helpers
      */
     public ColorConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
+        
+        // Create matcher to check that color values are valid
+        Pattern colorPattern = Pattern.compile("#[A-Fa-f0-9]{6}");
+        colorMatcher = colorPattern.matcher("");
 
         // We use color if requested in the configuration, however ignoring
         // all formatting overrides this
-        bUseColor = config.useColor() && config.formatting()>LaTeXConfig.IGNORE_ALL;
+        bUseColor = config.useXcolor() && config.formatting()>LaTeXConfig.IGNORE_ALL;
+        
+        // Create map of the 19 standard colors provided by xcolor
+    	// These are given as decimal rgb values in xcolor.sty and converted to hex using the
+        // formula round (f*255) as specified in the xcolor documentation        
+		namedColors.put("#FF0000","red");		// 1,0,0
+		namedColors.put("#00FF00","green"); 	// 0,1,0
+		namedColors.put("#0000FF","blue"); 		// 0,0,1
+		namedColors.put("#BF8040","brown"); 	// .75,.5,.25
+		namedColors.put("#BFFF00","lime"); 		// .75,1,0
+		namedColors.put("#FF8000","orange"); 	// 1,.5,0
+		namedColors.put("#FFBFBF","pink"); 		// 1,.75,.75
+		namedColors.put("#BF0040","purple"); 	// .75,0,.25
+		namedColors.put("#008080","teal"); 		// 0,.5,.5
+		namedColors.put("#800080","violet"); 	// .5,0,.5
+		namedColors.put("#00FFFF","cyan"); 		// 0,1,1
+		namedColors.put("#FF00FF","magenta"); 	// 1,0,1
+		namedColors.put("#FFFF00","yellow"); 	// 1,1,0
+		namedColors.put("#808000","olive"); 	// .5,.5,0
+		namedColors.put("#000000","black"); 	// 0,0,0
+		namedColors.put("#404040","darkgray"); 	// .25,.25,.25
+		namedColors.put("#808080","gray"); 		// .5,.5,.5
+		namedColors.put("#BFBFBF","lightgray"); // .75,.75,.75
+		namedColors.put("#FFFFFF","white"); 	// 1,1,1
     }
 
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
 	    if (bUseColor) {
-            pack.append("\\usepackage{color}").nl();
+            pack.append("\\usepackage{xcolor}").nl();
         }
     }
 	
     public void setNormalColor(String sColor, LaTeXDocumentPortion ldp) {
         if (bUseColor && sColor!=null) {
             ldp.append("\\renewcommand\\normalcolor{\\color")
-               .append(color(sColor)).append("}").nl();
+               .append(color(sColor,false)).append("}").nl();
         }
     }
 	
@@ -71,14 +112,13 @@ public class ColorConverter extends ConverterHelper {
     }
 	
     /** <p>Apply foreground color.</p>
-     *  @param style the OOo style to read attributesfrom
-     *  @param bDecl true if declaration form is required
+     *  @param style the ODF style to read attributes from
+     *  @param bDecl true if declaration form is required (if bDecl is true, nothing will be put in the "after" part of ba)
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      *  @param context the current context
      */
     public void applyColor(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
-        // Note: if bDecl is true, nothing will be put in the "after" part of ba.
         if (bUseColor && style!=null) {
             String sColor = style.getProperty(XMLString.FO_COLOR,bInherit);
             if (sColor!=null) {
@@ -115,7 +155,7 @@ public class ColorConverter extends ConverterHelper {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
         if (bUseColor && sColor!=null) {
             // If there's a background color, allow all colors
-            String s = context.getBgColor()!=null ? fullcolor(sColor) : color(sColor);
+            String s = color(sColor, context.getBgColor()!=null);
             if (s!=null) {
                 if (bDecl) { ba.add("\\color"+s,""); }
                 else { ba.add("\\textcolor"+s+"{","}"); }
@@ -126,7 +166,7 @@ public class ColorConverter extends ConverterHelper {
     public void applyBgColor(String sCommand, String sColor, BeforeAfter ba, Context context) {
         // Note: Will only fill "before" part of ba
         if (sColor!=null && !"transparent".equals(sColor)) {
-            String s = fullcolor(sColor);
+            String s = color(sColor, true);
             if (bUseColor && s!=null) {
                 context.setBgColor(sColor);
                 ba.add(sCommand+s,"");
@@ -135,67 +175,50 @@ public class ColorConverter extends ConverterHelper {
     }
 	
     public void applyAutomaticColor(BeforeAfter ba, boolean bDecl, Context context) {
-        String s = automaticcolor(context.getBgColor());
+        String s = automaticColor(context.getBgColor());
         if (s!=null) {
             if (bDecl) { ba.add("\\color"+s,""); }
             else { ba.add("\\textcolor"+s+"{","}"); }
         }
     }
-	
-    private static final String automaticcolor(String sBgColor) {
-        if (sBgColor!=null && sBgColor.length()==7) {
-            float[] rgb = getRgb(sBgColor);
-            if (rgb[RED]+rgb[GREEN]+rgb[BLUE]<0.6) {
-                // Dark background
+    
+    // Methods to create xcolor color expressions
+    private final String automaticColor(String sBgColor) {
+        if (sBgColor!=null && isValidColor(sBgColor)) {
+            if (getLuminance(sBgColor)<0.3) { // Dark background
                 return "{white}";
             }
         }
         return "{black}";
     }
 	
-    private static final String color(String sColor){
-        if ("#000000".equalsIgnoreCase(sColor)) { return "{black}"; }
-        else if ("#ff0000".equalsIgnoreCase(sColor)) { return "{red}"; }
-        else if ("#00ff00".equalsIgnoreCase(sColor)) { return "{green}"; }
-        else if ("#0000ff".equalsIgnoreCase(sColor)) { return "{blue}"; }
-        else if ("#ffff00".equalsIgnoreCase(sColor)) { return "{yellow}"; }
-        else if ("#ff00ff".equalsIgnoreCase(sColor)) { return "{magenta}"; }
-        else if ("#00ffff".equalsIgnoreCase(sColor)) { return "{cyan}"; }
-        //no white, since we don't have background colors:
-        //else if ("#ffffff".equalsIgnoreCase(sColor)) { return "{white}"; }
-        else {
-            if (sColor==null || sColor.length()!=7) return null;
-            float[] rgb = getRgb(sColor);
-            // avoid very bright colors (since we don't have background colors):
-            if (rgb[RED]+rgb[GREEN]+rgb[BLUE]>2.7) { return "{black}"; }
-            else { return "[rgb]{"+rgb[RED]+","+rgb[GREEN]+","+rgb[BLUE]+"}"; }
-        }
-    }
-    
-    private static final String fullcolor(String sColor){
-        if ("#000000".equalsIgnoreCase(sColor)) { return "{black}"; }
-        else if ("#ff0000".equalsIgnoreCase(sColor)) { return "{red}"; }
-        else if ("#00ff00".equalsIgnoreCase(sColor)) { return "{green}"; }
-        else if ("#0000ff".equalsIgnoreCase(sColor)) { return "{blue}"; }
-        else if ("#ffff00".equalsIgnoreCase(sColor)) { return "{yellow}"; }
-        else if ("#ff00ff".equalsIgnoreCase(sColor)) { return "{magenta}"; }
-        else if ("#00ffff".equalsIgnoreCase(sColor)) { return "{cyan}"; }
-        else if ("#ffffff".equalsIgnoreCase(sColor)) { return "{white}"; }
-        else {
-            // This could mean transparent:
-            if (sColor==null || sColor.length()!=7) return null;
-            float[] rgb = getRgb(sColor);
-            return "[rgb]{"+rgb[RED]+","+rgb[GREEN]+","+rgb[BLUE]+"}";
-        }
-    }
-	
-    private static final float[] getRgb(String sColor) {
-        float[] rgb = new float[3];
-        rgb[RED] = (float)Misc.getIntegerFromHex(sColor.substring(1,3),0)/255;
-        rgb[GREEN] = (float)Misc.getIntegerFromHex(sColor.substring(3,5),0)/255;
-        rgb[BLUE] = (float)Misc.getIntegerFromHex(sColor.substring(5,7),0)/255;
-        return rgb;
+    private final String color(String sColor, boolean bFullColors) {
+    	if (sColor!=null && isValidColor(sColor)) {
+    		String sColor1 = sColor.toUpperCase();
+    		if (!bFullColors) {
+	            // avoid very bright colors (on white background):
+	            if (getLuminance(sColor1)>0.85) {
+	            	return "{black}";
+	            }
+    		}
+    		if (namedColors.containsKey(sColor1)) {
+    			return "{"+namedColors.get(sColor1)+"}";
+    		}
+    		return "[HTML]{"+sColor1.substring(1)+"}";
+    	}
+    	return null;
     }
 
+    private boolean isValidColor(String sColor) {
+    	return colorMatcher.reset(sColor).matches();
+    }
+    
+    // Calclulate the percieved brightness
+    private static final float getLuminance(String sColor) {
+        float fRed = (float)Misc.getIntegerFromHex(sColor.substring(1,3),0)/255;
+        float fGreen = (float)Misc.getIntegerFromHex(sColor.substring(3,5),0)/255;
+        float fBlue = (float)Misc.getIntegerFromHex(sColor.substring(5,7),0)/255;
+    	return 0.3F*fRed+0.59F*fGreen+0.11F*fBlue;
+    }
 
 }

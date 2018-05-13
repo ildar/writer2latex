@@ -2,7 +2,7 @@
  *
  *  ConfigurationDialog.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 2.0 (2018-05-13)
  *
  */ 
  
@@ -492,7 +492,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
     
     // The page "Characters"
-    // This page handles the options use_color, use_soul, use_ulem and use_hyperref
+    // This page handles the options use_xcolor, use_soul, use_ulem and use_hyperref
     // In addition it handles style maps for formatting attributes
     private class CharactersHandler extends AttributePageHandler {
     	private final String[] sLaTeXAttributeNames = { "bold", "italic", "small-caps", "superscript", "subscript" };
@@ -505,7 +505,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	@Override protected void setControls(DialogAccess dlg) {
     		super.setControls(dlg);
     		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxFromConfig(dlg,"UseColor","use_color");
+    		checkBoxFromConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxFromConfig(dlg,"UseSoul","use_soul");
     		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
     	}
@@ -513,7 +513,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	@Override protected void getControls(DialogAccess dlg) {
     		super.getControls(dlg);
     		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxToConfig(dlg,"UseColor","use_color");
+    		checkBoxToConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxToConfig(dlg,"UseSoul","use_soul");
     		checkBoxToConfig(dlg,"UseUlem","use_ulem");
     	}

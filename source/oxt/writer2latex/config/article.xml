@@ -54,7 +54,7 @@
   <option name="use_bbding" value="false" />
   <option name="use_eurosym" value="false" />
   <option name="use_tipa" value="false" />
-  <option name="use_color" value="true" />
+  <option name="use_xcolor" value="true" />
   <option name="use_colortbl" value="false" />
   <option name="use_hyperref" value="true" />
   <option name="use_endnotes" value="false" />
