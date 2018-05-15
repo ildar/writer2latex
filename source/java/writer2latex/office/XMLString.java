@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-10)
+ *  Version 2.0 (2018-05-15)
  *
  */
 
@@ -215,6 +215,8 @@ public class XMLString {
 	public static final String STYLE_NUM_PREFIX = "style:num-prefix";
 	public static final String STYLE_NUM_SUFFIX = "style:num-suffix";
 	public static final String STYLE_NUM_FORMAT = "style:num-format";
+	public static final String STYLE_VERTICAL_REL = "style:vertical-rel";
+	public static final String STYLE_VERTICAL_POS = "style:vertical-pos";
 	public static final String STYLE_VERTICAL_ALIGN = "style:vertical-align";
 	public static final String STYLE_MAY_BREAK_BETWEEN_ROWS = "style:may-break-between-rows";
 	public static final String STYLE_HORIZONTAL_POS = "style:horizontal-pos";

@@ -18,6 +18,8 @@
   <option name="use_eurosym" value="true" />
   <option name="use_xcolor" value="true" />
   <option name="use_colortbl" value="true" />
+  <option name="use_longfbox" value="true" />
+  <option name="border_radius" value="100%" />
   <option name="use_hyperref" value="true" />
   <option name="use_endnotes" value="true" />
   <option name="use_ulem" value="true" />

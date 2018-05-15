@@ -56,6 +56,8 @@
   <option name="use_tipa" value="false" />
   <option name="use_xcolor" value="true" />
   <option name="use_colortbl" value="false" />
+  <option name="use_longfbox" value="false" />
+  <option name="border_radius" value="0%" />
   <option name="use_hyperref" value="true" />
   <option name="use_endnotes" value="false" />
   <option name="use_ulem" value="false" />

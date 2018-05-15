@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-31)
+ *  Version 2.0 (2018-05-15)
  *
  */
 package writer2latex.util;
@@ -217,6 +217,21 @@ public class Calc {
 	 */
 	public static boolean isLessThan(String sThis, String sThat) {
 	    return sub(sThis,sThat).startsWith("-");
+	}
+	
+	/** Return the minimum of some lengths, discarding null values
+	 * 
+	 * @param sLengths one or more lengths
+	 * @return the minimum length (or null if all lengths were null)
+	 */
+	public static String min(String... sLengths) {
+		String sMin = null;
+		for (String sLength : sLengths) {
+			if (sMin==null || (sMin!=null && sLength!=null && isLessThan(sLength,sMin))) {
+				sMin = sLength;
+			}
+		}
+		return sMin;
 	}
 
 	/** Get the absolute value of a length (e.g. "-2.5cm" returns "2.5cm")

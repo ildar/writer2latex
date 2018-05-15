@@ -10,6 +10,8 @@
   <option name="inputencoding" value="ascii" />
   <option name="use_geometry" value="true" />
   <option name="use_fancyhdr" value="true" />
+  <option name="use_longfbox" value="true" />
+  <option name="border_radius" value="100%" />
   <option name="use_ooomath" value="false" />
   <option name="use_pifont" value="true" />
   <option name="use_ifsym" value="true" />

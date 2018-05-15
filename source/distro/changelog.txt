@@ -1,7 +1,15 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
-[w2l] New option use_xcolor to xcolor.sty. This replaces use_color (which is
-  still accepted, but will load xcolor.sty). Also, colors are exported using
+[w2l] New option border_radius. The value can be a percentage (default 100%).
+  This is used to set border radius for frames as a percentage of the padding
+  (only relevant if use_longfbox is true)
+
+[w2l] New option use_longfbox to use the package longfbox.sty (default is true).
+  This enables box formatting (margin, border, padding, background color and
+  vertical alignment) for images and text boxes
+
+[w2l] New option use_xcolor to use xcolor.sty. This replaces use_color (which
+  is still accepted, but will load xcolor.sty). Also, colors are exported using 
   the HTML color model of xcolor
 
 [w2x] Improved support for box properties, including shadow and transparency.

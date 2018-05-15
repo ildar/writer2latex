@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-06)
+ *  Version 2.0 (2018-05-15)
  *
  */
  
@@ -38,6 +38,7 @@ import writer2latex.office.EmbeddedObject;
 import writer2latex.office.EmbeddedXMLObject;
 import writer2latex.office.MIMETypes;
 import writer2latex.office.OfficeReader;
+import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 import writer2latex.util.Calc;
@@ -341,11 +342,18 @@ public class DrawConverter extends ConverterHelper {
             ldp.append(" [Warning: Image ignored] ");
             ldp.append("% Unhandled or unsupported graphics:").nl().append("%");
         }
-        ldp.append("\\includegraphics");
+        
+        // Get the style
+        Element frame = getFrame(node);
+        String sY = Calc.truncateLength(frame.getAttribute(XMLString.SVG_Y));
+        StyleWithProperties style = ofr.getFrameStyle(frame.getAttribute(XMLString.DRAW_STYLE_NAME));
+        BeforeAfter ba = new BeforeAfter();
+        palette.getFrameStyleSc().applyFrameStyleImage(style, ba, sY, true);
+        
+        ldp.append(ba.getBefore()).append("\\includegraphics");
 
         CSVList options = new CSVList(',');
         if (!config.originalImageSize()) {
-            Element frame = getFrame(node);
             String sWidth = Calc.truncateLength(frame.getAttribute(XMLString.SVG_WIDTH));
             String sHeight = Calc.truncateLength(frame.getAttribute(XMLString.SVG_HEIGHT));
             if (sWidth!=null) { options.addValue("width="+sWidth); }
@@ -361,7 +369,7 @@ public class DrawConverter extends ConverterHelper {
         if (config.removeGraphicsExtension()) {
             sFileName = Misc.removeExtension(sFileName);
         }
-        ldp.append("{").append(sFileName).append("}");
+        ldp.append("{").append(sFileName).append("}").append(ba.getAfter());
         if (bCommentOut) { ldp.nl(); }
     }
 
@@ -406,16 +414,22 @@ public class DrawConverter extends ConverterHelper {
             if (ofr.isFigureSequenceName(sSeqName)) { bIsCaption = true; }
         }
 
-        String sWidth = Calc.truncateLength(getFrame(node).getAttribute(XMLString.SVG_WIDTH));
+        Element frame = getFrame(node);
+        String sWidth = Calc.truncateLength(frame.getAttribute(XMLString.SVG_WIDTH));
+        String sY = Calc.truncateLength(frame.getAttribute(XMLString.SVG_Y));
+        StyleWithProperties style = ofr.getFrameStyle(frame.getAttribute(XMLString.DRAW_STYLE_NAME));
+        BeforeAfter ba = new BeforeAfter();
+        palette.getFrameStyleSc().applyFrameStyleText(style, ba, sWidth, sY, true);
+        
         if (!bIsCaption) {
-            ldp.append("\\begin{minipage}{").append(sWidth).append("}").nl();
+            ldp.append(ba.getBefore()).nl();
         }
         floatingFramesStack.push(new LinkedList<Element>());
         palette.getBlockCv().traverseBlockText(node,ldp,ic);
         flushFloatingFrames(ldp,ic);
         floatingFramesStack.pop();
         if (!bIsCaption) {
-        	ldp.append("\\end{minipage}");
+        	ldp.append(ba.getAfter());
         }
         if (!oc.isNoFootnotes()) { palette.getNoteCv().flushFootnotes(ldp,oc); }
 

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-11)
+ *  Version 2.0 (2018-05-13)
  *
  */
 
@@ -103,7 +103,7 @@ public class ColorConverter extends ConverterHelper {
     public void setNormalColor(String sColor, LaTeXDocumentPortion ldp) {
         if (bUseColor && sColor!=null) {
             ldp.append("\\renewcommand\\normalcolor{\\color")
-               .append(color(sColor,false)).append("}").nl();
+               .append(color(sColor,false,false)).append("}").nl();
         }
     }
 	
@@ -155,7 +155,7 @@ public class ColorConverter extends ConverterHelper {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
         if (bUseColor && sColor!=null) {
             // If there's a background color, allow all colors
-            String s = color(sColor, context.getBgColor()!=null);
+            String s = color(sColor, context.getBgColor()!=null, false);
             if (s!=null) {
                 if (bDecl) { ba.add("\\color"+s,""); }
                 else { ba.add("\\textcolor"+s+"{","}"); }
@@ -166,7 +166,7 @@ public class ColorConverter extends ConverterHelper {
     public void applyBgColor(String sCommand, String sColor, BeforeAfter ba, Context context) {
         // Note: Will only fill "before" part of ba
         if (sColor!=null && !"transparent".equals(sColor)) {
-            String s = color(sColor, true);
+            String s = color(sColor, true, false);
             if (bUseColor && s!=null) {
                 context.setBgColor(sColor);
                 ba.add(sCommand+s,"");
@@ -182,6 +182,10 @@ public class ColorConverter extends ConverterHelper {
         }
     }
     
+    public String getLongfboxColor(String sColor) {
+    	return color(sColor, true, true);
+    }
+    
     // Methods to create xcolor color expressions
     private final String automaticColor(String sBgColor) {
         if (sBgColor!=null && isValidColor(sBgColor)) {
@@ -192,7 +196,7 @@ public class ColorConverter extends ConverterHelper {
         return "{black}";
     }
 	
-    private final String color(String sColor, boolean bFullColors) {
+    private final String color(String sColor, boolean bFullColors, boolean bLongfbox) {
     	if (sColor!=null && isValidColor(sColor)) {
     		String sColor1 = sColor.toUpperCase();
     		if (!bFullColors) {
@@ -200,6 +204,12 @@ public class ColorConverter extends ConverterHelper {
 	            if (getLuminance(sColor1)>0.85) {
 	            	return "{black}";
 	            }
+    		}
+    		if (bLongfbox) {
+        		if (namedColors.containsKey(sColor1)) {
+        			return namedColors.get(sColor1);
+        		}
+        		return "\\#"+sColor1.substring(1);    			
     		}
     		if (namedColors.containsKey(sColor1)) {
     			return "{"+namedColors.get(sColor1)+"}";

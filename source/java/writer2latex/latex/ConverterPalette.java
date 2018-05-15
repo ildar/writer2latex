@@ -2,7 +2,7 @@
  *
  *  ConverterPalette.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-14)
+ *  Version 2.0 (2018-05-13)
  *
  */
 
@@ -62,6 +62,7 @@ public final class ConverterPalette extends ConverterBase {
     // The helpers (the "colors" of the palette)
     private I18n i18n;
     private ColorConverter colorCv;
+    private FrameStyleConverter frameSc;
     private CharStyleConverter charSc;
     private PageStyleConverter pageSc;
     private BlockConverter blockCv;
@@ -99,6 +100,7 @@ public final class ConverterPalette extends ConverterBase {
     // Accessor methods for helpers
     public I18n getI18n() { return i18n; }
     public ColorConverter getColorCv() { return colorCv; }
+    public FrameStyleConverter getFrameStyleSc() { return frameSc; }
     public CharStyleConverter getCharSc() { return charSc; }
     public PageStyleConverter getPageSc() { return pageSc; }
     public BlockConverter getBlockCv() { return blockCv; }
@@ -154,6 +156,7 @@ public final class ConverterPalette extends ConverterBase {
             i18n = new XeTeXI18n(ofr,config,this);        	        	
         }
         colorCv = new ColorConverter(ofr,config,this);
+        frameSc = new FrameStyleConverter(ofr,config,this);
         charSc = new CharStyleConverter(ofr,config,this);
         pageSc = new PageStyleConverter(ofr,config,this);
         blockCv = new BlockConverter(ofr,config,this);
@@ -205,6 +208,7 @@ public final class ConverterPalette extends ConverterBase {
         // Add declarations from our helpers
         i18n.appendDeclarations(packages,declarations);
         colorCv.appendDeclarations(packages,declarations);
+        frameSc.appendDeclarations(packages,declarations);
         noteCv.appendDeclarations(packages,declarations);
         charSc.appendDeclarations(packages,declarations);
         headingCv.appendDeclarations(packages,declarations);
