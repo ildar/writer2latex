@@ -1,5 +1,8 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] Optimized optional arguments for headings and captions: The optional
+  argument is now only used if it differs from the full argument
+
 [w2l] New option use_titlesec to convert formatting of headings using the
   package titlesec.sty (default is false). Formats of headings thus no longer
   depends on the option formatting, and does not use low level LaTeX command

@@ -19,16 +19,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-21)
+ *  Version 2.0 (2018-05-22)
  *
  */
 
 package writer2latex.latex;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.HeadingMap;
@@ -51,7 +48,7 @@ public class HeadingConverter extends ConverterHelper {
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-        
+    	// Nothing to do
     }
 	
     /** Process a heading
@@ -61,20 +58,16 @@ public class HeadingConverter extends ConverterHelper {
      */
     public void handleHeading(Element node, LaTeXDocumentPortion ldp, Context oc) {
     	// Get the style
-        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
-		StyleWithProperties style = ofr.getParStyle(sStyleName);
+		StyleWithProperties style = ofr.getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
 		
 		// Check for hidden text
         if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
         	return;
         }
 
-        // Get the level
-        int nLevel = Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_OUTLINE_LEVEL),1);
-        boolean bUnNumbered = "true".equals(Misc.getAttribute(node,XMLString.TEXT_IS_LIST_HEADER));
-
-        // Get the heading map
+        // Get the heading map and the level
         HeadingMap hm = config.getHeadingMap();
+        int nLevel = Misc.getPosInteger(Misc.getAttribute(node, XMLString.TEXT_OUTLINE_LEVEL),1);
 
         if (nLevel<=hm.getMaxLevel()) {
             // Always push the font used
@@ -82,31 +75,38 @@ public class HeadingConverter extends ConverterHelper {
 
             Context ic = (Context) oc.clone();
             ic.setInSection(true);
-            // Footnotes with more than one paragraph are not allowed within
-            // sections. To be safe, we disallow all footnotes
+            // Footnotes with more than one paragraph are not allowed within sections. To be safe, we disallow all footnotes
             ic.setNoFootnotes(true);
 
-            // Apply style
+            // Apply style (hard page break and hard character formatting)
             BeforeAfter baHardPage = new BeforeAfter();
             BeforeAfter baHardChar = new BeforeAfter();
-            applyHardHeadingStyle(nLevel, sStyleName,
-                baHardPage, baHardChar, ic);
+            applyHardHeadingStyle(nLevel, style, baHardPage, baHardChar, ic);
 
+            // Get plain content for the optional argument
+            LaTeXDocumentPortion ldpOpt = new LaTeXDocumentPortion(true);
+            palette.getInlineCv().traversePlainInlineText(node,ldpOpt,ic);
+            String sOpt = ldpOpt.toString();
+
+            // Get formatted content
+            LaTeXDocumentPortion ldpContent = new LaTeXDocumentPortion(true);
+            palette.getInlineCv().traverseInlineText(node,ldpContent,ic);
+            String sContent = ldpContent.toString();
+            
             // Export the heading
             ldp.append(baHardPage.getBefore());
             ldp.append("\\"+hm.getName(nLevel));
-            if (bUnNumbered) {
+            
+            if ("true".equals(Misc.getAttribute(node,XMLString.TEXT_IS_LIST_HEADER))) {
+            	// Unnumbered heading
             	ldp.append("*");
             }
-            else if (baHardChar.getBefore().length()>0 || containsElements(node)) {
-            	// If this heading contains formatting, add optional argument:
-                ldp.append("[");
-                palette.getInlineCv().traversePlainInlineText(node,ldp,ic);
-                ldp.append("]");
+            else if (!sContent.equals(sOpt)) {
+            	// The heading contains e.g. formatting or footnotes, this requires an optional argument
+                ldp.append("[").append(sOpt).append("]");
             }
-            ldp.append("{").append(baHardChar.getBefore());
-            palette.getInlineCv().traverseInlineText(node,ldp,ic);
-            ldp.append(baHardChar.getAfter()).append("}").nl();
+            
+            ldp.append("{").append(baHardChar.getBefore()).append(sContent).append(baHardChar.getAfter()).append("}").nl();
             ldp.append(baHardPage.getAfter());
 			
             // Include pending index marks, labels, footnotes & floating frames
@@ -128,43 +128,19 @@ public class HeadingConverter extends ConverterHelper {
      *  hard formatting is ignored.
      *  This method also collects name of heading style
      *  @param <code>nLevel</code> The level of this heading
-     *  @param <code>sStyleName</code> the name of the paragraph style to use
+     *  @param <code>style</code> the office style to apply
      *  @param <code>baPage</code> a <code>BeforeAfter</code> to put page break code into
      *  @param <code>baText</code> a <code>BeforeAfter</code> to put character formatting code into
      *  @param <code>context</code> the current context. This method will use and update the formatting context  
      */
-    private void applyHardHeadingStyle(int nLevel, String sStyleName,
-        BeforeAfter baPage, BeforeAfter baText, Context context) {
-
-        // Get the style
-        StyleWithProperties style = ofr.getParStyle(sStyleName);
-        if (style==null) { return; }
-
-        // Do conversion
-        if (style.isAutomatic()) {
+    private void applyHardHeadingStyle(int nLevel, StyleWithProperties style, BeforeAfter baPage, BeforeAfter baText, Context context) {
+        if (style!=null && style.isAutomatic()) {
             palette.getPageSc().applyPageBreak(style,false,baPage);
             palette.getCharSc().applyHardCharFormatting(style,baText);
+	        // Update context
+	        context.updateFormattingFromStyle(style);
         }
-		
-        // Update context
-        context.updateFormattingFromStyle(style);
     }
 
 
-    /* Check to see if this node contains any element nodes, except reference marks */
-    public boolean containsElements(Node node) {
-        if (!node.hasChildNodes()) { return false; }
-        NodeList list = node.getChildNodes();
-        int nLen = list.getLength();
-        for (int i = 0; i < nLen; i++) {
-            Node child = list.item(i);
-            if (child.getNodeType()==Node.ELEMENT_NODE && 
-                !(child.getNodeName().startsWith(XMLString.TEXT_REFERENCE_MARK) ||
-                		child.getNodeName().startsWith(XMLString.TEXT_BOOKMARK))) {
-                return true;
-            }
-        }
-        return false;
-    }
-	
 }

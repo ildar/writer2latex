@@ -2,7 +2,7 @@
  *
  *  CaptionConverter.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.0 (2008-11-23)
+ *  Version 2.0 (2018-05-22)
  *
  */
  
@@ -27,7 +27,6 @@ package writer2latex.latex;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
@@ -85,17 +84,25 @@ public class CaptionConverter extends ConverterHelper {
         // Get the stylename of the paragraph and push the font used
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
         palette.getI18n().pushSpecialTable(palette.getCharSc().getFontName(ofr.getParStyle(sStyleName)));
-		
-        if (palette.getHeadingCv().containsElements(node)) {
-            ldp.append("[");
-            palette.getInlineCv().traversePlainInlineText(node,ldp,oc);
-            ldp.append("]");
-        }
+        
         // Update context before traversing text
         Context ic = (Context) oc.clone();
-        ldp.append("{");
-        palette.getInlineCv().traverseInlineText(node,ldp,ic);
-        ldp.append("}").nl();
+
+        // Get plain content for the optional argument
+        LaTeXDocumentPortion ldpOpt = new LaTeXDocumentPortion(true);
+        palette.getInlineCv().traversePlainInlineText(node,ldpOpt,ic);
+        String sOpt = ldpOpt.toString();
+
+        // Get formatted content
+        LaTeXDocumentPortion ldpContent = new LaTeXDocumentPortion(true);
+        palette.getInlineCv().traverseInlineText(node,ldpContent,ic);
+        String sContent = ldpContent.toString();
+        
+        if (!sContent.equals(sOpt)) {
+        	// The caption contains e.g. formatting or footnotes, this requires an optional argument
+            ldp.append("[").append(sOpt).append("]");
+        }
+        ldp.append("{").append(sContent).append("}").nl();
 
         // Insert label
         palette.getFieldCv().handleSequence(label,ldp,oc);
@@ -157,6 +164,5 @@ public class CaptionConverter extends ConverterHelper {
         if (removeMe!=null) { node.removeChild(removeMe); }
         return nStep;
     }
-	
 
 }
