@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-15)
+ *  Version 2.0 (2018-05-21)
  *
  */
 
@@ -210,6 +210,11 @@ public class XMLString {
 	//public static final String STYLE_TEXT_ROTATION_SCALE = "style:text-rotation-scale";
 	public static final String STYLE_LETTER_KERNING = "style:letter-kerning";
 	public static final String STYLE_TEXT_SCALE = "style:text-scale";
+	public static final String STYLE_BORDER_LINE_WIDTH = "style:border-line-width";
+	//public static final String STYLE_BORDER_LINE_WIDTH_LEFT = "style:border-line-width-left";
+	//public static final String STYLE_BORDER_LINE_WIDTH_RIGHT = "style:border-line-width-right";
+	public static final String STYLE_BORDER_LINE_WIDTH_TOP = "style:border-line-width-top";
+	public static final String STYLE_BORDER_LINE_WIDTH_BOTTOM = "style:border-line-width-bottom";
 	public static final String STYLE_LIST_STYLE_NAME = "style:list-style-name";
 	public static final String STYLE_LIST_LEVEL_PROPERTIES = "style:list-level-properties";
 	public static final String STYLE_NUM_PREFIX = "style:num-prefix";

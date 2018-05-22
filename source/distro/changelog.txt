@@ -1,5 +1,13 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] New option use_titlesec to convert formatting of headings using the
+  package titlesec.sty (default is false). Formats of headings thus no longer
+  depends on the option formatting, and does not use low level LaTeX command
+  \@startsection to format the headings.
+  
+[w2l] New option outline_numbering (default is true) to convert the outline
+  numbering, which is now independent of the option formatting.
+
 [w2l] New option border_radius. The value can be a percentage (default 100%).
   This is used to set border radius for frames as a percentage of the padding
   (only relevant if use_longfbox is true)

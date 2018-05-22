@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-05-04)
+ *  Version 2.0 (2018-05-21)
  */
  
 package writer2latex.office;
@@ -210,6 +210,32 @@ public class StyleWithProperties extends OfficeStyle {
 
     public String getGraphicProperty(String sName, boolean bInherit) {
         return getProperty(GRAPHIC,sName,bInherit);
+    }
+    
+    /** Get a property value which can be set as either of two names
+     * 
+     * @param nIndex the property type
+     * @param sName1 the name of the first possible property (this has first priority)
+     * @param sName2 the name of the alternative possible property
+     * @param bInherit true if the value can be inherited from parent style
+     * @return the value, or null if neither of the properties are set
+     */
+    public String getAlternativeProperty(int nIndex, String sName1, String sName2, boolean bInherit) {
+    	if (0<=nIndex && nIndex<=COUNT) {
+	        if (properties[nIndex].containsProperty(sName1)) {
+	            return properties[nIndex].getProperty(sName1);
+	        }
+	        else if (properties[nIndex].containsProperty(sName2)) {
+	            return properties[nIndex].getProperty(sName2);
+	        }
+	        else if (bInherit && getParentName()!=null) {
+	            StyleWithProperties parentStyle = (StyleWithProperties) family.getStyle(getParentName());
+	            if (parentStyle!=null) {
+	                return parentStyle.getAlternativeProperty(nIndex,sName1,sName2,bInherit);
+	            }
+	        }
+    	}
+        return null; // no value    	
     }
 
     // TODO: Remove this method

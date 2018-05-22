@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-13)
+ *  Version 2.0 (2018-05-17)
  *
  */
 
@@ -64,6 +64,7 @@ public final class ConverterPalette extends ConverterBase {
     private ColorConverter colorCv;
     private FrameStyleConverter frameSc;
     private CharStyleConverter charSc;
+    private HeadingStyleConverter headingSc;
     private PageStyleConverter pageSc;
     private BlockConverter blockCv;
     private ParConverter parCv;
@@ -102,6 +103,7 @@ public final class ConverterPalette extends ConverterBase {
     public ColorConverter getColorCv() { return colorCv; }
     public FrameStyleConverter getFrameStyleSc() { return frameSc; }
     public CharStyleConverter getCharSc() { return charSc; }
+    //public HeadingStyleConverter getHeadingSc() { return headingSc; }
     public PageStyleConverter getPageSc() { return pageSc; }
     public BlockConverter getBlockCv() { return blockCv; }
     public ParConverter getParCv() { return parCv; }
@@ -158,6 +160,7 @@ public final class ConverterPalette extends ConverterBase {
         colorCv = new ColorConverter(ofr,config,this);
         frameSc = new FrameStyleConverter(ofr,config,this);
         charSc = new CharStyleConverter(ofr,config,this);
+        headingSc = new HeadingStyleConverter(ofr,config,this);
         pageSc = new PageStyleConverter(ofr,config,this);
         blockCv = new BlockConverter(ofr,config,this);
         parCv = new ParConverter(ofr,config,this);
@@ -210,6 +213,7 @@ public final class ConverterPalette extends ConverterBase {
         colorCv.appendDeclarations(packages,declarations);
         frameSc.appendDeclarations(packages,declarations);
         noteCv.appendDeclarations(packages,declarations);
+        headingSc.appendDeclarations(packages,declarations);
         charSc.appendDeclarations(packages,declarations);
         headingCv.appendDeclarations(packages,declarations);
         parCv.appendDeclarations(packages,declarations);

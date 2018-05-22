@@ -19,6 +19,8 @@
   <option name="use_fancyhdr" value="false" />
   <option name="use_longfbox" value="false" />
   <option name="border_radius" value="0%" />
+  <option name="use_titlesec" value="false" />
+  <option name="outline_numbering" value="false" />
   <option name="use_hyperref" value="true" />
   <option name="use_caption" value="true" />
   <option name="use_endnotes" value="false" />

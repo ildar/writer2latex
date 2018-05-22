@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-06)
+ *  Version 2.0 (2018-05-21)
  *
  */
 
@@ -32,27 +32,14 @@ import org.w3c.dom.NodeList;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.HeadingMap;
-import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
-import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 
-/* This class converts OpenDocument headings (<code>text:h</code>) and
- * paragraph styles/formatting into LaTeX
- * Export of formatting depends on the option "formatting":
- * <ul>
- * <li><code>ignore_all</code>
- * <li><code>ignore_most</code>
- * <li><code>convert_basic</code>
- * <li><code>convert_most</code>
- * <li><code>convert_all</code>
- * </ul> 
+/* This class converts OpenDocument headings (<code>text:h</code>) into LaTeX
  */
 public class HeadingConverter extends ConverterHelper {
-    private String[] sHeadingStyles = new String[11];
-    
     // Display hidden text?
     private boolean bDisplayHiddenText = false;
 
@@ -64,7 +51,7 @@ public class HeadingConverter extends ConverterHelper {
     }
 	
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-        appendHeadingStyles(decl);
+        
     }
 	
     /** Process a heading
@@ -153,11 +140,6 @@ public class HeadingConverter extends ConverterHelper {
         StyleWithProperties style = ofr.getParStyle(sStyleName);
         if (style==null) { return; }
 
-        // Register heading style
-        if (sHeadingStyles[nLevel]==null) {
-            sHeadingStyles[nLevel] = style.isAutomatic() ? style.getParentName() : sStyleName;
-        }
-
         // Do conversion
         if (style.isAutomatic()) {
             palette.getPageSc().applyPageBreak(style,false,baPage);
@@ -169,236 +151,6 @@ public class HeadingConverter extends ConverterHelper {
     }
 
 
-    /** Convert heading styles and outline numbering to LaTeX.
-     *  An array of stylenames to use is required: The OOo writer file format
-     *  allows different paragraph styles to be applied to individual headings,
-     *  so this is not included in the styles.
-     *  LaTeX (and OOo Writer!) usually uses the same format for all headings.
-     *  @param ldp    the LaTeXDocumentPortion to add definitions to.
-     */
-    // TODO: use method from ListStyleConverter to create labels
-    private void appendHeadingStyles(LaTeXDocumentPortion ldp) {
-        // The user may not want to convert the formatting of headings
-        if (config.formatting()<=LaTeXConfig.IGNORE_MOST) { return; }
-
-        HeadingMap hm = config.getHeadingMap();
-
-        // OK, we are going to convert. First find the max level for headings
-        int nMaxLevel = 0;
-        for (int i=1; i<=5; i++) { if (sHeadingStyles[i]!=null) { nMaxLevel=i; } }
-        if (nMaxLevel==0) { return; } // no headings, nothing to do!
-        if (nMaxLevel>hm.getMaxLevel()) { nMaxLevel = hm.getMaxLevel(); }
-
-        boolean bOnlyNum = config.formatting()==LaTeXConfig.CONVERT_BASIC;
-        if (bOnlyNum) {
-            ldp.append("% Outline numbering").nl();
-        }
-        else {
-            ldp.append("% Headings and outline numbering").nl()
-               .append("\\makeatletter").nl();
-        }
-
-        // Paragraph style for headings:
-        if (!bOnlyNum) {
-            for (int i=1; i<=nMaxLevel; i++) {
-                if (sHeadingStyles[i]!=null) {
-                    StyleWithProperties style = ofr.getParStyle(sHeadingStyles[i]);
-                    if (style!=null) {
-                        BeforeAfter decl = new BeforeAfter();
-                        BeforeAfter comm = new BeforeAfter();
-					
-                        palette.getPageSc().applyPageBreak(style,true,decl);
-
-                        palette.getCharSc().applyNormalFont(decl);
-                        palette.getCharSc().applyFont(style,true,true,decl,new Context());
-                        palette.getParCv().applyAlignment(style,false,true,decl);
-		    			
-                        palette.getI18n().applyLanguage(style,false,true,comm);
-                        palette.getCharSc().applyFontEffects(style,true,comm);
-										
-                        // Get margin parameters (using first line indent as left margin)
-                        String sMarginTop = style.getAbsoluteLength(XMLString.FO_MARGIN_TOP);
-                        String sMarginBottom = style.getAbsoluteLength(XMLString.FO_MARGIN_BOTTOM);
-                        String sMarginLeft = style.getAbsoluteLength(XMLString.FO_MARGIN_LEFT);
-                        String sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
-                        
-                        // Seems that we should *not* override the paragraph style
-                        /*ListStyle outline = ofr.getOutlineStyle();
-                        if (outline.isNewType(i)) {
-                        	String sNumFormat = ListStyleConverter.numFormat(outline.getLevelProperty(i,XMLString.STYLE_NUM_FORMAT));
-                        	if (sNumFormat!=null && !"".equals(sNumFormat)) {
-                            	// It there's a numbering, override left margins with the value from the outline
-                				sMarginLeft = outline.getLevelStyleProperty(i, XMLString.FO_MARGIN_LEFT);
-                				if (sMarginLeft==null) { sMarginLeft = "0cm"; }
-                				sTextIndent = outline.getLevelStyleProperty(i, XMLString.FO_TEXT_INDENT);
-                				if (sTextIndent==null) { sTextIndent = "0cm"; }                        		
-                        	}
-                        }*/
-    
-                        String sSecName = hm.getName(i);
-                        if (!comm.isEmpty()) { // have to create a cs for this heading
-                            ldp.append("\\newcommand\\cs").append(sSecName).append("[1]{")
-                               .append(comm.getBefore()).append("#1").append(comm.getAfter())
-                               .append("}").nl();
-                        }
-                        // Note: Use first line as left indent (cannot have separate first line indent)
-                        ldp.append("\\renewcommand\\").append(sSecName)
-                           .append("{\\@startsection{").append(sSecName).append("}{"+hm.getLevel(i))
-                           .append("}{"+Calc.add(sMarginLeft,sTextIndent)+"}{");
-                        // Suppress indentation after heading? currently not..
-                        // ldp.append("-"); 
-                        ldp.append(sMarginTop)
-                           .append("}{")
-                           .append(Calc.isZero(sMarginBottom) ? "0.1mm" : sMarginBottom)
-                           .append("}{");
-                        // Note: decl.getAfter() may include a page break after, which we ignore
-	                    ldp.append(decl.getBefore());
-                        if (!comm.isEmpty()) {
-                            ldp.append("\\cs").append(sSecName);
-                        }
-                        ldp.append("}}").nl();
-                    }
-                }
-            }
-        }
-
-        // redefine formatting of section counters
-        // simplified if the user wants to ignore formatting
-        if (!bOnlyNum) {
-            ldp.append("\\renewcommand\\@seccntformat[1]{")
-               .append("\\csname @textstyle#1\\endcsname{\\csname the#1\\endcsname}")
-               .append("\\csname @distance#1\\endcsname}").nl();
-        }
-
-        // Collect numbering styles and set secnumdepth
-        int nSecnumdepth = nMaxLevel;
-        ListStyle outline = ofr.getOutlineStyle();
-        String[] sNumFormat = new String[6];
-        for (int i=nMaxLevel; i>=1; i--) {
-            sNumFormat[i] = ListConverter.numFormat(outline.getLevelProperty(i,
-                               XMLString.STYLE_NUM_FORMAT));
-            if (sNumFormat[i]==null || "".equals(sNumFormat[i])) {
-                nSecnumdepth = i-1;
-            }
-        }
-        ldp.append("\\setcounter{secnumdepth}{"+nSecnumdepth+"}").nl();
-
-        for (int i=1; i<=nMaxLevel; i++) {
-            if (sNumFormat[i]==null || "".equals(sNumFormat[i])) {
-                // no numbering at this level
-                if (!bOnlyNum) {
-                    ldp.append("\\newcommand\\@distance")
-                       .append(hm.getName(i)).append("{}").nl()
-                       .append("\\newcommand\\@textstyle")
-                       .append(hm.getName(i)).append("[1]{#1}").nl();
-                }
-            }
-            else {
-                if (!bOnlyNum) {
-                    // Distance between label and text:
-                	String sSpaceChar="";
-                    String sDistance=null;
-                    if (outline.isNewType(i)) {
-        				String sFormat = outline.getLevelStyleProperty(i, XMLString.TEXT_LABEL_FOLLOWED_BY);
-    					if ("listtab".equals(sFormat)) {
-    						String sMarginLeft="0cm";
-    						String sTextIndent="0cm";
-    		                if (sHeadingStyles[i]!=null) {
-    		                    StyleWithProperties style = ofr.getParStyle(sHeadingStyles[i]);
-    		                    if (style!=null) {
-    		                    	sMarginLeft = style.getAbsoluteLength(XMLString.FO_MARGIN_LEFT);
-    		                    	sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
-    		                    }
-    		                }
-                            // Seems that we should *not* override the paragraph style
-            				/*String sMarginLeft = outline.getLevelStyleProperty(i, XMLString.FO_MARGIN_LEFT);
-            				if (sMarginLeft==null) { sMarginLeft = "0cm"; }
-            				String sTextIndent = outline.getLevelStyleProperty(i, XMLString.FO_TEXT_INDENT);
-            				if (sTextIndent==null) { sTextIndent = "0cm"; }*/
-    						String sTabPos = outline.getLevelStyleProperty(i, XMLString.TEXT_LIST_TAB_STOP_POSITION);
-    						if (sTabPos==null) { sTabPos = "0cm"; }
-    						sDistance = Calc.sub(sTabPos, Calc.add(sMarginLeft, sTextIndent));
-    					}
-    					else if ("space".equals(sFormat)) {
-    						sSpaceChar="\\ ";
-    					}
-                    }
-                    else {
-                    	sDistance = outline.getLevelStyleProperty(i,XMLString.TEXT_MIN_LABEL_DISTANCE);
-                    }
-                    ldp.append("\\newcommand\\@distance")
-                       .append(hm.getName(i)).append("{");
-                    if (sDistance!=null) { 
-                        ldp.append("\\hspace{").append(sDistance).append("}");
-                    }
-                    ldp.append("}").nl();
-                    
-                    // Label width and alignment
-                    String sTextAlign = outline.getLevelStyleProperty(i,XMLString.FO_TEXT_ALIGN);
-                    String sAlignmentChar = "l"; // start (or left) is default
-                    if (sTextAlign!=null) {
-                        if ("end".equals(sTextAlign)) { sAlignmentChar="r"; }
-                        else if ("right".equals(sTextAlign)) { sAlignmentChar="r"; }
-                        else if ("center".equals(sTextAlign)) { sAlignmentChar="c"; }
-                    }
-                    String sLabelWidth = null;
-                    if (outline.isNewType(i)) {
-                    	String sFormat = outline.getLevelStyleProperty(i, XMLString.TEXT_LABEL_FOLLOWED_BY);
-                    	if ("listtab".equals(sFormat) || sAlignmentChar=="r") {
-                    		sLabelWidth="0cm";
-                    	}
-                    }
-                    else {
-                    	sLabelWidth = outline.getLevelStyleProperty(i,XMLString.TEXT_MIN_LABEL_WIDTH);
-                    }
-                    // Textstyle to use for label:
-                    String sStyleName = outline.getLevelProperty(i,XMLString.TEXT_STYLE_NAME);
-                    // Prefix and suffix text to decorate the label
-                    String sPrefix = outline.getLevelProperty(i,XMLString.STYLE_NUM_PREFIX);
-                    String sSuffix = outline.getLevelProperty(i,XMLString.STYLE_NUM_SUFFIX);
-                    // TODO is this correct?? todo: space-before??? start value???
-                    BeforeAfter baText = new BeforeAfter();
-                    if (!bOnlyNum) {palette.getCharSc().applyTextStyle(sStyleName,baText,new Context()); }
-                    ldp.append("\\newcommand\\@textstyle")
-                       .append(hm.getName(i)).append("[1]{");
-                    if (!bOnlyNum && sLabelWidth!=null) {
-                        ldp.append("\\protect\\makebox[").append(sLabelWidth).append("][").append(sAlignmentChar).append("]{");
-                    }
-			        ldp.append(baText.getBefore())
-                       .append(sPrefix!=null ? palette.getI18n().convert(sPrefix,false,"en") : "")
-                       .append("#1")
-                       .append(sSuffix!=null ? palette.getI18n().convert(sSuffix,false,"en") : "")
-                       .append(sSpaceChar)
-                       .append(baText.getAfter());
-                    if (!bOnlyNum && sLabelWidth!=null) {
-                        ldp.append("}");
-                    }
-                    ldp.append("}").nl();
-                }
-
-                // The label:
-                int nLevels = Misc.getPosInteger(outline.getLevelProperty(i,
-                                      XMLString.TEXT_DISPLAY_LEVELS),1);
-                ldp.append("\\renewcommand\\the")
-                   .append(hm.getName(i))
-                   .append("{");
-                for (int j=i-nLevels+1; j<i; j++) {
-                    ldp.append(sNumFormat[j])
-                       .append("{").append(sectionName(j)).append("}")
-                       .append(".");
-                }
-                ldp.append(sNumFormat[i])
-                   .append("{").append(hm.getName(i)).append("}")
-                   .append("}").nl();
-            }
-            
-        }
-
-        if (!bOnlyNum) {
-            ldp.append("\\makeatother").nl();
-        }
-    }
-	
     /* Check to see if this node contains any element nodes, except reference marks */
     public boolean containsElements(Node node) {
         if (!node.hasChildNodes()) { return false; }
@@ -415,15 +167,4 @@ public class HeadingConverter extends ConverterHelper {
         return false;
     }
 	
-    static final String sectionName(int nLevel){
-        switch (nLevel) {
-            case 1: return "section";
-            case 2: return "subsection";
-            case 3: return "subsubsection";
-            case 4: return "paragraph";
-            case 5: return "subparagraph";
-            default: return null;
-        }
-    }
-
 }
