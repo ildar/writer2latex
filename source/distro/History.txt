@@ -1,7 +1,7 @@
 Version history for Writer2LaTeX
 ================================
 
-Version 1.6 beta (March 2018)
+Version 1.6 (May 2018)
   - Writer2LaTex extension:
        - New toolbar replacing the previous separate extension Writer4LaTeX
        - New feature to insert bibliographic references in Writer directly from BibTeX files

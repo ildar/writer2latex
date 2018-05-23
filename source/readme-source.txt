@@ -1,5 +1,5 @@
-Writer2LaTeX source version 1.6 beta
-====================================
+Writer2LaTeX source version 1.6
+===============================
 
 Writer2LaTeX is (c) 2002-2018 by Henrik Just.
 The source is available under the terms and conditions of the
@@ -124,7 +124,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, March 2018
+Henrik Just, May 2018
 
 
 Thanks to Michael Niedermair for writing the original ant build file
