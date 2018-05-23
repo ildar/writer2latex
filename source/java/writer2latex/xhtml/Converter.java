@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-11)
+ *  Version 1.6 (2018-05-23)
  *
  */
 
@@ -239,8 +239,14 @@ public class Converter extends ConverterBase {
     
     public boolean isOPS() { return bOPS; }
     
-    @Override public void convertInner() throws IOException {      
-        sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));
+    @Override public void convertInner() throws IOException {
+    	if (bOPS) {
+    		// Always .xhtml in Epub, also in EPUB 3
+            sTargetFileName = Misc.trimDocumentName(sTargetFileName,".xhtml");    		
+    	}
+    	else {
+            sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));    		
+    	}
 		
         outFiles = new Vector<XhtmlDocument>();
         nOutFileIndex = -1;
