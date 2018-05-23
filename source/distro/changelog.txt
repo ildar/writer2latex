@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 final ----------
 
+[w2x] Changed file extension for HTML5 files from .html to .xhtml in EPUB 3 export (not required, but EpubCheck
+  issues a warning otherwise)
+
 ---------- version 1.6 beta ----------
 
 [w2l] Removed remark about JabRef plugin for LO from help file, as the functionality is now native in JabRef 

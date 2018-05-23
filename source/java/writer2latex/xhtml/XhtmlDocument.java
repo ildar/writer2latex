@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-05)
+ *  Version 1.6 (2018-05-23)
  *
  */
 
@@ -68,8 +68,11 @@ public class XhtmlDocument extends DOMDocument {
     /** Constant to identify HTML5 documents */
     public static final int HTML5 = 3;
     
+    /** Constant to identify HTML5 documents with .xhtml extension */
+    public static final int HTML5X = 4;
+    
     // Some static data
-    private static final String[] sExtension = { ".html", ".xhtml", ".xhtml", ".html" };
+    private static final String[] sExtension = { ".html", ".xhtml", ".xhtml", ".html", ".xhtml" };
 
     private static Set<String> blockPrettyPrint;
     private static Set<String> conditionalBlockPrettyPrint;
@@ -323,7 +326,7 @@ public class XhtmlDocument extends DOMDocument {
     public Element getFooterNode() { return footerNode; }
 	
     public void createHeaderFooter() {
-    	if (nType==HTML5) {
+    	if (nType==HTML5 || nType==HTML5X) {
     		Element header1 = getContentDOM().createElement("header");
     		bodyNode.appendChild(header1);
             headerNode = getContentDOM().createElement("nav");
@@ -339,7 +342,7 @@ public class XhtmlDocument extends DOMDocument {
         contentNode.setAttribute("id",sContentId);
         bodyNode.appendChild(contentNode);
 
-    	if (nType==HTML5) {
+    	if (nType==HTML5 || nType==HTML5X) {
     		Element footer1 = getContentDOM().createElement("footer");
     		bodyNode.appendChild(footer1);
             footerNode = getContentDOM().createElement("nav");
@@ -446,6 +449,7 @@ public class XhtmlDocument extends DOMDocument {
                 /* An alternative is to use XHTML + MathML + SVG:
                 sPublicId = "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN",
                 sSystemId = "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"); */
+           default: // Nothing
         }
         return new String[] { sPublicId, sSystemId };
     }
@@ -574,13 +578,13 @@ public class XhtmlDocument extends DOMDocument {
 
         // Omit XML prolog for pure XHTML 1.0 strict documents (HTML 4 compaitbility)
         // and for HTML5 documents (polyglot document)
-        if (nType!=XHTML10 && nType!=HTML5) {
+        if (nType!=XHTML10 && nType!=HTML5 && nType!=HTML5X) {
             osw.write("<?xml version=\"1.0\" encoding=\""+sEncoding+"\" ?>\n");
         }
         // Specify DOCTYPE (the user may require that no DOCTYPE is used;
         // this may be desirable for further transformations)
         if (!bNoDoctype) {
-        	if (nType==HTML5) {
+        	if (nType==HTML5 || nType==HTML5X) {
         		osw.write("<!DOCTYPE html>\n");
         	}
         	else {
@@ -631,7 +635,7 @@ public class XhtmlDocument extends DOMDocument {
     }
 
     private boolean isEmpty(String sTagName) {
-        return nType==HTML5 ? emptyHtml5Elements.contains(sTagName) : emptyElements.contains(sTagName);
+        return (nType==HTML5 || nType==HTML5X) ? emptyHtml5Elements.contains(sTagName) : emptyElements.contains(sTagName);
     }
 	
     // Write nodes; we only need element, text and comment nodes
@@ -679,7 +683,7 @@ public class XhtmlDocument extends DOMDocument {
                     osw.write("<"+node.getNodeName());
                     writeAttributes(node,osw);
                     // HTML compatibility: use end-tag even if empty
-                    if (nType<=XHTML11 || nType==HTML5) {
+                    if (nType<=XHTML11 || nType==HTML5 || nType==HTML5X) {
                         osw.write("></"+node.getNodeName()+">");
                     }
                     else {

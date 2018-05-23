@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-01-15)
+ *  version 1.6 (2018-05-23)
  *
  */
 
@@ -31,16 +31,17 @@ import java.io.InputStream;
 
 import writer2latex.api.ConverterResult;
 import writer2latex.base.ConverterResultImpl;
-import writer2latex.xhtml.Html5Converter;
+import writer2latex.xhtml.Converter;
+import writer2latex.xhtml.XhtmlDocument;
 
 
 /** This class converts an OpenDocument file to an EPUB 3 document.
  */
-public final class EPUB3Converter extends Html5Converter {
+public final class EPUB3Converter extends Converter {
                         
     // Constructor
     public EPUB3Converter() {
-        super();
+        super(XhtmlDocument.HTML5X);
     }
 	
     @Override public ConverterResult convert(InputStream is, String sTargetFileName) throws IOException {
