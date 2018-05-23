@@ -47,7 +47,6 @@
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="true" />
   <option name="greek_math" value="true" />
-  <option name="use_ooomath" value="false" />
   <option name="use_pifont" value="false" />
   <option name="use_ifsym" value="false" />
   <option name="use_wasysym" value="false" />

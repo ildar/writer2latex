@@ -1,5 +1,8 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+[w2l] Removed the option use_ooomath.sty (to avoid the use of non standard
+  packages)
+
 [w2l] Optimized optional arguments for headings and captions: The optional
   argument is now only used if it differs from the full argument
 
@@ -105,8 +108,6 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 [filter] Export button is now first in tab order. This implies that Export
   can be started immediately with the Enter button if no settings need to be
   changed.
-
-[w2l] The article template no longer requires ooomath.sty
 
 [w2x extension] The old "core styles" from W3C are no longer available in
   the dialog. A new clean HTML5 export with no style information is offered

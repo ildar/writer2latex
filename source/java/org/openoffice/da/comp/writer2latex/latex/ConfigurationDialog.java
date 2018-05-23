@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-13)
+ *  Version 2.0 (2018-05-22)
  *
  */ 
  
@@ -807,7 +807,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
         
     // The page "TextAndMath"
-    // This page handles the options use_ooomath and tabstop as well as the 
+    // This page handles the option tabstop as well as the 
     // text replacements and math symbol definitions
     private class TextAndMathHandler extends UserListPageHandler {
         private CustomSymbolNameProvider customSymbolNameProvider = null;
@@ -842,8 +842,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	// Trigger change event (on some versions of OOo this is automatic due to a bug)
         	textInputChange(dlg);
         	    	
-        	// Get other options from config
-        	checkBoxFromConfig(dlg,"UseOoomath","use_ooomath");
+        	// Get option from config
         	textFieldFromConfig(dlg,"TabStopLaTeX", "tabstop");
     	}
     	
@@ -858,8 +857,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		config.getComplexOption("string-replace").clear();
     		config.getComplexOption("string-replace").copyAll(stringReplace);
         	
-    		// Save other options to config
-        	checkBoxToConfig(dlg,"UseOoomath","use_ooomath");
+    		// Save option to config
         	textFieldToConfig(dlg,"TabStopLaTeX", "tabstop");
     	}
     	

@@ -14,16 +14,6 @@
         	Choose <emph>Tools - Options - Writer2LaTeX - Text and math</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Math packages</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseOoomath" id="bm_configuseooomath"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use ooomath.sty (custom package supporting %PRODUCTNAME equations)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to use the LaTeX package ooomath.sty. This package defines a number of
-        LaTeX macros used to convert formulas from %PRODUCTNAME to LaTeX. If this package is not used, the necessary definitions will
-        be included in the LaTeX preamble, which may become quite long. Hence using ooomath.sty is recommended for documents with
-        formulas. The package is part of the complete
-        <link href="http://writer2latex.sourceforge.net" name="Writer2LaTeX home page">Writer2LaTeX distribution</link>.</paragraph>
-
         <paragraph role="heading" level="2" xml-lang="en-US">Math symbols</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME Math you can add user-defined symbols. Writer2LaTeX already
         understands the predefined symbols such as %alpha. If you define your own symbols, you can define corresponding LaTeX

@@ -14,7 +14,6 @@
   <option name="border_radius" value="100%" />
   <option name="use_titlesec" value="true" />
   <option name="outline_numbering" value="true" />
-  <option name="use_ooomath" value="false" />
   <option name="use_pifont" value="true" />
   <option name="use_ifsym" value="true" />
   <option name="use_wasysym" value="true" />
