@@ -240,13 +240,7 @@ public class Converter extends ConverterBase {
     public boolean isOPS() { return bOPS; }
     
     @Override public void convertInner() throws IOException {
-    	if (isOPS()) {
-    		// Always .xhtml in Epub, also in EPUB 3
-            sTargetFileName = Misc.trimDocumentName(sTargetFileName,".xhtml");    		
-    	}
-    	else {
-            sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));    		
-    	}
+        sTargetFileName = Misc.trimDocumentName(sTargetFileName,XhtmlDocument.getExtension(nType));    		
 		
         outFiles = new Vector<XhtmlDocument>();
         nOutFileIndex = -1;

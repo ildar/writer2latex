@@ -198,6 +198,16 @@ public class MathConverter extends ConverterHelper {
     		math.setAttribute("display", onode.getAttribute("display"));
     	}
     	hnode.appendChild(math);
+    	if (converter.isOPS() && converter.isHTML5()) {
+    		// Grab the StarMath annotation for alttext attribute
+    		Element semantics = Misc.getChildByTagName(onode, XMLString.SEMANTICS);
+    		if (semantics!=null) {
+	    		Element annotation = Misc.getChildByTagName(semantics, XMLString.ANNOTATION);
+	    		if (annotation!=null) {
+	    			math.setAttribute("alttext", Misc.getPCDATA(annotation));
+	    		}
+    		}
+    	}
     	convertMathMLNodeList(onode.getChildNodes(), math);
     }
     
