@@ -69,7 +69,7 @@ public class XhtmlDocument extends DOMDocument {
     public static final int HTML5 = 3;
     
     /** Constant to identify HTML5 documents with .xhtml extension */
-    public static final int HTML5X = 4;
+    public static final int XHTML5 = 4;
     
     // Some static data
     private static final String[] sExtension = { ".html", ".xhtml", ".xhtml", ".html", ".xhtml" };
@@ -326,7 +326,7 @@ public class XhtmlDocument extends DOMDocument {
     public Element getFooterNode() { return footerNode; }
 	
     public void createHeaderFooter() {
-    	if (nType==HTML5 || nType==HTML5X) {
+    	if (nType==HTML5 || nType==XHTML5) {
     		Element header1 = getContentDOM().createElement("header");
     		bodyNode.appendChild(header1);
             headerNode = getContentDOM().createElement("nav");
@@ -342,7 +342,7 @@ public class XhtmlDocument extends DOMDocument {
         contentNode.setAttribute("id",sContentId);
         bodyNode.appendChild(contentNode);
 
-    	if (nType==HTML5 || nType==HTML5X) {
+    	if (nType==HTML5 || nType==XHTML5) {
     		Element footer1 = getContentDOM().createElement("footer");
     		bodyNode.appendChild(footer1);
             footerNode = getContentDOM().createElement("nav");
@@ -578,13 +578,13 @@ public class XhtmlDocument extends DOMDocument {
 
         // Omit XML prolog for pure XHTML 1.0 strict documents (HTML 4 compaitbility)
         // and for HTML5 documents (polyglot document)
-        if (nType!=XHTML10 && nType!=HTML5 && nType!=HTML5X) {
+        if (nType!=XHTML10 && nType!=HTML5 && nType!=XHTML5) {
             osw.write("<?xml version=\"1.0\" encoding=\""+sEncoding+"\" ?>\n");
         }
         // Specify DOCTYPE (the user may require that no DOCTYPE is used;
         // this may be desirable for further transformations)
         if (!bNoDoctype) {
-        	if (nType==HTML5 || nType==HTML5X) {
+        	if (nType==HTML5 || nType==XHTML5) {
         		osw.write("<!DOCTYPE html>\n");
         	}
         	else {
@@ -635,7 +635,7 @@ public class XhtmlDocument extends DOMDocument {
     }
 
     private boolean isEmpty(String sTagName) {
-        return (nType==HTML5 || nType==HTML5X) ? emptyHtml5Elements.contains(sTagName) : emptyElements.contains(sTagName);
+        return (nType==HTML5 || nType==XHTML5) ? emptyHtml5Elements.contains(sTagName) : emptyElements.contains(sTagName);
     }
 	
     // Write nodes; we only need element, text and comment nodes
@@ -683,7 +683,7 @@ public class XhtmlDocument extends DOMDocument {
                     osw.write("<"+node.getNodeName());
                     writeAttributes(node,osw);
                     // HTML compatibility: use end-tag even if empty
-                    if (nType<=XHTML11 || nType==HTML5 || nType==HTML5X) {
+                    if (nType<=XHTML11 || nType==HTML5 || nType==XHTML5) {
                         osw.write("></"+node.getNodeName()+">");
                     }
                     else {

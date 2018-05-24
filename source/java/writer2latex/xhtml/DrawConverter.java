@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-01-14)
+ *  Version 1.6 (2018-05-23)
  *
  */
  
@@ -492,7 +492,7 @@ public class DrawConverter extends ConverterHelper {
         
         // Create the image (sFileName contains the file name)
         Element imageElement = null;
-        if (converter.nType==XhtmlDocument.HTML5 && bEmbedSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
+        if (converter.isHTML5() && bEmbedSVG && bgd!=null && MIMETypes.SVG.equals(bgd.getMIMEType())) {
         	// In HTML5 we may embed SVG images directly in the document
         	if (bgd.isRecycled()) {
         		// Get from the cache (actually we are certain it is there)

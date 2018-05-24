@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-07-27)
+ *  Version 1.6 (2018-05-24)
  *
  */
 
@@ -210,7 +210,7 @@ public class TableConverter extends ConverterHelper {
         if (config.tableSize()!=XhtmlConfig.NONE) {
         	if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE || bFirstRowColSpan) {
         		Element colgroup = hnode;
-        		if (converter.nType==XhtmlDocument.HTML5) {
+        		if (converter.isHTML5()) {
         			// Polyglot HTML5 documents must use an explicit colgroup
         			colgroup = converter.createElement("colgroup");
         			hnode.appendChild(colgroup);
@@ -240,7 +240,7 @@ public class TableConverter extends ConverterHelper {
         if (nBodyStart==0 || nBodyStart==nRowCount) {
             // all body or all head
         	Element tbody = hnode;
-        	if (converter.nType==XhtmlDocument.HTML5) {
+        	if (converter.isHTML5()) {
         		// Polyglot HTML5 documents must use an explicit tbody
         		tbody = converter.createElement("tbody");
         		hnode.appendChild(tbody);

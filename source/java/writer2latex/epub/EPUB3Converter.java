@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2018-05-23)
+ *  version 1.6 (2018-05-24)
  *
  */
 
@@ -41,7 +41,7 @@ public final class EPUB3Converter extends Converter {
                         
     // Constructor
     public EPUB3Converter() {
-        super(XhtmlDocument.HTML5X);
+        super(XhtmlDocument.XHTML5);
     }
 	
     @Override public ConverterResult convert(InputStream is, String sTargetFileName) throws IOException {

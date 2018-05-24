@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-23)
+ *  Version 1.6 (2018-05-24)
  *
  */
 
@@ -193,7 +193,7 @@ public class Converter extends ConverterBase {
 	
     protected int getType() { return nType; }
     
-    public boolean isHTML5() { return nType==XhtmlDocument.HTML5; }
+    public boolean isHTML5() { return nType>=XhtmlDocument.HTML5; }
 	
     protected int getOutFileIndex() { return nOutFileIndex; }
     
@@ -240,7 +240,7 @@ public class Converter extends ConverterBase {
     public boolean isOPS() { return bOPS; }
     
     @Override public void convertInner() throws IOException {
-    	if (bOPS) {
+    	if (isOPS()) {
     		// Always .xhtml in Epub, also in EPUB 3
             sTargetFileName = Misc.trimDocumentName(sTargetFileName,".xhtml");    		
     	}
@@ -270,7 +270,7 @@ public class Converter extends ConverterBase {
         imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         imageConverter.addAcceptedFormat(MIMETypes.GIF);
         
-        if (nType==XhtmlDocument.HTML5) { // HTML supports SVG as well
+        if (isHTML5()) { // HTML supports SVG as well
         	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
         }
 
@@ -359,7 +359,7 @@ public class Converter extends ConverterBase {
         
         // Load MathJax
         // TODO: Should we support different configurations of MathJax?
-        if ((nType==XhtmlDocument.HTML5 || nType==XhtmlDocument.XHTML_MATHML) && config.useMathJax()) {
+        if ((isHTML5() || nType==XhtmlDocument.XHTML_MATHML) && config.useMathJax()) {
         	for (int i=0; i<=nOutFileIndex; i++) {
         		if (outFiles.get(i).hasMath()) {
         			XhtmlDocument doc = outFiles.get(i);
@@ -685,7 +685,7 @@ public class Converter extends ConverterBase {
         		meta.setAttribute("content","text/html; charset="+htmlDoc.getEncoding().toLowerCase());
         		head.appendChild(meta);
         	}
-        	else if (nType==XhtmlDocument.HTML5) {
+        	else if (isHTML5()) {
         		// The encoding should be UTF-8, but we still respect the user's setting
         		Element meta = htmlDOM.createElement("meta");
         		meta.setAttribute("charset",htmlDoc.getEncoding().toUpperCase());
@@ -788,14 +788,14 @@ public class Converter extends ConverterBase {
     
     // Add epub namespace for the purpose of semantic inflection in EPUB 3
     public void addEpubNs(Element elm) {
-    	if (bOPS && nType==XhtmlDocument.HTML5) {
+    	if (bOPS && isHTML5()) {
            	elm.setAttribute("xmlns:epub", "http://www.idpf.org/2007/ops");
     	}    	
     }
     
 	// Add a type from the structural semantics vocabulary of EPUB 3
     public void addEpubType(Element elm, String sType) {
-    	if (bOPS && nType==XhtmlDocument.HTML5 && sType!=null) {
+    	if (bOPS && isHTML5() && sType!=null) {
     		elm.setAttribute("epub:type", sType);
     	}
     }
