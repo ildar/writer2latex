@@ -1,5 +1,9 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+---------- version 1.9.2 ---------
+
+---------- version 1.9.1 ---------
+
 [w2l] Removed the option use_ooomath.sty (to avoid the use of non standard
   packages)
 

@@ -26,12 +26,12 @@
 package writer2latex.api;
 
 /** This is a factory class which provides static methods to create converters
- *  for documents in OpenDocument (or OpenOffice.org 1.x) format into a specific MIME type
+ *  for documents in OpenDocument format into a specific MIME type
  */
 public class ConverterFactory {
 
     // Version information
-    private static final String VERSION = "1.9.1";
+    private static final String VERSION = "1.9.2";
     private static final String DATE = "2018-05-28";
 
     /** Return the Writer2LaTeX version in the form
