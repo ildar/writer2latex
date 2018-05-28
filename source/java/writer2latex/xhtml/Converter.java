@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-27)
+ *  Version 1.6 (2018-05-28)
  *
  */
 
@@ -363,7 +363,7 @@ public class Converter extends ConverterBase {
         				head.appendChild(script);
         				script.setAttribute("type", "text/javascript");
         				script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML");
-        				script.setAttribute("async","true");
+        				script.setAttribute("async","async");
         			}
         		}
         	}
