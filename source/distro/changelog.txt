@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 ---------- version 1.6 final ----------
 
+[w2x] Updated URL to MathJax
+
 [w2x] Add StarMath annotation as alttext attribute on formulas (according to the EPUB 3 specification, math
   elements should have the either the alttext attribute or annotation-xml)
 

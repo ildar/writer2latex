@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-24)
+ *  Version 1.6 (2018-05-27)
  *
  */
 
@@ -362,7 +362,8 @@ public class Converter extends ConverterBase {
         				Element script = doc.getContentDOM().createElement("script");
         				head.appendChild(script);
         				script.setAttribute("type", "text/javascript");
-        				script.setAttribute("src", "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+        				script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML");
+        				script.setAttribute("async","true");
         			}
         		}
         	}
