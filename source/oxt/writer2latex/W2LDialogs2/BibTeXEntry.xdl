@@ -19,7 +19,7 @@
   <dlg:button dlg:id="Reload" dlg:tab-index="5" dlg:left="205" dlg:top="38" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXReload" dlg:value="Reload">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Reload" script:language="UNO"/>
   </dlg:button>
-  <dlg:text dlg:id="EntryInformation" dlg:tab-index="11" dlg:left="10" dlg:top="40" dlg:width="255" dlg:height="34"/>
+  <dlg:text dlg:id="EntryInformation" dlg:tab-index="11" dlg:left="10" dlg:top="40" dlg:width="185" dlg:height="34"/>
   <dlg:button dlg:id="Insert" dlg:tab-index="6" dlg:left="10" dlg:top="78" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="Insert reference" dlg:button-type="ok">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:InsertReference" script:language="UNO"/>
   </dlg:button>

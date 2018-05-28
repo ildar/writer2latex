@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-08)
+ *  Version 2.0 (2018-05-28)
  *
  */
 
@@ -238,7 +238,8 @@ public class Converter extends ConverterBase {
         				Element script = doc.getContentDOM().createElement("script");
         				head.appendChild(script);
         				script.setAttribute("type", "text/javascript");
-        				script.setAttribute("src", "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+        				script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML");
+        				script.setAttribute("async","async");
         			}
         		}
         	}
