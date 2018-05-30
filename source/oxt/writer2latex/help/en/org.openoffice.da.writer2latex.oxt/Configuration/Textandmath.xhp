@@ -11,7 +11,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert text strings and math content.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Text and math</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Text and math</emph>
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Math symbols</paragraph>

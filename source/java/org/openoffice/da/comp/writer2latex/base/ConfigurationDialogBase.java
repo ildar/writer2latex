@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-17)
+ *  Version 2.0 (2018-05-29)
  *
  */ 
 
@@ -206,6 +206,17 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		
 		protected void textFieldFromConfig(DialogAccess dlg, String sTextBoxName, String sConfigName) {
 			dlg.setTextFieldText(sTextBoxName, config.getOption(sConfigName));	
+		}
+		
+		protected void numericFieldToConfigAsPercentage(DialogAccess dlg, String sNumericFieldName, String sConfigName) {
+			config.setOption(sConfigName, dlg.getNumericFieldValue(sNumericFieldName)+"%");
+		}
+		
+		protected void numericFieldFromConfigAsPercentage(DialogAccess dlg, String sNumericFieldName, String sConfigName) {
+			String sValue = config.getOption(sConfigName);
+			if (sValue.endsWith("%")) {
+				dlg.setNumericFieldValue(sNumericFieldName, Misc.getPosInteger(sValue.substring(0, sValue.length()-1), 0));
+			}
 		}
 		
 		protected void textFieldToConfig(DialogAccess dlg, String sTextBoxName, String sConfigName) {

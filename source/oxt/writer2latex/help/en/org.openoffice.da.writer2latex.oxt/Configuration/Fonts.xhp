@@ -11,12 +11,10 @@
         <paragraph role="paragraph" xml-lang="en-US">Define the font packages to use in the exported LaTeX document</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Fonts</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Fonts</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Font packages (not used for XeTeX)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">These options have no effect if the backend is XeTeX, which handles
-        fonts quite differently from "classic" LaTeX.</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Font packages</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUsePifont" id="bm_configusepifont"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use pifont.sty (dingbats)</paragraph>

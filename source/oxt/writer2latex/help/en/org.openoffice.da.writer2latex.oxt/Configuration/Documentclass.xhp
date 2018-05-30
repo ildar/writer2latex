@@ -8,10 +8,11 @@
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Documentclass</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Define the documentclass for the LaTeX document</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define the documentclass for the LaTeX document, including
+        the heading hierarchy.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Documentclass</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Documentclass</emph>
         </section>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNoPreamble" id="bm_confignopreamble"/>
@@ -35,5 +36,48 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Custom preamble</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The text you type here will be copied verbatim into the LaTeX preamble.
         For example <emph>\usepackage{palatino}</emph> to typeset your document using the postscript font Palatino.</paragraph>
+        
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMaxLevel" id="bm_configmaxlevel"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Heading levels to export</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Choose the number of heading levels you want to export as LaTeX sectioning commands.
+        Other headings are exported as ordinary paragraphs.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigWriterLevel" id="bm_configwriterlevel"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Writer level</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Choose a heading level to configure.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigLaTeXLevel" id="bm_configlatexlevel"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">LaTeX level</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Choose the heading level in LaTeX to use for the selected Writer level.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The standard document classes uses this level numbering</paragraph>
+        <list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\part</emph>: Level -1</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\chapter</emph>: Level 0</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\section</emph>: Level 1</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\subsection</emph>: Level 2</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\subsubsection</emph>: Level 3</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\paragraph</emph>: Level 4</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>\supparagraph</emph>: Level 5</paragraph>
+			</listitem>
+		</list>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigLaTeXName" id="bm_configLaTeXName"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">LaTeX heading name</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the name of the section command in LaTeX, e.g. <emph>section</emph> to
+        produce a \section, or select a standard section command from the list.</paragraph>
+        
     </body>
 </helpdocument>

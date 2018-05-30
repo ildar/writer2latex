@@ -12,7 +12,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert figures</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Figures</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Figures</emph>
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">General</paragraph>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-13)
+ *  Version 2.0 (2018-05-30)
  *
  */
 
@@ -35,6 +35,7 @@ import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
 
@@ -182,8 +183,22 @@ public class ColorConverter extends ConverterHelper {
         }
     }
     
-    public String getLongfboxColor(String sColor) {
-    	return color(sColor, true, true);
+    /** Add a color property to a longfbox.sty property list
+     * 
+     * @param sColor the color to apply
+     * @param sProperty the longfbox property to set
+     * @param props the property to which the property is to be added
+     * @return true if a color was applied
+     */
+    public boolean applyLongfboxColor(String sColor, String sProperty, CSVList props) {
+    	if (bUseColor) {
+    		String s = color(sColor, true, true);
+    		if (s!=null) {
+    			props.addValue(sProperty, s);
+    			return true;
+    		}
+   		}
+    	return false;
     }
     
     // Methods to create xcolor color expressions

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-15)
+ *  Version 2.0 (2018-05-30)
  *
  */
  
@@ -61,7 +61,6 @@ import writer2latex.util.Calc;
 	}
 	
 	void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-		// TODO: Only if actually used
 		if (bNeedLongfbox) {
 			pack.append("\\usepackage{longfbox}").nl();
 		}
@@ -134,25 +133,22 @@ import writer2latex.util.Calc;
     	String s = style.getGraphicProperty(XMLString.DRAW_FILL,true);
     	if (s!=null && s.equals("solid")) {
     		// TODO: Other values are bitmap, gradient, hatch and none
-			s = palette.getColorCv().getLongfboxColor(style.getGraphicProperty(XMLString.DRAW_FILL_COLOR, true));
-	        if (s!=null) {
-	        	props.addValue("background-color",s);
-	        	return true;
-	        }
+    		return palette.getColorCv().applyLongfboxColor(
+    				style.getGraphicProperty(XMLString.DRAW_FILL_COLOR, true),"background-color", props);
     	}
     	// Treat as "none"
     	return false;
 	}
 	
 	// Convert margin; returns true if at least one non-zero margin is applied
-    public boolean margin(StyleWithProperties style, CSVList props){
+    private boolean margin(StyleWithProperties style, CSVList props){
     	return spacing(style,props,
 			XMLString.FO_MARGIN,XMLString.FO_MARGIN_TOP,XMLString.FO_MARGIN_RIGHT,XMLString.FO_MARGIN_BOTTOM,XMLString.FO_MARGIN_LEFT,
 			"margin","margin-top","margin-right","margin-bottom","margin-left");
     }
     
 	// Convert padding; returns true if at least one non-zero padding is applied
-    public boolean padding(StyleWithProperties style, CSVList props){
+    private boolean padding(StyleWithProperties style, CSVList props){
     	return spacing(style,props,
 			XMLString.FO_PADDING,XMLString.FO_PADDING_TOP,XMLString.FO_PADDING_RIGHT,XMLString.FO_PADDING_BOTTOM,XMLString.FO_PADDING_LEFT,
 			"padding","padding-top","padding-right","padding-bottom","padding-left");
@@ -233,8 +229,8 @@ import writer2latex.util.Calc;
         if (bBorder) {
         	String sWidth = style.getGraphicProperty(XMLString.SVG_STROKE_WIDTH, true);
         	if (sWidth!=null) { props.addValue("border-width",sWidth); }
-        	String sColor = style.getGraphicProperty(XMLString.SVG_STROKE_COLOR, true);
-        	if (sColor!=null) { props.addValue("border-color",palette.getColorCv().getLongfboxColor(sColor)); }
+        	palette.getColorCv().applyLongfboxColor(
+        			style.getGraphicProperty(XMLString.SVG_STROKE_COLOR, true), "border-color", props);
         	return true;
         }
 
@@ -274,7 +270,7 @@ import writer2latex.util.Calc;
         			}
         			else if (sValues[i].charAt(0)=='#') {
         	            // If it starts with # it must be a color -> border-color
-        				props.addValue(sLfbox+"-color",palette.getColorCv().getLongfboxColor(sValues[i]));
+        	        	palette.getColorCv().applyLongfboxColor(sValues[i], sLfbox+"-color", props);
         			}
         			else if (sValues[i].equals("solid")) {
         				props.addValue(sLfbox+"-style", "solid");

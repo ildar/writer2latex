@@ -12,7 +12,7 @@
         to your own LaTeX styles.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Styles</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Styles</emph>
         </section>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigStyleFamily" id="bm_configstylefamily"/>
@@ -105,33 +105,6 @@
         	</listitem>
         </list>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFormatting" id="bm_configformatting"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Other formatting</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select how you want to export formatting for styles that does not have
-        a style mapping.</paragraph>
-        <list type="unordered">
-        	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Ignore all</emph>: Ignore all character, paragraph,
-        		heading, list and footnote formatting contained in the document.</paragraph>
-        	</listitem>
-        	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Ignore most</emph>: Convert basic character
-        		formatting.</paragraph>
-        	</listitem>
-        	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert basic</emph>: Convert basic character formatting,
-        		paragraph justification and all numberings (lists, headings, footnotes).</paragraph>
-        	</listitem>
-        	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert most</emph>: Convert all supported formatting, except
-        		that paragraph formatting and font size is only converted if it is set by a style. To be able to preserve
-        		formatting, an environment is created for all paragraph styles, custom lists are used for listings, headings are
-        		reformatted using the \@startsection command etc.</paragraph>
-        	</listitem>
-        	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert all</emph>: Convert all supported formatting.</paragraph>
-        	</listitem>
-        </list>
         
     </body>
 </helpdocument>

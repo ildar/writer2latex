@@ -11,7 +11,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define a custom format for the LaTeX export</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX</emph>
         </section>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigIntroduction" id="bm_configintroduction"/>

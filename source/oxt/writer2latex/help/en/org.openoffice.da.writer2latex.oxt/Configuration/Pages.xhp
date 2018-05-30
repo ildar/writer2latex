@@ -11,7 +11,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert page formatting</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Pages</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Pages</emph>
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Page geometry (page size and margins)</paragraph>

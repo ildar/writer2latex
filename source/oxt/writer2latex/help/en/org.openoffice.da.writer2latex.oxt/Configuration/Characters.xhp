@@ -21,17 +21,6 @@
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export hyperlinks using the LaTeX package
         hyperref.sty. As a side effect this package will create links for cross references etc.</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseXcolor" id="bm_configusexcolor"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use xcolor.sty (color support)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want color support (text color only) using the
-        LaTeX package xcolor.sty.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseUlem" id="bm_configuseulem"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use ulem.sty (underline and strike out text)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to support underlined and striked out text using the LaTeX
-        package ulem.sty. Note that this does not work well for longer passages of text. Writer2LaTeX will never export
-        underline and strike out for entire paragraphs.</paragraph>
-        
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFormattingAttribute" id="bm_configformattingattribute"/>
         <paragraph role="heading" level="2" xml-lang="en-US">Formatting attributes</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">For some formatting attributes you can directly control the generated LaTeX

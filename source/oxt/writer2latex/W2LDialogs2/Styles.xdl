@@ -47,15 +47,5 @@
     <dlg:menuitem dlg:value="Convert"/>
    </dlg:menupopup>
   </dlg:menulist>
-  <dlg:text dlg:id="FormattingLabel" dlg:tab-index="19" dlg:left="10" dlg:top="152" dlg:width="65" dlg:height="12" dlg:value="Other formatting"/>
-  <dlg:menulist dlg:id="Formatting" dlg:tab-index="20" dlg:left="80" dlg:top="150" dlg:width="170" dlg:height="12" dlg:spin="true" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFormatting">
-   <dlg:menupopup>
-    <dlg:menuitem dlg:value="Ignore all"/>
-    <dlg:menuitem dlg:value="Ignore most"/>
-    <dlg:menuitem dlg:value="Convert basic"/>
-    <dlg:menuitem dlg:value="Convert most"/>
-    <dlg:menuitem dlg:value="Convert all"/>
-   </dlg:menupopup>
-  </dlg:menulist>
  </dlg:bulletinboard>
 </dlg:window>

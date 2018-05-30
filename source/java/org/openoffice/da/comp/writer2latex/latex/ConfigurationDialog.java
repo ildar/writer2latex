@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-22)
+ *  Version 2.0 (2018-05-30)
  *
  */ 
  
@@ -79,8 +79,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     public ConfigurationDialog(XComponentContext xContext) {
     	super(xContext);
     	
+    	pageHandlers.put("Formatting", new FormattingHandler());
     	pageHandlers.put("Documentclass", new DocumentclassHandler());
-    	pageHandlers.put("Headings", new HeadingsHandler());
     	pageHandlers.put("Styles", new StylesHandler());
     	pageHandlers.put("Characters", new CharactersHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
@@ -93,8 +93,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     // Implement remaining method from XContainerWindowEventHandler
     public String[] getSupportedMethodNames() {
         String[] sNames = {
-        		"NoPreambleChange", // Documentclass
-        		"MaxLevelChange", "WriterLevelChange", "NoIndexChange", // Headings
+        		"UseLongfboxChange", "NoIndexChange", // Formatting
+        		"NoPreambleChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
         		"UseSoulChange", "FormattingAttributeChange", "CustomAttributeChange", // Characters
@@ -106,16 +106,117 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         };
         return sNames;
     }
-
-    // The page "Documentclass"
-    // This page handles the options no_preamble, documentclass, global_options and the custom-preamble
-    private class DocumentclassHandler extends PageHandler {
+    
+    // The page "Formatting"
+    // This page handles the the options use_xcolor, use_ulem, use_titlesec, formatting, no_index
+    private class FormattingHandler extends PageHandler {
+        
     	@Override protected void setControls(DialogAccess dlg) {
+    		// General
+    		checkBoxFromConfig(dlg,"UseXcolor","use_xcolor");
+    		checkBoxFromConfig(dlg,"UseLongfbox","use_longfbox");
+    		numericFieldFromConfigAsPercentage(dlg,"BorderRadius","border_radius");
+    		// Characters
+    		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
+    		// Headings
+        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
+        	checkBoxFromConfig(dlg,"OutlineNumbering","outline_numbering");
+        	// Text, paragraph and list
+    		switch(config.getOption("formatting")) {
+    		case "ignore_all": dlg.setListBoxSelectedItem("Formatting", (short)0); break;
+    		case "ignore_most": dlg.setListBoxSelectedItem("Formatting", (short)1); break;
+    		case "convert_most": dlg.setListBoxSelectedItem("Formatting", (short)3); break;
+    		case "convert_all": dlg.setListBoxSelectedItem("Formatting", (short)4); break;
+        	default: dlg.setListBoxSelectedItem("Formatting", (short)2);
+        	}
+        	
+        	// Indexes
+        	checkBoxFromConfig(dlg,"NoIndex","no_index");
+        	checkBoxFromConfig(dlg,"UseTitletoc","use_titletoc");
+
+        	useLongfboxChange(dlg);
+    		noIndexChange(dlg);
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		// General
+    		checkBoxToConfig(dlg,"UseXcolor","use_xcolor");
+    		checkBoxToConfig(dlg,"UseLongfbox","use_longfbox");
+    		numericFieldToConfigAsPercentage(dlg,"BorderRadius","border_radius");
+    		// Characters
+    		checkBoxToConfig(dlg,"UseUlem","use_ulem");
+    		// Headings
+    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
+        	checkBoxToConfig(dlg,"OutlineNumbering","outline_numbering");
+        	// Text, paragraph and list
+        	switch (dlg.getListBoxSelectedItem("Formatting")) {
+        	case 0: config.setOption("formatting", "ignore_all"); break;
+        	case 1: config.setOption("formatting", "ignore_most"); break;
+        	case 2: config.setOption("formatting", "convert_basic"); break;
+        	case 3: config.setOption("formatting", "convert_most"); break;
+        	case 4: config.setOption("formatting", "convert_all");
+        	}
+
+        	// Indexes
+        	checkBoxToConfig(dlg,"NoIndex","no_index");    	
+    		checkBoxToConfig(dlg,"UseTitletoc","use_titletoc");    	
+    	}
+    	
+    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
+    		if (sMethod.equals("UseLongfboxChange")) {
+    			useLongfboxChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("NoIndexChange")) {
+    			noIndexChange(dlg);
+    			return true;
+    		}
+    		return false;
+    	}
+
+       	private void useLongfboxChange(DialogAccess dlg) {
+       		boolean bUseLongfbox = dlg.getCheckBoxStateAsBoolean("UseLongfbox");
+       		dlg.setControlEnabled("BorderRadiusLabel", bUseLongfbox);
+       		dlg.setControlEnabled("BorderRadius", bUseLongfbox);
+       		dlg.setControlEnabled("BorderRadiusPercentLabel", bUseLongfbox);
+    	} 
+
+       	private void noIndexChange(DialogAccess dlg) {
+        	// Until implemented:
+        	dlg.setControlEnabled("UseTitletoc", false);
+        	//boolean bNoIndex = dlg.getCheckBoxStateAsBoolean("NoIndex");
+        	//dlg.setControlEnabled("UseTitletoc", !bNoIndex);    		
+    	} 
+    	
+    }
+   
+    // The page "Documentclass"
+    // This page handles the options no_preamble, documentclass, global_options, the custom-preamble and the heading map
+    private class DocumentclassHandler extends PageHandler {
+        ComplexOption headingMap = new ComplexOption(); // Cached heading map
+        short nCurrentWriterLevel = -1; // Currently displayed level
+
+        @Override protected void setControls(DialogAccess dlg) {
         	checkBoxFromConfig(dlg,"NoPreamble","no_preamble");
         	textFieldFromConfig(dlg,"Documentclass","documentclass");
         	textFieldFromConfig(dlg,"GlobalOptions","global_options");
         	textFieldFromConfig(dlg,"CustomPreamble","custom-preamble");
     		noPreambleChange(dlg);
+
+    		// Load heading map from config
+    		headingMap.clear();
+    		headingMap.copyAll(config.getComplexOption("heading-map"));
+    		nCurrentWriterLevel = -1;
+    		
+        	// Determine and set the max level (from 0 to 10)
+        	short nMaxLevel = 0;
+        	while(nMaxLevel<10 && headingMap.containsKey(Integer.toString(nMaxLevel+1))) {
+        		nMaxLevel++;
+        	}
+        	dlg.setListBoxSelectedItem("MaxLevel", nMaxLevel);
+        	
+        	maxLevelChange(dlg);
+        	
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
@@ -123,11 +224,29 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		textFieldToConfig(dlg,"Documentclass","documentclass");
     		textFieldToConfig(dlg,"GlobalOptions","global_options");
     		textFieldToConfig(dlg,"CustomPreamble","custom-preamble");
+
+        	updateHeadingMap(dlg);
+        	
+        	// Save heading map to config
+        	config.getComplexOption("heading-map").clear();
+        	int nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
+    		for (int i=1; i<=nMaxLevel; i++) {
+    			String sLevel = Integer.toString(i);
+    			config.getComplexOption("heading-map").copy(sLevel,headingMap.get(sLevel));
+    		}
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
     		if (sMethod.equals("NoPreambleChange")) {
     			noPreambleChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("MaxLevelChange")) {
+    			maxLevelChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("WriterLevelChange")) {
+    			writerLevelChange(dlg);
     			return true;
     		}
     		return false;
@@ -142,70 +261,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	dlg.setControlEnabled("CustomPreambleLabel",bPreamble);
         	dlg.setControlEnabled("CustomPreamble",bPreamble);
     	}    	
-    }
-    
-    // The page "Headings"
-    // This page handles the heading map as well as the options no_index, use_titlesec and use_titletoc
-    private class HeadingsHandler extends PageHandler {
-        ComplexOption headingMap = new ComplexOption(); // Cached heading map
-        short nCurrentWriterLevel = -1; // Currently displayed level
-        
-    	@Override protected void setControls(DialogAccess dlg) {
-        	// Load heading map from config
-    		headingMap.clear();
-    		headingMap.copyAll(config.getComplexOption("heading-map"));
-    		nCurrentWriterLevel = -1;
-    		
-        	// Determine and set the max level (from 0 to 10)
-        	short nMaxLevel = 0;
-        	while(nMaxLevel<10 && headingMap.containsKey(Integer.toString(nMaxLevel+1))) {
-        		nMaxLevel++;
-        	}
-        	dlg.setListBoxSelectedItem("MaxLevel", nMaxLevel);
-        	
-        	maxLevelChange(dlg);
-        	
-        	// Get other controls from config
-        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
-
-        	checkBoxFromConfig(dlg,"NoIndex","no_index");
-        	checkBoxFromConfig(dlg,"UseTitletoc","use_titletoc");
-
-    		noIndexChange(dlg);
-    	}
-    	
-    	@Override protected void getControls(DialogAccess dlg) {
-        	updateHeadingMap(dlg);
-        	
-        	// Save heading map to config
-        	config.getComplexOption("heading-map").clear();
-        	int nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
-    		for (int i=1; i<=nMaxLevel; i++) {
-    			String sLevel = Integer.toString(i);
-    			config.getComplexOption("heading-map").copy(sLevel,headingMap.get(sLevel));
-    		}
-
-        	// Save other controls to config
-    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
-    		checkBoxToConfig(dlg,"NoIndex","no_index");    	
-    		checkBoxToConfig(dlg,"UseTitletoc","use_titletoc");    	
-    	}
-    	
-    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
-    		if (sMethod.equals("MaxLevelChange")) {
-    			maxLevelChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("WriterLevelChange")) {
-    			writerLevelChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("NoIndexChange")) {
-    			noIndexChange(dlg);
-    			return true;
-    		}
-    		return false;
-    	}
 
     	private void maxLevelChange(DialogAccess dlg) {
     		// Remember current writer level and clear it
@@ -275,13 +330,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	}
     	}
 
-       	private void noIndexChange(DialogAccess dlg) {
-        	// Until implemented:
-        	dlg.setControlEnabled("UseTitletoc", false);
-        	//boolean bNoIndex = dlg.getCheckBoxStateAsBoolean("NoIndex");
-        	//dlg.setControlEnabled("UseTitletoc", !bNoIndex);    		
-    	} 
-    	
         private void updateHeadingMap(DialogAccess dlg) {
         	// Save the current writer level in our cache
         	if (nCurrentWriterLevel>-1) {
@@ -291,7 +339,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         		headingMap.put(Integer.toString(nCurrentWriterLevel+1), attr);
         	}
         }
-
+    
     }
     
     // The page "Styles"
@@ -319,22 +367,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     			dlg.setListBoxSelectedItem("OtherStyles", (short)0);
     		}
 
-    		String sFormatting = config.getOption("formatting");
-        	if ("ignore_all".equals(sFormatting)) {
-        		dlg.setListBoxSelectedItem("Formatting", (short)0);
-        	}
-        	else if ("ignore_most".equals(sFormatting)) {
-        		dlg.setListBoxSelectedItem("Formatting", (short)1);
-        	}
-        	else if ("convert_most".equals(sFormatting)) {
-        		dlg.setListBoxSelectedItem("Formatting", (short)3);
-        	}
-        	else if ("convert_all".equals(sFormatting)) {
-        		dlg.setListBoxSelectedItem("Formatting", (short)4);
-        	}
-        	else {
-        		dlg.setListBoxSelectedItem("Formatting", (short)2);
-        	}
     	}
     	
     	@Override public void getControls(DialogAccess dlg) {
@@ -344,15 +376,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		case 0: config.setOption("other_styles", "ignore"); break;
     		case 1: config.setOption("other_styles", "accept");
     		}
-        	
-        	switch (dlg.getListBoxSelectedItem("Formatting")) {
-        	case 0: config.setOption("formatting", "ignore_all"); break;
-        	case 1: config.setOption("formatting", "ignore_most"); break;
-        	case 2: config.setOption("formatting", "convert_basic"); break;
-        	case 3: config.setOption("formatting", "convert_most"); break;
-        	case 4: config.setOption("formatting", "convert_all");
-        	}
-    	}
+       	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
     		if (sMethod.equals("AddNextClick")) {
@@ -492,7 +516,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
     
     // The page "Characters"
-    // This page handles the options use_xcolor, use_soul, use_ulem and use_hyperref
+    // This page handles the options use_soul and use_hyperref
     // In addition it handles style maps for formatting attributes
     private class CharactersHandler extends AttributePageHandler {
     	private final String[] sLaTeXAttributeNames = { "bold", "italic", "small-caps", "superscript", "subscript" };
@@ -505,17 +529,13 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	@Override protected void setControls(DialogAccess dlg) {
     		super.setControls(dlg);
     		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxFromConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxFromConfig(dlg,"UseSoul","use_soul");
-    		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		super.getControls(dlg);
     		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxToConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxToConfig(dlg,"UseSoul","use_soul");
-    		checkBoxToConfig(dlg,"UseUlem","use_ulem");
     	}
     	
 		@Override protected void setControls(DialogAccess dlg, Map<String, String> attr) {

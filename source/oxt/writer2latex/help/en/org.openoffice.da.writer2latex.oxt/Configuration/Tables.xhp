@@ -12,7 +12,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert tables</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Tables</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Tables</emph>
         </section>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNoTables" id="bm_confignotables"/>
