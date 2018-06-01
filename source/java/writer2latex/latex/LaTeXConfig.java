@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-22)
+ *  Version 2.0 (2018-05-31)
  *
  */
 
@@ -48,7 +48,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 78; }
+    protected int getOptionCount() { return 80; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -140,61 +140,63 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int USE_TITLESEC = 20;
     private static final int USE_TITLETOC = 21;
     private static final int USE_HYPERREF = 22;
-    private static final int USE_CAPTION = 23;
-    private static final int USE_LONGTABLE = 24;
-    private static final int USE_SUPERTABULAR = 25;
-    private static final int USE_TABULARY = 26;
-    private static final int USE_ENDNOTES = 27;
-    private static final int USE_ULEM = 28;
-    private static final int USE_LASTPAGE = 29;
-    private static final int USE_TITLEREF = 30;
-    private static final int USE_BIBTEX = 31;
-    private static final int BIBTEX_STYLE = 32;
-    private static final int EXTERNAL_BIBTEX_FILES = 33;
-    private static final int BIBTEX_ENCODING = 34;
-    private static final int ZOTERO_BIBTEX_FILES = 35;
-    private static final int JABREF_BIBTEX_FILES = 36;
-    private static final int INCLUDE_ORIGINAL_CITATIONS = 37;
-    private static final int USE_NATBIB = 38;
-    private static final int NATBIB_OPTIONS = 39;
-    private static final int FONT = 40;
-    private static final int FONTSPEC = 41;
-    private static final int FORMATTING = 42;
-    private static final int PAGE_FORMATTING = 43;
-    private static final int OUTLINE_NUMBERING = 44;
-    private static final int BORDER_RADIUS = 45;
-    private static final int OTHER_STYLES = 46;
-    private static final int CONVERT_INDEX_NAMES = 47;
-    private static final int IMAGE_CONTENT = 48;
-	private static final int TABLE_CONTENT = 49;
-	private static final int TABLE_FIRST_HEAD_STYLE = 50;
-	private static final int TABLE_HEAD_STYLE = 51;
-	private static final int TABLE_FOOT_STYLE = 52;
-	private static final int TABLE_LAST_FOOT_STYLE = 53;
-    private static final int IGNORE_HARD_PAGE_BREAKS = 54;
-    private static final int IGNORE_HARD_LINE_BREAKS = 55;
-    private static final int IGNORE_EMPTY_PARAGRAPHS =56;
-    private static final int IGNORE_DOUBLE_SPACES = 57;
-    private static final int DISPLAY_HIDDEN_TEXT = 58;
-    private static final int ALIGN_FRAMES = 59;
-    private static final int FLOAT_FIGURES = 60; 
-    private static final int FLOAT_TABLES = 61; 
-    private static final int FLOAT_OPTIONS = 62;
-    private static final int FIGURE_SEQUENCE_NAME = 63; 
-    private static final int TABLE_SEQUENCE_NAME = 64; 
-    private static final int IMAGE_OPTIONS = 65;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 66;
-    private static final int ORIGINAL_IMAGE_SIZE = 67;
-    private static final int SIMPLE_TABLE_LIMIT = 68;
-    private static final int NOTES = 69;
-    private static final int METADATA = 70;
-    private static final int TABSTOP = 71;
-    private static final int WRAP_LINES_AFTER = 72;
-    private static final int SPLIT_LINKED_SECTIONS = 73;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 74;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 75;
-    private static final int OLD_MATH_COLORS = 76;
-    private static final int DEBUG = 77;
+    private static final int USE_MICROTYPE = 23;
+    private static final int USE_LETTERSPACE = 24;
+    private static final int USE_CAPTION = 25;
+    private static final int USE_LONGTABLE = 26;
+    private static final int USE_SUPERTABULAR = 27;
+    private static final int USE_TABULARY = 28;
+    private static final int USE_ENDNOTES = 29;
+    private static final int USE_ULEM = 30;
+    private static final int USE_LASTPAGE = 31;
+    private static final int USE_TITLEREF = 32;
+    private static final int USE_BIBTEX = 33;
+    private static final int BIBTEX_STYLE = 34;
+    private static final int EXTERNAL_BIBTEX_FILES = 35;
+    private static final int BIBTEX_ENCODING = 36;
+    private static final int ZOTERO_BIBTEX_FILES = 37;
+    private static final int JABREF_BIBTEX_FILES = 38;
+    private static final int INCLUDE_ORIGINAL_CITATIONS = 39;
+    private static final int USE_NATBIB = 40;
+    private static final int NATBIB_OPTIONS = 41;
+    private static final int FONT = 42;
+    private static final int FONTSPEC = 43;
+    private static final int FORMATTING = 44;
+    private static final int PAGE_FORMATTING = 45;
+    private static final int OUTLINE_NUMBERING = 46;
+    private static final int BORDER_RADIUS = 47;
+    private static final int OTHER_STYLES = 48;
+    private static final int CONVERT_INDEX_NAMES = 49;
+    private static final int IMAGE_CONTENT = 50;
+	private static final int TABLE_CONTENT = 51;
+	private static final int TABLE_FIRST_HEAD_STYLE = 52;
+	private static final int TABLE_HEAD_STYLE = 53;
+	private static final int TABLE_FOOT_STYLE = 54;
+	private static final int TABLE_LAST_FOOT_STYLE = 55;
+    private static final int IGNORE_HARD_PAGE_BREAKS = 56;
+    private static final int IGNORE_HARD_LINE_BREAKS = 57;
+    private static final int IGNORE_EMPTY_PARAGRAPHS =58;
+    private static final int IGNORE_DOUBLE_SPACES = 59;
+    private static final int DISPLAY_HIDDEN_TEXT = 60;
+    private static final int ALIGN_FRAMES = 61;
+    private static final int FLOAT_FIGURES = 62; 
+    private static final int FLOAT_TABLES = 63; 
+    private static final int FLOAT_OPTIONS = 64;
+    private static final int FIGURE_SEQUENCE_NAME = 65; 
+    private static final int TABLE_SEQUENCE_NAME = 66; 
+    private static final int IMAGE_OPTIONS = 67;
+    private static final int REMOVE_GRAPHICS_EXTENSION = 68;
+    private static final int ORIGINAL_IMAGE_SIZE = 69;
+    private static final int SIMPLE_TABLE_LIMIT = 70;
+    private static final int NOTES = 71;
+    private static final int METADATA = 72;
+    private static final int TABSTOP = 73;
+    private static final int WRAP_LINES_AFTER = 74;
+    private static final int SPLIT_LINKED_SECTIONS = 75;
+    private static final int SPLIT_TOPLEVEL_SECTIONS = 76;
+    private static final int SAVE_IMAGES_IN_SUBDIR = 77;
+    private static final int OLD_MATH_COLORS = 78;
+    private static final int DEBUG = 79;
     
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
@@ -264,6 +266,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[USE_TITLESEC] = new BooleanOption("use_titlesec","false");
         options[USE_TITLETOC] = new BooleanOption("use_titletoc","false");
         options[USE_HYPERREF] = new BooleanOption("use_hyperref","true");
+        options[USE_MICROTYPE] = new BooleanOption("use_microtype","false");
+        options[USE_LETTERSPACE] = new BooleanOption("use_letterspace","false");
         options[USE_CAPTION] = new BooleanOption("use_caption","false");
         options[USE_LONGTABLE] = new BooleanOption("use_longtable","false");
         options[USE_SUPERTABULAR] = new BooleanOption("use_supertabular","true");
@@ -705,6 +709,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useTitlesec() { return ((BooleanOption) options[USE_TITLESEC]).getValue(); }
     public boolean useTitletoc() { return ((BooleanOption) options[USE_TITLETOC]).getValue(); }
     public boolean useHyperref() { return ((BooleanOption) options[USE_HYPERREF]).getValue(); }
+    public boolean useMicrotype() { return ((BooleanOption) options[USE_MICROTYPE]).getValue(); }
+    public boolean useLetterspace() { return ((BooleanOption) options[USE_LETTERSPACE]).getValue(); }
     public boolean useCaption() { return ((BooleanOption) options[USE_CAPTION]).getValue(); }
     public boolean useLongtable() { return ((BooleanOption) options[USE_LONGTABLE]).getValue(); }
     public boolean useSupertabular() { return ((BooleanOption) options[USE_SUPERTABULAR]).getValue(); }

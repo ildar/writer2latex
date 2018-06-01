@@ -117,6 +117,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		checkBoxFromConfig(dlg,"UseLongfbox","use_longfbox");
     		numericFieldFromConfigAsPercentage(dlg,"BorderRadius","border_radius");
     		// Characters
+    		checkBoxFromConfig(dlg,"UseMicrotype","use_microtype");
+    		checkBoxFromConfig(dlg,"UseLetterspace","use_letterspace");
     		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
     		// Headings
         	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
@@ -144,6 +146,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		checkBoxToConfig(dlg,"UseLongfbox","use_longfbox");
     		numericFieldToConfigAsPercentage(dlg,"BorderRadius","border_radius");
     		// Characters
+    		checkBoxToConfig(dlg,"UseMicrotype","use_microtype");
+    		checkBoxToConfig(dlg,"UseLetterspace","use_letterspace");
     		checkBoxToConfig(dlg,"UseUlem","use_ulem");
     		// Headings
     		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	

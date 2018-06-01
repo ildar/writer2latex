@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-23)
+ *  Version 2.0 (2018-05-30)
  *
  */
 
@@ -213,6 +213,7 @@ public class CharStyleConverter extends StyleConverter {
         applyUnderline(style, bInherit, ba);
         applyCrossout(style, bInherit, ba);
         applyChangeCase(style, bInherit, ba);
+        palette.getMicrotypeCv().applyLetterspace(style, bInherit, ba);
     }
 	
     // Remaining methods are private

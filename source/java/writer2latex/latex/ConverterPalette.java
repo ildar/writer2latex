@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-17)
+ *  Version 2.0 (2018-05-30)
  *
  */
 
@@ -62,6 +62,7 @@ public final class ConverterPalette extends ConverterBase {
     // The helpers (the "colors" of the palette)
     private I18n i18n;
     private ColorConverter colorCv;
+    private MicrotypeConverter microtypeCv;
     private FrameStyleConverter frameSc;
     private CharStyleConverter charSc;
     private HeadingStyleConverter headingSc;
@@ -101,6 +102,7 @@ public final class ConverterPalette extends ConverterBase {
     // Accessor methods for helpers
     public I18n getI18n() { return i18n; }
     public ColorConverter getColorCv() { return colorCv; }
+    public MicrotypeConverter getMicrotypeCv() { return microtypeCv; }
     public FrameStyleConverter getFrameStyleSc() { return frameSc; }
     public CharStyleConverter getCharSc() { return charSc; }
     //public HeadingStyleConverter getHeadingSc() { return headingSc; }
@@ -158,6 +160,7 @@ public final class ConverterPalette extends ConverterBase {
             i18n = new XeTeXI18n(ofr,config,this);        	        	
         }
         colorCv = new ColorConverter(ofr,config,this);
+        microtypeCv = new MicrotypeConverter(ofr,config,this);
         frameSc = new FrameStyleConverter(ofr,config,this);
         charSc = new CharStyleConverter(ofr,config,this);
         headingSc = new HeadingStyleConverter(ofr,config,this);
@@ -211,6 +214,7 @@ public final class ConverterPalette extends ConverterBase {
         // Add declarations from our helpers
         i18n.appendDeclarations(packages,declarations);
         colorCv.appendDeclarations(packages,declarations);
+        microtypeCv.appendDeclarations(packages,declarations);
         frameSc.appendDeclarations(packages,declarations);
         noteCv.appendDeclarations(packages,declarations);
         headingSc.appendDeclarations(packages,declarations);

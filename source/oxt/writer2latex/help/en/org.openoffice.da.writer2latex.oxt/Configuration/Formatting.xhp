@@ -36,6 +36,23 @@
 
         <paragraph role="heading" level="2" xml-lang="en-US">Characters</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseMicrotype" id="bm_configusemicrotype"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Use character protusion and font expansion (using microtype.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to enable enhanced typesetting features.
+        This uses the package microtype.sty to support the micro-typographic features character protusion/margin kerning (adjust characters 
+        at margins to achieve a better visual alignment) and font expansion (slightly expand or shrink the font to achieve better line breaks). 
+        Protusion is only supported by PdfTeX and XeTeX, and expansion is only supported by PdfTeX. This option has no effect if you use
+        other backends.</paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseLetterspace" id="bm_configuseletterspace"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export letter spacing (using microtype.sty or letterspace.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to support letter spacing using the LaTeX package letterspace.sty.
+        If you also select micro-typograhy above, the package microtype.sty (which provides the same functionality) is used.
+        Letter spacing is only supported by PdfTeX, and this option has no effect if you use other backends.
+        Also, it only works for scalable fonts. This implies that you may get an error message if you use the fonts Computer Modern,
+        CM Bright or Concrete. If this happens, you should install the package cm-super in your TeX installation.
+        </paragraph>
+        
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseUlem" id="bm_configuseulem"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export underline and strike out (using ulem.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to support underlined and striked out text using the LaTeX

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-14) 
+ *  Version 2.0 (2018-05-31) 
  * 
  */
 
@@ -368,37 +368,37 @@ public class ClassicI18n extends I18n {
     		ldp.append("\\usepackage[math]{anttor}").nl();
     	}
     	else if ("kmath-kerkis".equals(sFont)) { // Kerkis
-    		ldp.append("\\usepackage{kmath,kerkis}");
+    		ldp.append("\\usepackage{kmath,kerkis}").nl();
     	}
     	else if ("fouriernc".equals(sFont)) { // New Century Schoolbook + Fourier
-    		ldp.append("\\usepackage{fouriernc}");
+    		ldp.append("\\usepackage{fouriernc}").nl();
     	}
     	else if ("pxfonts".equals(sFont)) { // Palatino + pxfonts math
-    		ldp.append("\\usepackage{pxfonts}");
+    		ldp.append("\\usepackage{pxfonts}").nl();
     	}
     	else if ("mathpazo".equals(sFont)) { // Palatino + Pazo math
-    		ldp.append("\\usepackage{mathpazo}");
+    		ldp.append("\\usepackage{mathpazo}").nl();
     	}
     	else if ("mathpple".equals(sFont)) { // Palatino + Euler
-    		ldp.append("\\usepackage{mathpple}");
+    		ldp.append("\\usepackage{mathpple}").nl();
     	}
     	else if ("txfonts".equals(sFont)) { // Times + txfonts math
-    		ldp.append("\\usepackage[varg]{txfonts}");
+    		ldp.append("\\usepackage[varg]{txfonts}").nl();
     	}
     	else if ("mathptmx".equals(sFont)) { // Times + Symbol
-    		ldp.append("\\usepackage{mathptmx}");
+    		ldp.append("\\usepackage{mathptmx}").nl();
     	}
     	else if ("arev".equals(sFont)) { // Arev Sans + Arev math 
-    		ldp.append("\\usepackage{arev}");
+    		ldp.append("\\usepackage{arev}").nl();
     	}
     	else if ("charter-mathdesign".equals(sFont)) { // Bitstream Charter + Math Design
-    		ldp.append("\\usepackage[charter]{mathdesign}");
+    		ldp.append("\\usepackage[charter]{mathdesign}").nl();
     	}
     	else if ("utopia-mathdesign".equals(sFont)) { // Utopia + Math Design
-    		ldp.append("\\usepackage[utopia]{mathdesign}");
+    		ldp.append("\\usepackage[utopia]{mathdesign}").nl();
     	}
     	else if ("fourier".equals(sFont)) { // Utopia + Fourier
-    		ldp.append("\\usepackage{fourier}");
+    		ldp.append("\\usepackage{fourier}").nl();
     	}
     }
 

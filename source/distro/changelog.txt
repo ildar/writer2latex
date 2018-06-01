@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] New options use_microtype and use_letterspace to enable the micro-typographical
+  features character protusion and font expansion, respectively letter spacing.
+
 [w2l filter] Rearranged options dialog pages for custom configuration.
 
 ---------- version 1.9.1 ---------
