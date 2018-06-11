@@ -19,59 +19,101 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-09)
+ *  Version 2.0 (2018-06-11)
  *
  */
 
 package writer2latex.util;
 
-// Create a list of values separated by commas or another seperation character 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/** This class maintains a list of items separated by commas or another separation character.
+ * The items may be simple values or key/value pairs separated by a colon or another separation character.
+ * Simple values and key/values pairs may be freely mixed within the same <code>CSVList</code>.
+ */
 public class CSVList{
-    private String sSep;
-    private String sNameValueSep;
-    private boolean bEmpty = true;
-    private StringBuilder buf = new StringBuilder();
-	
-    public CSVList(String sSep, String sNameValueSep) {
-        this.sSep=sSep;
-        this.sNameValueSep=sNameValueSep;
+    private String sItemSep;
+    private String sKeyValueSep;
+    // The CSVList is backed by a Map, which is accessible for other CSVList instances
+    Map<String,String> items = new LinkedHashMap<>();
+    
+    /** Create a new <code>CSVList</code> with specific separators
+     * 
+     * @param sSep the separator between items
+     * @param sNameValueSep the separator between keys and values
+     */
+    public CSVList(String sSep, String sKeyValueSep) {
+        this.sItemSep=sSep;
+        this.sKeyValueSep=sKeyValueSep;
     }
 	
-    public CSVList(String sSep) {
-        this(sSep,":");
+    /** Create a new <code>CSVList</code> with a specific item separator (use default colon for key/values separator)
+     * 
+     * @param sSep the separator between items
+     */
+    public CSVList(String sItemSep) {
+        this(sItemSep,":");
     }
     
-    public CSVList(char cSep) {
-        this(Character.toString(cSep),":");
+    /** Create a new <code>CSVList</code> with a specific character as item separator (use default colon for key/values separator)
+     * 
+     * @param sSep the separator between items
+     */
+    public CSVList(char cItemSep) {
+        this(Character.toString(cItemSep),":");
     }
 
+    /** Add a simple value to the <code>CSVList</code>
+     * 
+     * @param sVal the value (ignored if null)
+     */
     public void addValue(String sVal){
-        if (sVal==null) { return; }
-        if (bEmpty) { bEmpty=false; } else { buf.append(sSep); }
-        buf.append(sVal);
+    	if (sVal!=null) {
+    		items.put(sVal, null);
+    	}
     }
 
-    public void addValue(String sName, String sVal) {
-        if (sName==null) { return; }
-        if (bEmpty) { bEmpty=false; } else { buf.append(sSep); }
-        buf.append(sName).append(sNameValueSep).append(sVal);
+    /** Add a key/value pair to the <code>CSVList</code>, replacing a previous value if the key already exists in the <code>CSVList</code>
+     * 
+     * @param sKey the key of the pair (ignored if null)
+     * @param sVal the value of the pair (may be null, which creates a simple value)
+     */
+    public void addValue(String sKey, String sVal) {
+    	if (sKey!=null) {
+    		items.put(sKey, sVal);
+    	}
     }
     
-    // temp. hack
+    /** Add all items from another <code>CSVList</code>. The separator strings for the other list is ignored.
+     * 
+     * @param list the <code>CSVList</code> containing the items to add
+     */
     public void addValues(CSVList list) {
-    	if (!list.isEmpty()) {
-    		if (!bEmpty) { buf.append(sSep); }
-    		buf.append(list.toString());
-    		bEmpty=false;
+    	for (String sKey : list.items.keySet()) {
+    		items.put(sKey, list.items.get(sKey));
     	}
     }
 	
-    public String toString() {
-        return buf.toString();
+    /** Test whether this <code>CSVList</code> contains any items
+     * 
+     * @return true if the list is empty
+     */
+    public boolean isEmpty() {
+        return items.size()==0;
     }
 	
-    public boolean isEmpty() {
-        return bEmpty;
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        boolean bFirst=true;
+        for (String sKey : items.keySet()) {
+        	if (bFirst) { bFirst=false; } else { buf.append(sItemSep); }
+        	buf.append(sKey);
+        	if (items.get(sKey)!=null) {
+        		buf.append(sKeyValueSep).append(items.get(sKey));
+        	}
+        }
+        return buf.toString();
     }
 	
 }
