@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-15)
+ *  Version 2.0 (2018-06-05)
  *
  */
 package writer2latex.util;
@@ -123,6 +123,19 @@ public class Calc {
 	    else {
 	        return Float.toString(fRems)+"rem";
 	    }
+	}
+
+	/** Convert a length to cm 
+	 * 
+	 * @param sLength the length to convert
+	 * @return the converted length as a double precision float
+	 */
+	public static final double length2cm(String sLength) {
+	    if (sLength.equals("0")) { return 0; }
+	    float fLength=getFloat(sLength.substring(0,sLength.length()-2),0);
+	    String sUnit=sLength.substring(sLength.length()-2);
+	    float fConvertedLength = getUpi("cm")/getUpi(sUnit)*fLength;
+	    return fConvertedLength;
 	}
 
 	/** Divide dividend by divisor and return the quotient as an integer percentage

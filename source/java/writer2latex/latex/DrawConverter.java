@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-15)
+ *  Version 2.0 (2018-06-01)
  *
  */
  
@@ -123,6 +123,9 @@ public class DrawConverter extends ConverterHelper {
                 // Shapes are currently not supported
                 ldp.append("[Warning: Draw object ignored]");        		
         	}
+        }
+        else if (sName.equals(XMLString.DRAW_CUSTOM_SHAPE)) {
+        	palette.getCustomShapeCv().handleCustomShape(node, ldp, oc);
         }
         else {
             // Other drawing objects are currently not supported

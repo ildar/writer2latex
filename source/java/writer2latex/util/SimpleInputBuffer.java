@@ -2,7 +2,7 @@
  *
  *  SimpleInputBuffer.java
  *
- *  Copyright: 2002-2007 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.0 (2007-11-22)
+ *  Version 2.0 (2018-06-04)
  *
  */
 
@@ -44,8 +44,12 @@ public class SimpleInputBuffer {
         }
     }*/
     
+    private static boolean isDigit(char cChar) {
+        return cChar>='0' && cChar<='9';
+    }
+	
     private static boolean isDigitOrDot(char cChar) {
-        return (cChar>='0' && cChar<='9') || cChar=='.';
+        return isDigit(cChar) || cChar=='.';
     }
 	
     private static boolean isDigitOrDotOrComma(char cChar) {
@@ -76,6 +80,13 @@ public class SimpleInputBuffer {
         return nIndex<nLen ? sContent.charAt(nIndex++) : '\0';
     }
     
+    public String getText() {
+        int nStart=nIndex;
+        while (nIndex<nLen && Character.isLetter(sContent.charAt(nIndex))) 
+            nIndex++;
+        return sContent.substring(nStart,nIndex);    	
+    }
+    
     public String getIdentifier() {
         int nStart=nIndex;
         while (nIndex<nLen && (Character.isLetter(sContent.charAt(nIndex)) ||
@@ -98,8 +109,54 @@ public class SimpleInputBuffer {
         }
         return sContent.substring(nStart,nIndex);
     }
+    
+    public String getSignedDouble() {
+    	boolean bHasNumber = false;
+    	int nStart=nIndex;
+    	if (nIndex<nLen && (sContent.charAt(nIndex)=='+' || sContent.charAt(nIndex)=='-')) {
+    		nIndex++;
+    	}
+    	while (nIndex<nLen && isDigit(sContent.charAt(nIndex))) {
+    		nIndex++;
+    		bHasNumber = true;
+    	}
+    	if (nIndex<nLen && sContent.charAt(nIndex)=='.') {
+    		nIndex++;
+    	}
+    	while (nIndex<nLen && isDigit(sContent.charAt(nIndex))) {
+    		nIndex++;
+    		bHasNumber = true;
+    	}
+    	if (bHasNumber) {
+    		// Check for optional exponent
+    		boolean bHasExponent = false;
+    		int nExpStart = nIndex;
+    		if (nIndex<nLen && (sContent.charAt(nIndex)=='E' || sContent.charAt(nIndex)=='e')) {
+    			nIndex++;
+    		}
+        	if (nIndex<nLen && (sContent.charAt(nIndex)=='+' || sContent.charAt(nIndex)=='-')) {
+        		nIndex++;
+        	}
+        	while (nIndex<nLen && isDigit(sContent.charAt(nIndex))) {
+        		nIndex++;
+        		bHasExponent = true;
+        	}
+        	if (!bHasExponent) { // No exponent, back up
+        		nIndex = nExpStart;
+        	}
+    		return sContent.substring(nStart, nIndex);
+    	}
+    	else { // Failed to parse a signed float
+    		nIndex = nStart;
+    		return "";
+    	}
+    }
 	
     public void skipSpaces() {
         while (nIndex<nLen && sContent.charAt(nIndex)==' ') { nIndex++; }
+    }
+
+    public void skipSpacesAndTabs() {
+        while (nIndex<nLen && (sContent.charAt(nIndex)==' ' || sContent.charAt(nIndex)=='\u0009')) { nIndex++; }
     }
 }

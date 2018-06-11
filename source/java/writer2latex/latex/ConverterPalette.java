@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-30)
+ *  Version 2.0 (2018-06-01)
  *
  */
 
@@ -80,6 +80,7 @@ public final class ConverterPalette extends ConverterBase {
     private InlineConverter inlineCv;
     private FieldConverter fieldCv;
     private DrawConverter drawCv;
+    private CustomShapeConverter customShapeCv;
     private MathConverter mathCv;
     private Info info;
 	
@@ -120,6 +121,7 @@ public final class ConverterPalette extends ConverterBase {
     public InlineConverter getInlineCv() { return inlineCv; }
     public FieldConverter getFieldCv() { return fieldCv; }
     public DrawConverter getDrawCv() { return drawCv; }
+    public CustomShapeConverter getCustomShapeCv() { return customShapeCv; }
     public MathConverter getMathCv() { return mathCv; }
     public Info getInfo() { return info; }
 	
@@ -178,6 +180,7 @@ public final class ConverterPalette extends ConverterBase {
         inlineCv = new InlineConverter(ofr,config,this);
         fieldCv = new FieldConverter(ofr,config,this);
         drawCv = new DrawConverter(ofr,config,this);
+        customShapeCv = new CustomShapeConverter(ofr,config,this);
         mathCv = new MathConverter(ofr,config,this);
         info = new Info(ofr,config,this);
 
@@ -232,6 +235,7 @@ public final class ConverterPalette extends ConverterBase {
         inlineCv.appendDeclarations(packages,declarations);
         fieldCv.appendDeclarations(packages,declarations);
         drawCv.appendDeclarations(packages,declarations);
+        customShapeCv.appendDeclarations(packages,declarations);
         mathCv.appendDeclarations(packages,declarations);
 
         // Add custom preamble

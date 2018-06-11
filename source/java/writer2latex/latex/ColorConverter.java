@@ -19,13 +19,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-30)
+ *  Version 2.0 (2018-06-09)
  *
  */
 
 package writer2latex.latex;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,6 +54,9 @@ public class ColorConverter extends ConverterHelper {
 
     // Map of named colors in xcolor.sty
     private Map<String,String> namedColors = new HashMap<>();
+    
+    // Map of automatic named colors
+    private Map<String,String> autoNamedColors = new LinkedHashMap<>();
 
     /** Constructs a new <code>ColorConverter</code>
      * 
@@ -98,13 +102,18 @@ public class ColorConverter extends ConverterHelper {
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
 	    if (bUseColor) {
             pack.append("\\usepackage{xcolor}").nl();
+            for (String sColor : autoNamedColors.keySet()) {
+            	decl.append("\\definecolor{")
+            	    .append(autoNamedColors.get(sColor)).append("}{HTML}{")
+            	    .append(sColor.substring(1)).append("}").nl();
+            }
         }
     }
 	
     public void setNormalColor(String sColor, LaTeXDocumentPortion ldp) {
         if (bUseColor && sColor!=null) {
             ldp.append("\\renewcommand\\normalcolor{\\color")
-               .append(color(sColor,false,false)).append("}").nl();
+               .append(color(sColor,false)).append("}").nl();
         }
     }
 	
@@ -156,7 +165,7 @@ public class ColorConverter extends ConverterHelper {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
         if (bUseColor && sColor!=null) {
             // If there's a background color, allow all colors
-            String s = color(sColor, context.getBgColor()!=null, false);
+            String s = color(sColor, context.getBgColor()!=null);
             if (s!=null) {
                 if (bDecl) { ba.add("\\color"+s,""); }
                 else { ba.add("\\textcolor"+s+"{","}"); }
@@ -167,7 +176,7 @@ public class ColorConverter extends ConverterHelper {
     public void applyBgColor(String sCommand, String sColor, BeforeAfter ba, Context context) {
         // Note: Will only fill "before" part of ba
         if (sColor!=null && !"transparent".equals(sColor)) {
-            String s = color(sColor, true, false);
+            String s = color(sColor, true);
             if (bUseColor && s!=null) {
                 context.setBgColor(sColor);
                 ba.add(sCommand+s,"");
@@ -183,6 +192,23 @@ public class ColorConverter extends ConverterHelper {
         }
     }
     
+    public boolean applyNamedColor(String sColor, String sProperty, CSVList props) {
+    	if (bUseColor && sColor!=null && isValidColor(sColor)) {
+    		String sColor1 = sColor.toUpperCase();
+    		if (namedColors.containsKey(sColor1)) {
+    			props.addValue(sProperty, namedColors.get(sColor1));
+    		}
+    		else {
+    			if (!autoNamedColors.containsKey(sColor1)) {
+    				autoNamedColors.put(sColor1, "color"+Misc.int2roman(autoNamedColors.size()+1));
+    			}
+    			props.addValue(sProperty, autoNamedColors.get(sColor1));
+    		}
+    		return true;
+   		}
+    	return false;
+    }
+    
     /** Add a color property to a longfbox.sty property list
      * 
      * @param sColor the color to apply
@@ -191,12 +217,15 @@ public class ColorConverter extends ConverterHelper {
      * @return true if a color was applied
      */
     public boolean applyLongfboxColor(String sColor, String sProperty, CSVList props) {
-    	if (bUseColor) {
-    		String s = color(sColor, true, true);
-    		if (s!=null) {
-    			props.addValue(sProperty, s);
-    			return true;
+    	if (bUseColor && sColor!=null && isValidColor(sColor)) {
+    		String sColor1 = sColor.toUpperCase();
+    		if (namedColors.containsKey(sColor1)) {
+    			props.addValue(sProperty, namedColors.get(sColor1));
     		}
+    		else {
+    			props.addValue(sProperty, "\\#"+sColor1.substring(1));    			
+    		}
+    		return true;
    		}
     	return false;
     }
@@ -210,8 +239,8 @@ public class ColorConverter extends ConverterHelper {
         }
         return "{black}";
     }
-	
-    private final String color(String sColor, boolean bFullColors, boolean bLongfbox) {
+    
+    private final String color(String sColor, boolean bFullColors) {
     	if (sColor!=null && isValidColor(sColor)) {
     		String sColor1 = sColor.toUpperCase();
     		if (!bFullColors) {
@@ -219,12 +248,6 @@ public class ColorConverter extends ConverterHelper {
 	            if (getLuminance(sColor1)>0.85) {
 	            	return "{black}";
 	            }
-    		}
-    		if (bLongfbox) {
-        		if (namedColors.containsKey(sColor1)) {
-        			return namedColors.get(sColor1);
-        		}
-        		return "\\#"+sColor1.substring(1);    			
     		}
     		if (namedColors.containsKey(sColor1)) {
     			return "{"+namedColors.get(sColor1)+"}";

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-21)
+ *  Version 2.0 (2018-06-01)
  *
  */
 
@@ -41,6 +41,9 @@ public class XMLString {
 	public static final String DRAW_TEXT_BOX = "draw:text-box";
 	public static final String DRAW_G = "draw:g";
 	public static final String DRAW_CONTROL = "draw:control";
+	public static final String DRAW_CUSTOM_SHAPE = "draw:custom-shape";
+	public static final String DRAW_ENHANCED_GEOMETRY = "draw:enhanced-geometry";
+	public static final String DRAW_EQUATION = "draw:equation";
 	// draw namespace - attributes
 	public static final String DRAW_NAME = "draw:name";
 	public static final String DRAW_STYLE_NAME = "draw:style-name";
@@ -55,6 +58,12 @@ public class XMLString {
 	public static final String DRAW_SHADOW_OFFSET_X = "draw:shadow-offset-x";
 	public static final String DRAW_SHADOW_OFFSET_Y = "draw:shadow-offset-y";
 	public static final String DRAW_SHADOW_OPACITY = "draw:shadow-opacity";
+	public static final String DRAW_PATH_STRETCHPOINT_X = "draw:path-stretchpoint-x";
+	public static final String DRAW_PATH_STRETCHPOINT_Y = "draw:path-stretchpoint-y";
+	public static final String DRAW_TEXT_AREAS = "draw:text-areas";
+	public static final String DRAW_MODIFIERS = "draw:modifiers";
+	public static final String DRAW_ENHANCED_PATH = "draw:enhanced-path";
+	public static final String DRAW_FORMULA = "draw:formula";
 
 	// dc namespace - elements
 	public static final String DC_CREATOR = "dc:creator";
@@ -508,6 +517,7 @@ public class XMLString {
 	public static final String SVG_Y = "svg:y";
 	public static final String SVG_HEIGHT = "svg:height";
 	public static final String SVG_WIDTH = "svg:width";
+	public static final String SVG_VIEWBOX = "svg:viewBox";
 	// xlink namespace
 	public static final String XLINK_HREF = "xlink:href";
 	// math namespace

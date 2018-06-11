@@ -2,7 +2,7 @@
  *
  *  CSVList.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 2.0 (2018-06-09)
  *
  */
 
@@ -55,6 +55,15 @@ public class CSVList{
         if (sName==null) { return; }
         if (bEmpty) { bEmpty=false; } else { buf.append(sSep); }
         buf.append(sName).append(sNameValueSep).append(sVal);
+    }
+    
+    // temp. hack
+    public void addValues(CSVList list) {
+    	if (!list.isEmpty()) {
+    		if (!bEmpty) { buf.append(sSep); }
+    		buf.append(list.toString());
+    		bEmpty=false;
+    	}
     }
 	
     public String toString() {
