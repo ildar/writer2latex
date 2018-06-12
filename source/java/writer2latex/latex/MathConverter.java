@@ -2,7 +2,7 @@
  *
  *  MathConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 2.0 (2018-06-12)
  *
  */
 
@@ -61,8 +61,11 @@ public final class MathConverter extends ConverterHelper {
     private boolean bNeedTexMathsPreamble = false;
     private boolean bNeedOOoLaTeXPreamble = false;
     
+    // State of display equation parser
     private Element theEquation = null;
     private Element theSequence = null;
+    private boolean bLeftPar = false;
+    private boolean bRightPar = false;
 	
     public MathConverter(OfficeReader ofr,LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
@@ -94,7 +97,6 @@ public final class MathConverter extends ConverterHelper {
         }
     }
 	
-    
     // TODO: Replace with a method "handleEquation"
     public String convert(Element formula) {
         // TODO: Use settings to determine display mode/text mode
@@ -272,7 +274,8 @@ public final class MathConverter extends ConverterHelper {
     
 	/** Determine whether or not a paragraph contains a display equation.
 	 *  A paragraph is a display equation if it contains a single formula and no text content except whitespace
-	 *  and an optional sequence number which may be in brackets.
+	 *  and an optional sequence number. The sequence number may be in brackets, and the brackets may contain
+	 *  letters too (TeXMaths does this).
 	 *  As a side effect, this method keeps a reference to the equation and the sequence number
 	 * 
 	 * @param node the paragraph
@@ -281,7 +284,10 @@ public final class MathConverter extends ConverterHelper {
 	private boolean parseDisplayEquation(Node node) {
 		theEquation = null;
 		theSequence = null;
-		return doParseDisplayEquation(node);
+		bLeftPar = false;
+		bRightPar = false;
+		// If we end up with a left bracket but no right bracket it is not a display after all
+		return doParseDisplayEquation(node) && !(bLeftPar && !bRightPar);
 	}
 	
     private boolean doParseDisplayEquation(Node node) {
@@ -339,8 +345,28 @@ public final class MathConverter extends ConverterHelper {
                 int nLen = s.length();
                 for (int i=0; i<nLen; i++) {
                     char c = s.charAt(i);
-                    if (c!='(' && c!=')' && c!='[' && c!=']' && c!='{' && c!='}' && c!=' ' && c!='\u00A0') {
-                        // Characters except brackets and whitespace -> not a display
+                    if (c=='(' || c=='[' || c=='{') {
+                    	if (theSequence!=null) {
+                    		// We accept any number of left brackets, but only before the sequence number
+                    		return false;
+                    	}	
+                    	bLeftPar = true;
+                    }
+                    else if (c==')' || c==']' || c=='}') {
+                    	if (theSequence==null) {
+                    		// We accept any number of right brackets, but only after the sequence number
+                    		return false;
+                    	}
+                    	bRightPar = true;
+                    }
+                    else if (Character.isLetter(c)) {
+                    	// We accept letters within brackets only
+                    	if (!bLeftPar || bRightPar) {
+                    		return false;
+                    	}
+                    }
+                    else if (c!=' ' && c!='\u00A0') {
+                        // Other non-whitespace characters are not allowed
                         return false;
                     }
                 }

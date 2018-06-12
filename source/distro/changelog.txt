@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] Improved compatibility with TeXMaths: Display equations which are now
+  recognized also if the bracket with the sequence number contains letters.
+  (TexMaths inserts a word like 'Equation'.)
+
 [w2l] New options use_microtype and use_letterspace to enable the micro-typographical
   features character protusion and font expansion, respectively letter spacing.
 
