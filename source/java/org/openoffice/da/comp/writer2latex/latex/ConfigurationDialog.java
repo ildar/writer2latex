@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-30)
+ *  Version 2.0 (2018-06-30)
  *
  */ 
  
@@ -98,7 +98,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
         		"UseSoulChange", "FormattingAttributeChange", "CustomAttributeChange", // Characters
-        		"ExportGeometryChange", "ExportHeaderAndFooterChange", // Pages
+        		// Pages (currently no events)
         		"NoTablesChange", "UseSupertabularChange", "UseLongtableChange", // Tables
         		"NoImagesChange", // Figures
         		"MathSymbolNameChange", "NewSymbolClick", "DeleteSymbolClick",
@@ -614,79 +614,29 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
     
     // The page "Pages"
-    // This page handles the options page_formatting, use_geometry, use_fancyhdr, use_lastpage and use_endnotes
+    // This page handles the options use_geometry, use_fancyhdr, use_lastpage, footnote_rule and use_endnotes
     private class PagesHandler extends PageHandler {
     	@Override protected void setControls(DialogAccess dlg) {
-    		// The option page_formatting is presented as two options in the user interface
-        	String sPageFormatting = config.getOption("page_formatting");
-        	if ("ignore_all".equals(sPageFormatting)) {
-        		dlg.setCheckBoxStateAsBoolean("ExportGeometry", false);
-        		dlg.setCheckBoxStateAsBoolean("ExportHeaderFooter", false);
-        	}
-        	else if ("convert_geometry".equals(sPageFormatting)) {
-        		dlg.setCheckBoxStateAsBoolean("ExportGeometry", true);
-        		dlg.setCheckBoxStateAsBoolean("ExportHeaderFooter", false);
-        	}
-        	else if ("convert_header_footer".equals(sPageFormatting)) {
-        		dlg.setCheckBoxStateAsBoolean("ExportGeometry", false);
-        		dlg.setCheckBoxStateAsBoolean("ExportHeaderFooter", true);
-        	}
-        	else if ("convert_all".equals(sPageFormatting)) {
-        		dlg.setCheckBoxStateAsBoolean("ExportGeometry", true);
-        		dlg.setCheckBoxStateAsBoolean("ExportHeaderFooter", true);
-        	}
-        	
         	checkBoxFromConfig(dlg,"UseGeometry", "use_geometry");
         	checkBoxFromConfig(dlg,"UseFancyhdr", "use_fancyhdr");
         	checkBoxFromConfig(dlg,"UseLastpage", "use_lastpage");
+        	checkBoxFromConfig(dlg,"FootnoteRule", "footnote_rule");
         	checkBoxFromConfig(dlg,"UseEndnotes", "use_endnotes");
-
-        	// Trigger change events
-			exportGeometryChange(dlg);
-			exportHeaderAndFooterChange(dlg);
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
-        	boolean bGeometry = dlg.getCheckBoxStateAsBoolean("ExportGeometry");
-        	boolean bHeaderFooter = dlg.getCheckBoxStateAsBoolean("ExportHeaderFooter");
-        	if (bGeometry && bHeaderFooter) {
-        		config.setOption("page_formatting", "convert_all");
-        	}
-        	else if (bGeometry && !bHeaderFooter) {
-        		config.setOption("page_formatting", "convert_geometry");
-        	}
-        	else if (!bGeometry && bHeaderFooter) {
-        		config.setOption("page_formatting", "convert_header_footer");
-        	}
-        	else {
-        		config.setOption("page_formatting", "ignore_all");
-        	}
-        	
         	checkBoxToConfig(dlg,"UseGeometry", "use_geometry");
         	checkBoxToConfig(dlg,"UseFancyhdr", "use_fancyhdr");
         	checkBoxToConfig(dlg,"UseLastpage", "use_lastpage");
+        	checkBoxToConfig(dlg,"FootnoteRule", "footnote_rule");
         	checkBoxToConfig(dlg,"UseEndnotes", "use_endnotes");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
-    		if (sMethod.equals("ExportGeometryChange")) {
-    			exportGeometryChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("ExportHeaderAndFooterChange")) {
-    			exportHeaderAndFooterChange(dlg);
-    			return true;
-    		}
+    		// Currently no events
     		return false;
     	}
     	
-    	private void exportGeometryChange(DialogAccess dlg) {
-        	dlg.setControlEnabled("UseGeometry", dlg.getCheckBoxStateAsBoolean("ExportGeometry"));    		
-    	}
-    	
-    	private void exportHeaderAndFooterChange(DialogAccess dlg) {
-        	dlg.setControlEnabled("UseFancyhdr", dlg.getCheckBoxStateAsBoolean("ExportHeaderFooter"));
-    	}
     }
     	
     // The page "Tables"

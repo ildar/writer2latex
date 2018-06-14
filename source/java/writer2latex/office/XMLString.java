@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-01)
+ *  Version 2.0 (2018-06-12)
  *
  */
 
@@ -170,15 +170,16 @@ public class XMLString {
 	public static final String STYLE_COLUMNS = "style:columns";
 	public static final String STYLE_HEADER = "style:header";
 	public static final String STYLE_HEADER_LEFT = "style:header-left";
+	public static final String STYLE_HEADER_FIRST = "style:header-first"; // ODF 1.3(!)
 	public static final String STYLE_FOOTER = "style:footer";
 	public static final String STYLE_FOOTER_LEFT = "style:footer-left";
+	public static final String STYLE_FOOTER_FIRST = "style:footer-first"; // ODF 1.3(!)
 	public static final String STYLE_FOOTNOTE_SEP = "style:footnote-sep";
 	public static final String STYLE_HEADER_STYLE = "style:header-style";
 	public static final String STYLE_FOOTER_STYLE = "style:footer-style";
 	// style namespace - attributes
 	public static final String STYLE_NEXT_STYLE_NAME = "style:next-style-name";
 	public static final String STYLE_DISPLAY_NAME = "style:display-name";
-	public static final String STYLE_PAGE_MASTER_NAME = "style:page-master-name";
 	public static final String STYLE_PAGE_LAYOUT_NAME = "style:page-layout-name"; 
 	public static final String STYLE_MASTER_PAGE_NAME = "style:master-page-name";
 	public static final String STYLE_PAGE_USAGE = "style:page-usage";

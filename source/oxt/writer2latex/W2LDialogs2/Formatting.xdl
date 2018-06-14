@@ -6,26 +6,23 @@
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:text dlg:style-id="0" dlg:id="GeneralLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="245" dlg:height="12" dlg:value="General"/>
-  <dlg:checkbox dlg:id="UseXcolor" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="240" dlg:height="12" dlg:value="Export colors (using xcolor.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseXcolor"/>
-  <dlg:checkbox dlg:id="UseLongfbox" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:value="Export borders and backgrounds (using longfbox.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLongfbox">
+  <dlg:checkbox dlg:id="UseXcolor" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseXcolor" dlg:value="Export colors (using xcolor.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseLongfbox" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLongfbox" dlg:value="Export borders and backgrounds (using longfbox.sty)" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseLongfboxChange" script:language="UNO"/>
   </dlg:checkbox>
-  <dlg:text dlg:id="BorderRadiusLabel" dlg:tab-index="0" dlg:left="10" dlg:top="50" dlg:width="120" dlg:height="12" dlg:value="Border radius" />
-  <dlg:numericfield dlg:id="BorderRadius" dlg:tab-index="3" dlg:left="135" dlg:top="48" dlg:width="30" dlg:height="12" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="100" dlg:value-min="0" dlg:value-max="1000" dlg:value-step="10" dlg:spin="true" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigBorderRadius" />
+  <dlg:text dlg:id="BorderRadiusLabel" dlg:tab-index="0" dlg:left="10" dlg:top="50" dlg:width="120" dlg:height="12" dlg:value="Border radius"/>
+  <dlg:numericfield dlg:id="BorderRadius" dlg:tab-index="3" dlg:left="135" dlg:top="48" dlg:width="30" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigBorderRadius" dlg:strict-format="true" dlg:decimal-accuracy="0" dlg:value="100" dlg:value-min="0" dlg:value-max="1000" dlg:value-step="10" dlg:spin="true"/>
   <dlg:text dlg:id="BorderRadiusPercentLabel" dlg:tab-index="0" dlg:left="170" dlg:top="50" dlg:width="10" dlg:height="12" dlg:value="%"/>
-
   <dlg:text dlg:style-id="0" dlg:id="CharactersLabel" dlg:tab-index="0" dlg:left="5" dlg:top="64" dlg:width="245" dlg:height="12" dlg:value="Characters"/>
-  <dlg:checkbox dlg:id="UseMicrotype" dlg:tab-index="4" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:value="Use character protusion and font expansion (using microtype.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseMicrotype"/>
-  <dlg:checkbox dlg:id="UseLetterspace" dlg:tab-index="5" dlg:left="10" dlg:top="92" dlg:width="240" dlg:height="12" dlg:value="Export letter spacing (using microtype.sty or letterspace.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLetterspace"/>
-  <dlg:checkbox dlg:id="UseUlem" dlg:tab-index="6" dlg:left="10" dlg:top="106" dlg:width="240" dlg:height="12" dlg:value="Export underline and strike out (using ulem.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseUlem"/>
-
+  <dlg:checkbox dlg:id="UseMicrotype" dlg:tab-index="4" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseMicrotype" dlg:value="Use character protusion and font expansion (using microtype.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseLetterspace" dlg:tab-index="5" dlg:left="10" dlg:top="92" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLetterspace" dlg:value="Export letter spacing (using microtype.sty or letterspace.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseUlem" dlg:tab-index="6" dlg:left="10" dlg:top="106" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseUlem" dlg:value="Export underline and strike out (using ulem.sty)" dlg:checked="false"/>
   <dlg:text dlg:style-id="0" dlg:id="HeadingsLabel" dlg:tab-index="0" dlg:left="5" dlg:top="120" dlg:width="245" dlg:height="12" dlg:value="Headings"/>
-  <dlg:checkbox dlg:id="UseTitlesec" dlg:tab-index="7" dlg:left="10" dlg:top="134" dlg:width="240" dlg:height="12" dlg:value="Export formatting of headings (using titlesec.sty)" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec"/>
-  <dlg:checkbox dlg:id="OutlineNumbering" dlg:tab-index="8" dlg:left="10" dlg:top="148" dlg:width="240" dlg:height="12" dlg:value="Export outline numbering" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering"/>
-
+  <dlg:checkbox dlg:id="UseTitlesec" dlg:tab-index="7" dlg:left="10" dlg:top="134" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" dlg:value="Export formatting of headings (using titlesec.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="OutlineNumbering" dlg:tab-index="8" dlg:left="10" dlg:top="148" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering" dlg:value="Export outline numbering" dlg:checked="false"/>
   <dlg:text dlg:style-id="0" dlg:id="TextParListLabel" dlg:tab-index="0" dlg:left="5" dlg:top="162" dlg:width="245" dlg:height="12" dlg:value="Text, paragraphs and lists"/>
   <dlg:text dlg:id="FormattingLabel" dlg:tab-index="0" dlg:left="10" dlg:top="176" dlg:width="65" dlg:height="12" dlg:value="Formatting export"/>
-  <dlg:menulist dlg:id="Formatting" dlg:tab-index="9" dlg:left="80" dlg:top="174" dlg:width="170" dlg:height="12" dlg:spin="true" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFormatting">
+  <dlg:menulist dlg:id="Formatting" dlg:tab-index="9" dlg:left="80" dlg:top="174" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFormatting" dlg:spin="true">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="Ignore all"/>
     <dlg:menuitem dlg:value="Ignore most"/>
@@ -34,9 +31,8 @@
     <dlg:menuitem dlg:value="Convert all"/>
    </dlg:menupopup>
   </dlg:menulist>
-
   <dlg:text dlg:style-id="0" dlg:id="IndexesAndTablesLabel" dlg:tab-index="10" dlg:left="5" dlg:top="190" dlg:width="120" dlg:height="12" dlg:value="Indexes and tables"/>
-  <dlg:checkbox dlg:id="NoIndex" dlg:tab-index="11" dlg:left="10" dlg:top="204" dlg:width="240" dlg:height="12" dlg:value="Do not include indexes" dlg:checked="false" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigNoIndex">
+  <dlg:checkbox dlg:id="NoIndex" dlg:tab-index="11" dlg:left="10" dlg:top="204" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigNoIndex" dlg:value="Do not include indexes" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:NoIndexChange" script:language="UNO"/>
   </dlg:checkbox>
   <dlg:checkbox dlg:id="UseTitletoc" dlg:tab-index="12" dlg:visible="false" dlg:left="10" dlg:top="218" dlg:width="240" dlg:height="12" dlg:value="Use titlesec.sty to format indexes" dlg:checked="false"/>

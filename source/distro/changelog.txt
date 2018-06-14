@@ -2,6 +2,19 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] Bugfix: Separate headers and footers are now always exported (also if the
+  geometry is not mirrored)
+  
+[w2l] Added support for page styles which defines a special header or footer
+  on the first page (This is an ODF 1.3 feature, which LO already supports)
+
+[w2l] New option footnote_rule (default false) to export the formatting of the
+  footnote rule (previously, this was controlled by the optionpage_formatting)
+  
+[w2l] The option page_formatting has been removed. Export of page geometry,
+  headers and footers now only depend on the options use_geometry and
+  use_fancyhdr (thus low level LaTeX code is never used)
+
 [w2l] Improved compatibility with TeXMaths: Display equations which are now
   recognized also if the bracket with the sequence number contains letters.
   (TexMaths inserts a word like 'Equation'.)

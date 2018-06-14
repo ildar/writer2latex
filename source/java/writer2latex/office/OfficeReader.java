@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-06)
+ *  Version 2.0 (2018-04-12)
  *
  */
 
@@ -490,6 +490,9 @@ public class OfficeReader {
     public OfficeStyleFamily getPageLayouts() { return pageLayout; }
     public PageLayout getPageLayout(String sName) {
         return (PageLayout) pageLayout.getStyle(sName);
+    }
+    public PageLayout getPageLayout(MasterPage masterPage) {
+    	return getPageLayout(masterPage.getProperty(XMLString.STYLE_PAGE_LAYOUT_NAME));
     }
 	
     public OfficeStyleFamily getMasterPages() { return masterPage; }

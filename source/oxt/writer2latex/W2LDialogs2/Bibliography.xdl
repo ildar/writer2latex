@@ -34,7 +34,7 @@
   <dlg:text dlg:id="NatbibOptionsLabel" dlg:tab-index="13" dlg:left="22" dlg:top="144" dlg:width="45" dlg:height="12" dlg:value="Options"/>
   <dlg:textfield dlg:id="NatbibOptions" dlg:tab-index="14" dlg:left="70" dlg:top="142" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions"/>
   <dlg:text dlg:id="BibTeXEncodingLabel" dlg:tab-index="15" dlg:left="12" dlg:top="60" dlg:width="55" dlg:height="12" dlg:value="File encoding"/>
-  <dlg:menulist dlg:id="BibTeXEncoding" dlg:tab-index="7" dlg:left="70" dlg:top="58" dlg:width="130" dlg:height="12" dlg:spin="true" dlg:linecount="8" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXEncoding">
+  <dlg:menulist dlg:id="BibTeXEncoding" dlg:tab-index="7" dlg:left="70" dlg:top="58" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXEncoding" dlg:spin="true" dlg:linecount="8">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="US ASCII"/>
     <dlg:menuitem dlg:value="ISO-8859-1"/>

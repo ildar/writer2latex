@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-02)
+ *  Version 2.0 (2018-06-12)
  *
  */
 
@@ -66,7 +66,7 @@ public class PageStyleConverter extends StyleConverterHelper {
     public String getTextWidth() {
         MasterPage masterPage = ofr.getFirstMasterPage();
         if (masterPage!=null) {
-            PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
+            PageLayout pageLayout = ofr.getPageLayout(masterPage);
             if (pageLayout!=null) {
                 String sWidth = pageLayout.getProperty(XMLString.FO_PAGE_WIDTH);
                 if (sWidth!=null) {
@@ -101,7 +101,7 @@ public class PageStyleConverter extends StyleConverterHelper {
     public void applyDefaultWritingDirection(StyleInfo info) {
         MasterPage masterPage = ofr.getFirstMasterPage();
         if (masterPage!=null) {
-            PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
+            PageLayout pageLayout = ofr.getPageLayout(masterPage);
             if (pageLayout!=null) {
                 applyDirection(pageLayout,info);
             }
@@ -138,7 +138,7 @@ public class PageStyleConverter extends StyleConverterHelper {
                 getStyles().getStyleByDisplayName(sDisplayName);
             StyleInfo info = new StyleInfo();
             // First apply page layout (size)
-            PageLayout pageLayout = ofr.getPageLayout(style.getPageLayoutName());
+            PageLayout pageLayout = ofr.getPageLayout(style);
             if (pageLayout!=null) {
                 applyDirection(pageLayout,info);
                 cssPageSize(pageLayout,info.props);
@@ -160,7 +160,7 @@ public class PageStyleConverter extends StyleConverterHelper {
         	// Export page formatting for first master page in text documents
         	MasterPage masterPage = ofr.getFirstMasterPage();
         	if (masterPage!=null) {
-        		PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
+        		PageLayout pageLayout = ofr.getPageLayout(masterPage);
         		if (pageLayout!=null) {
         			if (bConvertStyles) {
         				// Background color

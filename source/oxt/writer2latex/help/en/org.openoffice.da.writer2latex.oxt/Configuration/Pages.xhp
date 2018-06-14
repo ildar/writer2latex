@@ -8,13 +8,13 @@
     </meta>
     <body>
         <paragraph role="heading" level="1" xml-lang="en-US">Pages</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Define how to convert page formatting</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define how to export page formatting and other page related content.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Pages</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Page geometry (page size and margins)</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Pages</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigExportGeometry" id="bm_configexportgeometry"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export page geometry</paragraph>
@@ -22,30 +22,30 @@
         page geometry of the documentclass will be used.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseGeometry" id="bm_configusegeometry"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use geometry.sty</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to use package geometry.sty to export the geometry of the page.
-        Otherwise the geometry will be exported using low level LaTeX commands.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigExportHeaderFooter" id="bm_configexportheaderfooter"/>
-        <paragraph role="heading" level="2" xml-lang="en-US">Export header and footer</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the contents of the header and the footer.</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export page size and margins (using geometry.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to export the geometry of the page using the package geometry.sty.
+        The geometry refers to page size, margins and size of headers and footers. Otherwise LaTeX's default page layout 
+        will apply.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseFancyhdr" id="bm_configusefancyhdr"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use fancyhdr.sty</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to use the package fancyhdr.sty to export the header and footer of the page.
-        Otherwise the header and footer will be exported using low level LaTeX page style commands.</paragraph>
-
-        <paragraph role="heading" level="2" xml-lang="en-US">Page numbers</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export headers and footers (using fancyhdr.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this export the contents of headers and footers using the package fancyhdr.sty.
+        Otherwise the default header and footer of the LaTeX document class will apply.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseLastpage" id="bm_configuselastpage"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use lastpage.sty</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export number of pages (using lastpage.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this option to use the package lastpage.sty to represent the page count.
         Otherwise the page count is not exported (e.g. content like "page 3 of 7" cannot be exported).</paragraph>
 
-        <paragraph role="heading" level="2" xml-lang="en-US">Endnotes</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Footnotes and endnotes</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFootnoteRule" id="bm_configfootnoterule"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export footnote rule</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to export the formatting of the footnote rule separating the main text
+        from the footnotes. Otherwise the default format of the LaTeX document class will be used.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseEndnotes" id="bm_configuseendnotes"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use endnotes.sty</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export endnotes (using endnotes.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to use the package endnotes.sty to format the endnotes in the
         LaTeX document. Otherwise endnotes will be converted to footnotes.</paragraph>
     </body>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-31)
+ *  Version 2.0 (2018-06-13)
  *
  */
 
@@ -162,7 +162,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private static final int FONT = 42;
     private static final int FONTSPEC = 43;
     private static final int FORMATTING = 44;
-    private static final int PAGE_FORMATTING = 45;
+    private static final int FOOTNOTE_RULE = 45;
     private static final int OUTLINE_NUMBERING = 46;
     private static final int BORDER_RADIUS = 47;
     private static final int OTHER_STYLES = 48;
@@ -260,8 +260,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         options[USE_TIPA] = new BooleanOption("use_tipa","false");
         options[USE_XCOLOR] = new BooleanOption("use_xcolor","true");
         options[USE_COLORTBL] = new BooleanOption("use_colortbl","false");
-        options[USE_GEOMETRY] = new BooleanOption("use_geometry","false");
-        options[USE_FANCYHDR] = new BooleanOption("use_fancyhdr","false");
+        options[USE_GEOMETRY] = new BooleanOption("use_geometry","true");
+        options[USE_FANCYHDR] = new BooleanOption("use_fancyhdr","true");
         options[USE_LONGFBOX] = new BooleanOption("use_longfbox","true");
         options[USE_TITLESEC] = new BooleanOption("use_titlesec","false");
         options[USE_TITLETOC] = new BooleanOption("use_titletoc","false");
@@ -303,15 +303,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 else if ("ignore_all".equals(sValue)) nValue = IGNORE_ALL;
             }
         };
-        options[PAGE_FORMATTING] = new IntegerOption("page_formatting","convert_all") {
-            public void setString(String sValue) {
-                super.setString(sValue);
-                if ("convert_all".equals(sValue)) nValue = CONVERT_ALL;
-                else if ("convert_header_footer".equals(sValue)) nValue = CONVERT_HEADER_FOOTER;
-                else if ("convert_geometry".equals(sValue)) nValue = CONVERT_GEOMETRY;
-                else if ("ignore_all".equals(sValue)) nValue = IGNORE_ALL;
-            }
-        };
+        options[FOOTNOTE_RULE] = new BooleanOption("footnote_rule", "false");
         options[OUTLINE_NUMBERING] = new BooleanOption("outline_numbering", "true");
         options[BORDER_RADIUS] = new Option("border_radius","100%");
         options[OTHER_STYLES] = new ContentHandlingOption("other_styles","accept");
@@ -733,7 +725,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public String getFont() { return options[FONT].getString(); }
     public String fontspec() { return options[FONTSPEC].getString(); }
     public int formatting() { return ((IntegerOption) options[FORMATTING]).getValue(); }
-    public int pageFormatting() { return ((IntegerOption) options[PAGE_FORMATTING]).getValue(); }
+    public boolean footnoteRule() { return ((BooleanOption) options[FOOTNOTE_RULE]).getValue(); }
     public boolean outlineNumbering() { return ((BooleanOption) options[OUTLINE_NUMBERING]).getValue(); }
     public String borderRadius() { return options[BORDER_RADIUS].getString(); }
     public int otherStyles() { return ((IntegerOption) options[OTHER_STYLES]).getValue(); }

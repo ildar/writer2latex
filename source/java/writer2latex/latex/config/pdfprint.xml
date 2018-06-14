@@ -25,7 +25,7 @@
   <option name="use_ulem" value="true" />
   <option name="use_lastpage" value="true" />
   <option name="formatting" value="convert_all" />
-  <option name="page_formatting" value="convert_all" />
+  <option name="footnote_rule" value="true"  />
   <option name="ignore_empty_paragraphs" value="false" />
   <option name="ignore_hard_page_breaks" value="false" />
   <option name="ignore_hard_line_breaks" value="false" />

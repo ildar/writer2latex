@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-05)
+ *  Version 2.0 (2018-06-14)
  *
  */
 package writer2latex.util;
@@ -219,6 +219,10 @@ public class Calc {
 	 */
 	public static final String sub(String sLength1, String sLength2){
 	    return add(sLength1,multiply("-100%",sLength2));
+	}
+	
+	public static boolean isEqual(String sThis, String sThat) {
+		return isZero(sub(sThis,sThat));
 	}
 
 	/** Test whether a given length is smaller than another length
