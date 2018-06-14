@@ -2,7 +2,7 @@
  *
  *  TableConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 2.0 (2018-06-14)
  *
  */
 
@@ -67,13 +67,15 @@ public class TableConverter extends ConverterHelper {
     }
 
     public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-        pack.append("\\usepackage{array}").nl(); // TODO: Make this optional
-        if (bNeedLongtable) { pack.append("\\usepackage{longtable}").nl(); }
-        if (bNeedSupertabular) { pack.append("\\usepackage{supertabular}").nl(); }
-        if (bNeedTabulary) { pack.append("\\usepackage{tabulary}").nl(); }
-        pack.append("\\usepackage{hhline}").nl(); // TODO: Make this optional
-        if (bNeedColortbl) { pack.append("\\usepackage{colortbl}").nl(); }
-
+    	CSVList packages = new CSVList(",");
+    	packages.addValue("array"); // TODO: Make this optional
+        if (bNeedLongtable) { packages.addValue("longtable"); }
+        if (bNeedSupertabular) { packages.addValue("supertabular"); }
+        if (bNeedTabulary) { packages.addValue("tabulary"); }
+        packages.addValue("hhline"); // TODO: Make this optional
+        if (bNeedColortbl) { packages.addValue("colortbl"); }
+        pack.append("\\usepackage{").append(packages.toString()).append("}").nl();
+    	
         // Set padding for table cells (1mm is default in OOo!)
         // For vertical padding we can only specify a relative size
         if (bContainsTables) {
