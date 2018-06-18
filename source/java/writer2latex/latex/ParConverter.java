@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-20)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -62,7 +62,7 @@ public class ParConverter extends StyleConverter {
         this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedArrayBslash) {
             // centering and raggedright redefines \\, fix this
             // Note: aviods nameclash with tabularx (arraybackslash) 
@@ -81,7 +81,7 @@ public class ParConverter extends StyleConverter {
 
         if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
             decl.append("% Paragraph styles").nl();
-            super.appendDeclarations(pack,decl);
+            super.appendDeclarations(pacman,decl);
         }         
     }
 	

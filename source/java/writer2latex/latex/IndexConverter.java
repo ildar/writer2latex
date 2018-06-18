@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-08)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -60,14 +60,14 @@ public class IndexConverter extends ConverterHelper {
 
     /** <p>Append declarations needed by the <code>IndexConverter</code> to
      * the preamble.
-     * @param pack the <code>LaTeXDocumentPortion</code> to which
+     * @param pacman the <code>LaTeXPacman</code> to which
      * declarations of packages should be added (<code>\\usepackage</code>).
      * @param decl the <code>LaTeXDocumentPortion</code> to which
      * other declarations should be added.
      */
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
        if (bContainsAlphabeticalIndex) {
-            pack.append("\\usepackage{makeidx}").nl();
+    	   pacman.usepackage("makeidx");
             decl.append("\\makeindex").nl();
         }
     }

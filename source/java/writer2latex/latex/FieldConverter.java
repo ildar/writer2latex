@@ -2,7 +2,7 @@
  *
  *  FieldConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,13 +19,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-23)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
 package writer2latex.latex;
 
-//import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -95,47 +94,43 @@ public class FieldConverter extends ConverterHelper {
 	
     /** <p>Append declarations needed by the <code>FieldConverter</code> to
      * the preamble.</p>
-     * @param pack the <code>LaTeXDocumentPortion</code> to which
+     * @param pacman the <code>LaTeXPacman</code> to which
      * declarations of packages should be added (<code>\\usepackage</code>).
      * @param decl the <code>LaTeXDocumentPortion</code> to which
      * other declarations should be added.
      */
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         // Use natbib
         if (config.useBibtex() && config.useNatbib()) {
-        	pack.append("\\usepackage");
-        	if (config.getNatbibOptions().length()>0) {
-        		pack.append("[").append(config.getNatbibOptions()).append("]");
-        	}
-        	pack.append("{natbib}").nl();
+        	pacman.usepackage(config.getNatbibOptions(), "natbib");
         }
         // use lastpage.sty
         if (bUsesPageCount) {
-            pack.append("\\usepackage{lastpage}").nl();
+        	pacman.usepackage("lastpage");
         }
 		
         // use titleref.sty
         if (bUsesTitleref) {
-            pack.append("\\usepackage{titleref}").nl();
+        	pacman.usepackage("titleref");
         } 
 
         // use hyperref.sty
         if (bUseHyperref){
-            pack.append("\\usepackage{hyperref}").nl();
-            pack.append("\\hypersetup{");
-            if (config.getBackend()==LaTeXConfig.PDFTEX) pack.append("pdftex, ");
-            else if (config.getBackend()==LaTeXConfig.DVIPS) pack.append("dvips, ");
+        	pacman.usepackage("hyperref");
+            pacman.append("\\hypersetup{");
+            if (config.getBackend()==LaTeXConfig.PDFTEX) pacman.append("pdftex, ");
+            else if (config.getBackend()==LaTeXConfig.DVIPS) pacman.append("dvips, ");
             //else pack.append("hypertex");
-            pack.append("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue");
+            pacman.append("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue");
             if (config.getBackend()==LaTeXConfig.PDFTEX) {
-                pack.append(createPdfMeta("pdftitle",palette.getMetaData().getTitle()));
+                pacman.append(createPdfMeta("pdftitle",palette.getMetaData().getTitle()));
                 if (config.metadata()) {
-                    pack.append(createPdfMeta("pdfauthor",palette.getMetaData().getCreator()))
+                    pacman.append(createPdfMeta("pdfauthor",palette.getMetaData().getCreator()))
                         .append(createPdfMeta("pdfsubject",palette.getMetaData().getSubject()))
                         .append(createPdfMeta("pdfkeywords",palette.getMetaData().getKeywords()));
                 }
             }
-            pack.append("}").nl();
+            pacman.append("}").nl();
         }	
         		
         // Export sequence declarations

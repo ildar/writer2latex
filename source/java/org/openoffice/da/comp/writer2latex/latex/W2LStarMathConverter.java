@@ -18,10 +18,10 @@
  *  
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
+ *  
+ *  Version 1.0 (2008-11-22)
  */
 
-// Version 1.0 (2008-11-22)
- 
 package org.openoffice.da.comp.writer2latex.latex;
 
 import com.sun.star.lang.XServiceInfo;

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-11)
+ *  Version 2.0 (2018-06-14)
  *
  */
 
@@ -40,17 +40,17 @@ public class CSVList{
     
     /** Create a new <code>CSVList</code> with specific separators
      * 
-     * @param sSep the separator between items
-     * @param sNameValueSep the separator between keys and values
+     * @param sItemSep the separator between items
+     * @param sKeyValueSep the separator between keys and values
      */
-    public CSVList(String sSep, String sKeyValueSep) {
-        this.sItemSep=sSep;
+    public CSVList(String sItemSep, String sKeyValueSep) {
+        this.sItemSep=sItemSep;
         this.sKeyValueSep=sKeyValueSep;
     }
 	
     /** Create a new <code>CSVList</code> with a specific item separator (use default colon for key/values separator)
      * 
-     * @param sSep the separator between items
+     * @param sItemSep the separator between items
      */
     public CSVList(String sItemSep) {
         this(sItemSep,":");
@@ -58,7 +58,7 @@ public class CSVList{
     
     /** Create a new <code>CSVList</code> with a specific character as item separator (use default colon for key/values separator)
      * 
-     * @param sSep the separator between items
+     * @param cItemSep the separator between items
      */
     public CSVList(char cItemSep) {
         this(Character.toString(cItemSep),":");
@@ -93,6 +93,12 @@ public class CSVList{
     	for (String sKey : list.items.keySet()) {
     		items.put(sKey, list.items.get(sKey));
     	}
+    }
+    
+    /** Remove all values from the list
+     */
+    public void clear() {
+    	items.clear();
     }
 	
     /** Test whether this <code>CSVList</code> contains any items

@@ -2,7 +2,7 @@
  *
  *  BlockConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-15)
+ *  Version 2.0 (2018-06-19)
  *
  */
 
@@ -45,7 +45,7 @@ public class BlockConverter extends ConverterHelper {
         super(ofr,config,palette);
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
         // currently do nothing..
     }
 

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-01)
+ *  Version 2.0 (2018-06-14)
  *
  */
 
@@ -58,6 +58,7 @@ public final class ConverterPalette extends ConverterBase {
     // Various data used in conversion
     private Context mainContext; // main context
     private CSVList globalOptions; // global options
+    private LaTeXDocumentPortion packages; // Document portion containing all \\usepackage commands
 
     // The helpers (the "colors" of the palette)
     private I18n i18n;
@@ -195,9 +196,6 @@ public final class ConverterPalette extends ConverterBase {
         }
         converterResult.addDocument(texDoc);
 
-        // Create other data
-        globalOptions = new CSVList(',');
-
         // Setup context.
         // The default language is specified in the default paragraph style:
         mainContext = new Context();
@@ -205,10 +203,13 @@ public final class ConverterPalette extends ConverterBase {
         mainContext.setInMulticols(pageSc.isTwocolumn());
 		
         // Create main LaTeXDocumentPortions
-        LaTeXDocumentPortion packages = new LaTeXDocumentPortion(false);
+        LaTeXPacman packages = new LaTeXPacman(false);
         LaTeXDocumentPortion declarations = new LaTeXDocumentPortion(false);
         LaTeXDocumentPortion body = new LaTeXDocumentPortion(true);
         
+        // Create additional data for the preamble
+        globalOptions = new CSVList(',');
+
         // Traverse the content
         Element content = ofr.getContent();
         blockCv.traverseBlockText(content,body,mainContext);
@@ -216,27 +217,31 @@ public final class ConverterPalette extends ConverterBase {
 
         // Add declarations from our helpers
         i18n.appendDeclarations(packages,declarations);
-        colorCv.appendDeclarations(packages,declarations);
-        microtypeCv.appendDeclarations(packages,declarations);
-        frameSc.appendDeclarations(packages,declarations);
-        noteCv.appendDeclarations(packages,declarations);
-        headingSc.appendDeclarations(packages,declarations);
-        charSc.appendDeclarations(packages,declarations);
-        headingCv.appendDeclarations(packages,declarations);
-        parCv.appendDeclarations(packages,declarations);
-        pageSc.appendDeclarations(packages,declarations);
-        blockCv.appendDeclarations(packages,declarations);
-        indexCv.appendDeclarations(packages,declarations);
-        bibCv.appendDeclarations(packages,declarations);
-        sectionCv.appendDeclarations(packages,declarations);
-        tableCv.appendDeclarations(packages,declarations);
-        listCv.appendDeclarations(packages,declarations);
-        captionCv.appendDeclarations(packages,declarations);
-        inlineCv.appendDeclarations(packages,declarations);
-        fieldCv.appendDeclarations(packages,declarations);
-        drawCv.appendDeclarations(packages,declarations);
-        customShapeCv.appendDeclarations(packages,declarations);
-        mathCv.appendDeclarations(packages,declarations);
+        	// common: usepackage tipa, tipx, bbding, ifsym, pifont, eurosym, amsmath, wasysym, amssymb, amsfonts
+        	// classic: usepackage inputenc, babel, textcomp, fontenc, cmbright, ccfonts, eulervm, iwona, kurier, anttor,
+        	// kmath, kerkis, fouriernc, pxfonts, mathpazo, mathpple, txfonts, mathptmx, arev, mathdesign, fourier
+        	// xetex: usepackage fontspec, mathspec, xepersian
+        colorCv.appendDeclarations(packages,declarations); // usepackage xolor
+        microtypeCv.appendDeclarations(packages,declarations); // usepackage microtype, letterspace
+        frameSc.appendDeclarations(packages,declarations); // usepackage longfbox
+        noteCv.appendDeclarations(packages,declarations); // usepackage endnotes
+        headingSc.appendDeclarations(packages,declarations); // usepackage titlesec
+        charSc.appendDeclarations(packages,declarations); // usepackage ulem
+        headingCv.appendDeclarations(packages,declarations); // no packages
+        parCv.appendDeclarations(packages,declarations); // no packages
+        pageSc.appendDeclarations(packages,declarations); // usepackage geometry, fancyhdr
+        blockCv.appendDeclarations(packages,declarations); // no packages
+        indexCv.appendDeclarations(packages,declarations); // usepackage makeidx
+        bibCv.appendDeclarations(packages,declarations); // no packages
+        sectionCv.appendDeclarations(packages,declarations); // usepackage multicol
+        tableCv.appendDeclarations(packages,declarations); // usepackage array, longtable, supertabular, tabulary, hhline, colortbl
+        listCv.appendDeclarations(packages,declarations); // no packages
+        captionCv.appendDeclarations(packages,declarations); // usepackage caption
+        inlineCv.appendDeclarations(packages,declarations); // no packages
+        fieldCv.appendDeclarations(packages,declarations); // usepackage natbib, lastpage, titleref, hyperref 
+        drawCv.appendDeclarations(packages,declarations); // usepackage graphicx
+        customShapeCv.appendDeclarations(packages,declarations); // usepackage tikz
+        mathCv.appendDeclarations(packages,declarations); // usepackage calc
 
         // Add custom preamble
         String sCustomPreamble = config.getCustomPreamble();

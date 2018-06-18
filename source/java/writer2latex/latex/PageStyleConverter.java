@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-14)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -81,9 +81,9 @@ public class PageStyleConverter extends StyleConverter {
         // Note that the main page layout may still be null
     }
     
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (config.useFancyhdr()) {
-        	pack.append("\\usepackage{fancyhdr}").nl();
+        	pacman.usepackage("fancyhdr");
         }
         // The first master page must be known
         MasterPage firstMasterPage = ofr.getFirstMasterPage();
@@ -91,7 +91,7 @@ public class PageStyleConverter extends StyleConverter {
             styleNames.addName(getDisplayName(firstMasterPage.getName()));
         }
         // Convert page layout and master pages
-        boolean bTwosideLayout = convertPageGeometry(pack);
+        boolean bTwosideLayout = convertPageGeometry(pacman);
         boolean bTwosideHeaderFooter = convertMasterPages(decl);
         if (config.useGeometry() && bTwosideHeaderFooter && !bTwosideLayout) {
         	// geometry.sty has a special global option for this case
@@ -389,7 +389,7 @@ public class PageStyleConverter extends StyleConverter {
     }
 
     // Return true if the layout is mirrored
-    private boolean convertPageGeometry(LaTeXDocumentPortion pack) {
+    private boolean convertPageGeometry(LaTeXPacman pacman) {
     	boolean bTwoside = false;
         if (config.useGeometry() && mainPageLayout!=null) {
 	        // Set global document options
@@ -510,7 +510,7 @@ public class PageStyleConverter extends StyleConverter {
                 props.addValue("footskip",sFootSkip);
             }
             // Use the package
-            pack.append("\\usepackage[").append(props.toString()).append("]{geometry}").nl();
+            pacman.usepackage(props.toString(), "geometry");
         }
         return bTwoside;
     }

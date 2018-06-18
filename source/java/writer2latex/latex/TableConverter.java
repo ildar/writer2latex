@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-14)
+ *  Version 2.0 (2018-06-19)
  *
  */
 
@@ -66,15 +66,13 @@ public class TableConverter extends ConverterHelper {
         super(ofr,config,palette);
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-    	CSVList packages = new CSVList(",");
-    	packages.addValue("array"); // TODO: Make this optional
-        if (bNeedLongtable) { packages.addValue("longtable"); }
-        if (bNeedSupertabular) { packages.addValue("supertabular"); }
-        if (bNeedTabulary) { packages.addValue("tabulary"); }
-        packages.addValue("hhline"); // TODO: Make this optional
-        if (bNeedColortbl) { packages.addValue("colortbl"); }
-        pack.append("\\usepackage{").append(packages.toString()).append("}").nl();
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    	pacman.usepackage("array"); // TODO: Make this optional
+        if (bNeedLongtable) { pacman.usepackage("longtable"); }
+        if (bNeedSupertabular) { pacman.usepackage("supertabular"); }
+        if (bNeedTabulary) { pacman.usepackage("tabulary"); }
+        pacman.usepackage("hhline"); // TODO: Make this optional
+        if (bNeedColortbl) { pacman.usepackage("colortbl"); }
     	
         // Set padding for table cells (1mm is default in OOo!)
         // For vertical padding we can only specify a relative size

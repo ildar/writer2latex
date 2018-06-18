@@ -2,7 +2,7 @@
  *
  *  ListConverter.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-04-14)
+ *  Version 2.0 (2018-06-17)
  *
  */
 package writer2latex.latex;
@@ -49,7 +49,7 @@ public class ListConverter extends StyleConverter {
         super(ofr,config,palette);
     }
 
-	@Override public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	@Override public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.formatting()>=LaTeXConfig.CONVERT_MOST || !styleNames.isEmpty()) {
 			decl.append("% List styles").nl();
 			// May need an extra counter to handle continued numbering in lists
@@ -65,7 +65,7 @@ public class ListConverter extends StyleConverter {
 				.append("\\aftergroup\\let\\aftergroup\\writerlistparindent\\aftergroup\\relax")
 				.append("\\aftergroup\\let\\aftergroup\\writerlistlabel\\aftergroup\\relax}").nl();
 			}
-			super.appendDeclarations(pack,decl);
+			super.appendDeclarations(pacman,decl);
 		}
 	}
 

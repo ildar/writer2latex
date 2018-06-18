@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-22)
+ *  Version 2.0 (2018-06-19)
  *
  */
  
@@ -52,10 +52,10 @@ public class CaptionConverter extends ConverterHelper {
         super(ofr,config,palette);
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedCaptionOf) {
             if (config.useCaption()) {
-                pack.append("\\usepackage{caption}").nl();
+            	pacman.usepackage("caption");
             }
             else { // use definition borrowed from capt-of.sty
                 decl.append("% Non-floating captions").nl()

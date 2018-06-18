@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-20) 
+ *  Version 2.0 (2018-06-18) 
  * 
  */
 
@@ -32,10 +32,10 @@ import java.util.Set;
 import java.util.Stack;
 
 import writer2latex.office.*;
-import writer2latex.util.CSVList;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXPacman;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 
@@ -120,24 +120,23 @@ public abstract class I18n {
     }
 	
     /** Add declarations to the preamble to load the required packages
-     *  @param pack usepackage declarations
+     *  @param pacman usepackage declarations
      *  @param decl other declarations
      */
-    public abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
+    public abstract void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl);
 	
     /** Load symbol font packages common for classic and modern
      * 
      * @param ldp the document portion to which declarations are added
      */
-    protected void useSymbolFonts(LaTeXDocumentPortion ldp) {
+    protected void useSymbolFonts(LaTeXPacman pacman) {
         if (config.useTipa()) {
-            ldp.append("\\usepackage[noenc]{tipa}").nl()
-               .append("\\usepackage{tipx}").nl();
+        	pacman.usepackage("noenc", "tipa").usepackage("tipx");
         }
 
         // Has to avoid some nameclashes
         if (config.useBbding()) {
-            ldp.append("\\usepackage{bbding}").nl()
+            pacman.usepackage("bbding")
                .append("\\let\\bbCross\\Cross\\let\\Cross\\undefined").nl()
                .append("\\let\\bbSquare\\Square\\let\\Square\\undefined").nl()
                .append("\\let\\bbTrianbleUp\\TriangleUp\\let\\TriangleUp\\undefined").nl()
@@ -145,29 +144,25 @@ public abstract class I18n {
         }    	
 
         if (config.useIfsym()) {
-	        ldp.append("\\usepackage[geometry,weather,misc,clock]{ifsym}").nl();
+	        pacman.usepackage("geometry,weather,misc,clock","ifsym");
 	    }
         
         // Remaining packages does not need any options
-        CSVList packages = new CSVList(",");
+        if (config.usePifont()) { pacman.usepackage("pifont"); }
 
-        if (config.usePifont()) { packages.addValue("pifont"); }
-
-        if (config.useEurosym()) { packages.addValue("eurosym"); }
+        if (config.useEurosym()) { pacman.usepackage("eurosym"); }
 
         // Always use amsmath
-        packages.addValue("amsmath");
+        pacman.usepackage("amsmath");
 
         // wasysym *must* be loaded between amsmath and amsfonts!
 	    if (config.useWasysym()) { 
-	    	packages.addValue("wasysym");
+	    	pacman.usepackage("wasysym");
 	    }
 	
 	    // Always use amssymb, amsfonts
-	    packages.addValue("amssymb");
-	    packages.addValue("amsfonts");
-	    
-	    ldp.append("\\usepackage{").append(packages.toString()).append("}").nl();
+	    pacman.usepackage("amssymb");
+	    pacman.usepackage("amsfonts");
     }
         
     /** Apply a language language

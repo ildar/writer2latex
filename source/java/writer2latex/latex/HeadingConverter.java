@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-22)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -47,7 +47,7 @@ public class HeadingConverter extends ConverterHelper {
         this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
     	// Nothing to do
     }
 	

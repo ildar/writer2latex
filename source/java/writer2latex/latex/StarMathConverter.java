@@ -4,8 +4,6 @@
  *
  *  Copyright: 2002-2018 by Henrik Just
  *  
- *  Version 2.0 (2018-05-22)
- *
  *  This file is part of Writer2LaTeX.
  *  
  *  Writer2LaTeX is free software: you can redistribute it and/or modify
@@ -20,6 +18,8 @@
  *  
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Version 2.0 (2018-06-18)
  */
 
 package writer2latex.latex;
@@ -788,9 +788,9 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         createNumberPattern();
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bMultiscripts || bMathoverstrike) {
-        	pack.append("\\usepackage{calc}").nl();
+        	pacman.usepackage("calc");
         }
         if (bDefeq) {
             decl.append("\\newcommand\\defeq{\\stackrel{\\mathrm{def}}{=}}").nl();
@@ -865,11 +865,11 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
 
     public String getPreamble() {
+        LaTeXPacman pacman = new LaTeXPacman(false);
         LaTeXDocumentPortion decl = new LaTeXDocumentPortion(false);
-        LaTeXDocumentPortion pack = new LaTeXDocumentPortion(false);
-        i18n.appendDeclarations(pack,decl);
-        appendDeclarations(pack,decl);
-        return pack.toString()+decl.toString();
+        i18n.appendDeclarations(pacman,decl);
+        appendDeclarations(pacman,decl);
+        return pacman.toString()+decl.toString();
     }
 
     

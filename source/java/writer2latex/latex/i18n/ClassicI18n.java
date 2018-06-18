@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-31) 
+ *  Version 2.0 (2018-06-18) 
  * 
  */
 
@@ -34,6 +34,7 @@ import writer2latex.util.CSVList;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXPacman;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
@@ -258,24 +259,22 @@ public class ClassicI18n extends I18n {
     }
 
     /** Add declarations to the preamble to load the required packages
-     *  @param pack usepackage declarations
+     *  @param pacman usepackage declarations
      *  @param decl other declarations
      */
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-    	useInputenc(pack);
-    	useSymbolFonts(pack);
-    	useTextcomp(pack);
-    	useTextFonts(pack);
-    	useBabel(pack);
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    	useInputenc(pacman);
+    	useSymbolFonts(pacman);
+    	useTextcomp(pacman);
+    	useTextFonts(pacman);
+    	useBabel(pacman);
     }
     
-    private void useInputenc(LaTeXDocumentPortion ldp) {
-    	ldp.append("\\usepackage[")
-			.append(writeInputenc(config.getInputencoding()))
-        .append("]{inputenc}").nl();
+    private void useInputenc(LaTeXPacman pacman) {
+    	pacman.usepackage(writeInputenc(config.getInputencoding()), "inputenc");
     }
     
-    private void useBabel(LaTeXDocumentPortion ldp) {
+    private void useBabel(LaTeXPacman pacman) {
         // If the document contains "anonymous" greek letters we need greek in any case
         // If the document contains "anonymous cyrillic letters we need one of the
         // languages russian, ukrainian or bulgarian
@@ -316,89 +315,88 @@ public class ClassicI18n extends I18n {
         }
 
         if (!babelopt.isEmpty()) {
-            ldp.append("\\usepackage[")
-               .append(babelopt.toString())
-               .append("]{babel}").nl();
+        	pacman.usepackage(babelopt.toString(), "babel");
             // For Polish we must undefine \lll which is later defined by ams
             if (languages.contains("pl")) { 
-            	ldp.append("\\let\\lll\\undefined").nl();
+            	pacman.append("\\let\\lll\\undefined").nl();
             }
         }	
     }
     
-    private void useTextcomp(LaTeXDocumentPortion ldp) {
+    private void useTextcomp(LaTeXPacman pacman) {
 	    // Always use textcomp
-	    ldp.append("\\usepackage{textcomp}").nl();    	
+	    pacman.usepackage("textcomp");    	
     }
 
-    private void useTextFonts(LaTeXDocumentPortion ldp) {
+    private void useTextFonts(LaTeXPacman pacman) {
         // usepackage fontenc
         CSVList fontencs = new CSVList(',');
         if (bT2A) { fontencs.addValue("T2A"); }
         if (bGreek) { fontencs.addValue("LGR"); }
         if (config.useTipa()) { fontencs.addValue("T3"); }
         fontencs.addValue("T1");
-        ldp.append("\\usepackage[").append(fontencs.toString())
-            .append("]{fontenc}").nl();
+        pacman.usepackage(fontencs.toString(), "fontenc");
         
         // use font package(s)
-        useFontPackages(ldp);		
+        useFontPackages(pacman);		
     }
 
-    private void useFontPackages(LaTeXDocumentPortion ldp) {
+    private void useFontPackages(LaTeXPacman pacman) {
     	String sFont = config.getFont();
     	// Sources:
     	// A Survey of Free Math Fonts for TeX and LaTeX, Stephen G. Hartke 2006
     	if ("cmbright".equals(sFont)) { // Computer Modern Bright designed by Walter A. Schmidt
-    		ldp.append("\\usepackage{cmbright}").nl();
+    		pacman.usepackage("cmbright");
     	}
     	else if ("ccfonts".equals(sFont)) { // Concrete designed by Donald E. Knuth
-    		ldp.append("\\usepackage{ccfonts}").nl();
+    		pacman.usepackage("ccfonts");
     	}
     	else if ("ccfonts-euler".equals(sFont)) { // Concrete with Euler math fonts
-    		ldp.append("\\usepackage{ccfonts,eulervm}").nl();
+    		pacman.usepackage("ccfonts");
+    		pacman.usepackage("eulervm");
     	}
     	else if ("iwona".equals(sFont)) { // Iwona
-    		ldp.append("\\usepackage[math]{iwona}").nl();
+    		pacman.usepackage("math","iwona");
     	}
     	else if ("kurier".equals(sFont)) { // Kurier
-    		ldp.append("\\usepackage[math]{kurier}").nl();
+    		pacman.usepackage("math","kurier");
     	}
     	else if ("anttor".equals(sFont)) { // Antykwa Torunska 
-    		ldp.append("\\usepackage[math]{anttor}").nl();
+    		pacman.usepackage("math","anttor");
     	}
     	else if ("kmath-kerkis".equals(sFont)) { // Kerkis
-    		ldp.append("\\usepackage{kmath,kerkis}").nl();
+    		pacman.usepackage("kmath");
+    		pacman.usepackage("kerkis");
     	}
     	else if ("fouriernc".equals(sFont)) { // New Century Schoolbook + Fourier
-    		ldp.append("\\usepackage{fouriernc}").nl();
+    		pacman.usepackage("fouriernc");
     	}
     	else if ("pxfonts".equals(sFont)) { // Palatino + pxfonts math
-    		ldp.append("\\usepackage{pxfonts}").nl();
+    		pacman.usepackage("pxfonts");
     	}
     	else if ("mathpazo".equals(sFont)) { // Palatino + Pazo math
-    		ldp.append("\\usepackage{mathpazo}").nl();
+    		pacman.usepackage("mathpazo");
     	}
     	else if ("mathpple".equals(sFont)) { // Palatino + Euler
-    		ldp.append("\\usepackage{mathpple}").nl();
+    		pacman.usepackage("mathpple");
     	}
     	else if ("txfonts".equals(sFont)) { // Times + txfonts math
-    		ldp.append("\\usepackage[varg]{txfonts}").nl();
+    		pacman.usepackage("varg","txfonts");
     	}
     	else if ("mathptmx".equals(sFont)) { // Times + Symbol
-    		ldp.append("\\usepackage{mathptmx}").nl();
+    		pacman.usepackage("mathptmx");
     	}
     	else if ("arev".equals(sFont)) { // Arev Sans + Arev math 
-    		ldp.append("\\usepackage{arev}").nl();
+    		pacman.usepackage("arev");
     	}
     	else if ("charter-mathdesign".equals(sFont)) { // Bitstream Charter + Math Design
-    		ldp.append("\\usepackage[charter]{mathdesign}").nl();
+    		pacman.usepackage("charter","mathdesign");
     	}
     	else if ("utopia-mathdesign".equals(sFont)) { // Utopia + Math Design
-    		ldp.append("\\usepackage[utopia]{mathdesign}").nl();
+    		pacman.usepackage("utopia","mathdesign");
     	}
     	else if ("fourier".equals(sFont)) { // Utopia + Fourier
-    		ldp.append("\\usepackage{fourier}").nl();
+    		pacman.usepackage("fourier");
     	}
     }
 

@@ -2,7 +2,7 @@
  *
  *  InlineConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-19)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -61,7 +61,7 @@ public class InlineConverter extends ConverterHelper {
         this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bHasPdfannotation) {
             decl.append("\\newcommand\\pdfannotation[1]")
                 .append("{\\ifx\\pdfoutput\\undefined\\marginpar{#1}\\else")

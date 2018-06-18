@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-11)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -73,8 +73,8 @@ public class CustomShapeConverter extends ConverterHelper {
 	}
 
 	@Override
-	void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-		pack.append("\\usepackage{tikz}").nl();
+	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+		pacman.usepackage("tikz");
 	}
 	
 	/** Convert a <code>draw:custom-shape</code> element to a TikZ drawing

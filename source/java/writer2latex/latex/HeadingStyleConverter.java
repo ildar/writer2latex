@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-21)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -54,9 +54,9 @@ class HeadingStyleConverter extends ConverterHelper {
 		super(ofr, config, palette);
 	}
 
-	void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.useTitlesec()) {
-			pack.append("\\usepackage[explicit]{titlesec}").nl();
+			pacman.usepackage("explicit", "titlesec");
 			convertHeadingStyles(decl);
 		}
 		
@@ -328,7 +328,7 @@ class HeadingStyleConverter extends ConverterHelper {
 			ldp.append("{").append(sMarginLeft).append("}");
 		}
 		else {
-			ldp.append("0pt");
+			ldp.append("{0pt}");
 		}
 		convertMargin(style, sMargin, XMLString.FO_MARGIN_TOP, ldp);
 		convertMargin(style, sMargin, XMLString.FO_MARGIN_BOTTOM, ldp);

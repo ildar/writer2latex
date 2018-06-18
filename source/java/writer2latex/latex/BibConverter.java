@@ -2,7 +2,7 @@
  *
  *  BibConverter.java
  *
- *  Copyright: 2002-2017 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-08)
+ *  Version 2.0 (2018-06-19)
  *
  */
 
@@ -178,10 +178,10 @@ class BibConverter extends ConverterHelper {
 
     /** Append declarations needed by the <code>BibConverter</code> to the preamble.
      * 
-     * @param pack the LaTeXDocumentPortion to which declarations of packages (\\usepackage) should be added.
+     * @param pack the LaTeXPacman to which declarations of packages (\\usepackage) should be added.
      * @param decl the LaTeXDocumentPortion to which other declarations should be added.
      */
-    void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
     	// Currently nothing
     }
 

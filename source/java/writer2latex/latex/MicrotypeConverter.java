@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-31)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -51,12 +51,12 @@ public class MicrotypeConverter extends ConverterHelper {
 	}
 
 	@Override
-	void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.useMicrotype() && (config.getBackend()==LaTeXConfig.PDFTEX || config.getBackend()==LaTeXConfig.XETEX)) {
-			pack.append("\\usepackage{microtype}").nl();
+			pacman.usepackage("microtype");
 		}
 		else if (bNeedLetterspace) {
-			pack.append("\\usepackage{letterspace}").nl();
+			pacman.usepackage("letterspace");
 		}
 	}
 	

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-01)
+ *  Version 2.0 (2018-06-17)
  *
  */
  
@@ -63,13 +63,12 @@ public class DrawConverter extends ConverterHelper {
         floatingFramesStack.push(new LinkedList<Element>());
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedGraphicx) { 
-            pack.append("\\usepackage");
-            if (config.getBackend()==LaTeXConfig.PDFTEX) pack.append("[pdftex]");
-            //else if (config.getBackend()==LaTeXConfig.XETEX) pack.append("[xetex]");
-            else if (config.getBackend()==LaTeXConfig.DVIPS) pack.append("[dvips]");
-            pack.append("{graphicx}").nl();
+        	String sOptions = null;
+            if (config.getBackend()==LaTeXConfig.PDFTEX) sOptions = "pdftex";
+            else if (config.getBackend()==LaTeXConfig.DVIPS) sOptions = "dvips";
+            pacman.usepackage(sOptions, "graphicx");
         }
     }
     	

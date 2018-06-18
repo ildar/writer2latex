@@ -2,7 +2,7 @@
  *
  *  ConverterHelper.java
  *
- *  Copyright: 2002-2016 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-06-20)
+ *  Version 2.0 (2018-06-19)
  *
  */
 
@@ -27,8 +27,7 @@ package writer2latex.latex;
 
 import writer2latex.office.OfficeReader;
 
-/**
- *  <p>This is an abstract superclass for converter helpers.</p>
+/** This is an abstract superclass for LaTeX converter helpers</p>
  */
 abstract class ConverterHelper {
     
@@ -42,6 +41,14 @@ abstract class ConverterHelper {
         this.palette = palette;
     }
 	
-    abstract void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl);
+    /** Add any declarations to the preamble. Either by invoking the methods
+     *  {@link writer2latex.latex.ConverterPalette#usepackage(String,String) usepackage} and 
+     *  {@link ConverterPalette#usepackage(String) usepackage}
+     *  or by adding content to the provided <code>LaTeXDocumentPortion</code> 
+     * 
+     * @param pacman the <code>LaTeXPacman</code> containing the package loading part of the LaTeX preamble
+     * @param decl the <code>LaTeXDocumentPortion</code> containing the free form part of the LaTeX preamble
+     */
+    abstract void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl);
     
 }

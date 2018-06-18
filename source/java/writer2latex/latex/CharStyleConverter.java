@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-30)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -65,9 +65,9 @@ public class CharStyleConverter extends StyleConverter {
         bIgnoreHardFontsize = config.formatting()<=LaTeXConfig.CONVERT_MOST;
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedUlem) {
-            pack.append("\\usepackage[normalem]{ulem}").nl();
+        	pacman.usepackage("normalem", "ulem");
         }
         if (bNeedSubscript && !config.getTextAttributeStyleMap().contains("subscript")) {
             decl.append("\\providecommand\\textsubscript[1]{\\ensuremath{{}_{\\text{#1}}}}").nl();

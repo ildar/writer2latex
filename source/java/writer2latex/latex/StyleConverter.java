@@ -2,7 +2,7 @@
  *
  *  StyleConverter.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.0 (2008-09-08)
+ *  Version 2.0 (2018-06-19)
  *
  */
 
@@ -43,7 +43,7 @@ public abstract class StyleConverter extends ConverterHelper {
         super(ofr,config,palette);
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         decl.append(declarations);
     }
     

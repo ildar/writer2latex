@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-19)
+ *  Version 2.0 (2018-06-18)
  * 
  */
 
@@ -33,6 +33,7 @@ import writer2latex.office.*;
 import writer2latex.latex.LaTeXConfig;
 import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXPacman;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 
@@ -148,41 +149,39 @@ public class XeTeXI18n extends I18n {
     }
 	
     /** Add declarations to the preamble to load the required packages
-     *  @param pack usepackage declarations
+     *  @param pacman usepackage declarations
      *  @param decl other declarations
      */
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-    	useSymbolFonts(pack);
-    	useBasePackages(pack);
-    	useLanguages(pack,decl);
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    	useSymbolFonts(pacman);
+    	useBasePackages(pacman);
+    	useLanguages(pacman,decl);
     	useFonts(decl);
     }
     
 	// Load standard packages
-    private void useBasePackages(LaTeXDocumentPortion pack) {
-    	System.out.println(config.fontspec());
+    private void useBasePackages(LaTeXPacman pacman) {
     	if (!config.fontspec().equals("original+math")) {
-    		System.out.println("Using fontspec");
+    		// xunicode and xltxtra seems not to be needed anymore?
     		//pack.append("\\usepackage{fontspec,xunicode,xltxtra}").nl();
-    		pack.append("\\usepackage{fontspec}").nl();
+    		pacman.usepackage("fontspec");
     	}
     	else {
-    		System.out.println("Using mathspec");
-    		pack.append("\\usepackage{mathspec}").nl();
+    		pacman.usepackage("mathspec");
     	}
     }
     
     // Load
-    private void useLanguages(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    private void useLanguages(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
     	// Load xeCJK
     	if (nScript==LaTeXConfig.CJK) {
-    		pack.append("\\usepackage{xeCJK}").nl();
+    		pacman.usepackage("xeCJK");
     	}
     	// Load xepersian or polyglossia 
     	// These packages (or rather bidi) should be loaded as the last package
 		// We put them in the declarations part to achieve this
     	if (bUseXepersian) { // For farsi, use xepersian rather than polyglossia
-    		decl.append("\\usepackage{xepersian}").nl();
+    		pacman.usepackage("xepersian");
     	}
     	else if (nScript!=LaTeXConfig.CJK){
     		String[] polyglossiaDeclarations = polyglossia.getDeclarations();

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-09)
+ *  Version 2.0 (2018-06-17)
  *
  */
 
@@ -99,9 +99,9 @@ public class ColorConverter extends ConverterHelper {
 		namedColors.put("#FFFFFF","white"); 	// 1,1,1
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 	    if (bUseColor) {
-            pack.append("\\usepackage{xcolor}").nl();
+	    	pacman.usepackage("xcolor");
             for (String sColor : autoNamedColors.keySet()) {
             	decl.append("\\definecolor{")
             	    .append(autoNamedColors.get(sColor)).append("}{HTML}{")

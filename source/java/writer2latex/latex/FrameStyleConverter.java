@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-30)
+ *  Version 2.0 (2018-06-17)
  *
  */
  
@@ -60,9 +60,9 @@ import writer2latex.util.Calc;
 		sBorderRadius = config.borderRadius();
 	}
 	
-	void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (bNeedLongfbox) {
-			pack.append("\\usepackage{longfbox}").nl();
+			pacman.usepackage("longfbox");
 		}
 	}
 	

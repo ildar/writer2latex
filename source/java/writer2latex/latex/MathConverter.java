@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-12)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -73,9 +73,9 @@ public final class MathConverter extends ConverterHelper {
         bAddParAfterDisplay = config.formatting()>=LaTeXConfig.CONVERT_MOST;
     }
 
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bContainsFormulas) {
-        	smc.appendDeclarations(pack,decl);
+        	smc.appendDeclarations(pacman,decl);
         }
         if (bNeedTexMathsPreamble) {
         	// The preamble may be stored as a user defined property (newline is represented as paragraph sign)

@@ -2,7 +2,7 @@
  *
  *  SectionConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-08)
+ *  Version 2.0 (2018-06-18)
  *
  */
 
@@ -58,8 +58,8 @@ public class SectionConverter extends ConverterHelper {
         this.bDisplayHiddenText = config.displayHiddenText();
     }
 	
-    public void appendDeclarations(LaTeXDocumentPortion pack, LaTeXDocumentPortion decl) {
-        if (bNeedMulticol) { pack.append("\\usepackage{multicol}").nl(); }
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+        if (bNeedMulticol) { pacman.usepackage("multicol"); }
     }
     
     // Handle a section as a Zotero bibliography
