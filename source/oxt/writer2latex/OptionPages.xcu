@@ -1,51 +1,42 @@
-<?xml version='1.0' encoding='UTF-8'?>
- 
-<oor:component-data oor:name="OptionsDialog" oor:package="org.openoffice.Office" 
-  xmlns:oor="http://openoffice.org/2001/registry" 
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8" ?>
+<oor:component-data oor:name="OptionsDialog" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  
   <node oor:name="Modules">
-    <!-- These nodes should appear in the Writer module -->
+    <!--   These nodes should appear in the Writer module   -->
     <node oor:name="com.sun.star.text.TextDocument" oor:op="fuse">
-      <!-- We define 3 nodes: Toolbar configuration, LaTeX custom config
-      and HTML5 custom config -->
+      <!--   We define 3 nodes: Toolbar configuration, LaTeX custom config
+      and HTML5 custom config   -->
       <node oor:name="Nodes">
-        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse">
         </node>
-        <node oor:name="org.openoffice.da.writer2latex.configuration" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration" oor:op="fuse">
         </node>
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration" oor:op="fuse">
         </node>  
       </node>
     </node>
   </node>
   
   <node oor:name="Nodes">
-    <!-- First root node is toolbar configuration -->
-    <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" 
-      oor:op="fuse"> 
+    <!--   First root node is toolbar configuration   -->
+    <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.toolbar.configuration</value>
       </prop>
-      <prop oor:name="Label">
+      <prop oor:localized="true" oor:name="Label">
         <value xml:lang="en-US">Writer2LaTeX</value>
-        <value xml:lang="da">Writer2LaTeX</value>
+        <value xml:lang="da-DK">Writer2LaTeX</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ToolbarConfigurationRoot.xdl</value>
       </prop>
       <prop oor:name="EventHandlerService">
-        <value></value>
+        <value />
       </prop>
 
       <node oor:name="Leaves">
-      	<!-- and the root node has several leaves -->
-        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.bibliography" 
-          oor:op="fuse">
+      	<!--   and the root node has several leaves   -->
+        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.bibliography" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.toolbar.bibliography</value>
           </prop>
@@ -55,9 +46,9 @@
           <prop oor:name="GroupIndex">
             <value>0</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">BibTeX settings</value>
-            <value xml:lang="en-US">BibTeX-indstillinger</value>
+            <value xml:lang="da-DK">BibTeX-indstillinger</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Bibliography.xdl</value>
@@ -66,8 +57,7 @@
             <value>org.openoffice.da.writer2latex.BibliographyDialog</value>
           </prop>
         </node>
-        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.applications" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.applications" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.toolbar.applications</value>
           </prop>
@@ -77,9 +67,9 @@
           <prop oor:name="GroupIndex">
             <value>1</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">LaTeX settings</value>
-            <value xml:lang="da">LaTeX-indstillinger</value>
+            <value xml:lang="da-DK">LaTeX-indstillinger</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Applications.xdl</value>
@@ -88,8 +78,7 @@
             <value>org.openoffice.da.writer2latex.ApplicationsDialog</value>
           </prop>
         </node>
-        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.html5" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.html5" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.toolbar.html5</value>
           </prop>
@@ -99,9 +88,9 @@
           <prop oor:name="GroupIndex">
             <value>2</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">HTML5 settings</value>
-            <value xml:lang="en-US">HTML5-indstillinger</value>
+            <value xml:lang="da-DK">HTML5-indstillinger</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Html5Settings.xdl</value>
@@ -113,14 +102,14 @@
       </node>
     </node>
 
-	<!-- Second root node i LaTeX custom config -->
-    <node oor:name="org.openoffice.da.writer2latex.configuration" 
-      oor:op="fuse"> 
+	<!--   Second root node i LaTeX custom config   -->
+    <node oor:name="org.openoffice.da.writer2latex.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.configuration</value>
       </prop>
-      <prop oor:name="Label">
+      <prop oor:localized="true" oor:name="Label">
         <value xml:lang="en-US">Writer2LaTeX - LaTeX</value>
+        <value xml:lang="da-DK">Writer2LaTeX - LaTeX</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ConfigurationRoot.xdl</value>
@@ -130,8 +119,7 @@
       </prop>
 
       <node oor:name="Leaves">
-        <node oor:name="org.openoffice.da.writer2latex.configuration.formatting" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.formatting" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.formatting</value>
           </prop>
@@ -141,8 +129,9 @@
           <prop oor:name="GroupIndex">
             <value>0</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Formatting</value>
+            <value xml:lang="da-DK">Formattering</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Formatting.xdl</value>
@@ -152,8 +141,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.documentclass</value>
           </prop>
@@ -163,8 +151,9 @@
           <prop oor:name="GroupIndex">
             <value>1</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Documentclass</value>
+            <value xml:lang="da-DK">Documentclass</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Documentclass.xdl</value>
@@ -174,8 +163,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.styles" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.styles" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.styles</value>
           </prop>
@@ -185,8 +173,9 @@
           <prop oor:name="GroupIndex">
             <value>2</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Styles</value>
+            <value xml:lang="da-DK">Typografier</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Styles.xdl</value>
@@ -196,8 +185,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.characters" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.characters" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.characters</value>
           </prop>
@@ -207,8 +195,9 @@
           <prop oor:name="GroupIndex">
             <value>3</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Characters</value>
+            <value xml:lang="da-DK">Tegn</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Characters.xdl</value>
@@ -218,8 +207,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.fonts" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.fonts" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.fonts</value>
           </prop>
@@ -229,8 +217,9 @@
           <prop oor:name="GroupIndex">
             <value>4</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Fonts</value>
+            <value xml:lang="da-DK">Skrifttyper</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Fonts.xdl</value>
@@ -240,8 +229,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.pages" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.pages" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.pages</value>
           </prop>
@@ -251,8 +239,9 @@
           <prop oor:name="GroupIndex">
             <value>5</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Pages</value>
+            <value xml:lang="da-DK">Sider</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Pages.xdl</value>
@@ -262,8 +251,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.tables" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.tables" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.tables</value>
           </prop>
@@ -273,8 +261,9 @@
           <prop oor:name="GroupIndex">
             <value>6</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Tables</value>
+            <value xml:lang="da-DK">Tabeller</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Tables.xdl</value>
@@ -284,8 +273,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.figures" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.figures" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.figures</value>
           </prop>
@@ -295,8 +283,9 @@
           <prop oor:name="GroupIndex">
             <value>7</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Figures</value>
+            <value xml:lang="da-DK">Figurer</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Figures.xdl</value>
@@ -306,8 +295,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2latex.configuration.textandmath" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.textandmath" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.textandmath</value>
           </prop>
@@ -317,8 +305,9 @@
           <prop oor:name="GroupIndex">
             <value>8</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Text and math</value>
+            <value xml:lang="da-DK">Tekst og formler</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/TextAndMath.xdl</value>
@@ -331,27 +320,26 @@
 	  </node>
     </node>
     
-    <!-- Last root node is HTML5 custom config -->
-    <node oor:name="org.openoffice.da.writer2xhtml.configuration" 
-      oor:op="fuse"> 
+    <!--   Last root node is HTML5 custom config   -->
+    <node oor:name="org.openoffice.da.writer2xhtml.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2xhtml.configuration</value>
       </prop>
-      <prop oor:name="Label">
+      <prop oor:localized="true" oor:name="Label">
         <value xml:lang="en-US">Writer2LaTeX - HTML5</value>
+        <value xml:lang="da-DK">Writer2LaTeX - HTML5</value>
       </prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2HDialogs2/ConfigurationRoot.xdl</value>
       </prop>
       <prop oor:name="EventHandlerService">
-        <value></value>
+        <value />
       </prop>
 
       <node oor:name="Leaves">
-      	<!-- the root node has several leaves -->
+      	<!--   the root node has several leaves   -->
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.general" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.general" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.general</value>
           </prop>
@@ -361,8 +349,9 @@
           <prop oor:name="GroupIndex">
             <value>0</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">General</value>
+            <value xml:lang="da-DK">Generelt</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/General.xdl</value>
@@ -372,8 +361,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.template" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.template" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.template</value>
           </prop>
@@ -383,8 +371,9 @@
           <prop oor:name="GroupIndex">
             <value>1</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Template</value>
+            <value xml:lang="da-DK">Skabelon</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Template.xdl</value>
@@ -394,8 +383,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.stylesheets" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.stylesheets" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.stylesheets</value>
           </prop>
@@ -405,8 +393,9 @@
           <prop oor:name="GroupIndex">
             <value>2</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Style sheets</value>
+            <value xml:lang="da-DK">Typografiark</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Stylesheets.xdl</value>
@@ -416,8 +405,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles1" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles1" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.styles1</value>
           </prop>
@@ -427,8 +415,9 @@
           <prop oor:name="GroupIndex">
             <value>3</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Master styles</value>
+            <value xml:lang="da-DK">Hovedtypografier</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Styles1.xdl</value>
@@ -438,8 +427,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles2" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles2" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.styles2</value>
           </prop>
@@ -449,8 +437,9 @@
           <prop oor:name="GroupIndex">
             <value>4</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Other styles</value>
+            <value xml:lang="da-DK">Andre typografier</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Styles2.xdl</value>
@@ -460,8 +449,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.formatting" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.formatting" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.formatting</value>
           </prop>
@@ -471,8 +459,9 @@
           <prop oor:name="GroupIndex">
             <value>5</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Formatting</value>
+            <value xml:lang="da-DK">Formattering</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Formatting.xdl</value>
@@ -482,8 +471,7 @@
           </prop>
         </node>
 
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.content" 
-          oor:op="fuse">
+        <node oor:name="org.openoffice.da.writer2xhtml.configuration.content" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2xhtml.configuration.content</value>
           </prop>
@@ -493,8 +481,9 @@
           <prop oor:name="GroupIndex">
             <value>6</value>
           </prop>
-          <prop oor:name="Label">
+          <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Content</value>
+            <value xml:lang="da-DK">Indhold</value>
           </prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2HDialogs2/Content.xdl</value>

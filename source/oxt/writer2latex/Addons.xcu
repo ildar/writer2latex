@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Addons" oor:package="org.openoffice.Office">
-<!-- Defines the menus and toolbars provided by Writer2LaTeX -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<oor:component-data oor:name="Addons" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!--   Defines the menus and toolbars provided by Writer2LaTeX   -->
 <node oor:name="AddonUI">
 	<node oor:name="OfficeToolBar">
 		<node oor:name="org.openoffice.da.writer2latex.OfficeToolBar" oor:op="replace">
@@ -8,9 +8,9 @@
 	            <prop oor:name="Context" oor:type="xs:string">
 	                <value>com.sun.star.text.TextDocument</value>
 	            </prop>
-	            <prop oor:name="Title" oor:type="xs:string">
+	            <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
 	                <value xml:lang="en-US">Insert BibTeX citation</value>
-	                <value xml:lang="da">Indsæt BibTeX-reference</value>
+	                <value xml:lang="da-DK">Indsæt BibTeX-reference</value>
 	            </prop>
 	            <prop oor:name="Target" oor:type="xs:string">
 	                <value>_self</value>
@@ -26,9 +26,9 @@
 	            <prop oor:name="Context" oor:type="xs:string">
 	                <value>com.sun.star.text.TextDocument</value>
 	            </prop>
-	            <prop oor:name="Title" oor:type="xs:string">
+	            <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
 	                <value xml:lang="en-US">Publish to LaTeX</value>
-	                <value xml:lang="da">Publicer til LaTeX</value>
+	                <value xml:lang="da-DK">Publicer til LaTeX</value>
 	            </prop>
 	            <prop oor:name="Target" oor:type="xs:string">
 	                <value>_self</value>
@@ -44,9 +44,9 @@
 	            <prop oor:name="Context" oor:type="xs:string">
 	                <value>com.sun.star.text.TextDocument</value>
 	            </prop>
-	            <prop oor:name="Title" oor:type="xs:string">
+	            <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
 	                <value xml:lang="en-US">View log files</value>
-	                <value xml:lang="da">Vis logfiler</value>
+	                <value xml:lang="da-DK">Vis logfiler</value>
 	            </prop>
 	            <prop oor:name="Target" oor:type="xs:string">
 	                <value>_self</value>
@@ -62,9 +62,9 @@
 	            <prop oor:name="Context" oor:type="xs:string">
 	                <value>com.sun.star.text.TextDocument</value>
 	            </prop>
-	            <prop oor:name="Title" oor:type="xs:string">
+	            <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
 	                <value xml:lang="en-US">Edit custom format</value>
-	                <value xml:lang="da">Rediger brugerdefineret format</value>
+	                <value xml:lang="da-DK">Rediger brugerdefineret format</value>
 	            </prop>
 	            <prop oor:name="Target" oor:type="xs:string">
 	                <value>_self</value>
@@ -77,12 +77,17 @@
 	            </prop>
 	  		</node>
 	  		<node oor:name="button5" oor:op="replace">
+	            <prop oor:name="URL" oor:type="xs:string">
+	                <value>private:separator</value>
+	            </prop>
+	  		</node>
+	  		<node oor:name="button6" oor:op="replace">
                 <prop oor:name="Context" oor:type="xs:string">
                     <value>com.sun.star.text.TextDocument</value>
                 </prop>
-                <prop oor:name="Title" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
                     <value xml:lang="en-US">Publish as HTML5</value>
-                    <value xml:lang="da">Publicer som HTML5</value>
+                    <value xml:lang="da-DK">Publicer som HTML5</value>
                 </prop>
                 <prop oor:name="Target" oor:type="xs:string">
                     <value>_self</value>
@@ -94,13 +99,13 @@
                     <value>%origin%/icons/html5</value>
                 </prop>
       		</node>
-      		<node oor:name="button6" oor:op="replace">
+      		<node oor:name="button7" oor:op="replace">
                 <prop oor:name="Context" oor:type="xs:string">
                     <value>com.sun.star.text.TextDocument</value>
                 </prop>
-                <prop oor:name="Title" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="Title" oor:type="xs:string">
                     <value xml:lang="en-US">Edit custom style</value>
-                    <value xml:lang="da">Rediger brugerdefineret typografi</value>
+                    <value xml:lang="da-DK">Rediger brugerdefineret typografi</value>
                 </prop>
                 <prop oor:name="Target" oor:type="xs:string">
                     <value>_self</value>
@@ -116,4 +121,4 @@
 	</node>    
 </node>
 
-</oor:component-data> 
+</oor:component-data>

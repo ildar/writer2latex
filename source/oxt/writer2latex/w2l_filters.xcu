@@ -41,7 +41,7 @@
 	
 	<!-- TeX import is disabled currently
 	<node oor:name="org.openoffice.da.writer2latex.latex" oor:op="replace" oor:finalized="true" oor:mandatory="true">
-		<prop oor:name="UIName"><value>LaTeX</value></prop>
+		<prop oor:name="UIName"><value>LaTeX [Writer2LaTeX]</value></prop>
 		<prop oor:name="Type"><value>org.openoffice.da.writer2latex.LaTeX_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
 		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.TeXImportFilter</value></prop>
@@ -53,7 +53,7 @@
 	</node>
 
 	<node oor:name="org.openoffice.da.writer2latex.xelatex" oor:op="replace" oor:finalized="true" oor:mandatory="true">
-		<prop oor:name="UIName"><value>XeLaTeX</value></prop>
+		<prop oor:name="UIName"><value>XeLaTeX [Writer2LaTeX]</value></prop>
 		<prop oor:name="Type"><value>org.openoffice.da.writer2latex.XeLaTeX_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
 		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.TeXImportFilter</value></prop>

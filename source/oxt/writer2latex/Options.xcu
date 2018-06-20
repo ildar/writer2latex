@@ -1,34 +1,30 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<oor:component-data oor:name="Options"
-  oor:package="org.openoffice.da.Writer2LaTeX"
-  xml:lang="en-US"
-  xmlns:oor="http://openoffice.org/2001/registry"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8" ?>
+<oor:component-data oor:name="Options" oor:package="org.openoffice.da.Writer2LaTeX" xml:lang="en-US" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="LaTeXOptions">
-    	<!-- Declare the available configurations -->
+    	<!--   Declare the available configurations   -->
         <node oor:name="Configurations">
-        	<!-- Standard configurations -->
+        	<!--   Standard configurations   -->
             <node oor:name="01w2l-ultraclean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value />
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Ultra-clean article</value>
                     <value xml:lang="da-DK">Ekstra ren artikel</value>
-                    <value xml:lang="ca">S&#x00fa;per-net</value>
-                    <value xml:lang="de-DE">Sehr aufger&#x00e4;umter Artikel</value>
-                    <value xml:lang="es-ES">Art&#x00ed;culo muy simple</value>
-                    <value xml:lang="fa-IR">&#x0645;&#x0642;&#x0627;&#x0644;&#x0647; &#x06a9;&#x0627;&#x0645;&#x0644;&#x0627; &#x067e;&#x0627;&#x06a9;</value>
+                    <value xml:lang="ca">Súper-net</value>
+                    <value xml:lang="de-DE">Sehr aufgeräumter Artikel</value>
+                    <value xml:lang="es-ES">Artículo muy simple</value>
+                    <value xml:lang="fa-IR">مقاله کاملا پاک</value>
                     <value xml:lang="fi-FI">Ultra-clean artikkeli</value>
-                    <value xml:lang="fr-FR">Article &#x00e9;pur&#x00e9;</value>
+                    <value xml:lang="fr-FR">Article épuré</value>
                     <value xml:lang="it-IT">Articolo ultra-pulito</value>
                     <value xml:lang="nl-NL">Extra schoon artikel</value>
                     <value xml:lang="nn-NO">Ultra-rein artikkel</value>
-                    <value xml:lang="pl-PL">Super-prosty artyku&#x0142;</value>
+                    <value xml:lang="pl-PL">Super-prosty artykuł</value>
                     <value xml:lang="pt-BR">Artigo ultra-limpo</value>
-                    <value xml:lang="ru-RU">&#x0421;&#x0432;&#x0435;&#x0440;&#x0445;&#x0447;&#x0438;&#x0441;&#x0442;&#x0430;&#x044f; &#x0441;&#x0442;&#x0430;&#x0442;&#x044c;&#x044f;</value>
+                    <value xml:lang="ru-RU">Сверхчистая статья</value>
                     <value xml:lang="tr-TR">Ter-Temiz Makale</value>
-                    <value xml:lang="uk-UA">&#x041d;&#x0430;&#x0434;&#x0447;&#x0438;&#x0441;&#x0442;&#x0430; &#x0441;&#x0442;&#x0430;&#x0442;&#x0442;&#x044f;</value>
+                    <value xml:lang="uk-UA">Надчиста стаття</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*ultraclean.xml</value>
@@ -36,25 +32,25 @@
             </node>
             <node oor:name="02w2l-clean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value />
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Clean article</value>
                     <value xml:lang="da-DK">Ren artikel</value>
                     <value xml:lang="ca">Net</value>
-                    <value xml:lang="de-DE">Aufger&#x00e4;umter Artikel</value>
-                    <value xml:lang="es-ES">Art&#x00ed;culo simple</value>
-                    <value xml:lang="fa-IR">&#x0645;&#x0642;&#x0627;&#x0644;&#x0647; &#x067e;&#x0627;&#x06a9;</value>
+                    <value xml:lang="de-DE">Aufgeräumter Artikel</value>
+                    <value xml:lang="es-ES">Artículo simple</value>
+                    <value xml:lang="fa-IR">مقاله پاک</value>
                     <value xml:lang="fi-FI">Clean artikkeli</value>
                     <value xml:lang="fr-FR">Article propre</value>
                     <value xml:lang="it-IT">Articolo pulito</value>
                     <value xml:lang="nl-NL">Schoon artikel</value>
                     <value xml:lang="nn-NO">Rein artikkel</value>
-                    <value xml:lang="pl-PL">Prosty artyu&#x0142;</value>
+                    <value xml:lang="pl-PL">Prosty artyuł</value>
                     <value xml:lang="pt-BR">Artigo limpo</value>
-                    <value xml:lang="ru-RU">&#x0427;&#x0438;&#x0441;&#x0442;&#x0430;&#x044f; &#x0441;&#x0442;&#x0430;&#x0442;&#x044c;&#x044f;</value>
+                    <value xml:lang="ru-RU">Чистая статья</value>
                     <value xml:lang="tr-TR">Temiz Makale</value>
-                    <value xml:lang="uk-UA">&#x0427;&#x0438;&#x0441;&#x0442;&#x0430; &#x0441;&#x0442;&#x0430;&#x0442;&#x0442;&#x044f;</value>
+                    <value xml:lang="uk-UA">Чиста стаття</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*clean.xml</value>
@@ -62,25 +58,25 @@
             </node>
             <node oor:name="03w2l-default" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value />
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Default</value>
                     <value xml:lang="da-DK">Standard</value>
-                    <value xml:lang="ca">Per omissi&#x00f3;</value>
+                    <value xml:lang="ca">Per omissió</value>
                     <value xml:lang="de-DE">Voreinstellung</value>
                     <value xml:lang="es-ES">Por defecto</value>
-                    <value xml:lang="fa-IR">&#x067e;&#x06cc;&#x0634; &#x0641;&#x0631;&#x0636;</value>
+                    <value xml:lang="fa-IR">پیش فرض</value>
                     <value xml:lang="fi-FI">Oletus</value>
-                    <value xml:lang="fr-FR">Par d&#x00e9;faut</value>
+                    <value xml:lang="fr-FR">Par défaut</value>
                     <value xml:lang="it-IT">Predefinito</value>
                     <value xml:lang="nl-NL">Standaard</value>
                     <value xml:lang="nn-NO">Standard</value>
-                    <value xml:lang="pl-PL">Domy&#x015b;lny;</value>
-                    <value xml:lang="pt-BR">Padr&#x00e3;o</value>
-                    <value xml:lang="ru-RU">&#x041f;&#x043e; &#x0443;&#x043c;&#x043e;&#x043b;&#x0447;&#x0430;&#x043d;&#x0438;&#x044e;</value>
-                    <value xml:lang="tr-TR">Varsay&#x0131;lan</value>
-                    <value xml:lang="uk-UA">&#x0417;&#x0430; &#x0437;&#x0430;&#x043c;&#x043e;&#x0432;&#x0447;&#x0443;&#x0432;&#x0430;&#x043d;&#x043d;&#x044f;&#x043c;</value>
+                    <value xml:lang="pl-PL">Domyślny;</value>
+                    <value xml:lang="pt-BR">Padrão</value>
+                    <value xml:lang="ru-RU">По умолчанию</value>
+                    <value xml:lang="tr-TR">Varsayılan</value>
+                    <value xml:lang="uk-UA">За замовчуванням</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*default.xml</value>
@@ -88,25 +84,25 @@
             </node>
             <node oor:name="04w2l-pdfprint" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value />
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Print optimized</value>
                     <value xml:lang="da-DK">Udskriftsoptimeret</value>
-                    <value xml:lang="ca">Optimitzat per impressi&#x00f3;</value>
+                    <value xml:lang="ca">Optimitzat per impressió</value>
                     <value xml:lang="de-DE">Druck optimiert</value>
-                    <value xml:lang="es-ES">Impresi&#x00f3;n optimizada</value>
-                    <value xml:lang="fa-IR">&#x0628;&#x0647;&#x06cc;&#x0646;&#x0647; &#x0634;&#x062f;&#x0647; &#x0628;&#x0631;&#x0627;&#x06cc; &#x0686;&#x0627;&#x067e;</value>
+                    <value xml:lang="es-ES">Impresión optimizada</value>
+                    <value xml:lang="fa-IR">بهینه شده برای چاپ</value>
                     <value xml:lang="fi-FI">Tulostukseen optimoitu</value>
-                    <value xml:lang="fr-FR">Adapt&#x00e9; pour une impression</value>
+                    <value xml:lang="fr-FR">Adapté pour une impression</value>
                     <value xml:lang="it-IT">Ottimizzato per stampa</value>
                     <value xml:lang="nl-NL">Voor druk geoptimaliseerd</value>
                     <value xml:lang="nn-NO">Optimalisert for utskrift</value>
                     <value xml:lang="pl-PL">Optymalizowany do wydruku</value>
-                    <value xml:lang="pt-BR">Optimizado para impress&#x00e3;o</value>
-                    <value xml:lang="ru-RU">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0438;&#x0437;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x044b;&#x0439; &#x0434;&#x043b;&#x044f; &#x043f;&#x0435;&#x0447;&#x0430;&#x0442;&#x0438;</value>
-                    <value xml:lang="tr-TR">Yaz&#x0131c;&#x0131; &#x0130;&#x00e7;in</value>
-                    <value xml:lang="uk-UA">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0456;&#x0437;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x0438;&#x0439; &#x0434;&#x043b;&#x044f; &#x0434;&#x0440;&#x0443;&#x043a;&#x0443;</value>
+                    <value xml:lang="pt-BR">Optimizado para impressão</value>
+                    <value xml:lang="ru-RU">Оптимизированный для печати</value>
+                    <value xml:lang="tr-TR">Yazጜı İçin</value>
+                    <value xml:lang="uk-UA">Оптимізованний для друку</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*pdfprint.xml</value>
@@ -116,23 +112,23 @@
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>backend</value>
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Screen optimized (pdf)</value>
-                    <value xml:lang="da-DK">Sk&#x00e6;rmoptimeret</value>
+                    <value xml:lang="da-DK">Skærmoptimeret (pdf)</value>
                     <value xml:lang="ca">Optimitzat per pantalla (pdf)</value>
                     <value xml:lang="de-DE">Monitor optimiert (pdf)</value>
                     <value xml:lang="es-ES">Optimizado para pantalla (pdf)</value>
-                    <value xml:lang="fa-IR">&#x0628;&#x0647;&#x06cc;&#x0646;&#x0647; &#x0634;&#x062f;&#x0647; &#x0628;&#x0631;&#x0627;&#x06cc; &#x0646;&#x0645;&#x0627;&#x06cc;&#x0634;</value>
-                    <value xml:lang="fi-FI">N&#x00e4;yt&#x00f6;lle optimoitu (pdf)</value>
-                    <value xml:lang="fr-FR">Adapt&#x00e9; pour un &#x00e9;cran (pdf)</value>
+                    <value xml:lang="fa-IR">بهینه شده برای نمایش</value>
+                    <value xml:lang="fi-FI">Näytölle optimoitu (pdf)</value>
+                    <value xml:lang="fr-FR">Adapté pour un écran (pdf)</value>
                     <value xml:lang="it-IT">Ottimizzato per schermo (pdf)</value>
                     <value xml:lang="nl-NL">Voor beeldscherm geoptimaliseerd (PDF)</value>
                     <value xml:lang="nn-NO">Optimalisert for skjerm (pdf)</value>
                     <value xml:lang="pl-PL">Optymalizowany dla ekranu (pdf)</value>
                     <value xml:lang="pt-BR">Optimizado para tela (pdf)</value>
-                    <value xml:lang="ru-RU">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0438;&#x0437;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x043d;&#x044b;&#x0439; &#x0434;&#x043b;&#x044f; &#x044d;&#x043a;&#x0440;&#x0430;&#x043d;&#x0430; (pdf)</value>
-                    <value xml:lang="tr-TR">Ekran &#x0130;&#x00e7;in (pdf)</value>
-                    <value xml:lang="uk-UA">&#x041e;&#x043f;&#x0442;&#x0438;&#x043c;&#x0456;&#x0437;&#x043e;&#x0432;&#x0430;&#x043d;&#x0438;&#x0439; &#x0434;&#x043b;&#x044f; &#x0435;&#x043a;&#x0440;&#x0430;&#x043d;&#x0443; (pdf)</value>
+                    <value xml:lang="ru-RU">Оптимизированный для экрана (pdf)</value>
+                    <value xml:lang="tr-TR">Ekran İçin (pdf)</value>
+                    <value xml:lang="uk-UA">Оптимізований для екрану (pdf)</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*pdfscreen.xml</value>
@@ -142,23 +138,23 @@
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>additional_symbols</value>
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Custom</value>
                     <value xml:lang="da-DK">Brugerdefineret</value>
                     <value xml:lang="ca">Personalitzat</value>
                     <value xml:lang="de-DE">Angepasst</value>
                     <value xml:lang="es-ES">Personalizado</value>
-                    <value xml:lang="fa-IR">&#x062f;&#x0644;&#x062e;&#x0648;&#x0627;&#x0647;</value>
+                    <value xml:lang="fa-IR">دلخواه</value>
                     <value xml:lang="fi-FI">Custom</value>
-                    <value xml:lang="fr-FR">Configuration personnalis&#x00e9;e</value>
+                    <value xml:lang="fr-FR">Configuration personnalisée</value>
                     <value xml:lang="it-IT">Personalizzato</value>
                     <value xml:lang="nl-NL">Aangepast</value>
                     <value xml:lang="nn-NO">Eigendefinert</value>
-                    <value xml:lang="pl-PL">U&#x017c;ytkownika</value>
+                    <value xml:lang="pl-PL">Użytkownika</value>
                     <value xml:lang="pt-BR">Normal</value>
-                    <value xml:lang="ru-RU">&#x0412;&#x044b;&#x0431;&#x043e;&#x0440;&#x043e;&#x0447;&#x043d;&#x044b;&#x0439;</value>
-                    <value xml:lang="tr-TR">&#x00d6;zel</value>
-                    <value xml:lang="uk-UA">&#x0412;&#x0438;&#x0431;&#x0456;&#x0440;&#x043a;&#x043e;&#x0432;&#x0438;&#x0439;</value>
+                    <value xml:lang="ru-RU">Выборочный</value>
+                    <value xml:lang="tr-TR">Özel</value>
+                    <value xml:lang="uk-UA">Вибірковий</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>$(user)/writer2latex.xml</value>
@@ -166,11 +162,11 @@
             </node>
             <node oor:name="07w2l-article" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value></value>
+                    <value />
                 </prop>
-                <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">LaTeX article template</value>
-                    <value xml:lang="da">LaTeX artikel-skabelon</value>
+                    <value xml:lang="da-DK">LaTeX artikel-skabelon</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>%origin%/config/article.xml</value>
@@ -178,7 +174,7 @@
             </node>
         </node>
         
-        <!-- Declare the available templates -->
+        <!--   Declare the available templates   -->
         <node oor:name="Templates">
             <node oor:name="w2l-article-template" oor:op="replace">
                 <prop oor:name="TemplateName" oor:type="xs:string">
@@ -190,248 +186,248 @@
             </node>
         </node>
         
-        <!-- Declare display names for parameters (Note that names and
-        values share the same name space) -->
+        <!--   Declare display names for parameters (Note that names and
+        values share the same name space)   -->
         <node oor:name="ParameterStrings">
             <node oor:name="typesize" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Type size</value>
-                    <value xml:lang="da">Skriftstørrelse</value>
+                    <value xml:lang="da-DK">Skriftstørrelse</value>
                 </prop>
             </node>
             <node oor:name="10pt" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">10 pt</value>
-                    <value xml:lang="da">10 pkt</value>
+                    <value xml:lang="da-DK">10 pkt</value>
                 </prop>
             </node>
             <node oor:name="11pt" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">11 pt</value>
-                    <value xml:lang="da">11 pkt</value>
+                    <value xml:lang="da-DK">11 pkt</value>
                 </prop>
             </node>
             <node oor:name="12pt" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">12 pt</value>
-                    <value xml:lang="da">12 pkt</value>
+                    <value xml:lang="da-DK">12 pkt</value>
                 </prop>
             </node>
             <node oor:name="papersize" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Paper size</value>
-                    <value xml:lang="da">Papirstørrelse</value>
+                    <value xml:lang="da-DK">Papirstørrelse</value>
                 </prop>
             </node>
             <node oor:name="letterpaper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Letter</value>
-                    <value xml:lang="da">Letter</value>
+                    <value xml:lang="da-DK">Letter</value>
                 </prop>
             </node>
             <node oor:name="legalpaper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Legal</value>
-                    <value xml:lang="da">Legal</value>
+                    <value xml:lang="da-DK">Legal</value>
                 </prop>
             </node>
             <node oor:name="executivepaper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Executive</value>
-                    <value xml:lang="da">Executive</value>
+                    <value xml:lang="da-DK">Executive</value>
                 </prop>
             </node>
             <node oor:name="a4paper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">A4</value>
-                    <value xml:lang="da">A4</value>
+                    <value xml:lang="da-DK">A4</value>
                 </prop>
             </node>
             <node oor:name="a5paper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">A5</value>
-                    <value xml:lang="da">A5</value>
+                    <value xml:lang="da-DK">A5</value>
                 </prop>
             </node>
             <node oor:name="b5paper" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">B5</value>
-                    <value xml:lang="da">B5</value>
+                    <value xml:lang="da-DK">B5</value>
                 </prop>
             </node>
             <node oor:name="orientation" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Paper orientation</value>
-                    <value xml:lang="da">Papirretning</value>
+                    <value xml:lang="da-DK">Papirretning</value>
                 </prop>
             </node>
             <node oor:name="portrait" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Portrait</value>
-                    <value xml:lang="da">Stående (portræt)</value>
+                    <value xml:lang="da-DK">Stående (portræt)</value>
                 </prop>
             </node>
             <node oor:name="landscape" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Landscape</value>
-                    <value xml:lang="da">Liggende (landskab)</value>
+                    <value xml:lang="da-DK">Liggende (landskab)</value>
                 </prop>
             </node>
             <node oor:name="duplex" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Duplex</value>
-                    <value xml:lang="da">Duplex</value>
+                    <value xml:lang="da-DK">Duplex</value>
                 </prop>
             </node>
             <node oor:name="oneside" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Single-sided</value>
-                    <value xml:lang="da">Enkeltsidet</value>
+                    <value xml:lang="da-DK">Enkeltsidet</value>
                 </prop>
             </node>
             <node oor:name="twoside" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Double-sided</value>
-                    <value xml:lang="da">Dobbeltsidet</value>
+                    <value xml:lang="da-DK">Dobbeltsidet</value>
                 </prop>
             </node>  
             <node oor:name="status" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Status</value>
-                    <value xml:lang="da">Status</value>
+                    <value xml:lang="da-DK">Status</value>
                 </prop>
             </node>  
             <node oor:name="final" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Final</value>
-                    <value xml:lang="da">Endelig</value>
+                    <value xml:lang="da-DK">Endelig</value>
                 </prop>
             </node>  
             <node oor:name="draft" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Draft</value>
-                    <value xml:lang="da">Udkast</value>
+                    <value xml:lang="da-DK">Udkast</value>
                 </prop>
             </node>  
             <node oor:name="title" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Title</value>
-                    <value xml:lang="da">Titel</value>
+                    <value xml:lang="da-DK">Titel</value>
                 </prop>
             </node>  
             <node oor:name="notitlepage" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">No title page</value>
-                    <value xml:lang="da">Ingen titelside</value>
+                    <value xml:lang="da-DK">Ingen titelside</value>
                 </prop>
             </node>  
             <node oor:name="titlepage" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">On separate title side</value>
-                    <value xml:lang="da">På separat titelside</value>
+                    <value xml:lang="da-DK">På separat titelside</value>
                 </prop>
             </node>  
             <node oor:name="columns" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Columns</value>
-                    <value xml:lang="da">Spalter</value>
+                    <value xml:lang="da-DK">Spalter</value>
                 </prop>
             </node>  
-            <node oor:name="onecolumn" oor:op="replace">
+            <node oor:localized="true" oor:name="onecolumn" oor:op="replace">
                 <prop oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">One column</value>
-                    <value xml:lang="da">En spalte</value>
+                    <value xml:lang="da-DK">En spalte</value>
                 </prop>
             </node>  
             <node oor:name="twocolumn" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Two columns</value>
-                    <value xml:lang="da">To spalter</value>
+                    <value xml:lang="da-DK">To spalter</value>
                 </prop>
             </node>
             <node oor:name="equationnumbers" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Equation numbers</value>
-                    <value xml:lang="da">Formelnummerering</value>
+                    <value xml:lang="da-DK">Formelnummerering</value>
                 </prop>
             </node>  
             <node oor:name="reqno" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">To the right</value>
-                    <value xml:lang="da">Til højre</value>
+                    <value xml:lang="da-DK">Til højre</value>
                 </prop>
             </node>  
             <node oor:name="leqno" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">To the left</value>
-                    <value xml:lang="da">Til venstre</value>
+                    <value xml:lang="da-DK">Til venstre</value>
                 </prop>
             </node>
             <node oor:name="equationalignment" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Equation alignment</value>
-                    <value xml:lang="da">Formeljustering</value>
+                    <value xml:lang="da-DK">Formeljustering</value>
                 </prop>
             </node>  
             <node oor:name="centereqn" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Centered</value>
-                    <value xml:lang="da">Centreret</value>
+                    <value xml:lang="da-DK">Centreret</value>
                 </prop>
             </node>  
             <node oor:name="fleqn" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Flush left</value>
-                    <value xml:lang="da">Venstrestillet</value>
+                    <value xml:lang="da-DK">Venstrestillet</value>
                 </prop>
             </node>
             <node oor:name="bibliography" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Bibliography</value>
-                    <value xml:lang="da">Litteraturliste</value>
+                    <value xml:lang="da-DK">Litteraturliste</value>
                 </prop>
             </node>  
             <node oor:name="leftbib" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">No indentation</value>
-                    <value xml:lang="da">Ingen indrykning</value>
+                    <value xml:lang="da-DK">Uden indrykning</value>
                 </prop>
             </node>  
             <node oor:name="openbib" oor:op="replace">
-                <prop oor:name="DisplayName" oor:type="xs:string">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">With indentation</value>
-                    <value xml:lang="da">Med indrykning</value>
+                    <value xml:lang="da-DK">Med indrykning</value>
                 </prop>
             </node>  
        </node>
         
-    	<!-- Declare default settings for the export dialog -->
+    	<!--   Declare default settings for the export dialog   -->
         <prop oor:name="Config" oor:type="xs:short">
-            <value>2</value> <!-- Default -->
+            <value>2</value> <!--   Default   -->
         </prop>
         <prop oor:name="ConfigName" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
         <prop oor:name="Parameters" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
         <prop oor:name="Backend" oor:type="xs:short">
-            <value>1</value> <!-- pdftex -->
+            <value>1</value> <!--   pdftex   -->
         </prop>
         <prop oor:name="Inputencoding" oor:type="xs:short">
-            <value>1</value> <!-- latin1 -->
+            <value>1</value> <!--   latin1   -->
         </prop>
         <prop oor:name="Script" oor:type="xs:short">
-            <value>0</value> <!-- auto -->
+            <value>0</value> <!--   auto   -->
         </prop>
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>
         <prop oor:name="Font" oor:type="xs:short">
-            <value>0</value> <!-- Default (Computer Modern) -->
+            <value>0</value> <!--   Default (Computer Modern)   -->
         </prop>
         <prop oor:name="Fontspec" oor:type="xs:short">
-            <value>2</value> <!-- Default (Latin Modern) -->
+            <value>2</value> <!--   Default (Latin Modern)   -->
         </prop>
         <prop oor:name="GreekMath" oor:type="xs:boolean">
             <value>true</value>
@@ -461,7 +457,7 @@
             <value>false</value>
         </prop>
         <prop oor:name="Notes" oor:type="xs:short">
-            <value>1</value><!-- comment -->
+            <value>1</value><!--   comment   -->
         </prop>
         <prop oor:name="Metadata" oor:type="xs:boolean">
             <value>true</value>
@@ -485,7 +481,7 @@
             <value>true</value>
         </prop>
         <prop oor:name="FloatOptions" oor:type="xs:short">
-            <value>0</value><!-- default (tbp) -->
+            <value>0</value><!--   default (tbp)   -->
         </prop>
         <prop oor:name="ConvertIndexNames" oor:type="xs:boolean">
             <value>false</value>
@@ -506,41 +502,41 @@
     
     <node oor:name="XhtmlOptions">
         <node oor:name="Configurations">
-        <!-- Define the standard configurations for the UI -->
-        <!-- The default configuration exports the original formatting -->
+        <!--   Define the standard configurations for the UI   -->
+        <!--   The default configuration exports the original formatting   -->
         <node oor:name="01w2x-default" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
-                <value></value>
+                <value />
             </prop>
-            <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+            <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                 <value xml:lang="en-US">Original formatting</value>
                 <value xml:lang="da-DK">Oprindelig formatering</value>
                 <value xml:lang="ca">Format original</value>
-                <value xml:lang="cs-CZ">P&#x016f;vodn&#x00ed; form&#x00e1;tov;&#x00e1;n&#x00ed;</value>
+                <value xml:lang="cs-CZ">Původní formátov;ání</value>
                 <value xml:lang="de-DE">Original Formatierungen</value>
                 <value xml:lang="es-ES">Formato original</value>
-                <value xml:lang="fa-IR">&#x0642;&#x0627;&#x0644;&#x0628; &#x0628;&#x0646;&#x062f;&#x06cc; &#x0627;&#x0635;&#x0644;&#x06cc;</value>
-                <value xml:lang="fi-FI">Alkuper&#x00e4;inen muotoilu</value>
-                <value xml:lang="fr-FR">Format d'origine</value>
+                <value xml:lang="fa-IR">قالب بندی اصلی</value>
+                <value xml:lang="fi-FI">Alkuperäinen muotoilu</value>
+                <value xml:lang="fr-FR">Format d&apos;origine</value>
                 <value xml:lang="it-IT">Formattazione originale</value>
                 <value xml:lang="nl-NL">Origineel formaat</value>
                 <value xml:lang="nn-NO">Opphavleg formatering</value>
                 <value xml:lang="pl-PL">Formatowanie oryginalne</value>
-                <value xml:lang="pt-BR">Formata&#x00e7;&#x00e3;o original</value>
-                <value xml:lang="ru-RU">&#x041e;&#x0440;&#x0438;&#x0433;&#x0438;&#x043d;&#x0430;&#x043b;&#x044c;&#x043d;&#x043e;&#x0435; &#x0444;&#x043e;&#x0440;&#x043c;&#x0430;&#x0442;&#x0438;&#x0440;&#x043e;&#x0432;&#x0430;&#x043d;&#x0438;&#x0435;</value>
+                <value xml:lang="pt-BR">Formatação original</value>
+                <value xml:lang="ru-RU">Оригинальное форматирование</value>
                 <value xml:lang="tr-TR">Orjinal formatlama</value>
-                <value xml:lang="uk-UA">&#x0410;&#x0432;&#x0442;&#x0435;&#x043d;&#x0442;&#x0438;&#x0447;&#x043d;&#x0435; &#x0444;&#x043e;&#x0440;&#x043c;&#x0430;&#x0442;&#x0443;&#x0432;&#x0430;&#x043d;&#x043d;&#x044f;</value>                    
+                <value xml:lang="uk-UA">Автентичне форматування</value>                    
             </prop>
             <prop oor:name="ConfigURL" oor:type="xs:string">
                 <value>*default.xml</value>
             </prop>
         </node>
-        <!-- The clean configuration exports a document without style information -->
+        <!--   The clean configuration exports a document without style information   -->
         <node oor:name="02w2x-clean" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
-                <value></value>
+                <value />
             </prop>
-            <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+            <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                 <value xml:lang="en-US">Clean HTML5</value>
                 <value xml:lang="da-DK">Ren HTML5</value>
             </prop>
@@ -548,29 +544,29 @@
                 <value>*cleanxhtml.xml</value>
             </prop>
         </node>
-        <!-- The custom configuration exports with user style and template -->
+        <!--   The custom configuration exports with user style and template   -->
         <node oor:name="03w2x-custom" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
-                <value></value>
+                <value />
             </prop>
-            <prop oor:name="DisplayName" oor:type="xs:string" oor:localized="true">
+            <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                 <value xml:lang="en-US">Custom</value>
                 <value xml:lang="da-DK">Brugerdefineret</value>
                 <value xml:lang="ca">Personalitzat</value>
-                <value xml:lang="cs-CZ">Vlastn&#x00ed;</value>
+                <value xml:lang="cs-CZ">Vlastní</value>
                 <value xml:lang="de-DE">Benutzerdefiniert</value>
                 <value xml:lang="es-ES">Personalizado</value>
-                <value xml:lang="fa-IR">&#x062f;&#x0644;&#x062e;&#x0648;&#x0627;&#x0647;</value>
+                <value xml:lang="fa-IR">دلخواه</value>
                 <value xml:lang="fi-FI">Custom</value>
-                <value xml:lang="fr-FR">Personnalis&#x00e9;</value>
+                <value xml:lang="fr-FR">Personnalisé</value>
                 <value xml:lang="it-IT">Personalizzato</value>
                 <value xml:lang="nl-NL">Aangepast</value>
                 <value xml:lang="nn-NO">Eigendefinert</value>
-                <value xml:lang="pl-PL">U&#x017c;ytkownika</value>
-                <value xml:lang="pt-BR">Padr&#x00e3;o</value>
-                <value xml:lang="ru-RU">&#x0412;&#x044b;&#x0431;&#x043e;&#x0440;&#x043e;&#x0447;&#x043d;&#x044b;&#x0439;</value>
-                <value xml:lang="tr-TR">&#x00d6;zel</value>
-                <value xml:lang="uk-UA">&#x0412;&#x0438;&#x0431;&#x0456;&#x0440;&#x043a;&#x043e;&#x0432;&#x0438;&#x0439;</value>
+                <value xml:lang="pl-PL">Użytkownika</value>
+                <value xml:lang="pt-BR">Padrão</value>
+                <value xml:lang="ru-RU">Выборочный</value>
+                <value xml:lang="tr-TR">Özel</value>
+                <value xml:lang="uk-UA">Вибірковий</value>
                 
             </prop>
             <prop oor:name="ConfigURL" oor:type="xs:string">
@@ -582,19 +578,19 @@
         </node>
         </node>
 
-        <!-- Dialog settings -->
-        <!-- General -->
+        <!--   Dialog settings   -->
+        <!--   General   -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>0</value>
         </prop>
         <prop oor:name="ConfigName" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
         <prop oor:name="Parameters" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>        
         <prop oor:name="Units" oor:type="xs:short">
-            <value>2</value> <!-- relative -->
+            <value>2</value> <!--   relative   -->
         </prop>
         <prop oor:name="Scaling" oor:type="xs:int">
             <value>100</value>
@@ -602,7 +598,7 @@
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!-- Files -->
+        <!--   Files   -->
         <prop oor:name="Split" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -615,16 +611,16 @@
         <prop oor:name="SaveImagesInSubdir" oor:type="xs:boolean">
             <value>false</value>
         </prop>
-		<!-- Special content -->
+		<!--   Special content   -->
         <prop oor:name="Notes" oor:type="xs:boolean">
             <value>true</value>
         </prop>
         <prop oor:name="UseDublinCore" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!-- Figures, tables and formulas -->
+        <!--   Figures, tables and formulas   -->
         <prop oor:name="ImageSize" oor:type="xs:short">
-            <value>0</value> <!-- auto -->
+            <value>0</value> <!--   auto   -->
         </prop>
         <prop oor:name="EmbedSVG" oor:type="xs:boolean">
             <value>false</value>
@@ -633,7 +629,7 @@
             <value>false</value>
         </prop>
         <prop oor:name="TableSize" oor:type="xs:short">
-            <value>0</value> <!-- auto -->
+            <value>0</value> <!--   auto   -->
         </prop>
         <prop oor:name="ColumnScaling" oor:type="xs:int">
             <value>100</value>
@@ -641,7 +637,7 @@
         <prop oor:name="UseMathjax" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!-- Auto correct -->
+        <!--   Auto correct   -->
         <prop oor:name="IgnoreEmptyParagraphs" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -653,10 +649,10 @@
         </prop>
     </node>
     
-    <!-- toolbar options -->
+    <!--   toolbar options   -->
     <node oor:name="Applications">
         <prop oor:name="AfterExport" oor:type="xs:short">
-            <value>2</value><!-- compile and preview -->
+            <value>2</value><!--   compile and preview   -->
         </prop>
         <node oor:name="LaTeX" oor:type="xs:string">
             <prop oor:name="UseDefault">
@@ -783,27 +779,27 @@
             <value>false</value>
         </prop>
         <prop oor:name="BibTeXLocation" oor:type="xs:short">
-            <value>2</value><!-- document directory -->
+            <value>2</value><!--   document directory   -->
         </prop>
         <prop oor:name="BibTeXDir" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
         <prop oor:name="BibTeXEncoding" oor:type="xs:short">
-            <value>0</value><!-- US ASCII -->
+            <value>0</value><!--   US ASCII   -->
         </prop>
         <prop oor:name="UseNatbib" oor:type="xs:boolean">
             <value>false</value>
         </prop>
         <prop oor:name="NatbibOptions" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
     </node>
     <node oor:name="Html5Settings">
         <prop oor:name="XhtmlView" oor:type="xs:short">
-            <value>1</value><!-- Default application -->
+            <value>1</value><!--   Default application   -->
         </prop>
         <prop oor:name="XhtmlExecutable" oor:type="xs:string">
-            <value></value>
+            <value />
         </prop>
     </node>
     
