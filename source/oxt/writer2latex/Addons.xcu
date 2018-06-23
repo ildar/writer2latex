@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <oor:component-data oor:name="Addons" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<!--             Defines the menus and toolbars provided by Writer2LaTeX             -->
+<!-- Defines the menus and toolbars provided by Writer2LaTeX -->
 <node oor:name="AddonUI">
 	<node oor:name="OfficeToolBar">
 		<node oor:name="org.openoffice.da.writer2latex.OfficeToolBar" oor:op="replace">

@@ -2,10 +2,10 @@
 <oor:component-data oor:name="OptionsDialog" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  
   <node oor:name="Modules">
-    <!--             These nodes should appear in the Writer module             -->
+    <!-- These nodes should appear in the Writer module -->
     <node oor:name="com.sun.star.text.TextDocument" oor:op="fuse">
-      <!--             We define 3 nodes: Toolbar configuration, LaTeX custom config
-      and HTML5 custom config             -->
+      <!-- We define 3 nodes: Toolbar configuration, LaTeX custom config
+      and HTML5 custom config -->
       <node oor:name="Nodes">
         <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse">
         </node>
@@ -18,7 +18,7 @@
   </node>
   
   <node oor:name="Nodes">
-    <!--             First root node is toolbar configuration             -->
+    <!-- First root node is toolbar configuration -->
     <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.toolbar.configuration</value>
@@ -35,7 +35,7 @@
       </prop>
 
       <node oor:name="Leaves">
-      	<!--             and the root node has several leaves             -->
+      	<!-- and the root node has several leaves -->
         <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.bibliography" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.toolbar.bibliography</value>
@@ -102,7 +102,7 @@
       </node>
     </node>
 
-	<!--             Second root node i LaTeX custom config             -->
+	<!-- Second root node i LaTeX custom config -->
     <node oor:name="org.openoffice.da.writer2latex.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.configuration</value>
@@ -320,7 +320,7 @@
 	  </node>
     </node>
     
-    <!--             Last root node is HTML5 custom config             -->
+    <!-- Last root node is HTML5 custom config -->
     <node oor:name="org.openoffice.da.writer2xhtml.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2xhtml.configuration</value>
@@ -337,7 +337,7 @@
       </prop>
 
       <node oor:name="Leaves">
-      	<!--             the root node has several leaves             -->
+      	<!-- the root node has several leaves -->
 
         <node oor:name="org.openoffice.da.writer2xhtml.configuration.general" oor:op="fuse">
           <prop oor:name="Id">

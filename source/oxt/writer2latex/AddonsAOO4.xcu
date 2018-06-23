@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <oor:component-data oor:name="Addons" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<!--             Defines the menus and toolbars provided by Writer2LaTeX             -->
+<!-- Defines the menus and toolbars provided by Writer2LaTeX -->
 <node oor:name="AddonUI">
 	<node oor:name="OfficeToolBar">
 		<node oor:name="org.openoffice.da.writer2latex.OfficeToolBar.AOO4" oor:op="replace">
@@ -80,7 +80,12 @@
 		                <value>%origin%/icons/custom</value>
 		            </prop>
 		  		</node>
-		   		<node oor:name="button5" oor:op="replace">
+		  		<node oor:name="button5" oor:op="replace">
+	            	<prop oor:name="URL" oor:type="xs:string">
+	                	<value>private:separator</value>
+	            	</prop>
+	  			</node>
+		   		<node oor:name="button6" oor:op="replace">
 	                <prop oor:name="Context" oor:type="xs:string">
 	                    <value>com.sun.star.text.TextDocument</value>
 	                </prop>
@@ -98,7 +103,7 @@
 	                    <value>%origin%/icons/html5</value>
 	                </prop>
 	      		</node>
-	      		<node oor:name="button6" oor:op="replace">
+	      		<node oor:name="button7" oor:op="replace">
 	                <prop oor:name="Context" oor:type="xs:string">
 	                    <value>com.sun.star.text.TextDocument</value>
 	                </prop>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <oor:component-data oor:name="Options" oor:package="org.openoffice.da.Writer2LaTeX" xml:lang="en-US" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <node oor:name="LaTeXOptions">
-    	<!--             Declare the available configurations             -->
+    	<!-- Declare the available configurations -->
         <node oor:name="Configurations">
-        	<!--             Standard configurations             -->
+        	<!-- Standard configurations -->
             <node oor:name="01w2l-ultraclean" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value />
@@ -174,7 +174,7 @@
             </node>
         </node>
         
-        <!--             Declare the available templates             -->
+        <!-- Declare the available templates -->
         <node oor:name="Templates">
             <node oor:name="w2l-article-template" oor:op="replace">
                 <prop oor:name="TemplateName" oor:type="xs:string">
@@ -186,8 +186,8 @@
             </node>
         </node>
         
-        <!--             Declare display names for parameters (Note that names and
-        values share the same name space)             -->
+        <!-- Declare display names for parameters (Note that names and
+        values share the same name space) -->
         <node oor:name="ParameterStrings">
             <node oor:name="typesize" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
@@ -401,9 +401,9 @@
             </node>  
        </node>
         
-    	<!--             Declare default settings for the export dialog             -->
+    	<!-- Declare default settings for the export dialog -->
         <prop oor:name="Config" oor:type="xs:short">
-            <value>2</value> <!--             Default             -->
+            <value>2</value> <!-- Default -->
         </prop>
         <prop oor:name="ConfigName" oor:type="xs:string">
             <value />
@@ -412,22 +412,22 @@
             <value />
         </prop>
         <prop oor:name="Backend" oor:type="xs:short">
-            <value>1</value> <!--             pdftex             -->
+            <value>1</value> <!-- pdftex -->
         </prop>
         <prop oor:name="Inputencoding" oor:type="xs:short">
-            <value>1</value> <!--             latin1             -->
+            <value>1</value> <!-- latin1 -->
         </prop>
         <prop oor:name="Script" oor:type="xs:short">
-            <value>0</value> <!--             auto             -->
+            <value>0</value> <!-- auto -->
         </prop>
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>
         <prop oor:name="Font" oor:type="xs:short">
-            <value>0</value> <!--             Default (Computer Modern)             -->
+            <value>0</value> <!-- Default (Computer Modern) -->
         </prop>
         <prop oor:name="Fontspec" oor:type="xs:short">
-            <value>2</value> <!--             Default (Latin Modern)             -->
+            <value>2</value> <!-- Default (Latin Modern) -->
         </prop>
         <prop oor:name="GreekMath" oor:type="xs:boolean">
             <value>true</value>
@@ -457,7 +457,7 @@
             <value>false</value>
         </prop>
         <prop oor:name="Notes" oor:type="xs:short">
-            <value>1</value><!--             comment             -->
+            <value>1</value><!-- comment -->
         </prop>
         <prop oor:name="Metadata" oor:type="xs:boolean">
             <value>true</value>
@@ -481,7 +481,7 @@
             <value>true</value>
         </prop>
         <prop oor:name="FloatOptions" oor:type="xs:short">
-            <value>0</value><!--             default (tbp)             -->
+            <value>0</value><!-- default (tbp) -->
         </prop>
         <prop oor:name="ConvertIndexNames" oor:type="xs:boolean">
             <value>false</value>
@@ -502,8 +502,8 @@
     
     <node oor:name="XhtmlOptions">
         <node oor:name="Configurations">
-        <!--             Define the standard configurations for the UI             -->
-        <!--             The default configuration exports the original formatting             -->
+        <!-- Define the standard configurations for the UI -->
+        <!-- The default configuration exports the original formatting -->
         <node oor:name="01w2x-default" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
                 <value />
@@ -531,7 +531,7 @@
                 <value>*default.xml</value>
             </prop>
         </node>
-        <!--             The clean configuration exports a document without style information             -->
+        <!-- The clean configuration exports a document without style information -->
         <node oor:name="02w2x-clean" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
                 <value />
@@ -544,7 +544,7 @@
                 <value>*cleanxhtml.xml</value>
             </prop>
         </node>
-        <!--             The custom configuration exports with user style and template             -->
+        <!-- The custom configuration exports with user style and template -->
         <node oor:name="03w2x-custom" oor:op="replace">
             <prop oor:name="LockedOptions" oor:type="xs:string">
                 <value />
@@ -578,8 +578,8 @@
         </node>
         </node>
 
-        <!--             Dialog settings             -->
-        <!--             General             -->
+        <!-- Dialog settings -->
+        <!-- General -->
         <prop oor:name="Config" oor:type="xs:short">
             <value>0</value>
         </prop>
@@ -590,7 +590,7 @@
             <value />
         </prop>        
         <prop oor:name="Units" oor:type="xs:short">
-            <value>2</value> <!--             relative             -->
+            <value>2</value> <!-- relative -->
         </prop>
         <prop oor:name="Scaling" oor:type="xs:int">
             <value>100</value>
@@ -598,7 +598,7 @@
         <prop oor:name="Multilingual" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!--             Files             -->
+        <!-- Files -->
         <prop oor:name="Split" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -611,16 +611,16 @@
         <prop oor:name="SaveImagesInSubdir" oor:type="xs:boolean">
             <value>false</value>
         </prop>
-		<!--             Special content             -->
+		<!-- Special content -->
         <prop oor:name="Notes" oor:type="xs:boolean">
             <value>true</value>
         </prop>
         <prop oor:name="UseDublinCore" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!--             Figures, tables and formulas             -->
+        <!-- Figures, tables and formulas -->
         <prop oor:name="ImageSize" oor:type="xs:short">
-            <value>0</value> <!--             auto             -->
+            <value>0</value> <!-- auto -->
         </prop>
         <prop oor:name="EmbedSVG" oor:type="xs:boolean">
             <value>false</value>
@@ -629,7 +629,7 @@
             <value>false</value>
         </prop>
         <prop oor:name="TableSize" oor:type="xs:short">
-            <value>0</value> <!--             auto             -->
+            <value>0</value> <!-- auto -->
         </prop>
         <prop oor:name="ColumnScaling" oor:type="xs:int">
             <value>100</value>
@@ -637,7 +637,7 @@
         <prop oor:name="UseMathjax" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <!--             Auto correct             -->
+        <!-- Auto correct -->
         <prop oor:name="IgnoreEmptyParagraphs" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -649,10 +649,10 @@
         </prop>
     </node>
     
-    <!--             toolbar options             -->
+    <!-- toolbar options -->
     <node oor:name="Applications">
         <prop oor:name="AfterExport" oor:type="xs:short">
-            <value>2</value><!--             compile and preview             -->
+            <value>2</value><!-- compile and preview -->
         </prop>
         <node oor:name="LaTeX" oor:type="xs:string">
             <prop oor:name="UseDefault">
@@ -779,13 +779,13 @@
             <value>false</value>
         </prop>
         <prop oor:name="BibTeXLocation" oor:type="xs:short">
-            <value>2</value><!--             document directory             -->
+            <value>2</value><!-- document directory -->
         </prop>
         <prop oor:name="BibTeXDir" oor:type="xs:string">
             <value />
         </prop>
         <prop oor:name="BibTeXEncoding" oor:type="xs:short">
-            <value>0</value><!--             US ASCII             -->
+            <value>0</value><!-- US ASCII -->
         </prop>
         <prop oor:name="UseNatbib" oor:type="xs:boolean">
             <value>false</value>
@@ -796,7 +796,7 @@
     </node>
     <node oor:name="Html5Settings">
         <prop oor:name="XhtmlView" oor:type="xs:short">
-            <value>1</value><!--             Default application             -->
+            <value>1</value><!-- Default application -->
         </prop>
         <prop oor:name="XhtmlExecutable" oor:type="xs:string">
             <value />
