@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-29)
+ *  Version 2.0 (2018-06-23)
  *
  */ 
 
@@ -58,6 +58,7 @@ import writer2latex.api.Config;
 import writer2latex.api.ConverterFactory;
 import writer2latex.util.Misc;
 
+import org.openoffice.da.comp.writer2latex.Messages;
 import org.openoffice.da.comp.writer2latex.util.DialogAccess;
 import org.openoffice.da.comp.writer2latex.util.FilePicker;
 import org.openoffice.da.comp.writer2latex.util.StyleNameProvider;
@@ -67,6 +68,8 @@ import org.openoffice.da.comp.writer2latex.util.StyleNameProvider;
  *  are used to differentiate between the individual pages
  */
 public abstract class ConfigurationDialogBase extends WeakBase implements XContainerWindowEventHandler {
+	
+	private static final String W2LDIALOGSCOMMON = "W2LDialogsCommon";
 	
 	// The component context
 	protected XComponentContext xContext;
@@ -257,10 +260,10 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 
 		// Method to display delete dialog
 		protected boolean deleteItem(String sName) {
-			XDialog xDialog=getDialog(getDialogLibraryName()+".DeleteDialog");
+			XDialog xDialog=getDialog(W2LDIALOGSCOMMON+".DeleteDialog");
 		   	if (xDialog!=null) {
 		   		DialogAccess ddlg = new DialogAccess(xDialog);
-		   		String sLabel = ddlg.getLabelText("DeleteLabel");
+		   		String sLabel = Messages.getString("ConfigurationDialogBase.delete");
 		   		sLabel = sLabel.replaceAll("%s", sName);
 		   		ddlg.setLabelText("DeleteLabel", sLabel);
 		   		boolean bDelete = xDialog.execute()==ExecutableDialogResults.OK;
@@ -466,7 +469,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		}
 		   
 		private String newItem(Set<String> suggestions) {
-		   	XDialog xDialog=getDialog(getDialogLibraryName()+".NewDialog");
+		   	XDialog xDialog=getDialog(W2LDIALOGSCOMMON+".NewDialog");
 		   	if (xDialog!=null) {
 		   		String[] sItems = Misc.sortStringSet(suggestions);
 		   		DialogAccess ndlg = new DialogAccess(xDialog);
@@ -689,11 +692,11 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 
 			// Display confirmation dialog
 			boolean bConfirm = false;
-			XDialog xDialog=getDialog(getDialogLibraryName()+".LoadDefaults");
+			XDialog xDialog=getDialog(W2LDIALOGSCOMMON+".LoadDefaults");
 			if (xDialog!=null) {
 				DialogAccess ldlg = new DialogAccess(xDialog);
 				if (nCount>0) {
-					String sLabel = ldlg.getLabelText("OverwriteLabel");
+					String sLabel = Messages.getString("ConfigurationDialogBase.overwrite");
 					sLabel = sLabel.replaceAll("%s", Integer.toString(nCount));
 					ldlg.setLabelText("OverwriteLabel", sLabel);
 				}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="LogViewer" dlg:left="122" dlg:top="43" dlg:width="360" dlg:height="260" dlg:help-text="&amp;197..HelpText" dlg:closeable="true" dlg:moveable="true" dlg:title="&amp;198..Title">
+ <dlg:bulletinboard>
+  <dlg:radiogroup>
+   <dlg:radio dlg:id="LaTeXOption" dlg:tab-index="0" dlg:left="10" dlg:top="10" dlg:width="100" dlg:height="12" dlg:help-text="&amp;199..LaTeXOption.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ViewLaTeXLog" dlg:value="&amp;200..LaTeXOption.Label" dlg:checked="true">
+    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:ViewLaTeXLog" script:language="UNO"/>
+   </dlg:radio>
+   <dlg:radio dlg:id="BibTeXOption" dlg:tab-index="1" dlg:left="120" dlg:top="10" dlg:width="100" dlg:height="12" dlg:help-text="&amp;201..BibTeXOption.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ViewBibTeXLog" dlg:value="&amp;202..BibTeXOption.Label">
+    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:ViewBibTeXLog" script:language="UNO"/>
+   </dlg:radio>
+   <dlg:radio dlg:id="MakeindexOption" dlg:tab-index="2" dlg:left="230" dlg:top="10" dlg:width="100" dlg:height="12" dlg:help-text="&amp;203..MakeindexOption.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ViewMakeindexLog" dlg:value="&amp;204..MakeindexOption.Label">
+    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:ViewMakeindexLog" script:language="UNO"/>
+   </dlg:radio>
+  </dlg:radiogroup>
+  <dlg:textfield dlg:id="LogContents" dlg:tab-index="3" dlg:left="10" dlg:top="26" dlg:width="340" dlg:height="200" dlg:help-text="&amp;205..LogContents.HelpText" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true" dlg:value="&amp;206..LogContents.Text"/>
+  <dlg:checkbox dlg:id="ErrorFilter" dlg:tab-index="4" dlg:left="10" dlg:top="236" dlg:width="200" dlg:height="12" dlg:help-text="&amp;207..ErrorFilter.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ErrorFilter" dlg:value="&amp;208..ErrorFilter.Label" dlg:checked="false">
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:ErrorFilterChange" script:language="UNO"/>
+  </dlg:checkbox>
+  <dlg:button dlg:id="CloseButton" dlg:tab-index="5" dlg:left="200" dlg:top="236" dlg:width="70" dlg:height="12" dlg:help-text="&amp;209..CloseButton.HelpText" dlg:value="&amp;210..CloseButton.Label" dlg:button-type="ok"/>
+  <dlg:button dlg:id="HelpButton" dlg:tab-index="6" dlg:left="280" dlg:top="236" dlg:width="70" dlg:height="12" dlg:help-text="&amp;211..HelpButton.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:LogViewer" dlg:value="&amp;212..HelpButton.Label" dlg:button-type="help"/>
+ </dlg:bulletinboard>
+</dlg:window>

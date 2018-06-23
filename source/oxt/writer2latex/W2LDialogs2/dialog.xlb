@@ -5,19 +5,14 @@
  <library:element library:name="Formatting"/>
  <library:element library:name="Documentclass"/>
  <library:element library:name="Styles"/>
- <library:element library:name="DeleteDialog"/>
  <library:element library:name="Fonts"/>
  <library:element library:name="Pages"/>
  <library:element library:name="Tables"/>
  <library:element library:name="Figures"/>
  <library:element library:name="TextAndMath"/>
- <library:element library:name="NewDialog"/>
  <library:element library:name="Characters"/>
- <library:element library:name="LoadDefaults"/>
  <library:element library:name="ToolbarConfigurationRoot"/>
  <library:element library:name="Applications"/>
  <library:element library:name="Bibliography"/>
- <library:element library:name="LogViewer"/>
  <library:element library:name="AutoConfigInfo"/>
- <library:element library:name="BibTeXEntry"/>
 </library:library>

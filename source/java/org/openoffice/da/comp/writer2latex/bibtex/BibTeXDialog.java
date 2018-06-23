@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-25)
+ *  Version 2.0 (2018-06-23)
  *
  */ 
  
@@ -80,6 +80,7 @@ import writer2latex.util.Misc;
 /** This class provides a UNO dialog to insert a BibTeX bibliographic reference
  */
 public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XInitialization {
+	private final static String W2LDIALOGSCOMMON = "W2LDialogsCommon";
 	
 	// **** Data used for component registration
 
@@ -149,7 +150,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     /** Return the name of the library containing the dialog
      */
     @Override public String getDialogLibraryName() {
-        return "W2LDialogs2"; //$NON-NLS-1$
+        return "W2LDialogs"; //$NON-NLS-1$
     }
     
     /** Return the name of the dialog within the library
@@ -408,7 +409,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	   		Object provider = xMCF.createInstanceWithContext("com.sun.star.awt.DialogProvider2", xContext); //$NON-NLS-1$
 	   		XDialogProvider2 xDialogProvider = (XDialogProvider2)
 	   		UnoRuntime.queryInterface(XDialogProvider2.class, provider);
-	   		String sDialogUrl = "vnd.sun.star.script:"+getDialogLibraryName()+".NewDialog?location=application"; //$NON-NLS-1$ //$NON-NLS-2$
+	   		String sDialogUrl = "vnd.sun.star.script:"+W2LDIALOGSCOMMON+".NewDialog?location=application"; //$NON-NLS-1$ //$NON-NLS-2$
 	   		return xDialogProvider.createDialog(sDialogUrl);
 	   	}
 	   	catch (Exception e) {

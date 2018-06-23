@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="LoadDefaults" dlg:left="255" dlg:top="145" dlg:width="160" dlg:height="64" dlg:help-text="&amp;8.LoadDefaults.HelpText" dlg:closeable="true" dlg:moveable="true" dlg:title="&amp;9.LoadDefaults.Title">
+ <dlg:bulletinboard>
+  <dlg:text dlg:id="InfoLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="150" dlg:height="12" dlg:help-text="&amp;10.LoadDefaults.InfoLabel.HelpText" dlg:value="&amp;11.LoadDefaults.InfoLabel.Label"/>
+  <dlg:text dlg:id="OverwriteLabel" dlg:tab-index="1" dlg:left="5" dlg:top="22" dlg:width="150" dlg:height="12" dlg:help-text="&amp;12.LoadDefaults.OverwriteLabel.HelpText" dlg:value="&amp;13.LoadDefaults.OverwriteLabel.Label"/>
+  <dlg:button dlg:id="YesButton" dlg:tab-index="2" dlg:left="5" dlg:top="42" dlg:width="50" dlg:height="12" dlg:help-text="&amp;14.LoadDefaults.YesButton.HelpText" dlg:value="&amp;15.LoadDefaults.YesButton.Label" dlg:button-type="ok"/>
+  <dlg:button dlg:id="NoButton" dlg:tab-index="3" dlg:left="60" dlg:top="42" dlg:width="50" dlg:height="12" dlg:help-text="&amp;16.LoadDefaults.NoButton.HelpText" dlg:value="&amp;17.LoadDefaults.NoButton.Label" dlg:button-type="cancel"/>
+ </dlg:bulletinboard>
+</dlg:window>
