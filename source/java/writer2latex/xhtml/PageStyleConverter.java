@@ -56,7 +56,7 @@ public class PageStyleConverter extends StyleConverterHelper {
      */
     public PageStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
-        this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertStyles = config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_HARD;
     }
     
     /** Get the text width of the first master page (page width minus left and right margin)

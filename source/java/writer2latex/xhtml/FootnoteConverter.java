@@ -66,9 +66,9 @@ class FootnoteConverter extends NoteConverter {
         	}
         	else if (bFinal) {
         		// New page if required for footnotes as endnotes
-        		if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
+        		if (config.splitLevel()>0) { hnode = converter.nextOutFile(); }
         		Element section = createNoteSection(hnode);
-        		insertNoteHeading(section, config.getFootnotesHeading(), "footnotes");        	
+        		insertNoteHeading(section, config.footnotesHeading(), "footnotes");        	
         		flushNotes(section);
         	}
         }

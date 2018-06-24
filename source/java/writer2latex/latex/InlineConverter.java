@@ -55,8 +55,8 @@ public class InlineConverter extends ConverterHelper {
         super(ofr,config,palette);
         bIncludeOriginalCitations = config.includeOriginalCitations();
         // Get custom code for tab stops
-        if (config.getTabstop().length()>0) {
-            sTabstop = config.getTabstop();
+        if (config.tabstop().length()>0) {
+            sTabstop = config.tabstop();
         }
         this.bDisplayHiddenText = config.displayHiddenText();
     }
@@ -680,7 +680,7 @@ public class InlineConverter extends ConverterHelper {
             sCommand = "\\marginpar";
             break;
         case LaTeXConfig.CUSTOM:
-            sCommand = config.getNotesCommand();
+            sCommand = config.notesCommand();
             break;
         }
     	

@@ -43,8 +43,8 @@ public class HeadingStyleConverter extends StyleConverterHelper {
 			Converter converter) {
 		super(ofr, config, converter);
         this.styleMap = config.getXHeadingStyleMap();
-        this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_STYLES;
         this.otherLevelStyles = new ArrayList<Set<String>>();
         for (int i=0; i<=6; i++) {
         	otherLevelStyles.add(new HashSet<String>());

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-08)
+ *  Version 2.0 (2018-06-23)
  *
  */
 
@@ -40,7 +40,6 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 49; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -104,56 +103,6 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public static final int EXPLICIT = 2;
     public static final int ALL = 3;
     
-    // Options
-    private static final int IGNORE_HARD_LINE_BREAKS = 0;
-    private static final int IGNORE_EMPTY_PARAGRAPHS = 1;
-    private static final int IGNORE_DOUBLE_SPACES = 2;
-    private static final int IMAGE_SIZE = 3;
-    private static final int NO_DOCTYPE = 4;
-    private static final int ADD_BOM = 5;
-    private static final int ENCODING = 6;
-    private static final int USE_NAMED_ENTITIES = 7;
-    private static final int HEXADECIMAL_ENTITIES = 8;
-    private static final int PRETTY_PRINT = 9;
-    private static final int MULTILINGUAL = 10;
-    private static final int TEMPLATE_IDS = 11;
-    private static final int SEPARATE_STYLESHEET = 12;
-    private static final int CUSTOM_STYLESHEET = 13;
-    private static final int FORMATTING = 14;
-    private static final int FRAME_FORMATTING = 15;
-    private static final int SECTION_FORMATTING = 16;
-    private static final int TABLE_FORMATTING = 17;
-    private static final int TABLE_SIZE = 18;
-    private static final int LIST_FORMATTING = 19;
-    private static final int MAX_WIDTH = 20;
-    private static final int USE_DEFAULT_FONT = 21;
-    private static final int DEFAULT_FONT_NAME = 22;
-    private static final int USE_DUBLIN_CORE = 23;
-    private static final int NOTES = 24;
-    private static final int DISPLAY_HIDDEN_TEXT = 25;
-    private static final int UNITS = 26;
-    private static final int SCALING = 27;
-    private static final int COLUMN_SCALING = 28;
-    private static final int FLOAT_OBJECTS = 29;
-    private static final int TABSTOP_STYLE = 30;
-    private static final int ENDNOTES_HEADING = 31;
-    private static final int FOOTNOTES_HEADING = 32;
-    private static final int INCLUDE_TOC = 33;
-    private static final int SPLIT_LEVEL = 34;
-    private static final int REPEAT_LEVELS = 35;
-    private static final int PAGE_BREAK_SPLIT = 36;
-    private static final int EMBED_SVG = 37;
-    private static final int EMBED_IMG = 38;
-    private static final int USE_MATHJAX = 39;
-    private static final int CALC_SPLIT = 40;
-    private static final int DISPLAY_HIDDEN_SHEETS = 41;
-    private static final int DISPLAY_HIDDEN_ROWS_COLS = 42;
-    private static final int DISPLAY_FILTERED_ROWS_COLS = 43;
-    private static final int APPLY_PRINT_RANGES = 44;
-    private static final int USE_TITLE_AS_HEADING = 45;
-    private static final int USE_SHEET_NAMES_AS_HEADINGS = 46;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 47;
-    private static final int UPLINK = 48;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -165,10 +114,10 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public XhtmlConfig() {
         super();
         // create options with default values
-        options[IGNORE_HARD_LINE_BREAKS] = new BooleanOption("ignore_hard_line_breaks","false");
-        options[IGNORE_EMPTY_PARAGRAPHS] = new BooleanOption("ignore_empty_paragraphs","false");
-        options[IGNORE_DOUBLE_SPACES] = new BooleanOption("ignore_double_spaces","false");
-        options[IMAGE_SIZE] = new IntegerOption("image_size","auto") {
+        addOption(new BooleanOption("ignore_hard_line_breaks","false"));
+        addOption(new BooleanOption("ignore_empty_paragraphs","false"));
+        addOption(new BooleanOption("ignore_double_spaces","false"));
+        addOption(new IntegerOption("image_size","auto") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
         		if ("relative".equals(sValue)) { nValue = RELATIVE; }
@@ -176,10 +125,10 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         		else if ("original_image_size".equals(sValue)) { nValue = NONE; }
         		else { nValue = ABSOLUTE; }
         	}
-        };
-        options[NO_DOCTYPE] = new BooleanOption("no_doctype","false");
-        options[ADD_BOM] = new BooleanOption("add_bom","false");
-        options[ENCODING] = new Option("encoding","UTF-8") {
+        });
+        addOption(new BooleanOption("no_doctype","false"));
+        addOption(new BooleanOption("add_bom","false"));
+        addOption(new Option("encoding","UTF-8") {
         	@Override public void setString(String sValue) {
         		if ("US-ASCII".equalsIgnoreCase(sValue)) {
         			super.setString(sValue);
@@ -188,68 +137,68 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         			super.setString("UTF-8");
         		}
         	}
-        };
-        options[USE_NAMED_ENTITIES] = new BooleanOption("use_named_entities","false");
-        options[HEXADECIMAL_ENTITIES] = new BooleanOption("hexadecimal_entities","true");
-        options[PRETTY_PRINT] = new BooleanOption("pretty_print","true");
-        options[MULTILINGUAL] = new BooleanOption("multilingual","true");
-        options[TEMPLATE_IDS] = new Option("template_ids","");
-        options[SEPARATE_STYLESHEET] = new BooleanOption("separate_stylesheet","false");
-        options[CUSTOM_STYLESHEET] = new Option("custom_stylesheet","");
-        options[FORMATTING] = new XhtmlFormatOption("formatting","convert_all");
-        options[FRAME_FORMATTING] = new XhtmlFormatOption("frame_formatting","convert_all");
-        options[SECTION_FORMATTING] = new XhtmlFormatOption("section_formatting","convert_all");
-        options[TABLE_FORMATTING] = new XhtmlFormatOption("table_formatting","convert_all");
-        options[TABLE_SIZE] = new IntegerOption("table_size","auto") {
+        });
+        addOption(new BooleanOption("use_named_entities","false"));
+        addOption(new BooleanOption("hexadecimal_entities","true"));
+        addOption(new BooleanOption("pretty_print","true"));
+        addOption(new BooleanOption("multilingual","true"));
+        addOption(new Option("template_ids",""));
+        addOption(new BooleanOption("separate_stylesheet","false"));
+        addOption(new Option("custom_stylesheet",""));
+        addOption(new XhtmlFormatOption("formatting","convert_all"));
+        addOption(new XhtmlFormatOption("frame_formatting","convert_all"));
+        addOption(new XhtmlFormatOption("section_formatting","convert_all"));
+        addOption(new XhtmlFormatOption("table_formatting","convert_all"));
+        addOption(new IntegerOption("table_size","auto") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
         		if ("relative".equals(sValue)) { nValue = RELATIVE; }
         		else if ("none".equals(sValue)) { nValue = NONE; }
         		else { nValue = ABSOLUTE; }
         	}
-        };
-        options[LIST_FORMATTING] = new IntegerOption("list_formatting","css1") {
+        });
+        addOption(new IntegerOption("list_formatting","css1") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
         		if ("css1_hack".equals(sValue)) { nValue = CSS1_HACK; }
         		else if ("hard_labels".equals(sValue)) { nValue = HARD_LABELS; }
         		else { nValue = CSS1; }
         	}
-        };
-        options[MAX_WIDTH] = new Option("max_width","800px");
-        options[USE_DEFAULT_FONT] = new BooleanOption("use_default_font","false");
-        options[DEFAULT_FONT_NAME] = new BooleanOption("default_font_name","");
-        options[USE_DUBLIN_CORE] = new BooleanOption("use_dublin_core","true");
-        options[NOTES] = new BooleanOption("notes","true");
-        options[DISPLAY_HIDDEN_TEXT] = new BooleanOption("display_hidden_text", "false");
-        options[UNITS] = new IntegerOption("units","rem") {
+        });
+        addOption(new Option("max_width","800px"));
+        addOption(new BooleanOption("use_default_font","false"));
+        addOption(new BooleanOption("default_font_name",""));
+        addOption(new BooleanOption("use_dublin_core","true"));
+        addOption(new BooleanOption("notes","true"));
+        addOption(new BooleanOption("display_hidden_text", "false"));
+        addOption(new IntegerOption("units","rem") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
         		if ("original".equals(sValue)) { nValue = ORIGINAL; }
         		else if ("px".equals(sValue)) { nValue = PX; }
         		else { nValue = REM; }
         	}
-        };
-        options[SCALING] = new Option("scaling","100%");
-        options[COLUMN_SCALING] = new Option("column_scaling","100%");
-        options[FLOAT_OBJECTS] = new BooleanOption("float_objects","true");
-        options[TABSTOP_STYLE] = new Option("tabstop_style","");
-        options[ENDNOTES_HEADING] = new Option("endnotes_heading","");
-        options[FOOTNOTES_HEADING] = new Option("footnotes_heading","");
-        options[INCLUDE_TOC] = new BooleanOption("include_toc","true");
-        options[SPLIT_LEVEL] = new IntegerOption("split_level","0") {
+        });
+        addOption(new Option("scaling","100%"));
+        addOption(new Option("column_scaling","100%"));
+        addOption(new BooleanOption("float_objects","true"));
+        addOption(new Option("tabstop_style",""));
+        addOption(new Option("endnotes_heading",""));
+        addOption(new Option("footnotes_heading",""));
+        addOption(new BooleanOption("include_toc","true"));
+        addOption(new IntegerOption("split_level","0") {
         	@Override public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = Misc.getPosInteger(sValue,0);
             }
-        };
-        options[REPEAT_LEVELS] = new IntegerOption("repeat_levels","5") {
+        });
+        addOption(new IntegerOption("repeat_levels","5") {
         	@Override public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = Misc.getPosInteger(sValue,0);
             }
-        };
-        options[PAGE_BREAK_SPLIT] = new IntegerOption("page_break_split", "none") {
+        });
+        addOption(new IntegerOption("page_break_split", "none") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
         		if ("styles".equals(sValue)) { nValue = STYLES; }
@@ -257,19 +206,19 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         		else if ("all".equals(sValue)) { nValue = ALL; }
         		else { nValue = NONE; }
         	}
-        };
-        options[EMBED_SVG] = new BooleanOption("embed_svg","false");
-        options[EMBED_IMG] = new BooleanOption("embed_img","false");
-        options[USE_MATHJAX] = new BooleanOption("use_mathjax","false");
-        options[CALC_SPLIT] = new BooleanOption("calc_split","false");
-        options[DISPLAY_HIDDEN_SHEETS] = new BooleanOption("display_hidden_sheets", "false");
-        options[DISPLAY_HIDDEN_ROWS_COLS] = new BooleanOption("display_hidden_rows_cols","false");
-        options[DISPLAY_FILTERED_ROWS_COLS] = new BooleanOption("display_filtered_rows_cols","false");
-        options[APPLY_PRINT_RANGES] = new BooleanOption("apply_print_ranges","false");
-        options[USE_TITLE_AS_HEADING] = new BooleanOption("use_title_as_heading","true");
-        options[USE_SHEET_NAMES_AS_HEADINGS] = new BooleanOption("use_sheet_names_as_headings","true");
-        options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
-        options[UPLINK] = new Option("uplink","");
+        });
+        addOption(new BooleanOption("embed_svg","false"));
+        addOption(new BooleanOption("embed_img","false"));
+        addOption(new BooleanOption("use_mathjax","false"));
+        addOption(new BooleanOption("calc_split","false"));
+        addOption(new BooleanOption("display_hidden_sheets", "false"));
+        addOption(new BooleanOption("display_hidden_rows_cols","false"));
+        addOption(new BooleanOption("display_filtered_rows_cols","false"));
+        addOption(new BooleanOption("apply_print_ranges","false"));
+        addOption(new BooleanOption("use_title_as_heading","true"));
+        addOption(new BooleanOption("use_sheet_names_as_headings","true"));
+        addOption(new BooleanOption("save_images_in_subdir","false"));
+        addOption(new Option("uplink",""));
     }
     
 	protected void readInner(Element elm) {
@@ -353,55 +302,55 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     }
 
     // Convenience accessor methods
-    public boolean ignoreHardLineBreaks() { return ((BooleanOption) options[IGNORE_HARD_LINE_BREAKS]).getValue(); }
-    public boolean ignoreEmptyParagraphs() { return ((BooleanOption) options[IGNORE_EMPTY_PARAGRAPHS]).getValue(); }
-    public boolean ignoreDoubleSpaces() { return ((BooleanOption) options[IGNORE_DOUBLE_SPACES]).getValue(); }
-    public int imageSize() { return ((IntegerOption) options[IMAGE_SIZE]).getValue(); }
-    public boolean xhtmlNoDoctype() { return ((BooleanOption) options[NO_DOCTYPE]).getValue(); }
-    public boolean xhtmlAddBOM() { return ((BooleanOption) options[ADD_BOM]).getValue(); }
-    public String xhtmlEncoding() { return options[ENCODING].getString(); }
-    public boolean useNamedEntities() { return ((BooleanOption) options[USE_NAMED_ENTITIES]).getValue(); }
-    public boolean hexadecimalEntities() { return ((BooleanOption) options[HEXADECIMAL_ENTITIES]).getValue(); }
-    public boolean prettyPrint() { return ((BooleanOption) options[PRETTY_PRINT]).getValue(); }
-    public boolean multilingual() { return ((BooleanOption) options[MULTILINGUAL]).getValue(); }
-    public String templateIds() { return options[TEMPLATE_IDS].getString(); }
-    public boolean separateStylesheet() { return ((BooleanOption) options[SEPARATE_STYLESHEET]).getValue(); }
-    public String xhtmlCustomStylesheet() { return replaceParameters(options[CUSTOM_STYLESHEET].getString()); }
-    public int xhtmlFormatting() { return ((XhtmlFormatOption) options[FORMATTING]).getValue(); }
-    public int xhtmlFrameFormatting() { return ((XhtmlFormatOption) options[FRAME_FORMATTING]).getValue(); }
-    public int xhtmlSectionFormatting() { return ((XhtmlFormatOption) options[SECTION_FORMATTING]).getValue(); }
-    public int xhtmlTableFormatting() { return ((XhtmlFormatOption) options[TABLE_FORMATTING]).getValue(); }
-    public int tableSize() { return ((IntegerOption) options[TABLE_SIZE]).getValue(); }
-    public int listFormatting() { return ((IntegerOption) options[LIST_FORMATTING]).getValue(); }
-    public String getMaxWidth() { return options[MAX_WIDTH].getString(); }
-    public boolean useDefaultFont() { return ((BooleanOption) options[USE_DEFAULT_FONT]).getValue(); }
-    public String defaultFontName() { return options[DEFAULT_FONT_NAME].getString(); }
-    public boolean xhtmlUseDublinCore() { return ((BooleanOption) options[USE_DUBLIN_CORE]).getValue(); }
-    public boolean xhtmlNotes() { return ((BooleanOption) options[NOTES]).getValue(); }
-    public boolean displayHiddenText() { return ((BooleanOption) options[DISPLAY_HIDDEN_TEXT]).getValue(); }
-    public int units() { return ((IntegerOption) options[UNITS]).getValue(); }
-    public String getXhtmlScaling() { return options[SCALING].getString(); }
-    public String getXhtmlColumnScaling() { return options[COLUMN_SCALING].getString(); }
-    public boolean xhtmlFloatObjects() { return ((BooleanOption) options[FLOAT_OBJECTS]).getValue(); }
-    public String getXhtmlTabstopStyle() { return options[TABSTOP_STYLE].getString(); }
-    public String getEndnotesHeading() { return options[ENDNOTES_HEADING].getString(); }
-    public String getFootnotesHeading() { return options[FOOTNOTES_HEADING].getString(); }
-    public boolean includeToc() { return ((BooleanOption) options[INCLUDE_TOC]).getValue(); }
-    public int getXhtmlSplitLevel() { return ((IntegerOption) options[SPLIT_LEVEL]).getValue(); }
-    public int getXhtmlRepeatLevels() { return ((IntegerOption) options[REPEAT_LEVELS]).getValue(); }
-    public int pageBreakSplit() { return ((IntegerOption) options[PAGE_BREAK_SPLIT]).getValue(); }
-    public boolean embedSVG() { return ((BooleanOption) options[EMBED_SVG]).getValue(); }
-    public boolean embedImg() { return ((BooleanOption) options[EMBED_IMG]).getValue(); }
-    public boolean useMathJax() { return ((BooleanOption) options[USE_MATHJAX]).getValue(); }
-    public boolean xhtmlCalcSplit() { return ((BooleanOption) options[CALC_SPLIT]).getValue(); }
-    public boolean xhtmlDisplayHiddenSheets() { return ((BooleanOption) options[DISPLAY_HIDDEN_SHEETS]).getValue(); }
-    public boolean displayHiddenRowsCols() { return ((BooleanOption) options[DISPLAY_HIDDEN_ROWS_COLS]).getValue(); }
-    public boolean displayFilteredRowsCols() { return ((BooleanOption) options[DISPLAY_FILTERED_ROWS_COLS]).getValue(); }
-    public boolean applyPrintRanges() { return ((BooleanOption) options[APPLY_PRINT_RANGES]).getValue(); }
-    public boolean xhtmlUseTitleAsHeading() { return ((BooleanOption) options[USE_TITLE_AS_HEADING]).getValue(); }
-    public boolean xhtmlUseSheetNamesAsHeadings() { return ((BooleanOption) options[USE_SHEET_NAMES_AS_HEADINGS]).getValue(); }
-    public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
-    public String getXhtmlUplink() { return options[UPLINK].getString(); }
+    public boolean ignoreHardLineBreaks() { return ((BooleanOption) options.get("ignore_hard_line_breaks")).getValue(); }
+    public boolean ignoreEmptyParagraphs() { return ((BooleanOption) options.get("ignore_empty_paragraphs")).getValue(); }
+    public boolean ignoreDoubleSpaces() { return ((BooleanOption) options.get("ignore_double_spaces")).getValue(); }
+    public int imageSize() { return ((IntegerOption) options.get("image_size")).getValue(); }
+    public boolean noDoctype() { return ((BooleanOption) options.get("no_doctype")).getValue(); }
+    public boolean addBOM() { return ((BooleanOption) options.get("add_bom")).getValue(); }
+    public String encoding() { return options.get("encoding").getString(); }
+    public boolean useNamedEntities() { return ((BooleanOption) options.get("use_named_entities")).getValue(); }
+    public boolean hexadecimalEntities() { return ((BooleanOption) options.get("hexadecimal_entities")).getValue(); }
+    public boolean prettyPrint() { return ((BooleanOption) options.get("pretty_print")).getValue(); }
+    public boolean multilingual() { return ((BooleanOption) options.get("multilingual")).getValue(); }
+    public String templateIds() { return options.get("template_ids").getString(); }
+    public boolean separateStylesheet() { return ((BooleanOption) options.get("separate_stylesheet")).getValue(); }
+    public String customStylesheet() { return replaceParameters(options.get("custom_stylesheet").getString()); }
+    public int formatting() { return ((XhtmlFormatOption) options.get("formatting")).getValue(); }
+    public int frameFormatting() { return ((XhtmlFormatOption) options.get("frame_formatting")).getValue(); }
+    public int sectionFormatting() { return ((XhtmlFormatOption) options.get("section_formatting")).getValue(); }
+    public int tableFormatting() { return ((XhtmlFormatOption) options.get("table_formatting")).getValue(); }
+    public int tableSize() { return ((IntegerOption) options.get("table_size")).getValue(); }
+    public int listFormatting() { return ((IntegerOption) options.get("list_formatting")).getValue(); }
+    public String maxWidth() { return options.get("max_width").getString(); }
+    public boolean useDefaultFont() { return ((BooleanOption) options.get("use_default_font")).getValue(); }
+    public String defaultFontName() { return options.get("default_font_name").getString(); }
+    public boolean useDublinCore() { return ((BooleanOption) options.get("use_dublin_core")).getValue(); }
+    public boolean notes() { return ((BooleanOption) options.get("notes")).getValue(); }
+    public boolean displayHiddenText() { return ((BooleanOption) options.get("display_hidden_text")).getValue(); }
+    public int units() { return ((IntegerOption) options.get("units")).getValue(); }
+    public String scaling() { return options.get("scaling").getString(); }
+    public String columnScaling() { return options.get("column_scaling").getString(); }
+    public boolean floatObjects() { return ((BooleanOption) options.get("float_objects")).getValue(); }
+    public String tabstopStyle() { return options.get("tabstop_style").getString(); }
+    public String endnotesHeading() { return options.get("endnotes_heading").getString(); }
+    public String footnotesHeading() { return options.get("footnotes_heading").getString(); }
+    public boolean includeToc() { return ((BooleanOption) options.get("include_toc")).getValue(); }
+    public int splitLevel() { return ((IntegerOption) options.get("split_level")).getValue(); }
+    public int repeatLevels() { return ((IntegerOption) options.get("repeat_levels")).getValue(); }
+    public int pageBreakSplit() { return ((IntegerOption) options.get("page_break_split")).getValue(); }
+    public boolean embedSVG() { return ((BooleanOption) options.get("embed_svg")).getValue(); }
+    public boolean embedImg() { return ((BooleanOption) options.get("embed_img")).getValue(); }
+    public boolean useMathJax() { return ((BooleanOption) options.get("use_mathjax")).getValue(); }
+    public boolean calcSplit() { return ((BooleanOption) options.get("calc_split")).getValue(); }
+    public boolean displayHiddenSheets() { return ((BooleanOption) options.get("display_hidden_sheets")).getValue(); }
+    public boolean displayHiddenRowsCols() { return ((BooleanOption) options.get("display_hidden_rows_cols")).getValue(); }
+    public boolean displayFilteredRowsCols() { return ((BooleanOption) options.get("display_filtered_rows_cols")).getValue(); }
+    public boolean applyPrintRanges() { return ((BooleanOption) options.get("apply_print_ranges")).getValue(); }
+    public boolean useTitleAsHeading() { return ((BooleanOption) options.get("use_title_as_heading")).getValue(); }
+    public boolean useSheetNamesAsHeadings() { return ((BooleanOption) options.get("use_sheet_names_as_headings")).getValue(); }
+    public boolean saveImagesInSubdir() { return ((BooleanOption) options.get("save_images_in_subdir")).getValue(); }
+    public String uplink() { return options.get("uplink").getString(); }
 	
     public XhtmlStyleMap getXParStyleMap() { return getStyleMap(xpar); }
     public XhtmlStyleMap getXHeadingStyleMap() { return getStyleMap(xheading); }
@@ -426,4 +375,3 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
 
     }
 }
-

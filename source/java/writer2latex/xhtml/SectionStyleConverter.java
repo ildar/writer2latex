@@ -48,10 +48,10 @@ public class SectionStyleConverter extends StyleWithPropertiesConverterHelper {
         // Style maps for sections are currently not supported.
         // (Section styles are not supported by OOo yet) 
         this.styleMap = new XhtmlStyleMap();
-        this.bConvertStyles = config.xhtmlSectionFormatting()==XhtmlConfig.CONVERT_ALL
-            || config.xhtmlSectionFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlSectionFormatting()==XhtmlConfig.CONVERT_ALL
-            || config.xhtmlSectionFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.sectionFormatting()==XhtmlConfig.CONVERT_ALL
+            || config.sectionFormatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.sectionFormatting()==XhtmlConfig.CONVERT_ALL
+            || config.sectionFormatting()==XhtmlConfig.IGNORE_STYLES;
     }
 
     /** Get the family of section styles

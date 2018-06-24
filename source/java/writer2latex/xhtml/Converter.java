@@ -156,7 +156,7 @@ public class Converter extends ConverterBase {
         outFiles = new Vector<XhtmlDocument>();
         nOutFileIndex = -1;
 
-        bNeedHeaderFooter = (ofr.isSpreadsheet() || ofr.isPresentation() || config.getXhtmlSplitLevel()>0 || config.pageBreakSplit()>XhtmlConfig.NONE || config.getXhtmlUplink().length()>0);
+        bNeedHeaderFooter = (ofr.isSpreadsheet() || ofr.isPresentation() || config.splitLevel()>0 || config.pageBreakSplit()>XhtmlConfig.NONE || config.uplink().length()>0);
 
         l10n = new L10n();
         
@@ -258,14 +258,14 @@ public class Converter extends ConverterBase {
                 footerPar.setAttribute("style","clear:both"); // no floats may pass!
 
                 // Add uplink
-                if (config.getXhtmlUplink().length()>0) {
+                if (config.uplink().length()>0) {
                     Element a = dom.createElement("a");
-                    a.setAttribute("href",config.getXhtmlUplink());
+                    a.setAttribute("href",config.uplink());
                     a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                     headerPar.appendChild(a);
                     headerPar.appendChild(dom.createTextNode(" "));
                     a = dom.createElement("a");
-                    a.setAttribute("href",config.getXhtmlUplink());
+                    a.setAttribute("href",config.uplink());
                     a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                     footerPar.appendChild(a);
                     footerPar.appendChild(dom.createTextNode(" "));
@@ -273,7 +273,7 @@ public class Converter extends ConverterBase {
                 // Add links to all sheets:
                 int nSheets = tableCv.sheetNames.size();
                 for (int j=0; j<nSheets; j++) {
-                    if (config.xhtmlCalcSplit()) {
+                    if (config.calcSplit()) {
                         addNavigationLink(dom,headerPar,tableCv.sheetNames.get(j),j);
                         addNavigationLink(dom,footerPar,tableCv.sheetNames.get(j),j);
                     }
@@ -300,9 +300,9 @@ public class Converter extends ConverterBase {
                         // Absolute placement in presentations (quick and dirty solution)
                         header.setAttribute("style","position:absolute;top:0;left:0");
                     }
-                    if (config.getXhtmlUplink().length()>0) {
+                    if (config.uplink().length()>0) {
                         Element a = dom.createElement("a");
-                        a.setAttribute("href",config.getXhtmlUplink());
+                        a.setAttribute("href",config.uplink());
                         a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                         header.appendChild(a);
                         header.appendChild(dom.createTextNode(" "));
@@ -323,9 +323,9 @@ public class Converter extends ConverterBase {
                 Element footer = doc.getFooterNode();
                 if (footer!=null && !ofr.isPresentation()) {
                     // No footer in presentations
-                    if (config.getXhtmlUplink().length()>0) {
+                    if (config.uplink().length()>0) {
                         Element a = dom.createElement("a");
-                        a.setAttribute("href",config.getXhtmlUplink());
+                        a.setAttribute("href",config.uplink());
                         a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                         footer.appendChild(a);
                         footer.appendChild(dom.createTextNode(" "));
@@ -343,7 +343,7 @@ public class Converter extends ConverterBase {
                 }
             }
         }
-        else if (config.getXhtmlUplink().length()>0) {
+        else if (config.uplink().length()>0) {
             for (int i=0; i<=nOutFileIndex; i++) {
                 XhtmlDocument doc = outFiles.get(i);
                 Document dom = doc.getContentDOM();
@@ -352,7 +352,7 @@ public class Converter extends ConverterBase {
                 Element header = doc.getHeaderNode();
                 if (header!=null) {
                     Element a = dom.createElement("a");
-                    a.setAttribute("href",config.getXhtmlUplink());
+                    a.setAttribute("href",config.uplink());
                     a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                     header.appendChild(a);
                     header.appendChild(dom.createTextNode(" "));
@@ -361,7 +361,7 @@ public class Converter extends ConverterBase {
                 Element footer = doc.getFooterNode();
                 if (footer!=null) {
                     Element a = dom.createElement("a");
-                    a.setAttribute("href",config.getXhtmlUplink());
+                    a.setAttribute("href",config.uplink());
                     a.appendChild(dom.createTextNode(l10n.get(L10n.UP)));
                     footer.appendChild(a);
                     footer.appendChild(dom.createTextNode(" "));
@@ -370,7 +370,7 @@ public class Converter extends ConverterBase {
         }
         
         // Export styles
-        if (config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
+        if (config.formatting()>XhtmlConfig.IGNORE_STYLES) {
         	if (config.separateStylesheet()) {
         		CssDocument cssDoc = new CssDocument(sTargetFileName+"-styles.css");
         		cssDoc.read(styleCv.exportStyles(false));
@@ -447,7 +447,7 @@ public class Converter extends ConverterBase {
 
 
     public void handleOfficeAnnotation(Node onode, Node hnode) {
-        if (config.xhtmlNotes()) {
+        if (config.notes()) {
             // Extract the text from the paragraphs, separate paragraphs with newline
         	StringBuilder buf = new StringBuilder();
         	Element creator = null;
@@ -557,7 +557,7 @@ public class Converter extends ConverterBase {
     		// Dublin core meta data (optional)
     		// Format as recommended on dublincore.org (http://dublincore.org/documents/dc-html/)
     		// Declare meta data profile
-    		if (config.xhtmlUseDublinCore()) {
+    		if (config.useDublinCore()) {
     			head.setAttribute("profile","http://dublincore.org/documents/2008/08/04/dc-html/");
     			// Add link to declare namespace
     			Element dclink = htmlDOM.createElement("link");
@@ -583,17 +583,17 @@ public class Converter extends ConverterBase {
     		}
 
         	// Add link to custom stylesheet
-        	if (config.xhtmlCustomStylesheet().length()>0) {
+        	if (config.customStylesheet().length()>0) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
         		htmlStyle.setAttribute("type","text/css");
         		htmlStyle.setAttribute("media","all");
-        		htmlStyle.setAttribute("href",config.xhtmlCustomStylesheet());
+        		htmlStyle.setAttribute("href",config.customStylesheet());
         		head.appendChild(htmlStyle);
         	}
         	
         	// Add link to generated stylesheet if the user wants separate css
-        	if (config.separateStylesheet() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
+        	if (config.separateStylesheet() && config.formatting()>XhtmlConfig.IGNORE_STYLES) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
         		htmlStyle.setAttribute("type","text/css");

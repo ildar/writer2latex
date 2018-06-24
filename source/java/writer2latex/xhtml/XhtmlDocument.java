@@ -257,7 +257,7 @@ public class XhtmlDocument extends DOMDocument {
     }
     
     private void setConfig(XhtmlConfig config) {
-        sEncoding = config.xhtmlEncoding();
+        sEncoding = config.encoding();
         if ("US-ASCII".equals(sEncoding)) {
             cLimit = 127;
         }
@@ -265,8 +265,8 @@ public class XhtmlDocument extends DOMDocument {
             cLimit = 65535;
         }
         
-        bAddBOM = config.xhtmlAddBOM() && sEncoding.equals("UTF-8");
-        bNoDoctype = config.xhtmlNoDoctype();
+        bAddBOM = config.addBOM() && sEncoding.equals("UTF-8");
+        bNoDoctype = config.noDoctype();
         bPrettyPrint = config.prettyPrint();
         bUseNamedEntities = config.useNamedEntities();
         bHexadecimalEntities = config.hexadecimalEntities();

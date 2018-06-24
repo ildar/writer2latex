@@ -59,7 +59,7 @@ public class TableConverter extends ConverterHelper {
     public void convertTableContent(Element onode) {
         Element hnode = null;
         if (!onode.hasChildNodes()) { return; }
-        if (!config.xhtmlCalcSplit()) { hnode = nextOutFile(); }
+        if (!config.calcSplit()) { hnode = nextOutFile(); }
         NodeList nList = onode.getChildNodes();
         int nLen = nList.getLength();
         for (int i=0; i<nLen; i++) {
@@ -69,16 +69,16 @@ public class TableConverter extends ConverterHelper {
                 if (sNodeName.equals(XMLString.TABLE_TABLE)) {
                     StyleWithProperties style = ofr.getTableStyle(
                         Misc.getAttribute(child,XMLString.TABLE_STYLE_NAME));
-                    if ((config.xhtmlDisplayHiddenSheets() || style==null
+                    if ((config.displayHiddenSheets() || style==null
                             || !"false".equals(style.getProperty(XMLString.TABLE_DISPLAY)))
                             && (!config.applyPrintRanges() || ofr.getTableReader((Element)child).getPrintRangeCount()>0)) {
-                        if (config.xhtmlCalcSplit()) { hnode = nextOutFile(); }
+                        if (config.calcSplit()) { hnode = nextOutFile(); }
                         // Collect name
                         String sName = Misc.getAttribute(child,XMLString.TABLE_NAME);
                         sheetNames.add(sName);
 
                         // Add sheet name as heading, if required
-                        if (config.xhtmlUseSheetNamesAsHeadings()) {
+                        if (config.useSheetNamesAsHeadings()) {
                             Element heading = converter.createElement("h2");
                             hnode.appendChild(heading);
                             heading.setAttribute("id","tableheading"+(sheetNames.size()-1));
@@ -117,7 +117,7 @@ public class TableConverter extends ConverterHelper {
     private Element nextOutFile() {
         Element hnode = converter.nextOutFile();
         // Add title, if required by config
-        if (config.xhtmlUseTitleAsHeading()) {
+        if (config.useTitleAsHeading()) {
             String sTitle = converter.getMetaData().getTitle();
             if (sTitle!=null) {
                 Element title = converter.createElement("h1");

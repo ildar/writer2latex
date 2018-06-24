@@ -244,8 +244,8 @@ public class ClassicI18n extends I18n {
 
         Set<String> symbols = new HashSet<>();
         symbols.add("ascii"); // always load common symbols
-        if (config.getInputencoding()!=ASCII) {
-            symbols.add(writeInputenc(config.getInputencoding()));
+        if (config.inputencoding()!=ASCII) {
+            symbols.add(writeInputenc(config.inputencoding()));
         }
 
         readSymbols(symbols, false);
@@ -271,7 +271,7 @@ public class ClassicI18n extends I18n {
     }
     
     private void useInputenc(LaTeXPacman pacman) {
-    	pacman.usepackage(writeInputenc(config.getInputencoding()), "inputenc");
+    	pacman.usepackage(writeInputenc(config.inputencoding()), "inputenc");
     }
     
     private void useBabel(LaTeXPacman pacman) {
@@ -342,7 +342,7 @@ public class ClassicI18n extends I18n {
     }
 
     private void useFontPackages(LaTeXPacman pacman) {
-    	String sFont = config.getFont();
+    	String sFont = config.font();
     	// Sources:
     	// A Survey of Free Math Fonts for TeX and LaTeX, Stephen G. Hartke 2006
     	if ("cmbright".equals(sFont)) { // Computer Modern Bright designed by Walter A. Schmidt

@@ -73,7 +73,7 @@ class TOCConverter extends IndexConverterHelper {
 
 	TOCConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
 		super(ofr,config,converter,XMLString.TEXT_TABLE_OF_CONTENT_SOURCE);
-       	nExternalTocDepth = Math.max(config.getXhtmlSplitLevel(),1);
+       	nExternalTocDepth = Math.max(config.splitLevel(),1);
 	}
    
 	/** Return the id of the file containing the alphabetical index
@@ -114,7 +114,7 @@ class TOCConverter extends IndexConverterHelper {
 		if (nLevel<=nExternalTocDepth) {
 			// Add an empty div to use as target, if required
 			String sTarget = null;
-			if (nLevel>config.getXhtmlSplitLevel()) {
+			if (nLevel>config.splitLevel()) {
 				Element div = converter.createElement("div");        			
 				hnode.appendChild(div);
 				sTarget = TOC_LINK_PREFIX+(++nTocIndex);

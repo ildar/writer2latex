@@ -78,9 +78,9 @@ class BibConverter extends ConverterHelper {
         
         // We need to use a different encoding for the BibTeX files
         if (config.externalBibtexFiles().length()>0) {
-        	int nBibTeXEncoding = config.getBibtexEncoding();
-        	int nDocumentEncoding = config.getInputencoding();
-        	if (config.getBackend()!=LaTeXConfig.XETEX && nBibTeXEncoding>-1 && nBibTeXEncoding!=nDocumentEncoding) {
+        	int nBibTeXEncoding = config.bibtexEncoding();
+        	int nDocumentEncoding = config.inputencoding();
+        	if (config.backend()!=LaTeXConfig.XETEX && nBibTeXEncoding>-1 && nBibTeXEncoding!=nDocumentEncoding) {
         		sBibTeXEncoding = ClassicI18n.writeInputenc(nBibTeXEncoding);
             	sDocumentEncoding = ClassicI18n.writeInputenc(nDocumentEncoding);
         	}
@@ -197,10 +197,10 @@ class BibConverter extends ConverterHelper {
             if (source!=null) {
             	// Unfortunately the index name depends on the documentclass
             	// For now we only handle the standard classes article, report and book
-            	if ("article".equals(config.getDocumentclass())) {
+            	if ("article".equals(config.documentclass())) {
             		palette.getIndexCv().convertIndexName(source, "\\refname", ldp, oc);
             	}
-            	else if ("book".equals(config.getDocumentclass()) || "report".equals(config.getDocumentclass())) {
+            	else if ("book".equals(config.documentclass()) || "report".equals(config.documentclass())) {
             		palette.getIndexCv().convertIndexName(source, "\\bibname", ldp, oc);
             	}
             }

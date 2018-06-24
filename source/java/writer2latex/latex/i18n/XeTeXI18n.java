@@ -93,7 +93,7 @@ public class XeTeXI18n extends I18n {
         }
         
         // Determine main script type
-    	nScript = config.getScript();
+    	nScript = config.script();
         if (nScript==LaTeXConfig.AUTO) {
         	if (sDefaultCJKLanguage!=null && sDefaultCJKLanguage.length()>0) {
         		nScript = LaTeXConfig.CJK;

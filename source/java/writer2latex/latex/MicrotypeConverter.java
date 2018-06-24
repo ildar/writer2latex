@@ -47,12 +47,12 @@ public class MicrotypeConverter extends ConverterHelper {
 
 	public MicrotypeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
-		bUseLetterspace = config.useLetterspace() && config.getBackend()==LaTeXConfig.PDFTEX;
+		bUseLetterspace = config.useLetterspace() && config.backend()==LaTeXConfig.PDFTEX;
 	}
 
 	@Override
 	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-		if (config.useMicrotype() && (config.getBackend()==LaTeXConfig.PDFTEX || config.getBackend()==LaTeXConfig.XETEX)) {
+		if (config.useMicrotype() && (config.backend()==LaTeXConfig.PDFTEX || config.backend()==LaTeXConfig.XETEX)) {
 			pacman.usepackage("microtype");
 		}
 		else if (bNeedLetterspace) {

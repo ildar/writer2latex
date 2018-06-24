@@ -100,9 +100,9 @@ public class TextConverter extends ConverterHelper {
         footCv = new FootnoteConverter(ofr, config, converter);
         endCv = new EndnoteConverter(ofr, config, converter);
         nPageBreakSplit = config.pageBreakSplit();
-        nSplit = config.getXhtmlSplitLevel();
-        nRepeatLevels = config.getXhtmlRepeatLevels();
-        nFloatMode = ofr.isText() && config.xhtmlFloatObjects() ? 
+        nSplit = config.splitLevel();
+        nRepeatLevels = config.repeatLevels();
+        nFloatMode = ofr.isText() && config.floatObjects() ? 
             DrawConverter.FLOATING : DrawConverter.ABSOLUTE;
         outlineNumbering = new ListCounter(ofr.getOutlineStyle());
         bDisplayHiddenText = config.displayHiddenText();
@@ -783,7 +783,7 @@ public class TextConverter extends ConverterHelper {
         // First check if we have a single paragraph to be omitted
         // This should happen if we ignore styles and have no style-map
         // for the paragraph style used        
-        if (config.xhtmlFormatting()!=XhtmlConfig.CONVERT_ALL && onode.hasChildNodes()) {
+        if (config.formatting()!=XhtmlConfig.CONVERT_ALL && onode.hasChildNodes()) {
             NodeList list = onode.getChildNodes();
             int nLen = list.getLength();
             int nParCount = 0;
@@ -1151,10 +1151,10 @@ public class TextConverter extends ConverterHelper {
     private void handleTabStop(Node onode, Node hnode) {
         // xhtml does not have tab stops, but we export and ASCII TAB character, which the
         // user may choose to format
-        if (config.getXhtmlTabstopStyle().length()>0) {
+        if (config.tabstopStyle().length()>0) {
             Element span = converter.createElement("span");
             hnode.appendChild(span);
-            span.setAttribute("class",config.getXhtmlTabstopStyle());
+            span.setAttribute("class",config.tabstopStyle());
             span.appendChild(converter.createTextNode("\t"));
         }
         else {
@@ -1368,7 +1368,7 @@ public class TextConverter extends ConverterHelper {
     /* apply hard formatting attribute style maps */
     private Element applyAttributes(Element node, StyleWithProperties style) {
         // Do nothing if we convert hard formatting
-        if (config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES) { return node; }
+        if (config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_STYLES) { return node; }
         // Do nothing if this is not an automatic style
         if (style==null) { return node; }
         if (!style.isAutomatic()) { return node; }
@@ -1417,7 +1417,7 @@ public class TextConverter extends ConverterHelper {
 	
     /* Create an inline node with background style from paragraph style */
     private Element createTextBackground(Element node, String sStyleName) {
-        if (config.xhtmlFormatting()==XhtmlConfig.IGNORE_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD) {
+        if (config.formatting()==XhtmlConfig.IGNORE_ALL || config.formatting()==XhtmlConfig.IGNORE_HARD) {
             return node;
         } 
         String sBack = getParSc().getTextBackground(sStyleName);

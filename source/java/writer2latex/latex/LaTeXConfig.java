@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-13)
+ *  Version 2.0 (2018-06-24)
  *
  */
 
@@ -48,7 +48,6 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 	/////////////////////////////////////////////////////////////////////////
 	// I. Define items needed by ConfigBase
 	
-    protected int getOptionCount() { return 80; }
     protected String getDefaultConfigPath() { return "/writer2latex/latex/config/"; } 
     
 	/////////////////////////////////////////////////////////////////////////
@@ -115,89 +114,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public static final int PDFANNOTATION = 2;
     public static final int MARGINPAR = 3;
     public static final int CUSTOM = 4;
-	
-    // Options
-    private static final int BACKEND = 0;
-    private static final int NO_PREAMBLE = 1;
-    private static final int NO_INDEX = 2;
-    private static final int DOCUMENTCLASS = 3;
-    private static final int GLOBAL_OPTIONS = 4;
-    private static final int INPUTENCODING = 5;
-    private static final int SCRIPT = 6;
-    private static final int MULTILINGUAL = 7;
-    private static final int GREEK_MATH = 8;
-    private static final int USE_PIFONT = 9;
-    private static final int USE_IFSYM = 10;
-    private static final int USE_WASYSYM = 11;
-    private static final int USE_BBDING = 12;
-    private static final int USE_EUROSYM = 13;
-    private static final int USE_TIPA = 14;
-    private static final int USE_XCOLOR = 15;
-    private static final int USE_COLORTBL = 16;
-    private static final int USE_GEOMETRY = 17;
-    private static final int USE_FANCYHDR = 18;
-    private static final int USE_LONGFBOX = 19;
-    private static final int USE_TITLESEC = 20;
-    private static final int USE_TITLETOC = 21;
-    private static final int USE_HYPERREF = 22;
-    private static final int USE_MICROTYPE = 23;
-    private static final int USE_LETTERSPACE = 24;
-    private static final int USE_CAPTION = 25;
-    private static final int USE_LONGTABLE = 26;
-    private static final int USE_SUPERTABULAR = 27;
-    private static final int USE_TABULARY = 28;
-    private static final int USE_ENDNOTES = 29;
-    private static final int USE_ULEM = 30;
-    private static final int USE_LASTPAGE = 31;
-    private static final int USE_TITLEREF = 32;
-    private static final int USE_BIBTEX = 33;
-    private static final int BIBTEX_STYLE = 34;
-    private static final int EXTERNAL_BIBTEX_FILES = 35;
-    private static final int BIBTEX_ENCODING = 36;
-    private static final int ZOTERO_BIBTEX_FILES = 37;
-    private static final int JABREF_BIBTEX_FILES = 38;
-    private static final int INCLUDE_ORIGINAL_CITATIONS = 39;
-    private static final int USE_NATBIB = 40;
-    private static final int NATBIB_OPTIONS = 41;
-    private static final int FONT = 42;
-    private static final int FONTSPEC = 43;
-    private static final int FORMATTING = 44;
-    private static final int FOOTNOTE_RULE = 45;
-    private static final int OUTLINE_NUMBERING = 46;
-    private static final int BORDER_RADIUS = 47;
-    private static final int OTHER_STYLES = 48;
-    private static final int CONVERT_INDEX_NAMES = 49;
-    private static final int IMAGE_CONTENT = 50;
-	private static final int TABLE_CONTENT = 51;
-	private static final int TABLE_FIRST_HEAD_STYLE = 52;
-	private static final int TABLE_HEAD_STYLE = 53;
-	private static final int TABLE_FOOT_STYLE = 54;
-	private static final int TABLE_LAST_FOOT_STYLE = 55;
-    private static final int IGNORE_HARD_PAGE_BREAKS = 56;
-    private static final int IGNORE_HARD_LINE_BREAKS = 57;
-    private static final int IGNORE_EMPTY_PARAGRAPHS =58;
-    private static final int IGNORE_DOUBLE_SPACES = 59;
-    private static final int DISPLAY_HIDDEN_TEXT = 60;
-    private static final int ALIGN_FRAMES = 61;
-    private static final int FLOAT_FIGURES = 62; 
-    private static final int FLOAT_TABLES = 63; 
-    private static final int FLOAT_OPTIONS = 64;
-    private static final int FIGURE_SEQUENCE_NAME = 65; 
-    private static final int TABLE_SEQUENCE_NAME = 66; 
-    private static final int IMAGE_OPTIONS = 67;
-    private static final int REMOVE_GRAPHICS_EXTENSION = 68;
-    private static final int ORIGINAL_IMAGE_SIZE = 69;
-    private static final int SIMPLE_TABLE_LIMIT = 70;
-    private static final int NOTES = 71;
-    private static final int METADATA = 72;
-    private static final int TABSTOP = 73;
-    private static final int WRAP_LINES_AFTER = 74;
-    private static final int SPLIT_LINKED_SECTIONS = 75;
-    private static final int SPLIT_TOPLEVEL_SECTIONS = 76;
-    private static final int SAVE_IMAGES_IN_SUBDIR = 77;
-    private static final int OLD_MATH_COLORS = 78;
-    private static final int DEBUG = 79;
-    
+	    
 	/////////////////////////////////////////////////////////////////////////
     // IV. Our options data
 
@@ -221,11 +138,11 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         super();
         
         // create options with default values
-        options[NO_PREAMBLE] = new BooleanOption("no_preamble","false");
-        options[NO_INDEX] = new BooleanOption("no_index","false");
-        options[DOCUMENTCLASS] = new Option("documentclass","article");
-        options[GLOBAL_OPTIONS] = new Option("global_options","");
-        options[BACKEND] = new IntegerOption("backend","pdftex") {
+        addOption(new BooleanOption("no_preamble","false"));
+        addOption(new BooleanOption("no_index","false"));
+        addOption(new Option("documentclass","article"));
+        addOption(new Option("global_options",""));
+        addOption(new IntegerOption("backend","pdftex") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 if ("generic".equals(sValue)) nValue = GENERIC;
@@ -234,14 +151,14 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 else if ("unspecified".equals(sValue)) nValue = UNSPECIFIED;
                 else if ("xetex".equals(sValue)) nValue = XETEX;
             }
-        };
-        options[INPUTENCODING] = new IntegerOption("inputencoding",ClassicI18n.writeInputenc(ClassicI18n.ASCII)) {
+        });
+        addOption(new IntegerOption("inputencoding",ClassicI18n.writeInputenc(ClassicI18n.ASCII)) {
             public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = ClassicI18n.readInputenc(sValue);
             }
-        };
-        options[SCRIPT] = new IntegerOption("script","auto") {
+        });
+        addOption(new IntegerOption("script","auto") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 if ("auto".equals(sValue)) nValue = AUTO;
@@ -249,51 +166,50 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 if ("ctl".equals(sValue)) nValue = CTL;
                 if ("cjk".equals(sValue)) nValue = CJK;
             }
-        };
-        options[MULTILINGUAL] = new BooleanOption("multilingual","true");
-        options[GREEK_MATH] = new BooleanOption("greek_math","true");
-        options[USE_PIFONT] = new BooleanOption("use_pifont","false");
-        options[USE_IFSYM] = new BooleanOption("use_ifsym","false");
-        options[USE_WASYSYM] = new BooleanOption("use_wasysym","false");
-        options[USE_BBDING] = new BooleanOption("use_bbding","false");
-        options[USE_EUROSYM] = new BooleanOption("use_eurosym","false");
-        options[USE_TIPA] = new BooleanOption("use_tipa","false");
-        options[USE_XCOLOR] = new BooleanOption("use_xcolor","true");
-        options[USE_COLORTBL] = new BooleanOption("use_colortbl","false");
-        options[USE_GEOMETRY] = new BooleanOption("use_geometry","true");
-        options[USE_FANCYHDR] = new BooleanOption("use_fancyhdr","true");
-        options[USE_LONGFBOX] = new BooleanOption("use_longfbox","true");
-        options[USE_TITLESEC] = new BooleanOption("use_titlesec","false");
-        options[USE_TITLETOC] = new BooleanOption("use_titletoc","false");
-        options[USE_HYPERREF] = new BooleanOption("use_hyperref","true");
-        options[USE_MICROTYPE] = new BooleanOption("use_microtype","false");
-        options[USE_LETTERSPACE] = new BooleanOption("use_letterspace","false");
-        options[USE_CAPTION] = new BooleanOption("use_caption","false");
-        options[USE_LONGTABLE] = new BooleanOption("use_longtable","false");
-        options[USE_SUPERTABULAR] = new BooleanOption("use_supertabular","true");
-        options[USE_TABULARY] = new BooleanOption("use_tabulary","false");
-        options[USE_ENDNOTES] = new BooleanOption("use_endnotes","false");
-        options[USE_ULEM] = new BooleanOption("use_ulem","false");
-        options[USE_LASTPAGE] = new BooleanOption("use_lastpage","false");
-        options[USE_TITLEREF] = new BooleanOption("use_titleref","false");
-        options[USE_BIBTEX] = new BooleanOption("use_bibtex","false");
-        options[BIBTEX_STYLE] = new Option("bibtex_style","plain");
-        options[EXTERNAL_BIBTEX_FILES] = new Option("external_bibtex_files","");
-        options[BIBTEX_ENCODING] =  new IntegerOption("bibtex_encoding","document") {
+        });
+        addOption(new BooleanOption("multilingual","true"));
+        addOption(new BooleanOption("greek_math","true"));
+        addOption(new BooleanOption("use_pifont","false"));
+        addOption(new BooleanOption("use_ifsym","false"));
+        addOption(new BooleanOption("use_wasysym","false"));
+        addOption(new BooleanOption("use_bbding","false"));
+        addOption(new BooleanOption("use_eurosym","false"));
+        addOption(new BooleanOption("use_tipa","false"));
+        addOption(new BooleanOption("use_xcolor","true"));
+        addOption(new BooleanOption("use_colortbl","false"));
+        addOption(new BooleanOption("use_geometry","true"));
+        addOption(new BooleanOption("use_fancyhdr","true"));
+        addOption(new BooleanOption("use_longfbox","true"));
+        addOption(new BooleanOption("use_titlesec","false"));
+        addOption(new BooleanOption("use_hyperref","true"));
+        addOption(new BooleanOption("use_microtype","false"));
+        addOption(new BooleanOption("use_letterspace","false"));
+        addOption(new BooleanOption("use_caption","false"));
+        addOption(new BooleanOption("use_longtable","false"));
+        addOption(new BooleanOption("use_supertabular","true"));
+        addOption(new BooleanOption("use_tabulary","false"));
+        addOption(new BooleanOption("use_endnotes","false"));
+        addOption(new BooleanOption("use_ulem","false"));
+        addOption(new BooleanOption("use_lastpage","false"));
+        addOption(new BooleanOption("use_titleref","false"));
+        addOption(new BooleanOption("use_bibtex","false"));
+        addOption(new Option("bibtex_style","plain"));
+        addOption(new Option("external_bibtex_files",""));
+        addOption(new IntegerOption("bibtex_encoding","document") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 if ("document".equals(sValue)) { nValue = -1; }
                 else { nValue = ClassicI18n.readInputenc(sValue); }
             }
-        };
-        options[ZOTERO_BIBTEX_FILES] = new Option("zotero_bibtex_files","");
-        options[JABREF_BIBTEX_FILES] = new Option("jabref_bibtex_files","");
-        options[INCLUDE_ORIGINAL_CITATIONS] = new BooleanOption("include_original_citations","false");
-        options[USE_NATBIB] = new BooleanOption("use_natbib","false");
-        options[NATBIB_OPTIONS] = new Option("natbib_options","");
-        options[FONT] = new Option("font","default");
-        options[FONTSPEC] = new Option("fontspec","default");
-        options[FORMATTING] = new IntegerOption("formatting","convert_basic") {
+        });
+        addOption(new Option("zotero_bibtex_files",""));
+        addOption(new Option("jabref_bibtex_files",""));
+        addOption(new BooleanOption("include_original_citations","false"));
+        addOption(new BooleanOption("use_natbib","false"));
+        addOption(new Option("natbib_options",""));
+        addOption(new Option("font","default"));
+        addOption(new Option("fontspec","default"));
+        addOption(new IntegerOption("formatting","convert_basic") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 if ("convert_all".equals(sValue)) nValue = CONVERT_ALL;
@@ -302,39 +218,39 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 else if ("ignore_most".equals(sValue)) nValue = IGNORE_MOST;
                 else if ("ignore_all".equals(sValue)) nValue = IGNORE_ALL;
             }
-        };
-        options[FOOTNOTE_RULE] = new BooleanOption("footnote_rule", "false");
-        options[OUTLINE_NUMBERING] = new BooleanOption("outline_numbering", "true");
-        options[BORDER_RADIUS] = new Option("border_radius","100%");
-        options[OTHER_STYLES] = new ContentHandlingOption("other_styles","accept");
-        options[CONVERT_INDEX_NAMES] = new BooleanOption("convert_index_names", "false");
-        options[IMAGE_CONTENT] = new ContentHandlingOption("image_content","accept");
-        options[TABLE_CONTENT] = new ContentHandlingOption("table_content","accept");
-        options[TABLE_FIRST_HEAD_STYLE] = new Option("table_first_head_style","");
-        options[TABLE_HEAD_STYLE] = new Option("table_head_style","");
-        options[TABLE_FOOT_STYLE] = new Option("table_foot_style","");
-        options[TABLE_LAST_FOOT_STYLE] = new Option("table_last_foot_style","");
-        options[IGNORE_HARD_PAGE_BREAKS] = new BooleanOption("ignore_hard_page_breaks","false");
-        options[IGNORE_HARD_LINE_BREAKS] = new BooleanOption("ignore_hard_line_breaks","false");
-        options[IGNORE_EMPTY_PARAGRAPHS] = new BooleanOption("ignore_empty_paragraphs","false");
-        options[IGNORE_DOUBLE_SPACES] = new BooleanOption("ignore_double_spaces","false");
-        options[DISPLAY_HIDDEN_TEXT] = new BooleanOption("display_hidden_text","false");
-        options[ALIGN_FRAMES] = new BooleanOption("align_frames","true");
-        options[FLOAT_FIGURES] = new BooleanOption("float_figures","false");
-        options[FLOAT_TABLES] = new BooleanOption("float_tables","false");
-        options[FLOAT_OPTIONS] = new Option("float_options","h");
-        options[FIGURE_SEQUENCE_NAME] = new BooleanOption("figure_sequence_name","");
-        options[TABLE_SEQUENCE_NAME] = new BooleanOption("table_sequence_name","");
-        options[IMAGE_OPTIONS] = new Option("image_options","");
-        options[REMOVE_GRAPHICS_EXTENSION] = new BooleanOption("remove_graphics_extension","false");
-        options[ORIGINAL_IMAGE_SIZE] = new BooleanOption("original_image_size","false");
-        options[SIMPLE_TABLE_LIMIT] = new IntegerOption("simple_table_limit","0") {
+        });
+        addOption(new BooleanOption("footnote_rule", "false"));
+        addOption(new BooleanOption("outline_numbering", "true"));
+        addOption(new Option("border_radius","100%"));
+        addOption(new ContentHandlingOption("other_styles","accept"));
+        addOption(new BooleanOption("convert_index_names", "false"));
+        addOption(new ContentHandlingOption("image_content","accept"));
+        addOption(new ContentHandlingOption("table_content","accept"));
+        addOption(new Option("table_first_head_style",""));
+        addOption(new Option("table_head_style",""));
+        addOption(new Option("table_foot_style",""));
+        addOption(new Option("table_last_foot_style",""));
+        addOption(new BooleanOption("ignore_hard_page_breaks","false"));
+        addOption(new BooleanOption("ignore_hard_line_breaks","false"));
+        addOption(new BooleanOption("ignore_empty_paragraphs","false"));
+        addOption(new BooleanOption("ignore_double_spaces","false"));
+        addOption(new BooleanOption("display_hidden_text","false"));
+        addOption(new BooleanOption("align_frames","true"));
+        addOption(new BooleanOption("float_figures","false"));
+        addOption(new BooleanOption("float_tables","false"));
+        addOption(new Option("float_options","h"));
+        addOption(new BooleanOption("figure_sequence_name",""));
+        addOption(new BooleanOption("table_sequence_name",""));
+        addOption(new Option("image_options",""));
+        addOption(new BooleanOption("remove_graphics_extension","false"));
+        addOption(new BooleanOption("original_image_size","false"));
+        addOption(new IntegerOption("simple_table_limit","0") {
            public void setString(String sValue) {
                super.setString(sValue);
                nValue = Misc.getPosInteger(sValue,0);
            }
-        };
-        options[NOTES] = new IntegerOption("notes","comment") {
+        });
+        addOption(new IntegerOption("notes","comment") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 if ("ignore".equals(sValue)) nValue = IGNORE;
@@ -343,20 +259,20 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 else if ("marginpar".equals(sValue)) nValue = MARGINPAR;
                 else nValue = CUSTOM;
             }
-        };
-        options[METADATA] = new BooleanOption("metadata","true");
-        options[TABSTOP] = new Option("tabstop","");
-        options[WRAP_LINES_AFTER] = new IntegerOption("wrap_lines_after","120") {
+        });
+        addOption(new BooleanOption("metadata","true"));
+        addOption(new Option("tabstop",""));
+        addOption(new IntegerOption("wrap_lines_after","120") {
             public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = Misc.getPosInteger(sValue,0);
             }
-        };
-        options[SPLIT_LINKED_SECTIONS] = new BooleanOption("split_linked_sections","false");
-        options[SPLIT_TOPLEVEL_SECTIONS] = new BooleanOption("split_toplevel_sections","false");
-        options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
-        options[OLD_MATH_COLORS] = new BooleanOption("old_math_colors","false");
-        options[DEBUG] = new BooleanOption("debug","false");
+        });
+        addOption(new BooleanOption("split_linked_sections","false"));
+        addOption(new BooleanOption("split_toplevel_sections","false"));
+        addOption(new BooleanOption("save_images_in_subdir","false"));
+        addOption(new BooleanOption("old_math_colors","false"));
+        addOption(new BooleanOption("debug","false"));
 
         // Complex options - heading map
         headingMap = addComplexOption("heading-map");
@@ -673,106 +589,105 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public String getCustomPreamble() { return replaceParameters(sCustomPreamble); }
 
     // Common options
-    public boolean debug() { return ((BooleanOption) options[DEBUG]).getValue(); }
+    public boolean debug() { return ((BooleanOption) options.get("debug")).getValue(); }
 
     // General options
-    public String getDocumentclass() { return options[DOCUMENTCLASS].getString(); }
-    public String getGlobalOptions() { return replaceParameters(options[GLOBAL_OPTIONS].getString()); }
-    public int getBackend() { return ((IntegerOption) options[BACKEND]).getValue(); }
-    public int getInputencoding() { return ((IntegerOption) options[INPUTENCODING]).getValue(); }
-    public int getScript() { return ((IntegerOption) options[SCRIPT]).getValue(); }
-    public boolean multilingual() { return ((BooleanOption) options[MULTILINGUAL]).getValue(); }
-    public boolean greekMath() { return ((BooleanOption) options[GREEK_MATH]).getValue(); }
-    public boolean noPreamble() { return ((BooleanOption) options[NO_PREAMBLE]).getValue(); }
-    public boolean noIndex() { return ((BooleanOption) options[NO_INDEX]).getValue(); }
+    public String documentclass() { return options.get("documentclass").getString(); }
+    public String globalOptions() { return replaceParameters(options.get("global_options").getString()); }
+    public int backend() { return ((IntegerOption) options.get("backend")).getValue(); }
+    public int inputencoding() { return ((IntegerOption) options.get("inputencoding")).getValue(); }
+    public int script() { return ((IntegerOption) options.get("script")).getValue(); }
+    public boolean multilingual() { return ((BooleanOption) options.get("multilingual")).getValue(); }
+    public boolean greekMath() { return ((BooleanOption) options.get("greek_math")).getValue(); }
+    public boolean noPreamble() { return ((BooleanOption) options.get("no_preamble")).getValue(); }
+    public boolean noIndex() { return ((BooleanOption) options.get("no_index")).getValue(); }
 	
     // Package options
-    public boolean usePifont() { return ((BooleanOption) options[USE_PIFONT]).getValue(); }
-    public boolean useIfsym() { return ((BooleanOption) options[USE_IFSYM]).getValue(); }
-    public boolean useWasysym() { return ((BooleanOption) options[USE_WASYSYM]).getValue(); }
-    public boolean useBbding() { return ((BooleanOption) options[USE_BBDING]).getValue(); }
-    public boolean useEurosym() { return ((BooleanOption) options[USE_EUROSYM]).getValue(); }
-    public boolean useTipa() { return ((BooleanOption) options[USE_TIPA]).getValue(); }
-    public boolean useXcolor() { return ((BooleanOption) options[USE_XCOLOR]).getValue(); }
-    public boolean useColortbl() { return ((BooleanOption) options[USE_COLORTBL]).getValue(); }
-    public boolean useGeometry() { return ((BooleanOption) options[USE_GEOMETRY]).getValue(); }
-    public boolean useFancyhdr() { return ((BooleanOption) options[USE_FANCYHDR]).getValue(); }
-    public boolean useLongfbox() { return ((BooleanOption) options[USE_LONGFBOX]).getValue(); }
-    public boolean useTitlesec() { return ((BooleanOption) options[USE_TITLESEC]).getValue(); }
-    public boolean useTitletoc() { return ((BooleanOption) options[USE_TITLETOC]).getValue(); }
-    public boolean useHyperref() { return ((BooleanOption) options[USE_HYPERREF]).getValue(); }
-    public boolean useMicrotype() { return ((BooleanOption) options[USE_MICROTYPE]).getValue(); }
-    public boolean useLetterspace() { return ((BooleanOption) options[USE_LETTERSPACE]).getValue(); }
-    public boolean useCaption() { return ((BooleanOption) options[USE_CAPTION]).getValue(); }
-    public boolean useLongtable() { return ((BooleanOption) options[USE_LONGTABLE]).getValue(); }
-    public boolean useSupertabular() { return ((BooleanOption) options[USE_SUPERTABULAR]).getValue(); }
-    public boolean useTabulary() { return ((BooleanOption) options[USE_TABULARY]).getValue(); }
-    public boolean useEndnotes() { return ((BooleanOption) options[USE_ENDNOTES]).getValue(); }
-    public boolean useUlem() { return ((BooleanOption) options[USE_ULEM]).getValue(); }
-    public boolean useLastpage() { return ((BooleanOption) options[USE_LASTPAGE]).getValue(); }
-    public boolean useTitleref() { return ((BooleanOption) options[USE_TITLEREF]).getValue(); }
-    public boolean useBibtex() { return ((BooleanOption) options[USE_BIBTEX]).getValue(); }
-    public String bibtexStyle() { return options[BIBTEX_STYLE].getString(); }
-    public String externalBibtexFiles() { return options[EXTERNAL_BIBTEX_FILES].getString(); }
-    public int getBibtexEncoding() { return ((IntegerOption) options[BIBTEX_ENCODING]).getValue(); }
-    public String zoteroBibtexFiles() { return options[ZOTERO_BIBTEX_FILES].getString(); }
-    public String jabrefBibtexFiles() { return options[JABREF_BIBTEX_FILES].getString(); }
-    public boolean includeOriginalCitations() { return ((BooleanOption) options[INCLUDE_ORIGINAL_CITATIONS]).getValue(); }
-    public boolean useNatbib() { return ((BooleanOption) options[USE_NATBIB]).getValue(); }
-    public String getNatbibOptions() { return options[NATBIB_OPTIONS].getString(); }
+    public boolean usePifont() { return ((BooleanOption) options.get("use_pifont")).getValue(); }
+    public boolean useIfsym() { return ((BooleanOption) options.get("use_ifsym")).getValue(); }
+    public boolean useWasysym() { return ((BooleanOption) options.get("use_wasysym")).getValue(); }
+    public boolean useBbding() { return ((BooleanOption) options.get("use_bbding")).getValue(); }
+    public boolean useEurosym() { return ((BooleanOption) options.get("use_eurosym")).getValue(); }
+    public boolean useTipa() { return ((BooleanOption) options.get("use_tipa")).getValue(); }
+    public boolean useXcolor() { return ((BooleanOption) options.get("use_xcolor")).getValue(); }
+    public boolean useColortbl() { return ((BooleanOption) options.get("use_colortbl")).getValue(); }
+    public boolean useGeometry() { return ((BooleanOption) options.get("use_geometry")).getValue(); }
+    public boolean useFancyhdr() { return ((BooleanOption) options.get("use_fancyhdr")).getValue(); }
+    public boolean useLongfbox() { return ((BooleanOption) options.get("use_longfbox")).getValue(); }
+    public boolean useTitlesec() { return ((BooleanOption) options.get("use_titlesec")).getValue(); }
+    public boolean useHyperref() { return ((BooleanOption) options.get("use_hyperref")).getValue(); }
+    public boolean useMicrotype() { return ((BooleanOption) options.get("use_microtype")).getValue(); }
+    public boolean useLetterspace() { return ((BooleanOption) options.get("use_letterspace")).getValue(); }
+    public boolean useCaption() { return ((BooleanOption) options.get("use_caption")).getValue(); }
+    public boolean useLongtable() { return ((BooleanOption) options.get("use_longtable")).getValue(); }
+    public boolean useSupertabular() { return ((BooleanOption) options.get("use_supertabular")).getValue(); }
+    public boolean useTabulary() { return ((BooleanOption) options.get("use_tabulary")).getValue(); }
+    public boolean useEndnotes() { return ((BooleanOption) options.get("use_endnotes")).getValue(); }
+    public boolean useUlem() { return ((BooleanOption) options.get("use_ulem")).getValue(); }
+    public boolean useLastpage() { return ((BooleanOption) options.get("use_lastpage")).getValue(); }
+    public boolean useTitleref() { return ((BooleanOption) options.get("use_titleref")).getValue(); }
+    public boolean useBibtex() { return ((BooleanOption) options.get("use_bibtex")).getValue(); }
+    public String bibtexStyle() { return options.get("bibtex_style").getString(); }
+    public String externalBibtexFiles() { return options.get("external_bibtex_files").getString(); }
+    public int bibtexEncoding() { return ((IntegerOption) options.get("bibtex_encoding")).getValue(); }
+    public String zoteroBibtexFiles() { return options.get("zotero_bibtex_files").getString(); }
+    public String jabrefBibtexFiles() { return options.get("jabref_bibtex_files").getString(); }
+    public boolean includeOriginalCitations() { return ((BooleanOption) options.get("include_original_citations")).getValue(); }
+    public boolean useNatbib() { return ((BooleanOption) options.get("use_natbib")).getValue(); }
+    public String natbibOptions() { return options.get("natbib_options").getString(); }
 	
     // Formatting options
-    public String getFont() { return options[FONT].getString(); }
-    public String fontspec() { return options[FONTSPEC].getString(); }
-    public int formatting() { return ((IntegerOption) options[FORMATTING]).getValue(); }
-    public boolean footnoteRule() { return ((BooleanOption) options[FOOTNOTE_RULE]).getValue(); }
-    public boolean outlineNumbering() { return ((BooleanOption) options[OUTLINE_NUMBERING]).getValue(); }
-    public String borderRadius() { return options[BORDER_RADIUS].getString(); }
-    public int otherStyles() { return ((IntegerOption) options[OTHER_STYLES]).getValue(); }
-    public boolean convertIndexNames() { return ((BooleanOption) options[CONVERT_INDEX_NAMES]).getValue(); }
-    public int imageContent() { return ((IntegerOption) options[IMAGE_CONTENT]).getValue(); }
-    public int tableContent() { return ((IntegerOption) options[TABLE_CONTENT]).getValue(); }
-    public String getTableFirstHeadStyle() { return options[TABLE_FIRST_HEAD_STYLE].getString(); }
-    public String getTableHeadStyle() { return options[TABLE_HEAD_STYLE].getString(); }
-    public String getTableFootStyle() { return options[TABLE_FOOT_STYLE].getString(); }
-    public String getTableLastFootStyle() { return options[TABLE_LAST_FOOT_STYLE].getString(); }
-    public boolean ignoreHardPageBreaks() { return ((BooleanOption) options[IGNORE_HARD_PAGE_BREAKS]).getValue(); }
-    public boolean ignoreHardLineBreaks() { return ((BooleanOption) options[IGNORE_HARD_LINE_BREAKS]).getValue(); }
-    public boolean ignoreEmptyParagraphs() { return ((BooleanOption) options[IGNORE_EMPTY_PARAGRAPHS]).getValue(); }
-    public boolean ignoreDoubleSpaces() { return ((BooleanOption) options[IGNORE_DOUBLE_SPACES]).getValue(); }
-    public boolean displayHiddenText() { return ((BooleanOption) options[DISPLAY_HIDDEN_TEXT]).getValue(); }
+    public String font() { return options.get("font").getString(); }
+    public String fontspec() { return options.get("fontspec").getString(); }
+    public int formatting() { return ((IntegerOption) options.get("formatting")).getValue(); }
+    public boolean footnoteRule() { return ((BooleanOption) options.get("footnote_rule")).getValue(); }
+    public boolean outlineNumbering() { return ((BooleanOption) options.get("outline_numbering")).getValue(); }
+    public String borderRadius() { return options.get("border_radius").getString(); }
+    public int otherStyles() { return ((IntegerOption) options.get("other_styles")).getValue(); }
+    public boolean convertIndexNames() { return ((BooleanOption) options.get("convert_index_names")).getValue(); }
+    public int imageContent() { return ((IntegerOption) options.get("image_content")).getValue(); }
+    public int tableContent() { return ((IntegerOption) options.get("table_content")).getValue(); }
+    public String tableFirstHeadStyle() { return options.get("table_first_head_style").getString(); }
+    public String tableHeadStyle() { return options.get("table_head_style").getString(); }
+    public String tableFootStyle() { return options.get("table_foot_style").getString(); }
+    public String tableLastFootStyle() { return options.get("table_last_foot_style").getString(); }
+    public boolean ignoreHardPageBreaks() { return ((BooleanOption) options.get("ignore_hard_page_breaks")).getValue(); }
+    public boolean ignoreHardLineBreaks() { return ((BooleanOption) options.get("ignore_hard_line_breaks")).getValue(); }
+    public boolean ignoreEmptyParagraphs() { return ((BooleanOption) options.get("ignore_empty_paragraphs")).getValue(); }
+    public boolean ignoreDoubleSpaces() { return ((BooleanOption) options.get("ignore_double_spaces")).getValue(); }
+    public boolean displayHiddenText() { return ((BooleanOption) options.get("display_hidden_text")).getValue(); }
 
     // Graphics options
-    public boolean alignFrames() { return ((BooleanOption) options[ALIGN_FRAMES]).getValue(); }
-    public boolean floatFigures() { return ((BooleanOption) options[FLOAT_FIGURES]).getValue(); }
-    public boolean floatTables() { return ((BooleanOption) options[FLOAT_TABLES]).getValue(); }
-    public String getFloatOptions() { return options[FLOAT_OPTIONS].getString(); }
-    public String getFigureSequenceName() { return options[FIGURE_SEQUENCE_NAME].getString(); }
-    public String getTableSequenceName() { return options[TABLE_SEQUENCE_NAME].getString(); }
-    public String getImageOptions() { return options[IMAGE_OPTIONS].getString(); }
-    public boolean removeGraphicsExtension() { return ((BooleanOption) options[REMOVE_GRAPHICS_EXTENSION]).getValue(); }
-    public boolean originalImageSize() { return ((BooleanOption) options[ORIGINAL_IMAGE_SIZE]).getValue(); }
+    public boolean alignFrames() { return ((BooleanOption) options.get("align_frames")).getValue(); }
+    public boolean floatFigures() { return ((BooleanOption) options.get("float_figures")).getValue(); }
+    public boolean floatTables() { return ((BooleanOption) options.get("float_tables")).getValue(); }
+    public String floatOptions() { return options.get("float_options").getString(); }
+    public String figureSequenceName() { return options.get("figure_sequence_name").getString(); }
+    public String tableSequenceName() { return options.get("table_sequence_name").getString(); }
+    public String imageOptions() { return options.get("image_options").getString(); }
+    public boolean removeGraphicsExtension() { return ((BooleanOption) options.get("remove_graphics_extension")).getValue(); }
+    public boolean originalImageSize() { return ((BooleanOption) options.get("original_image_size")).getValue(); }
 	
     // Tables
-    public int getSimpleTableLimit() { return ((IntegerOption) options[SIMPLE_TABLE_LIMIT]).getValue(); }
+    public int simpleTableLimit() { return ((IntegerOption) options.get("simple_table_limit")).getValue(); }
 	
     // Notes
-    public int notes() { return ((IntegerOption) options[NOTES]).getValue(); }
-    public String getNotesCommand() { return options[NOTES].getString(); }
+    public int notes() { return ((IntegerOption) options.get("notes")).getValue(); }
+    public String notesCommand() { return options.get("notes").getString(); }
 	
     // Metadata
-    public boolean metadata() { return ((BooleanOption) options[METADATA]).getValue(); }
+    public boolean metadata() { return ((BooleanOption) options.get("metadata")).getValue(); }
 	
     // Tab stops
-    public String getTabstop() { return options[TABSTOP].getString(); }
+    public String tabstop() { return options.get("tabstop").getString(); }
 	
     // Files
-    public int getWrapLinesAfter() { return ((IntegerOption) options[WRAP_LINES_AFTER]).getValue(); }
-    public boolean splitLinkedSections() { return ((BooleanOption) options[SPLIT_LINKED_SECTIONS]).getValue(); }
-    public boolean splitToplevelSections() { return ((BooleanOption) options[SPLIT_TOPLEVEL_SECTIONS]).getValue(); }
-    public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
+    public int wrapLinesAfter() { return ((IntegerOption) options.get("wrap_lines_after")).getValue(); }
+    public boolean splitLinkedSections() { return ((BooleanOption) options.get("split_linked_sections")).getValue(); }
+    public boolean splitToplevelSections() { return ((BooleanOption) options.get("split_toplevel_sections")).getValue(); }
+    public boolean saveImagesInSubdir() { return ((BooleanOption) options.get("save_images_in_subdir")).getValue(); }
 	
     // Compatibility options
-    public boolean oldMathColors() { return ((BooleanOption) options[OLD_MATH_COLORS]).getValue(); }
+    public boolean oldMathColors() { return ((BooleanOption) options.get("old_math_colors")).getValue(); }
 }
 

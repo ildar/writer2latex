@@ -47,8 +47,8 @@ public class CellStyleConverter extends StyleWithPropertiesConverterHelper {
         // Style maps for Cells are currently not supported.
         // (In OOo, cell styles are only supported by Calc) 
         this.styleMap = new XhtmlStyleMap();
-        this.bConvertStyles = config.xhtmlTableFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlTableFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlTableFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlTableFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.tableFormatting()==XhtmlConfig.CONVERT_ALL || config.tableFormatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.tableFormatting()==XhtmlConfig.CONVERT_ALL || config.tableFormatting()==XhtmlConfig.IGNORE_STYLES;
     }
 
     /** Get the family of cell styles

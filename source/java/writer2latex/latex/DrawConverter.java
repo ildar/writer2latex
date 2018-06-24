@@ -66,8 +66,8 @@ public class DrawConverter extends ConverterHelper {
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedGraphicx) { 
         	String sOptions = null;
-            if (config.getBackend()==LaTeXConfig.PDFTEX) sOptions = "pdftex";
-            else if (config.getBackend()==LaTeXConfig.DVIPS) sOptions = "dvips";
+            if (config.backend()==LaTeXConfig.PDFTEX) sOptions = "pdftex";
+            else if (config.backend()==LaTeXConfig.DVIPS) sOptions = "dvips";
             pacman.usepackage(sOptions, "graphicx");
         }
     }
@@ -215,8 +215,8 @@ public class DrawConverter extends ConverterHelper {
            else {
                ba.add("\\begin{figure}","\\end{figure}\n");
            }
-           if (config.getFloatOptions().length()>0) {
-               ba.add("["+config.getFloatOptions()+"]","");
+           if (config.floatOptions().length()>0) {
+               ba.add("["+config.floatOptions()+"]","");
            }
            ba.add("\n","");
            oc.setInFigureFloat(true);
@@ -294,28 +294,28 @@ public class DrawConverter extends ConverterHelper {
                 sFileName = bgd.getFileName();
                 String sMIME = bgd.getMIMEType();
                 bCommentOut = !(
-                    config.getBackend()==LaTeXConfig.UNSPECIFIED ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PNG.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PDF.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.JPEG.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PNG.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PDF.equals(sMIME)) ||
-                    (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS.equals(sMIME)));
+                    config.backend()==LaTeXConfig.UNSPECIFIED ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.PNG.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.PDF.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.JPEG.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.PNG.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.PDF.equals(sMIME)) ||
+                    (config.backend()==LaTeXConfig.DVIPS && MIMETypes.EPS.equals(sMIME)));
         	}
         	else { // linked image
                 sFileName = bgd.getFileName();
                 String sExt = Misc.getFileExtension(sFileName).toLowerCase();
                 // Accept only relative filenames and supported filetypes:
                 bCommentOut = sFileName.indexOf(":")>-1 || !(
-                    config.getBackend()==LaTeXConfig.UNSPECIFIED ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PNG_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.PDFTEX && MIMETypes.PDF_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PNG_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.XETEX && MIMETypes.PDF_EXT.equals(sExt)) ||
-                    (config.getBackend()==LaTeXConfig.DVIPS && MIMETypes.EPS_EXT.equals(sExt)));
+                    config.backend()==LaTeXConfig.UNSPECIFIED ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.PNG_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.PDFTEX && MIMETypes.PDF_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.JPEG_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.PNG_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.XETEX && MIMETypes.PDF_EXT.equals(sExt)) ||
+                    (config.backend()==LaTeXConfig.DVIPS && MIMETypes.EPS_EXT.equals(sExt)));
         	}
         }
         else {
@@ -361,8 +361,8 @@ public class DrawConverter extends ConverterHelper {
             if (sWidth!=null) { options.addValue("width="+sWidth); }
             if (sHeight!=null) { options.addValue("height="+sHeight); }
         }
-        if (config.getImageOptions().length()>0) {
-            options.addValue(config.getImageOptions()); // TODO: New CSVList...
+        if (config.imageOptions().length()>0) {
+            options.addValue(config.imageOptions()); // TODO: New CSVList...
         }
         if (!options.isEmpty()) {
             ldp.append("[").append(options.toString()).append("]");

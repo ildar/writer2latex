@@ -47,8 +47,8 @@ public class RowStyleConverter extends StyleWithPropertiesConverterHelper {
         super(ofr,config,converter);
         // Style maps for rows are currently not supported.
         this.styleMap = new XhtmlStyleMap();
-        this.bConvertStyles = config.xhtmlTableFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlTableFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlTableFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlTableFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.tableFormatting()==XhtmlConfig.CONVERT_ALL || config.tableFormatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.tableFormatting()==XhtmlConfig.CONVERT_ALL || config.tableFormatting()==XhtmlConfig.IGNORE_STYLES;
     }
 
     /** Get the family of row styles

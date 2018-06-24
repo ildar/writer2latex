@@ -41,9 +41,9 @@ class EndnoteConverter extends NoteConverter {
      */
     void insertEndnotes(Node hnode) {
         if (hasNotes()) {
-        	if (config.getXhtmlSplitLevel()>0) { hnode = converter.nextOutFile(); }
+        	if (config.splitLevel()>0) { hnode = converter.nextOutFile(); }
         	Element section = createNoteSection(hnode);
-        	insertNoteHeading(section, config.getEndnotesHeading(), "endnotes");
+        	insertNoteHeading(section, config.endnotesHeading(), "endnotes");
         	flushNotes(section);
         }
     }

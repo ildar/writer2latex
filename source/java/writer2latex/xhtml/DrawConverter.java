@@ -97,11 +97,11 @@ public class DrawConverter extends ConverterHelper {
         // We can only handle one form; pick an arbitrary one.
         // Also we cannot split a form over several files.
         Iterator<FormReader> formsIterator = ofr.getForms().getFormsIterator();
-        if (formsIterator.hasNext() && config.getXhtmlSplitLevel()==0) {
+        if (formsIterator.hasNext() && config.splitLevel()==0) {
             form = formsIterator.next();
         }
         bCollectFrames = ofr.isSpreadsheet();
-        sScale = config.getXhtmlScaling();
+        sScale = config.scaling();
         nImageSize = config.imageSize();
         bEmbedSVG = config.embedSVG();
         bEmbedImg = config.embedImg();

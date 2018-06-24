@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-14)
+ *  Version 2.0 (2018-06-24)
  *
  */
 
@@ -58,7 +58,6 @@ public final class ConverterPalette extends ConverterBase {
     // Various data used in conversion
     private Context mainContext; // main context
     private CSVList globalOptions; // global options
-    private LaTeXDocumentPortion packages; // Document portion containing all \\usepackage commands
 
     // The helpers (the "colors" of the palette)
     private I18n i18n;
@@ -137,26 +136,26 @@ public final class ConverterPalette extends ConverterBase {
         }
 		
         // Set graphics formats depending on backend
-        if (config.getBackend()==LaTeXConfig.PDFTEX || config.getBackend()==LaTeXConfig.XETEX) {
+        if (config.backend()==LaTeXConfig.PDFTEX || config.backend()==LaTeXConfig.XETEX) {
             imageConverter.setDefaultFormat(MIMETypes.PNG);
             imageConverter.setDefaultVectorFormat(MIMETypes.PDF);
             imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         }
-        else if (config.getBackend()==LaTeXConfig.DVIPS) {
+        else if (config.backend()==LaTeXConfig.DVIPS) {
             imageConverter.setDefaultFormat(MIMETypes.EPS);
         }
         // Other values: keep original format
 		
         // Inject user sequence names for tables and figures into OfficeReader
-        if (config.getTableSequenceName().length()>0) {
-            ofr.addTableSequenceName(config.getTableSequenceName());
+        if (config.tableSequenceName().length()>0) {
+            ofr.addTableSequenceName(config.tableSequenceName());
         }
-        if (config.getFigureSequenceName().length()>0) {
-            ofr.addFigureSequenceName(config.getFigureSequenceName());
+        if (config.figureSequenceName().length()>0) {
+            ofr.addFigureSequenceName(config.figureSequenceName());
         }
 		
         // Create helpers
-        if (config.getBackend()!=LaTeXConfig.XETEX) {
+        if (config.backend()!=LaTeXConfig.XETEX) {
             i18n = new ClassicI18n(ofr,config,this);        	
         }
         else {
@@ -186,9 +185,9 @@ public final class ConverterPalette extends ConverterBase {
         info = new Info(ofr,config,this);
 
         // Create master document and add this
-        this.texDoc = new LaTeXDocument(sTargetFileName,config.getWrapLinesAfter(),true);
-        if (config.getBackend()!=LaTeXConfig.XETEX) {
-            texDoc.setEncoding(ClassicI18n.writeJavaEncoding(config.getInputencoding()));        	
+        this.texDoc = new LaTeXDocument(sTargetFileName,config.wrapLinesAfter(),true);
+        if (config.backend()!=LaTeXConfig.XETEX) {
+            texDoc.setEncoding(ClassicI18n.writeJavaEncoding(config.inputencoding()));        	
         }
         else {
             texDoc.setEncoding("UTF-8");        	
@@ -272,8 +271,8 @@ public final class ConverterPalette extends ConverterBase {
         }
 		
         // Temp solution. TODO: Fix when new CSVList is implemented
-        if (config.getGlobalOptions().length()>0) {
-            globalOptions.addValue(config.getGlobalOptions());
+        if (config.globalOptions().length()>0) {
+            globalOptions.addValue(config.globalOptions());
         }
 
         // Assemble the document
@@ -287,7 +286,7 @@ public final class ConverterPalette extends ConverterBase {
             if (!globalOptions.isEmpty()) {
                 result.append("[").append(globalOptions.toString()).append("]");
             }
-            result.append("{").append(config.getDocumentclass()).append("}").nl();
+            result.append("{").append(config.documentclass()).append("}").nl();
 
             result.append(packages)
                   .append(declarations)

@@ -176,9 +176,9 @@ class StyleConverter extends ConverterHelper {
     
     private void exportDefaultStyle(StringBuilder buf, String sIndent) {
         // Export default style
-        if (config.xhtmlCustomStylesheet().length()==0 &&
-            (config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL ||
-            config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD)) {
+        if (config.customStylesheet().length()==0 &&
+            (config.formatting()==XhtmlConfig.CONVERT_ALL ||
+            config.formatting()==XhtmlConfig.IGNORE_HARD)) {
             CSVList props = new CSVList(";");
         
             // Default paragraph/cell/frame style is applied to the body element
@@ -193,7 +193,7 @@ class StyleConverter extends ConverterHelper {
             
             // For text documents, also set maximum width
             if (ofr.isText()) {
-            	String sMaxWidth = config.getMaxWidth().trim();
+            	String sMaxWidth = config.maxWidth().trim();
             	if (sMaxWidth.length()>0) {
 		            props.addValue("max-width", sMaxWidth);
 		            props.addValue("margin-left","auto");

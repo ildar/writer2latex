@@ -102,7 +102,7 @@ public class FieldConverter extends ConverterHelper {
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         // Use natbib
         if (config.useBibtex() && config.useNatbib()) {
-        	pacman.usepackage(config.getNatbibOptions(), "natbib");
+        	pacman.usepackage(config.natbibOptions(), "natbib");
         }
         // use lastpage.sty
         if (bUsesPageCount) {
@@ -118,11 +118,11 @@ public class FieldConverter extends ConverterHelper {
         if (bUseHyperref){
         	pacman.usepackage("hyperref");
             pacman.append("\\hypersetup{");
-            if (config.getBackend()==LaTeXConfig.PDFTEX) pacman.append("pdftex, ");
-            else if (config.getBackend()==LaTeXConfig.DVIPS) pacman.append("dvips, ");
+            if (config.backend()==LaTeXConfig.PDFTEX) pacman.append("pdftex, ");
+            else if (config.backend()==LaTeXConfig.DVIPS) pacman.append("dvips, ");
             //else pack.append("hypertex");
             pacman.append("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue");
-            if (config.getBackend()==LaTeXConfig.PDFTEX) {
+            if (config.backend()==LaTeXConfig.PDFTEX) {
                 pacman.append(createPdfMeta("pdftitle",palette.getMetaData().getTitle()));
                 if (config.metadata()) {
                     pacman.append(createPdfMeta("pdfauthor",palette.getMetaData().getCreator()))

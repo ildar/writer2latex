@@ -55,8 +55,8 @@ class ConverterHelper {
         this.config = config;
         this.converter = converter;
         
-        sScale = config.getXhtmlScaling();
-        sColScale = config.getXhtmlColumnScaling();
+        sScale = config.scaling();
+        sColScale = config.columnScaling();
         nUnits = config.units();
     }
     

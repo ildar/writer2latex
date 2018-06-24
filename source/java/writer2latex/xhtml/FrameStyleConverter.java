@@ -60,8 +60,8 @@ public class FrameStyleConverter extends StyleWithPropertiesConverterHelper {
     public FrameStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         this.styleMap = config.getXFrameStyleMap();
-        this.bConvertStyles = config.xhtmlFrameFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFrameFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlFrameFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFrameFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.frameFormatting()==XhtmlConfig.CONVERT_ALL || config.frameFormatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.frameFormatting()==XhtmlConfig.CONVERT_ALL || config.frameFormatting()==XhtmlConfig.IGNORE_STYLES;
     }
 	
     /** Convert style information for used graphic styles

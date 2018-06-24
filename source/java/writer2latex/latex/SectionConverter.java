@@ -166,9 +166,9 @@ public class SectionConverter extends ConverterHelper {
 
         LaTeXDocumentPortion sectionLdp = ldp;
         if (sFileName!=null) {
-            LaTeXDocument newDoc = new LaTeXDocument(sFileName,config.getWrapLinesAfter(),false);
-            if (config.getBackend()!=LaTeXConfig.XETEX) {
-                newDoc.setEncoding(ClassicI18n.writeJavaEncoding(config.getInputencoding()));            	
+            LaTeXDocument newDoc = new LaTeXDocument(sFileName,config.wrapLinesAfter(),false);
+            if (config.backend()!=LaTeXConfig.XETEX) {
+                newDoc.setEncoding(ClassicI18n.writeJavaEncoding(config.inputencoding()));            	
             }
             else {
                 newDoc.setEncoding("UTF-8");            	            	

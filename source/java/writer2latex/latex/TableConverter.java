@@ -205,16 +205,16 @@ public class TableConverter extends ConverterHelper {
             		// The row type is determined from the first paragraph in the first cell
             		String sStyleName = getFirstParStyle(table.getCell(nRow, 0));
             		if (sStyleName!=null) {
-            			if (sStyleName.equals(config.getTableFirstHeadStyle())) {
+            			if (sStyleName.equals(config.tableFirstHeadStyle())) {
             				rowTypes[nRow] = RowType.FIRST_HEAD;
             			}
-            			else if (sStyleName.equals(config.getTableHeadStyle())) {
+            			else if (sStyleName.equals(config.tableHeadStyle())) {
             				rowTypes[nRow] = RowType.HEAD;
             			}
-            			else if (sStyleName.equals(config.getTableFootStyle())) {
+            			else if (sStyleName.equals(config.tableFootStyle())) {
             				rowTypes[nRow] = RowType.FOOT;
             			}
-            			else if (sStyleName.equals(config.getTableLastFootStyle())) {
+            			else if (sStyleName.equals(config.tableLastFootStyle())) {
             				rowTypes[nRow] = RowType.LAST_FOOT;
             			}
             		}
@@ -343,8 +343,8 @@ public class TableConverter extends ConverterHelper {
 		
         private void handleTableFloat(LaTeXDocumentPortion ldp, Context oc) {
             ldp.append("\\begin{table}");
-            if (config.getFloatOptions().length()>0) {
-                ldp.append("[").append(config.getFloatOptions()).append("]");
+            if (config.floatOptions().length()>0) {
+                ldp.append("[").append(config.floatOptions()).append("]");
             }
             ldp.nl();
 			

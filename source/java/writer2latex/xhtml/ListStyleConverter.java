@@ -48,8 +48,8 @@ public class ListStyleConverter extends StyleConverterHelper {
     public ListStyleConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         this.styleMap = config.getXListStyleMap();
-        this.bConvertStyles = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_HARD;
-        this.bConvertHard = config.xhtmlFormatting()==XhtmlConfig.CONVERT_ALL || config.xhtmlFormatting()==XhtmlConfig.IGNORE_STYLES;
+        this.bConvertStyles = config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_HARD;
+        this.bConvertHard = config.formatting()==XhtmlConfig.CONVERT_ALL || config.formatting()==XhtmlConfig.IGNORE_STYLES;
     }
 
     public void applyStyle(int nLevel, String sStyleName, StyleInfo info) {

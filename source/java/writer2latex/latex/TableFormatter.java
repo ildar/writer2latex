@@ -66,7 +66,7 @@ public class TableFormatter extends ConverterHelper {
         //bApplyCellFormat = config.formatting()>=LaTeXConfig.CONVERT_MOST;
         int nRowCount = table.getRowCount();
         int nColCount = table.getColCount();
-        int nSimpleTableLimit = config.getSimpleTableLimit();
+        int nSimpleTableLimit = config.simpleTableLimit();
 		
         // Step 1: Collect alignment and identify simple tables
         bIsSimple = true;

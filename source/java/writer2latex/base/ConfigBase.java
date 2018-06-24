@@ -19,14 +19,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-25)
+ *  Version 2.0 (2018-06-23)
  *
  */
 
 package writer2latex.base;
-
-/** Base implementation of writer2latex.api.Config 
-*/
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -53,13 +51,15 @@ import writer2latex.api.ComplexOption;
 import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
+/** This class is a base implementation of writer2latex.api.Config.
+ *  It does not define any configurations, the subclasses must do this
+ */
 public abstract class ConfigBase implements writer2latex.api.Config {
 	
-    protected abstract int getOptionCount();
     protected abstract String getDefaultConfigPath();
 	
     // Simple, named options
-    protected Option[] options;
+    protected Map<String,Option> options;
     // Complex, named options
     protected Map<String,ComplexOption> optionGroups;
     // Parameters (map from name to list of possible values)
@@ -70,11 +70,11 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     protected Map<String,String> currentParamValues;
 	
     public ConfigBase() {
-        options = new Option[getOptionCount()];
-        optionGroups = new HashMap<String,ComplexOption>();
-        parameters = new HashMap<String,List<String>>();
-        paramValueMaps = new HashMap<String,Map<String,String>>();
-        currentParamValues = new HashMap<String,String>();
+        options = new LinkedHashMap<>();
+        optionGroups = new LinkedHashMap<>();
+        parameters = new LinkedHashMap<>();
+        paramValueMaps = new HashMap<>();
+        currentParamValues = new HashMap<>();
     }
     
     /** Get the parameters defined by this configuration
@@ -130,18 +130,20 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     	sb.append(sSource.substring(i));
     	return sb.toString();
     }
+    
+    /** Convenience method for the subclass to add options
+     */
+    protected void addOption(Option option) {
+    	options.put(option.getName(), option);
+    }
     	
     public void setOption(String sName,String sValue) {
     	if (sName!=null && sValue!=null) {
-    		// First look for an option
-    		for (int j=0; j<getOptionCount(); j++) {
-    			if (sName.equals(options[j].getName())) {
-    				options[j].setString(sValue);
-    				return;
-    			}
+    		if (options.containsKey(sName)) {
+        		// Option exists, and value is not null
+    			options.get(sName).setString(sValue);
     		}
-    		// Otherwise try parameters
-    		if (parameters.containsKey(sName) && parameters.get(sName).contains(sValue)) {
+    		else if (parameters.containsKey(sName) && parameters.get(sName).contains(sValue)) {
 				// Parameter exists, and value is valid
 				currentParamValues.put(sName, sValue);
     		}
@@ -151,10 +153,8 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     public String getOption(String sName) {
     	if (sName!=null) {
     		// First look for an option
-    		for (int j=0; j<getOptionCount(); j++) {
-    			if (sName.equals(options[j].getName())) {
-    				return options[j].getString();
-    			}
+    		if (options.containsKey(sName)) {
+    			return options.get(sName).getString();
     		}
     		// Otherwise try parameters
     		if (parameters.containsKey(sName)) {
@@ -342,10 +342,10 @@ public abstract class ConfigBase implements writer2latex.api.Config {
     }
     
     private void writeOptions(Element root) {
-        for (int i=0; i<getOptionCount(); i++) {
-            Element optionNode = root.getOwnerDocument().createElement("option");
-            optionNode.setAttribute("name",options[i].getName());
-            optionNode.setAttribute("value",options[i].getString());
+    	for (String sName : options.keySet()) {
+    		Element optionNode = root.getOwnerDocument().createElement("option");
+            optionNode.setAttribute("name",options.get(sName).getName());
+            optionNode.setAttribute("value",options.get(sName).getString());
             root.appendChild(optionNode);
         }
     }
