@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] New options use_multicol and multicols_format to handle export of multicolumn
+  format in sections. (Previously columns were always exported, but without formatting)
+
 [w2l] Reduced the number of \usepackage statements in the preamble by loading
   several packages in the same statement
 

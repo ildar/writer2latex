@@ -98,13 +98,5 @@
         	</listitem>
         </list>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Indexes and tables</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNoIndex" id="bm_confignoindex"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Do not include indexes</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will not export indexes
-        (e.g. table of contents, bibliopgrahy). This option is intended for the case that the document is to be part
-        of a larger LaTeX document, which may contain global indexes.</paragraph>
-
     </body>
 </helpdocument>

@@ -2,7 +2,7 @@
  *
  *  BeforeAfter.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-03-29)
+ *  Version 2.0 (2018-06-25)
  *
  */
 
@@ -54,6 +54,24 @@ public class BeforeAfter {
      */
     public void add(String sBefore1, String sAfter1) {
         sBefore+=sBefore1; sAfter=sAfter1+sAfter;
+    }
+    
+    /** Add data to the <code>BeforeAfter</code>. The new data will be added "inside", and no data
+     *  will be added to the "after" part
+     * 
+     * @param sBefore1 LaTeX code to put before
+     */
+    public void addBefore(String sBefore1) {
+        sBefore+=sBefore1;    	
+    }
+    
+    /** Add data to the <code>BeforeAfter</code>. The new data will be added "inside", and no data
+     *  will be added to the "before" part
+     * 
+     * @param sBefore1 LaTeX code to put after
+     */
+    public void addAfter(String sAfter1) {
+        sAfter=sAfter1+sAfter;    	
     }
     
     /** <p>Add data to the <code>BeforeAfter</code></p>

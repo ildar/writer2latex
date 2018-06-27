@@ -2,19 +2,40 @@
 <helpdocument version="1.0">
 	<meta>
         <topic id="writer2latex-configuration-characters" indexer="include">
-            <title xml-lang="en-US">Characters</title>
-            <filename>org.openoffice.da.writer2latex.oxt/Configuration/Characters.xhp</filename>
+            <title xml-lang="en-US">Formatting 2</title>
+            <filename>org.openoffice.da.writer2latex.oxt/Configuration/Formatting2.xhp</filename>
         </topic>
     </meta>
     <body>
-        <paragraph role="heading" level="1" xml-lang="en-US">Characters</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Define how to convert character formatting</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">Formatting 2</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define the conversion of formatting in the document</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - Characters</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - Formatting 2</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Character formatting packages</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Sections</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseMulticol" id="bm_configusemulticol"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export columns (using multicol.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will export columns
+        in sections using the LaTeX package multicol.sty.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMulticolsFormat" id="bm_configmulticolsformat"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export column formatting</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will also export the formatting of
+        the columns. This includes the distance between columns, the separator line and balancing of columns.
+        Otherwise only the number of columns are exported, and the default layout of multicol.sty will be used.</paragraph>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">Indexes and tables</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNoIndex" id="bm_confignoindex"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Do not include indexes</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will not export indexes
+        (e.g. table of contents, bibliopgrahy). This option is intended for the case that the document is to be part
+        of a larger LaTeX document, which may contain global indexes.</paragraph>
+
+        <paragraph role="heading" level="2" xml-lang="en-US">Cross references</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseHyperref" id="bm_configusehyperref"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use hyperref.sty (support for hyperlinks)</paragraph>

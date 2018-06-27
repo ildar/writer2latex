@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-06-25)
  *
  */
 
@@ -42,9 +42,6 @@ import writer2latex.latex.util.Context;
  */
 public class SectionConverter extends ConverterHelper {
 
-    // Do we need multicols.sty?
-    private boolean bNeedMulticol = false;
-    
     // Display hidden text?
     private boolean bDisplayHiddenText = false;
 	
@@ -59,7 +56,7 @@ public class SectionConverter extends ConverterHelper {
     }
 	
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-        if (bNeedMulticol) { pacman.usepackage("multicol"); }
+    	// Currently nothing
     }
     
     // Handle a section as a Zotero bibliography
@@ -178,10 +175,9 @@ public class SectionConverter extends ConverterHelper {
         }
 
         // Apply the style
-        String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
         BeforeAfter ba = new BeforeAfter();
         Context ic = (Context) oc.clone();
-        applySectionStyle(sStyleName,ba,ic);
+        palette.getSectionSc().applySectionStyle(ofr.getSectionStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME)),ba,ic);
 		
         // Do conversion
         ldp.append(ba.getBefore());
@@ -196,17 +192,6 @@ public class SectionConverter extends ConverterHelper {
         ldp.append(ba.getAfter());
     }
 
-    // Create multicols environment as needed
-    private void applySectionStyle(String sStyleName, BeforeAfter ba, Context context) {
-        StyleWithProperties style = ofr.getSectionStyle(sStyleName);
-        // Don't nest multicols and require at least 2 columns
-        if (context.isInMulticols() || style==null || style.getColCount()<2) { return; }
-        int nCols = style.getColCount(); 
-        bNeedMulticol = true;
-        context.setInMulticols(true);
-        ba.add("\\begin{multicols}{"+(nCols>10 ? 10 : nCols)+"}\n", "\\end{multicols}\n");
-    }
-	
     // return true if this node is *not* contained in a text:section element
     private boolean isToplevel(Node node) {
         Node parent = node.getParentNode();

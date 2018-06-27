@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-12)
+ *  Version 2.0 (2018-06-26)
  *
  */
 
@@ -168,6 +168,8 @@ public class XMLString {
 	public static final String STYLE_LIST_LEVEL_LABEL_ALIGNMENT = "style:list-level-label-alignment"; // 1.2
 	public static final String STYLE_BACKGROUND_IMAGE = "style:background-image";
 	public static final String STYLE_COLUMNS = "style:columns";
+	public static final String STYLE_COLUMN_SEP = "style:column-sep";
+	public static final String STYLE_COLUMN = "style:column";
 	public static final String STYLE_HEADER = "style:header";
 	public static final String STYLE_HEADER_LEFT = "style:header-left";
 	public static final String STYLE_HEADER_FIRST = "style:header-first"; // ODF 1.3(!)
@@ -382,6 +384,7 @@ public class XMLString {
 	public static final String TEXT_USE_INDEX_SOURCE_STYLES = "text:use-index-source-styles";
 	public static final String TEXT_USE_INDEX_MARKS = "text:use-index-marks";
 	public static final String TEXT_INDEX_SCOPE = "text:index-scope";
+	public static final String TEXT_DONT_BALANCE_TEXT_COLUMNS = "text:dont-balance-text-columns";
 	public static final String TEXT_OUTLINE_LEVEL = "text:outline-level";
 	public static final String TEXT_IS_LIST_HEADER = "text:is-list-header";
 	public static final String TEXT_USE_CAPTION = "text:use-caption";
@@ -488,6 +491,8 @@ public class XMLString {
 	public static final String FO_MARGIN_RIGHT = "fo:margin-right";
 	public static final String FO_MARGIN_TOP = "fo:margin-top";
 	public static final String FO_MARGIN_BOTTOM = "fo:margin-bottom";
+	public static final String FO_START_INDENT = "fo:start-indent";
+	public static final String FO_END_INDENT = "fo:end-indent";
 	public static final String FO_PAGE_WIDTH = "fo:page-width";
 	public static final String FO_PAGE_HEIGHT = "fo:page-height";
 	public static final String FO_MIN_HEIGHT = "fo:min-height";

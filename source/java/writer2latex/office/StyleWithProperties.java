@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-05-21)
+ *  Version 2.0 (2018-06-25)
  */
  
 package writer2latex.office;
@@ -68,7 +68,9 @@ public class StyleWithProperties extends OfficeStyle {
     private PropertySet backgroundImageProperties = new PropertySet();
 
     private int nColCount = 0;
-
+    private PropertySet columnSepProperties = new PropertySet();
+    private PropertySet[] columnProperties;
+    
     private boolean bHasFootnoteSep = false;
     private PropertySet footnoteSep = new PropertySet();
     
@@ -146,7 +148,20 @@ public class StyleWithProperties extends OfficeStyle {
                 else if (XMLString.STYLE_COLUMNS.equals(sName)) {    
                     nColCount = Misc.getPosInteger(Misc.getAttribute(child,
                                 XMLString.FO_COLUMN_COUNT),1);
-                    // TODO: read individual columns
+                    columnProperties = new PropertySet[nColCount];
+                    for (int i=0; i<nColCount; i++) { columnProperties[i]=new PropertySet(); }
+                    Node grandChild = child.getFirstChild();
+                    int i=0;
+                    while (grandChild!=null) {
+                    	String sName2 = grandChild.getNodeName();
+                    	if (XMLString.STYLE_COLUMN_SEP.equals(sName2)) {
+                    		columnSepProperties.loadFromDOM(grandChild);
+                    	}
+                    	else if (XMLString.STYLE_COLUMN.equals(sName2) && i<nColCount) {
+                    		columnProperties[i++].loadFromDOM(grandChild); 
+                    	}
+                    	grandChild = grandChild.getNextSibling();
+                    }
                 }
                 else if (XMLString.STYLE_FOOTNOTE_SEP.equals(sName)) {
                     bHasFootnoteSep = true; 
@@ -402,6 +417,17 @@ public class StyleWithProperties extends OfficeStyle {
 
     public String getFootnoteProperty(String sPropName) {
         return footnoteSep.getProperty(sPropName);
+    }
+    
+    public String getColumnSepProperty(String sPropName) {
+    	return columnSepProperties.getProperty(sPropName);
+    }
+    
+    public String getColumnProperty(int nIndex, String sPropName) {
+    	if (0<=nIndex && nIndex<nColCount) {
+    		return columnProperties[nIndex].getProperty(sPropName);
+    	}
+    	return null;
     }
 
 }

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-30)
+ *  Version 2.0 (2018-06-24)
  *
  */ 
  
@@ -80,9 +80,9 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	super(xContext);
     	
     	pageHandlers.put("Formatting", new FormattingHandler());
+    	pageHandlers.put("Formatting2", new Formatting2Handler());
     	pageHandlers.put("Documentclass", new DocumentclassHandler());
     	pageHandlers.put("Styles", new StylesHandler());
-    	pageHandlers.put("Characters", new CharactersHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
     	pageHandlers.put("Pages", new PagesHandler());
     	pageHandlers.put("Tables", new TablesHandler());
@@ -93,11 +93,11 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     // Implement remaining method from XContainerWindowEventHandler
     public String[] getSupportedMethodNames() {
         String[] sNames = {
-        		"UseLongfboxChange", "NoIndexChange", // Formatting
+        		"UseLongfboxChange", // Formatting
+        		"UseMulticolChange", "FormattingAttributeChange", "CustomAttributeChange", // Formatting 2
         		"NoPreambleChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
-        		"UseSoulChange", "FormattingAttributeChange", "CustomAttributeChange", // Characters
         		// Pages (currently no events)
         		"NoTablesChange", "UseSupertabularChange", "UseLongtableChange", // Tables
         		"NoImagesChange", // Figures
@@ -108,7 +108,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
     
     // The page "Formatting"
-    // This page handles the the options use_xcolor, use_ulem, use_titlesec, formatting, no_index
+    // This page handles the the options use_xcolor, use_ulem, use_titlesec, formatting
     private class FormattingHandler extends PageHandler {
         
     	@Override protected void setControls(DialogAccess dlg) {
@@ -132,12 +132,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	default: dlg.setListBoxSelectedItem("Formatting", (short)2);
         	}
         	
-        	// Indexes
-        	checkBoxFromConfig(dlg,"NoIndex","no_index");
-        	checkBoxFromConfig(dlg,"UseTitletoc","use_titletoc");
-
         	useLongfboxChange(dlg);
-    		noIndexChange(dlg);
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
@@ -161,18 +156,11 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	case 4: config.setOption("formatting", "convert_all");
         	}
 
-        	// Indexes
-        	checkBoxToConfig(dlg,"NoIndex","no_index");    	
-    		checkBoxToConfig(dlg,"UseTitletoc","use_titletoc");    	
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
     		if (sMethod.equals("UseLongfboxChange")) {
     			useLongfboxChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("NoIndexChange")) {
-    			noIndexChange(dlg);
     			return true;
     		}
     		return false;
@@ -185,15 +173,78 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
        		dlg.setControlEnabled("BorderRadiusPercentLabel", bUseLongfbox);
     	} 
 
-       	private void noIndexChange(DialogAccess dlg) {
-        	// Until implemented:
-        	dlg.setControlEnabled("UseTitletoc", false);
-        	//boolean bNoIndex = dlg.getCheckBoxStateAsBoolean("NoIndex");
-        	//dlg.setControlEnabled("UseTitletoc", !bNoIndex);    		
-    	} 
-    	
     }
    
+    // The page "Formatting 2"
+    // This page handles the options use_multicol, multicols_format, no_index and use_hyperref
+    // In addition it handles style maps for formatting attributes
+    private class Formatting2Handler extends AttributePageHandler {
+    	private final String[] sLaTeXAttributeNames = { "bold", "italic", "small-caps", "superscript", "subscript" };
+        
+        protected Formatting2Handler() {
+        	super();
+        	sAttributeNames = sLaTeXAttributeNames;
+        }
+        
+    	@Override protected void setControls(DialogAccess dlg) {
+    		super.setControls(dlg);
+    		// Sections
+    		checkBoxFromConfig(dlg,"UseMulticol","use_multicol");
+    		checkBoxFromConfig(dlg,"MulticolsFormat","multicols_format");
+        	// Indexes
+        	checkBoxFromConfig(dlg,"NoIndex","no_index");
+        	// References
+    		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
+    		
+    		useMulticolChange(dlg);
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		super.getControls(dlg);
+    		// Sections
+    		checkBoxToConfig(dlg,"UseMulticol","use_multicol");
+    		checkBoxToConfig(dlg,"MulticolsFormat","multicols_format");
+        	// Indexes
+        	checkBoxToConfig(dlg,"NoIndex","no_index");    	
+    		// References
+    		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
+    	}
+    	
+		@Override protected void setControls(DialogAccess dlg, Map<String, String> attr) {
+    		if (!attr.containsKey("before")) { attr.put("before", ""); }
+    		if (!attr.containsKey("after")) { attr.put("after", ""); }
+    		dlg.setTextFieldText("Before", attr.get("before"));
+    		dlg.setTextFieldText("After", attr.get("after"));			
+		}
+
+		@Override protected void getControls(DialogAccess dlg, Map<String, String> attr) {
+    		attr.put("before", dlg.getComboBoxText("Before"));
+    		attr.put("after", dlg.getComboBoxText("After"));
+		}
+		
+		@Override protected void prepareControls(DialogAccess dlg, boolean bEnable) {
+    		dlg.setControlEnabled("BeforeLabel", bEnable);
+    		dlg.setControlEnabled("Before", bEnable);
+    		dlg.setControlEnabled("AfterLabel", bEnable);
+    		dlg.setControlEnabled("After", bEnable);
+		}
+
+		@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
+    		if (sMethod.equals("UseMulticolChange")) {
+    			useMulticolChange(dlg);
+    			return true;
+    		}
+    		else {
+    			return super.handleEvent(dlg, sMethod);
+    		}
+    	}
+    	
+    	private void useMulticolChange(DialogAccess dlg) {
+        	dlg.setControlEnabled("MulticolsFormat", dlg.getCheckBoxStateAsBoolean("UseMulticol"));
+    	}
+
+    }
+
     // The page "Documentclass"
     // This page handles the options no_preamble, documentclass, global_options, the custom-preamble and the heading map
     private class DocumentclassHandler extends PageHandler {
@@ -519,68 +570,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 
     }
     
-    // The page "Characters"
-    // This page handles the options use_soul and use_hyperref
-    // In addition it handles style maps for formatting attributes
-    private class CharactersHandler extends AttributePageHandler {
-    	private final String[] sLaTeXAttributeNames = { "bold", "italic", "small-caps", "superscript", "subscript" };
-        
-        protected CharactersHandler() {
-        	super();
-        	sAttributeNames = sLaTeXAttributeNames;
-        }
-        
-    	@Override protected void setControls(DialogAccess dlg) {
-    		super.setControls(dlg);
-    		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxFromConfig(dlg,"UseSoul","use_soul");
-    	}
-    	
-    	@Override protected void getControls(DialogAccess dlg) {
-    		super.getControls(dlg);
-    		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
-    		checkBoxToConfig(dlg,"UseSoul","use_soul");
-    	}
-    	
-		@Override protected void setControls(DialogAccess dlg, Map<String, String> attr) {
-    		if (!attr.containsKey("before")) { attr.put("before", ""); }
-    		if (!attr.containsKey("after")) { attr.put("after", ""); }
-    		dlg.setTextFieldText("Before", attr.get("before"));
-    		dlg.setTextFieldText("After", attr.get("after"));			
-		}
-
-		@Override protected void getControls(DialogAccess dlg, Map<String, String> attr) {
-    		attr.put("before", dlg.getComboBoxText("Before"));
-    		attr.put("after", dlg.getComboBoxText("After"));
-		}
-		
-		@Override protected void prepareControls(DialogAccess dlg, boolean bEnable) {
-    		dlg.setControlEnabled("BeforeLabel", bEnable);
-    		dlg.setControlEnabled("Before", bEnable);
-    		dlg.setControlEnabled("AfterLabel", bEnable);
-    		dlg.setControlEnabled("After", bEnable);
-		}
-
-		@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
-    		if (sMethod.equals("UseSoulChange")) {
-    			useSoulChange(dlg);
-    			return true;
-    		}
-    		else {
-    			return super.handleEvent(dlg, sMethod);
-    		}
-    	}
-    	
-    	private void useSoulChange(DialogAccess dlg) {
-        	// Until implemented...
-        	dlg.setControlEnabled("UseSoul", false);
-        	// After which it should be...
-        	//boolean bUseSoul = dlg.getCheckBoxStateAsBoolean("UseSoul");   	    	
-        	//dlg.setControlEnabled("UseUlem", !bUseSoul);
-    	}
-
-    }
-
     // The page "Fonts"
     // This page handles the options use_fontspec, use_pifont, use_tipa, use_eurosym, use_wasysym,
     // use_ifsym, use_bbding

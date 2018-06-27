@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-24)
+ *  Version 2.0 (2018-06-25)
  *
  */
 
@@ -66,6 +66,7 @@ public final class ConverterPalette extends ConverterBase {
     private FrameStyleConverter frameSc;
     private CharStyleConverter charSc;
     private HeadingStyleConverter headingSc;
+    private SectionStyleConverter sectionSc;
     private PageStyleConverter pageSc;
     private BlockConverter blockCv;
     private ParConverter parCv;
@@ -107,6 +108,7 @@ public final class ConverterPalette extends ConverterBase {
     public FrameStyleConverter getFrameStyleSc() { return frameSc; }
     public CharStyleConverter getCharSc() { return charSc; }
     //public HeadingStyleConverter getHeadingSc() { return headingSc; }
+    public SectionStyleConverter getSectionSc() { return sectionSc; }
     public PageStyleConverter getPageSc() { return pageSc; }
     public BlockConverter getBlockCv() { return blockCv; }
     public ParConverter getParCv() { return parCv; }
@@ -166,6 +168,7 @@ public final class ConverterPalette extends ConverterBase {
         frameSc = new FrameStyleConverter(ofr,config,this);
         charSc = new CharStyleConverter(ofr,config,this);
         headingSc = new HeadingStyleConverter(ofr,config,this);
+        sectionSc = new SectionStyleConverter(ofr,config,this);
         pageSc = new PageStyleConverter(ofr,config,this);
         blockCv = new BlockConverter(ofr,config,this);
         parCv = new ParConverter(ofr,config,this);
@@ -225,6 +228,7 @@ public final class ConverterPalette extends ConverterBase {
         frameSc.appendDeclarations(packages,declarations); // usepackage longfbox
         noteCv.appendDeclarations(packages,declarations); // usepackage endnotes
         headingSc.appendDeclarations(packages,declarations); // usepackage titlesec
+        sectionSc.appendDeclarations(packages,declarations); // usepackage multicol
         charSc.appendDeclarations(packages,declarations); // usepackage ulem
         headingCv.appendDeclarations(packages,declarations); // no packages
         parCv.appendDeclarations(packages,declarations); // no packages
@@ -232,7 +236,7 @@ public final class ConverterPalette extends ConverterBase {
         blockCv.appendDeclarations(packages,declarations); // no packages
         indexCv.appendDeclarations(packages,declarations); // usepackage makeidx
         bibCv.appendDeclarations(packages,declarations); // no packages
-        sectionCv.appendDeclarations(packages,declarations); // usepackage multicol
+        sectionCv.appendDeclarations(packages,declarations); // no packages
         tableCv.appendDeclarations(packages,declarations); // usepackage array, longtable, supertabular, tabulary, hhline, colortbl
         listCv.appendDeclarations(packages,declarations); // no packages
         captionCv.appendDeclarations(packages,declarations); // usepackage caption

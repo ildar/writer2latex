@@ -141,6 +141,28 @@
           </prop>
         </node>
 
+        <node oor:name="org.openoffice.da.writer2latex.configuration.formatting2" oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2latex.configuration.formatting2</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2latex.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>1</value>
+          </prop>
+          <prop oor:localized="true" oor:name="Label">
+            <value xml:lang="en-US">Formatting 2</value>
+            <value xml:lang="da-DK">Formatering 2</value>
+          <value xml:lang="de-DE">Formatting 2</value></prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2LDialogs2/Formatting2.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
+          </prop>
+        </node>
+
         <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.documentclass</value>
@@ -149,7 +171,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>1</value>
+            <value>2</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Documentclass</value>
@@ -171,7 +193,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>2</value>
+            <value>3</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Styles</value>
@@ -179,28 +201,6 @@
           <value xml:lang="de-DE">Styles</value></prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Styles.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2latex.configuration.characters" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2latex.configuration.characters</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2latex.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>3</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Characters</value>
-            <value xml:lang="da-DK">Tegn</value>
-          <value xml:lang="de-DE">Characters</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2LDialogs2/Characters.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
              <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>

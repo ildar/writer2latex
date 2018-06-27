@@ -184,6 +184,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_hyperref","true"));
         addOption(new BooleanOption("use_microtype","false"));
         addOption(new BooleanOption("use_letterspace","false"));
+        addOption(new BooleanOption("use_multicol","true"));
+        addOption(new BooleanOption("multicols_format","false"));
         addOption(new BooleanOption("use_caption","false"));
         addOption(new BooleanOption("use_longtable","false"));
         addOption(new BooleanOption("use_supertabular","true"));
@@ -618,6 +620,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useHyperref() { return ((BooleanOption) options.get("use_hyperref")).getValue(); }
     public boolean useMicrotype() { return ((BooleanOption) options.get("use_microtype")).getValue(); }
     public boolean useLetterspace() { return ((BooleanOption) options.get("use_letterspace")).getValue(); }
+    public boolean useMulticol() { return ((BooleanOption) options.get("use_multicol")).getValue(); }
+    public boolean multicolsFormat() { return ((BooleanOption) options.get("multicols_format")).getValue(); }
     public boolean useCaption() { return ((BooleanOption) options.get("use_caption")).getValue(); }
     public boolean useLongtable() { return ((BooleanOption) options.get("use_longtable")).getValue(); }
     public boolean useSupertabular() { return ((BooleanOption) options.get("use_supertabular")).getValue(); }
