@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-25)
+ *  Version 2.0 (2018-06-28)
  *
  */
 
@@ -226,7 +226,7 @@ public final class ConverterPalette extends ConverterBase {
         colorCv.appendDeclarations(packages,declarations); // usepackage xolor
         microtypeCv.appendDeclarations(packages,declarations); // usepackage microtype, letterspace
         frameSc.appendDeclarations(packages,declarations); // usepackage longfbox
-        noteCv.appendDeclarations(packages,declarations); // usepackage endnotes
+        noteCv.appendDeclarations(packages,declarations); // usepackage endnotes, perpage
         headingSc.appendDeclarations(packages,declarations); // usepackage titlesec
         sectionSc.appendDeclarations(packages,declarations); // usepackage multicol
         charSc.appendDeclarations(packages,declarations); // usepackage ulem

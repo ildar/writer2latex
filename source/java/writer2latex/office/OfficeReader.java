@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-12)
+ *  Version 2.0 (2018-07-01)
  *
  */
 
@@ -83,9 +83,7 @@ public class OfficeReader {
      */
     public static boolean isNoteElement(Node node) {
         return node.getNodeType()==Node.ELEMENT_NODE &&
-               ( node.getNodeName().equals(XMLString.TEXT_NOTE)     ||
-                 node.getNodeName().equals(XMLString.TEXT_FOOTNOTE) ||
-                 node.getNodeName().equals(XMLString.TEXT_ENDNOTE)  );
+               node.getNodeName().equals(XMLString.TEXT_NOTE);
     }
 
     /** Get the paragraph or heading containing a node
@@ -335,8 +333,7 @@ public class OfficeReader {
     private Map<String, String> seqrefNames = new Hashtable<String, String>();
 	
     // All references
-    private Set<String> footnoteRef = new HashSet<String>();
-    private Set<String> endnoteRef = new HashSet<String>();
+    private Set<String> noteRef = new HashSet<String>();
     private Set<String> referenceRef = new HashSet<String>();
     private Set<String> bookmarkRef = new HashSet<String>();
     private Set<String> sequenceRef = new HashSet<String>();
@@ -659,23 +656,7 @@ public class OfficeReader {
      *  @return true if there is a reference
      */
     public boolean hasNoteRefTo(String sId) {
-        return footnoteRef.contains(sId) || endnoteRef.contains(sId);
-    }
-
-    /** <p>Is there a reference to this footnote id?
-     *  @param sId the id of the footnote
-     *  @return true if there is a reference
-     */
-    public boolean hasFootnoteRefTo(String sId) {
-        return footnoteRef.contains(sId);
-    }
-
-    /** <p>Is there a reference to this endnote?
-     *  @param sId the id of the endnote
-     *  @return true if there is a reference
-     */
-    public boolean hasEndnoteRefTo(String sId) {
-        return endnoteRef.contains(sId);
+        return noteRef.contains(sId);
     }
 
     /** Is this reference mark contained in a heading?
@@ -1009,51 +990,25 @@ public class OfficeReader {
             loadStylesFromDOM(list.item(0),bAllParagraphsAreSoft);
         }
 
-        // footnotes configuration:
+        // Footnotes and endnotes configuration
         if (stylesDOM==null) {
-            list = contentDOM.getElementsByTagName(XMLString.TEXT_FOOTNOTES_CONFIGURATION);
+        	list = contentDOM.getElementsByTagName(XMLString.TEXT_NOTES_CONFIGURATION);
         }
         else {
-            list = stylesDOM.getElementsByTagName(XMLString.TEXT_FOOTNOTES_CONFIGURATION);
+            list = stylesDOM.getElementsByTagName(XMLString.TEXT_NOTES_CONFIGURATION);
         }
-        if (list.getLength()!=0) {
-            footnotes = new PropertySet();
-            footnotes.loadFromDOM(list.item(0));
-        }
-		
-        // endnotes configuration:
-        if (stylesDOM==null) {
-            list = contentDOM.getElementsByTagName(XMLString.TEXT_ENDNOTES_CONFIGURATION);
-        }
-        else {
-            list = stylesDOM.getElementsByTagName(XMLString.TEXT_ENDNOTES_CONFIGURATION);
-        }
-        if (list.getLength()!=0) {
-            endnotes = new PropertySet();
-            endnotes.loadFromDOM(list.item(0));
-        }
-		
-        // if it failed, try oasis format
-        if (footnotes==null || endnotes==null) {
-            if (stylesDOM==null) {
-                list = contentDOM.getElementsByTagName(XMLString.TEXT_NOTES_CONFIGURATION);
+        int nLen = list.getLength();
+        for (int i=0; i<nLen; i++) {
+            String sClass = Misc.getAttribute(list.item(i),XMLString.TEXT_NOTE_CLASS);
+            if ("endnote".equals(sClass)) {
+                endnotes = new PropertySet();
+                endnotes.loadFromDOM(list.item(i));
             }
             else {
-                list = stylesDOM.getElementsByTagName(XMLString.TEXT_NOTES_CONFIGURATION);
+                footnotes = new PropertySet();
+                footnotes.loadFromDOM(list.item(i));
             }
-            int nLen = list.getLength();
-            for (int i=0; i<nLen; i++) {
-                String sClass = Misc.getAttribute(list.item(i),XMLString.TEXT_NOTE_CLASS);
-                if ("endnote".equals(sClass)) {
-                    endnotes = new PropertySet();
-                    endnotes.loadFromDOM(list.item(i));
-                }
-                else {
-                    footnotes = new PropertySet();
-                    footnotes.loadFromDOM(list.item(i));
-                }
-            }
-       }
+        }
         
         // bibliography configuration:
         if (stylesDOM==null) {
@@ -1133,15 +1088,12 @@ public class OfficeReader {
                 }
             }
         }
-        else if (sName.equals(XMLString.TEXT_LIST) || 
-        		 sName.equals(XMLString.TEXT_ORDERED_LIST) || sName.equals(XMLString.TEXT_UNORDERED_LIST)) {
+        else if (sName.equals(XMLString.TEXT_LIST)) {
         	nListLevel++;
         	String sStyleName = Misc.getAttribute(node, XMLString.TEXT_STYLE_NAME);
         	if (sStyleName!=null) sListStyleName = sStyleName;
         }
-        else if (sName.equals(XMLString.TEXT_NOTE) ||
-        		 sName.equals(XMLString.TEXT_FOOTNOTE) || sName.equals(XMLString.TEXT_ENDNOTE) ||
-        		 sName.equals(XMLString.TABLE_TABLE)) {
+        else if (sName.equals(XMLString.TEXT_NOTE) || sName.equals(XMLString.TABLE_TABLE)) {
         	// Various block elements; all resetting the list and par level
         	sListStyleName=null;
         	nListLevel=0;
@@ -1161,16 +1113,8 @@ public class OfficeReader {
                 }
             }
         }
-        else if (sName.equals(XMLString.TEXT_FOOTNOTE_REF)) {
-            collectRefName(footnoteRef,node);
-        }
-        else if (sName.equals(XMLString.TEXT_ENDNOTE_REF)) {
-            collectRefName(endnoteRef,node);
-        }
-        else if (sName.equals(XMLString.TEXT_NOTE_REF)) { // oasis
-            String sClass = Misc.getAttribute(node,XMLString.TEXT_NOTE_CLASS);
-            if ("footnote".equals(sClass)) { collectRefName(footnoteRef,node); }
-            else if ("endnote".equals(sClass)) { collectRefName(endnoteRef,node); }
+        else if (sName.equals(XMLString.TEXT_NOTE_REF)) {
+        	collectRefName(noteRef,node);
         }
         else if (sName.equals(XMLString.TEXT_REFERENCE_MARK)) {
             collectMarkByPosition(referenceHeading,null,null,node,sListStyleName,nListLevel,nParLevel);

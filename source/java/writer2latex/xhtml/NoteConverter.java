@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-10)
+ *  Version 2.0 (2018-06-30)
  *
  */
 package writer2latex.xhtml;
@@ -71,14 +71,8 @@ class NoteConverter extends ConverterHelper {
         Element link = converter.createLink(sId);
         converter.addTarget(link,"body"+sId);
 		span.appendChild(link);
-		// Get the citation
+		// Get and insert the citation
         Element citation = Misc.getChildByTagName(onode,XMLString.TEXT_NOTE_CITATION);
-        if (citation==null) { // try old format
-	        citation = Misc.getChildByTagName(onode,XMLString.TEXT_FOOTNOTE_CITATION);
-	        if (citation==null) {
-	        	citation = Misc.getChildByTagName(onode,XMLString.TEXT_ENDNOTE_CITATION);
-	        }
-        }
         // Insert the citation
         if (citation!=null) {
         	getTextCv().traversePCDATA(citation,link);
@@ -120,20 +114,8 @@ class NoteConverter extends ConverterHelper {
 			hnode.appendChild(aside);
 			// Get the citation
 			Node citation = Misc.getChildByTagName(note,XMLString.TEXT_NOTE_CITATION);
-			if (citation==null) { // try old format
-				citation = Misc.getChildByTagName(note,XMLString.TEXT_FOOTNOTE_CITATION);
-				if (citation==null) {
-					citation = Misc.getChildByTagName(note,XMLString.TEXT_ENDNOTE_CITATION);
-				}
-			}
 			// Get the body
 			Node body = Misc.getChildByTagName(note,XMLString.TEXT_NOTE_BODY);
-			if (body==null) { // try old format
-				body = Misc.getChildByTagName(note,XMLString.TEXT_FOOTNOTE_BODY);
-				if (body==null) {
-					body = Misc.getChildByTagName(note,XMLString.TEXT_ENDNOTE_BODY);
-				}
-			}
 			// Export the note
 			String sId = Misc.getAttribute(note,XMLString.TEXT_ID); 
 	        converter.addTarget(aside,sId);

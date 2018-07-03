@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-19)
+ *  Version 2.0 (2018-06-30)
  *
  */
 
@@ -67,11 +67,12 @@ public class TableConverter extends ConverterHelper {
     }
 
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-    	pacman.usepackage("array"); // TODO: Make this optional
+    	// TODO: Should array and hhline be optional?
+    	if (bContainsTables) { pacman.usepackage("array"); }
         if (bNeedLongtable) { pacman.usepackage("longtable"); }
         if (bNeedSupertabular) { pacman.usepackage("supertabular"); }
         if (bNeedTabulary) { pacman.usepackage("tabulary"); }
-        pacman.usepackage("hhline"); // TODO: Make this optional
+        if (bContainsTables) { pacman.usepackage("hhline"); }
         if (bNeedColortbl) { pacman.usepackage("colortbl"); }
     	
         // Set padding for table cells (1mm is default in OOo!)

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-26)
+ *  Version 2.0 (2018-07-01)
  *
  */
 
@@ -291,8 +291,6 @@ public class XMLString {
 
 	// text namespace - elements (declarations)
 	public static final String TEXT_ = "text:";
-	public static final String TEXT_FOOTNOTES_CONFIGURATION = "text:footnotes-configuration";
-	public static final String TEXT_ENDNOTES_CONFIGURATION = "text:endnotes-configuration";
 	public static final String TEXT_NOTES_CONFIGURATION = "text:notes-configuration"; 
 	public static final String TEXT_BIBLIOGRAPHY_CONFIGURATION = "text:bibliography-configuration";
 	public static final String TEXT_SORT_KEY = "text:sort-key";
@@ -310,8 +308,6 @@ public class XMLString {
 	public static final String TEXT_P = "text:p";
 	public static final String TEXT_H = "text:h";
 	public static final String TEXT_LIST = "text:list"; 
-	public static final String TEXT_ORDERED_LIST = "text:ordered-list";
-	public static final String TEXT_UNORDERED_LIST = "text:unordered-list";
 	public static final String TEXT_LIST_ITEM = "text:list-item";
 	public static final String TEXT_LIST_HEADER = "text:list-header";
 	public static final String TEXT_ALPHABETICAL_INDEX = "text:alphabetical-index";
@@ -341,13 +337,7 @@ public class XMLString {
 	public static final String TEXT_INDEX_SOURCE = "text:index-source";
 	// text namespace - elements (inline text)
 	public static final String TEXT_SPAN = "text:span";
-	public static final String TEXT_FOOTNOTE = "text:footnote";
-	public static final String TEXT_ENDNOTE = "text:endnote";
 	public static final String TEXT_NOTE = "text:note"; 
-	public static final String TEXT_FOOTNOTE_CITATION = "text:footnote-citation";
-	public static final String TEXT_FOOTNOTE_BODY = "text:footnote-body";
-	public static final String TEXT_ENDNOTE_CITATION = "text:endnote-citation";
-	public static final String TEXT_ENDNOTE_BODY = "text:endnote-body";
 	public static final String TEXT_NOTE_CITATION = "text:note-citation"; 
 	public static final String TEXT_NOTE_BODY = "text:note-body"; 
 	public static final String TEXT_S = "text:s";
@@ -374,8 +364,6 @@ public class XMLString {
 	public static final String TEXT_BOOKMARK = "text:bookmark";
 	public static final String TEXT_BOOKMARK_START = "text:bookmark-start";
 	public static final String TEXT_BOOKMARK_REF = "text:bookmark-ref";
-	public static final String TEXT_FOOTNOTE_REF = "text:footnote-ref";
-	public static final String TEXT_ENDNOTE_REF = "text:endnote-ref";
 	public static final String TEXT_NOTE_REF = "text:note-ref"; 
 	public static final String TEXT_SOFT_PAGE_BREAK = "text:soft-page-break"; // ODF 1.1
 
@@ -409,6 +397,7 @@ public class XMLString {
 	public static final String TEXT_FORMULA = "text:formula";
 	public static final String TEXT_FOOTNOTES_POSITION = "text:footnotes-position";
 	public static final String TEXT_NOTE_CLASS = "text:note-class";
+	public static final String TEXT_MASTER_PAGE_NAME = "text:master-page-name";
 	public static final String TEXT_CITATION_BODY_STYLE_NAME = "text:citation-body-style-name";
 	public static final String TEXT_CITATION_STYLE_NAME = "text:citation-style-name";
 	public static final String TEXT_DEFAULT_STYLE_NAME = "text:default-style-name";

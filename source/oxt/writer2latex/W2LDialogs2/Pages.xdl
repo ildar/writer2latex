@@ -9,8 +9,16 @@
   <dlg:checkbox dlg:id="UseGeometry" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseGeometry" dlg:value="Export page size and margins (using geometry.sty)" dlg:checked="false"/>
   <dlg:checkbox dlg:id="UseFancyhdr" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseFancyhdr" dlg:value="Export headers and footers (using fancyhdr.sty)" dlg:checked="false"/>
   <dlg:checkbox dlg:id="UseLastpage" dlg:tab-index="3" dlg:left="10" dlg:top="50" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLastpage" dlg:value="Export number of pages (using lastpage.sty)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseEndnotes" dlg:tab-index="6" dlg:left="10" dlg:top="92" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseEndnotes" dlg:value="Export endnotes (using endnotes.sty)" dlg:checked="false"/>
-  <dlg:text dlg:style-id="0" dlg:id="NotesLabel" dlg:tab-index="5" dlg:left="5" dlg:top="64" dlg:width="245" dlg:height="12" dlg:value="Footnotes and endnotes"/>
-  <dlg:checkbox dlg:id="FootnoteRule" dlg:tab-index="4" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFootnoteRule" dlg:value="Export footnote rule" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseEndnotes" dlg:tab-index="4" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseEndnotes" dlg:value="Export endnotes (using endnotes.sty)" dlg:checked="false">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseEndnotesChange" script:language="UNO"/>
+  </dlg:checkbox>
+  <dlg:text dlg:style-id="0" dlg:id="NotesLabel" dlg:tab-index="9" dlg:left="5" dlg:top="64" dlg:width="245" dlg:height="12" dlg:value="Footnotes and endnotes"/>
+  <dlg:checkbox dlg:id="FootnoteRule" dlg:tab-index="8" dlg:left="10" dlg:top="134" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFootnoteRule" dlg:value="Export footnote rule" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="NotesNumbering" dlg:tab-index="6" dlg:left="10" dlg:top="106" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigNotesNumbering" dlg:value="Export footnote and endnote numbering" dlg:checked="false">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:NotesNumberingChange" script:language="UNO"/>
+  </dlg:checkbox>
+  <dlg:checkbox dlg:id="UsePerpage" dlg:tab-index="7" dlg:left="10" dlg:top="120" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUsePerpage" dlg:value="Support footnote numbering per page (using perpage.sty)" dlg:checked="false"/>
+  <dlg:text dlg:id="NotesnameLabel" dlg:tab-index="10" dlg:left="10" dlg:top="92" dlg:width="100" dlg:height="12" dlg:value="Endnotes heading"/>
+  <dlg:textfield dlg:id="Notesname" dlg:tab-index="5" dlg:left="120" dlg:top="90" dlg:width="130" dlg:height="12"/>
  </dlg:bulletinboard>
 </dlg:window>

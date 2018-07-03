@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] Improved export of footnotes and endnotes. This includes four new options
+  footnote_rule (previously, this was controlled by the option page_formatting),
+  notes_numbering (previously, numbering was controlled by the formatting option),
+  use_perpage (support footnote numbering per page) and
+  notesname (change endnotes heading, which babel and polyglossia does not handle) 
+
 [w2l] New options use_multicol and multicols_format to handle export of multicolumn
   format in sections. (Previously columns were always exported, but without formatting)
 
@@ -14,9 +20,6 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 [w2l] Added support for page styles which defines a special header or footer
   on the first page (This is an ODF 1.3 feature, which LO already supports)
 
-[w2l] New option footnote_rule (default false) to export the formatting of the
-  footnote rule (previously, this was controlled by the option page_formatting)
-  
 [w2l] The option page_formatting has been removed. Export of page geometry,
   headers and footers now only depend on the options use_geometry and
   use_fancyhdr (thus low level LaTeX code is never used)

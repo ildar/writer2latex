@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-24)
+ *  Version 2.0 (2018-07-02)
  *
  */ 
  
@@ -98,7 +98,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         		"NoPreambleChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
-        		// Pages (currently no events)
+        		"UseEndnotesChange", "NotesNumberingChange", // Pages
         		"NoTablesChange", "UseSupertabularChange", "UseLongtableChange", // Tables
         		"NoImagesChange", // Figures
         		"MathSymbolNameChange", "NewSymbolClick", "DeleteSymbolClick",
@@ -609,21 +609,47 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	checkBoxFromConfig(dlg,"UseGeometry", "use_geometry");
         	checkBoxFromConfig(dlg,"UseFancyhdr", "use_fancyhdr");
         	checkBoxFromConfig(dlg,"UseLastpage", "use_lastpage");
-        	checkBoxFromConfig(dlg,"FootnoteRule", "footnote_rule");
         	checkBoxFromConfig(dlg,"UseEndnotes", "use_endnotes");
+        	textFieldFromConfig(dlg,"Notesname", "notesname");
+        	checkBoxFromConfig(dlg,"NotesNumbering", "notes_numbering");
+        	checkBoxFromConfig(dlg,"UsePerpage", "use_perpage");
+        	checkBoxFromConfig(dlg,"FootnoteRule", "footnote_rule");
+        	
+        	useEndnotesChange(dlg);
+        	notesNumberingChange(dlg);
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
         	checkBoxToConfig(dlg,"UseGeometry", "use_geometry");
         	checkBoxToConfig(dlg,"UseFancyhdr", "use_fancyhdr");
         	checkBoxToConfig(dlg,"UseLastpage", "use_lastpage");
-        	checkBoxToConfig(dlg,"FootnoteRule", "footnote_rule");
         	checkBoxToConfig(dlg,"UseEndnotes", "use_endnotes");
+        	textFieldToConfig(dlg,"Notesname", "notesname");
+        	checkBoxToConfig(dlg,"NotesNumbering", "notes_numbering");
+        	checkBoxToConfig(dlg,"UsePerpage", "use_perpage");
+        	checkBoxToConfig(dlg,"FootnoteRule", "footnote_rule");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
-    		// Currently no events
+    		if (sMethod.equals("UseEndnotesChange")) {
+    			useEndnotesChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("NotesNumberingChange")) {
+    			notesNumberingChange(dlg);
+    			return true;
+    		}
     		return false;
+    	}
+    	
+    	private void useEndnotesChange(DialogAccess dlg) {
+    		boolean b = dlg.getCheckBoxStateAsBoolean("UseEndnotes");
+        	dlg.setControlEnabled("NotesnameLabel", b);
+        	dlg.setControlEnabled("Notesname", b);
+    	}
+    	
+    	private void notesNumberingChange(DialogAccess dlg) {
+        	dlg.setControlEnabled("UsePerpage", dlg.getCheckBoxStateAsBoolean("NotesNumbering"));
     	}
     	
     }

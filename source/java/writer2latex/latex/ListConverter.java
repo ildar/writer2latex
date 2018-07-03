@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-17)
+ *  Version 2.0 (2018-07-01)
  *
  */
 package writer2latex.latex;
@@ -195,12 +195,6 @@ public class ListConverter extends StyleConverter {
                         return true;
                     }
                     if (nodeName.equals(XMLString.TEXT_LIST)) {
-                        if (listContainsHeadings(child)) return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                        if (listContainsHeadings(child)) return true;
-                    }
-                    if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
                         if (listContainsHeadings(child)) return true;
                     }
                 }

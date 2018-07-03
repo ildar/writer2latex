@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-24)
+ *  Version 2.0 (2018-07-02)
  *
  */
 
@@ -179,6 +179,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_colortbl","false"));
         addOption(new BooleanOption("use_geometry","true"));
         addOption(new BooleanOption("use_fancyhdr","true"));
+        addOption(new BooleanOption("use_perpage","true"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
         addOption(new BooleanOption("use_hyperref","true"));
@@ -191,6 +192,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_supertabular","true"));
         addOption(new BooleanOption("use_tabulary","false"));
         addOption(new BooleanOption("use_endnotes","false"));
+        addOption(new Option("notesname",""));
         addOption(new BooleanOption("use_ulem","false"));
         addOption(new BooleanOption("use_lastpage","false"));
         addOption(new BooleanOption("use_titleref","false"));
@@ -222,6 +224,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             }
         });
         addOption(new BooleanOption("footnote_rule", "false"));
+        addOption(new BooleanOption("notes_numbering", "false"));
         addOption(new BooleanOption("outline_numbering", "true"));
         addOption(new Option("border_radius","100%"));
         addOption(new ContentHandlingOption("other_styles","accept"));
@@ -615,6 +618,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useColortbl() { return ((BooleanOption) options.get("use_colortbl")).getValue(); }
     public boolean useGeometry() { return ((BooleanOption) options.get("use_geometry")).getValue(); }
     public boolean useFancyhdr() { return ((BooleanOption) options.get("use_fancyhdr")).getValue(); }
+    public boolean usePerpage() { return ((BooleanOption) options.get("use_perpage")).getValue(); }
     public boolean useLongfbox() { return ((BooleanOption) options.get("use_longfbox")).getValue(); }
     public boolean useTitlesec() { return ((BooleanOption) options.get("use_titlesec")).getValue(); }
     public boolean useHyperref() { return ((BooleanOption) options.get("use_hyperref")).getValue(); }
@@ -627,6 +631,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useSupertabular() { return ((BooleanOption) options.get("use_supertabular")).getValue(); }
     public boolean useTabulary() { return ((BooleanOption) options.get("use_tabulary")).getValue(); }
     public boolean useEndnotes() { return ((BooleanOption) options.get("use_endnotes")).getValue(); }
+    public String notesname() { return options.get("notesname").getString(); }
     public boolean useUlem() { return ((BooleanOption) options.get("use_ulem")).getValue(); }
     public boolean useLastpage() { return ((BooleanOption) options.get("use_lastpage")).getValue(); }
     public boolean useTitleref() { return ((BooleanOption) options.get("use_titleref")).getValue(); }
@@ -645,6 +650,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public String fontspec() { return options.get("fontspec").getString(); }
     public int formatting() { return ((IntegerOption) options.get("formatting")).getValue(); }
     public boolean footnoteRule() { return ((BooleanOption) options.get("footnote_rule")).getValue(); }
+    public boolean notesNumbering() { return ((BooleanOption) options.get("notes_numbering")).getValue(); }
     public boolean outlineNumbering() { return ((BooleanOption) options.get("outline_numbering")).getValue(); }
     public String borderRadius() { return options.get("border_radius").getString(); }
     public int otherStyles() { return ((IntegerOption) options.get("other_styles")).getValue(); }

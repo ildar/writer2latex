@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-17)
+ *  Version 2.0 (2018-06-30)
  *
  */
 
@@ -350,19 +350,8 @@ public class InlineConverter extends ConverterHelper {
                     }
                     else {
                         // These tags are ignored in header and footer
-                        if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
-                            palette.getNoteCv().handleFootnote(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
-                            palette.getNoteCv().handleEndnote(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_NOTE)) {
-                            if ("endnote".equals(child.getAttribute(XMLString.TEXT_NOTE_CLASS))) {
-                                palette.getNoteCv().handleEndnote(child,ldp,oc);
-                            }
-                            else {
-                                palette.getNoteCv().handleFootnote(child,ldp,oc);
-                            }
+                        if (sName.equals(XMLString.TEXT_NOTE)) {
+                            palette.getNoteCv().handleNote(child,ldp,oc);
                         }
                         else if (sName.equals(XMLString.TEXT_SEQUENCE)) {
                             palette.getFieldCv().handleSequence(child,ldp,oc);
@@ -370,13 +359,7 @@ public class InlineConverter extends ConverterHelper {
                         else if (sName.equals(XMLString.TEXT_SEQUENCE_REF)) {
                             palette.getFieldCv().handleSequenceRef(child,ldp,oc);
                         }
-                        else if (sName.equals(XMLString.TEXT_FOOTNOTE_REF)) {
-                            palette.getNoteCv().handleFootnoteRef(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_ENDNOTE_REF)) {
-                            palette.getNoteCv().handleEndnoteRef(child,ldp,oc);
-                        }
-                        else if (sName.equals(XMLString.TEXT_NOTE_REF)) { // oasis
+                        else if (sName.equals(XMLString.TEXT_NOTE_REF)) {
                             palette.getNoteCv().handleNoteRef(child,ldp,oc);
                         }
                         else if (sName.equals(XMLString.TEXT_REFERENCE_MARK)) {
@@ -567,12 +550,6 @@ public class InlineConverter extends ConverterHelper {
                             if (!oc.isNoLineBreaks()) { ldp.nl(); }
                         }
                         else if (sName.equals(XMLString.TEXT_NOTE)) {
-                            // oasis; ignore
-                        }
-                        else if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
-                            // ignore
-                        }
-                        else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
                             // ignore
                         }
                         // The respective handlers know how to postpone these marks in verbatim context:

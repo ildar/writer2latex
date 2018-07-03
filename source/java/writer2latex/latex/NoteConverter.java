@@ -19,11 +19,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-07-02)
  *
  */
-
-// TODO: Get the styles for footnotes and endnotes and use Context.resetFormattingFromStyle...
 
 package writer2latex.latex;
 
@@ -31,8 +29,8 @@ import java.util.LinkedList;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.office.OfficeReader;
@@ -42,359 +40,316 @@ import writer2latex.office.XMLString;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 
-/**
- *  <p>This class handles conversion of footnotes and endnotes, including
- *  references. It takes advantage of the packages <code>endnotes.sty</code>
- *  and <code>perpage.sty</code> if allowed in the configuration.</p>
- */
-public class NoteConverter extends ConverterHelper {
+/** This class handles conversion of footnotes and endnotes, including references.
+ *  The export depends on the options <code>use_endnotes</code>, <code>notesname</code>,
+ *  <code>notes_numbering</code>, <code>use_perpage</code>, <code>footnote_rule</code>
+ *  and <code>formatting</code>. Most configuration options are supported, except
+ *  continuation notices, which are not supported in LaTeX
 
-    private ExportNameCollection footnotenames = new ExportNameCollection(true);
-    private ExportNameCollection endnotenames = new ExportNameCollection(true);
+ */
+class NoteConverter extends ConverterHelper {
+	
+	private boolean bNeedPerpage = false; // do we need the package perpage.sty?
+
+    private ExportNameCollection notenames = new ExportNameCollection(true);
+    private boolean bFootnotesAsEndnotes = false;
     private boolean bContainsEndnotes = false;
     private boolean bContainsFootnotes = false;
+    private boolean bContainsFootnotesAsEndnotes = false;
     // Keep track of footnotes (inside minipage etc.), that should be typeset later
     private LinkedList<Element> postponedFootnotes = new LinkedList<Element>();
 
-    public NoteConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+    NoteConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
+        PropertySet configuration=ofr.getFootnotesConfiguration();
+        if (configuration!=null) {
+        	bFootnotesAsEndnotes = "document".equals(configuration.getProperty(XMLString.TEXT_FOOTNOTES_POSITION));
+        }
     }
 
-    /** <p>Append declarations needed by the <code>NoteConverter</code> to
-     * the preamble.
+    /** Append declarations needed by the <code>NoteConverter</code> to the preamble.
      * @param pacman the <code>LaTeXPacman</code> to which
      * declarations of packages should be added (<code>\\usepackage</code>).
      * @param decl the <code>LaTeXDocumentPortion</code> to which
      * other declarations should be added.
      */
-    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bContainsEndnotes) { pacman.usepackage("endnotes"); }
-        if (bContainsFootnotes) convertFootnotesConfiguration(decl);
-        if (bContainsEndnotes) convertEndnotesConfiguration(decl);
+        LaTeXDocumentPortion ldp = new LaTeXDocumentPortion(false);
+        if (bContainsFootnotes) { 
+            convertNotesConfiguration(ofr.getFootnotesConfiguration(),"foot",ldp);
+        }
+        if (bContainsEndnotes) {
+        	// Footnotes configuration takes precedence if footnotes are inserted as endnotes
+            convertNotesConfiguration(
+            		bContainsFootnotesAsEndnotes ? ofr.getFootnotesConfiguration() : ofr.getEndnotesConfiguration(),"end",ldp);
+            if (config.notesname().length()>0) {
+            	ldp.append("\\renewcommand\\notesname{").append(config.notesname()).append("}").nl();
+            }
+        }
+        if (!ldp.isEmpty()) {
+        	if (bContainsFootnotes && bContainsEndnotes) {
+        		decl.append("% Footnotes and endnotes").nl();
+        	}
+        	else if (bContainsFootnotes) {
+        		decl.append("% Footnotes").nl();
+        	}
+        	else {
+        		decl.append("% Endnotes").nl();
+        	}
+        	decl.append(ldp);
+        }
+        // We do not know whether to use perpage.sty until now
+        if (bNeedPerpage) { pacman.usepackage("perpage"); }
     }
-	
-    /** <p>Process a footnote (text:footnote tag)
-     * @param node The element containing the footnote
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
+    
+    /** <p>Process a footnote or endnote (<code>text:note</code>)
+     * @param node The element containing the note
+     * @param ldp the <code>LaTeXDocumentPortion</code> to which LaTeX code should be added
      * @param oc the current context
      */
-    public void handleFootnote(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    void handleNote(Element node, LaTeXDocumentPortion ldp, Context oc) {
         Context ic = (Context) oc.clone();
         ic.setInFootnote(true);
 
-        String sId = node.getAttribute(XMLString.TEXT_ID);
-        Element fntbody = Misc.getChildByTagName(node,XMLString.TEXT_FOOTNOTE_BODY);
-        if (fntbody==null) { // try oasis
-            fntbody = Misc.getChildByTagName(node,XMLString.TEXT_NOTE_BODY);
+        Element body = Misc.getChildByTagName(node,XMLString.TEXT_NOTE_BODY);
+        if (body!=null) {
+    	    boolean bEndnote = "endnote".equals(node.getAttribute(XMLString.TEXT_NOTE_CLASS));
+        	if (config.useEndnotes() && (bEndnote || bFootnotesAsEndnotes)) {
+        		// Treat this note as an endnote
+        		handleNote("endnote",body,ldp,oc);
+        		bContainsEndnotes = true;
+        		if (!bEndnote) { bContainsFootnotesAsEndnotes = true; }
+        	}
+        	else {
+        		if (ic.isNoFootnotes()) {
+	        		// Treat this note as a footnote, to be processed when we leave an area with no footnotes
+	                ldp.append("\\footnotemark{}");
+	                postponedFootnotes.add(body);
+	        	}
+	        	else {
+	        		// Treat this note as a normal footnote
+	        		handleNote("footnote",body,ldp,oc);
+	        	}
+        		bContainsFootnotes = true;
+        	}
         }
-        if (fntbody != null) {
-            bContainsFootnotes = true;
-            if (ic.isNoFootnotes()) {
-                ldp.append("\\footnotemark{}");
-                postponedFootnotes.add(fntbody);
-            }
-            else {
-                ldp.append("\\footnote");
-	    		ldp.append("{");
-		        if (sId != null && ofr.hasFootnoteRefTo(sId)) {
-                    ldp.append("\\label{fnt:"+footnotenames.getExportName(sId)+"}");
-                }
-                traverseNoteBody(fntbody,ldp,ic);
-                ldp.append("}");
-            }
-        }
-	} 
+	    
+    }
     
     /** Do we have any pending footnotes, that may be inserted in this context?
      * 
      * @param oc the context to verify against
      * @return true if there are pending footnotes
      */
-    public boolean hasPendingFootnotes(Context oc) {
+    boolean hasPendingFootnotes(Context oc) {
     	return !oc.isNoFootnotes() && postponedFootnotes.size()>0;
     }
 	
     /** Flush the queue of postponed footnotes */
-    public void flushFootnotes(LaTeXDocumentPortion ldp, Context oc) {
+    void flushFootnotes(LaTeXDocumentPortion ldp, Context oc) {
         // We may still be in a context with no footnotes
         if (oc.isNoFootnotes()) { return; }
         // Type out all postponed footnotes:
         Context ic = (Context) oc.clone();
         ic.setInFootnote(true);
         int n = postponedFootnotes.size();
-        if (n==1) {
-            ldp.append("\\footnotetext{");
-            traverseNoteBody(postponedFootnotes.get(0),ldp,ic);
-            ldp.append("}").nl();
-            postponedFootnotes.clear();
-        }
-        else if (n>1) {
-            // Several footnotes; have to adjust the footnote counter
-            ldp.append("\\addtocounter{footnote}{-"+n+"}").nl();
-            for (int i=0; i<n; i++) {
-                ldp.append("\\stepcounter{footnote}\\footnotetext{");
-                traverseNoteBody(postponedFootnotes.get(i),ldp,ic);
-                ldp.append("}").nl();
-            }
+        if (n>0) {
+	        if (n==1) {
+	        	handleNote("footnotetext",postponedFootnotes.get(0),ldp,ic);
+	        }
+	        else if (n>1) {
+	            // Several footnotes; have to adjust the footnote counter
+	            ldp.append("\\addtocounter{footnote}{-"+(n-1)+"}");
+	            for (int i=0; i<n; i++) {
+	                if (i>0) { ldp.append("\\stepcounter{footnote}"); }
+	            	handleNote("footnotetext",postponedFootnotes.get(i),ldp,ic);
+	            }
+	        }
+            ldp.nl();
             postponedFootnotes.clear();
         }
     }
 	
-    /** <p>Process an endnote (text:endnote tag)
-     * @param node The element containing the endnote
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
-     * @param oc the current context
+    /** Insert the endnotes into the documents.
+     * @param ldp the <code>LaTeXDocumentPortion</code> to which the endnotes should be added.
      */
-    public void handleEndnote(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        Context ic = (Context) oc.clone();
-        ic.setInFootnote(true);
-
-        String sId = node.getAttribute(XMLString.TEXT_ID);
-        Element entbody = Misc.getChildByTagName(node,XMLString.TEXT_ENDNOTE_BODY);
-        if (entbody==null) { // try oasis
-            entbody = Misc.getChildByTagName(node,XMLString.TEXT_NOTE_BODY);
-        }
-        if (entbody != null) {
-            if (ic.isNoFootnotes() && !config.useEndnotes()) {
-                ldp.append("\\footnotemark()");
-                postponedFootnotes.add(entbody);
-            }
-            else {
-                if (config.useEndnotes()) {
-                    ldp.append("\\endnote");
-                    bContainsEndnotes = true;
-                }
-                else {
-                    ldp.append("\\footnote");
-                    bContainsFootnotes = true;
-                }
-	            ldp.append("{");
-                if (sId != null && ofr.hasEndnoteRefTo(sId)) {
-			        ldp.append("\\label{ent:"+endnotenames.getExportName(sId)+"}");
-                }
-                traverseNoteBody(entbody,ldp,ic);
-                ldp.append("}");
-            }
-		}
-	} 
-
-    /** <p>Insert the endnotes into the documents.
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * the endnotes should be added.
-     */
-    public void insertEndnotes(LaTeXDocumentPortion ldp) {
+    void insertEndnotes(LaTeXDocumentPortion ldp) {
         if (bContainsEndnotes) {
-            ldp.append("\\clearpage").nl()
-               .append("\\theendnotes").nl();
+        	// Start on a new page
+        	ldp.append("\\clearpage").nl();
+        	// Apply master page as defined in the configuration
+        	// Note that the footnotes configuration takes precedence if footnotes are placed as endnotes
+	    	PropertySet endnotesConfig = bContainsFootnotesAsEndnotes ? ofr.getFootnotesConfiguration() : ofr.getEndnotesConfiguration();
+	    	if (config!=null) {
+	    		String sMasterPage = endnotesConfig.getProperty(XMLString.TEXT_MASTER_PAGE_NAME); 
+	    		if (sMasterPage!=null) {
+	    			BeforeAfter ba = new BeforeAfter();
+	    			palette.getPageSc().applyMasterPage(sMasterPage, ba);
+	    			ldp.append(ba.getBefore());
+	    		}
+	    	}
+	    	// Insert the actual endnotes
+            ldp.append("\\theendnotes").nl();
         }
     }
 	
-
-	
-    /** <p>Process a note reference (text:note-ref tag, oasis)
+    /** Process a note reference (<code>text:note-ref</code>)
      * @param node The element containing the note reference
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
+     * @param ldp the <code>LaTeXDocumentPortion</code> to which LaTeX code should be added
      * @param oc the current context
      */
-    public void handleNoteRef(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        String sClass=node.getAttribute(XMLString.TEXT_NOTE_CLASS);
-        if (sClass.equals("footnote")) { handleFootnoteRef(node,ldp,oc); }
-        else if (sClass.equals("endnote")) { handleEndnoteRef(node,ldp,oc); }
-    } 
-	
-    /** <p>Process a footnote reference (text:footnote-ref tag)
-     * @param node The element containing the footnote reference
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
-     * @param oc the current context
-     */
-    public void handleFootnoteRef(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    void handleNoteRef(Element node, LaTeXDocumentPortion ldp, Context oc) {
         String sFormat = node.getAttribute(XMLString.TEXT_REFERENCE_FORMAT);
         String sName = node.getAttribute(XMLString.TEXT_REF_NAME);
         if (("page".equals(sFormat) || "".equals(sFormat)) && sName!=null) {
-            ldp.append("\\pageref{fnt:"+footnotenames.getExportName(sName)+"}");
+            ldp.append("\\pageref{note:"+notenames.getExportName(sName)+"}");
         }
         else if ("text".equals(sFormat) && sName!=null) {
-            ldp.append("\\ref{fnt:"+footnotenames.getExportName(sName)+"}");
+            ldp.append("\\ref{note:"+notenames.getExportName(sName)+"}");
         }
         else { // use current value
             palette.getInlineCv().traversePCDATA(node,ldp,oc);
         }
     } 
-        
-    /** <p>Process an endnote reference (text:endnote-ref tag)
-     * @param node The element containing the endnote reference
-     * @param ldp the <code>LaTeXDocumentPortion</code> to which
-     * LaTeX code should be added
-     * @param oc the current context
-     */
-    public void handleEndnoteRef(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        String sFormat = node.getAttribute(XMLString.TEXT_REFERENCE_FORMAT);
-        String sName = node.getAttribute(XMLString.TEXT_REF_NAME);
-        if (("page".equals(sFormat) || "".equals(sFormat)) && sName!=null) {
-            ldp.append("\\pageref{ent:"+endnotenames.getExportName(sName)+"}");
+
+    private void handleNote(String sNoteType, Element body, LaTeXDocumentPortion ldp, Context oc) {
+        ldp.append("\\").append(sNoteType).append("{");
+        String sId = Misc.getAttribute(body.getParentNode(),XMLString.TEXT_ID);
+        if (sId != null && ofr.hasNoteRefTo(sId)) { 
+       		ldp.append("\\label{note:"+notenames.getExportName(sId)+"}");
         }
-        else if ("text".equals(sFormat) && sName!=null) {
-            ldp.append("\\ref{ent:"+endnotenames.getExportName(sName)+"}");
-        }
-        else { // use current value
-            palette.getInlineCv().traversePCDATA(node,ldp,oc);
-        }
+        traverseNoteBody(body,ldp,oc);
+        ldp.append("}");    	
     }
 	
-    /** <p>Add a footnote name. The method <code>handleFootnote</code> includes
-     * a <code>\label</code> only if the footnote name is already known to the
-     * <code>NoteConverter</code>. Hence this method is invoked by the prepass
-     * for each footnote reference. The end result is, that only necessary
-     * labels will be included.  
-     * @param sName the name (id) of the footnote 
-     */
-    public void addFootnoteName(String sName) { footnotenames.addName(sName); } 
-
-    /** <p>Add an endnote name. The method <code>handleEndnote</code> includes
-     * a <code>\label</code> only if the endnote name is already known to the
-     * <code>NoteConverter</code>. Hence this method is invoked by the prepass
-     * for each endnote reference. The end result is, that only necessary
-     * labels will be included.  
-     * @param sName the name (id) of the endnote 
-     */
-    public void addEndnoteName(String sName) { endnotenames.addName(sName); }
-	
-	/*
-     * Process the contents of a footnote or endnote
-     * TODO: Merge with BlockConverter.traverseBlockText?
+    /* Process the contents of a footnote or endnote
      */
     private void traverseNoteBody (Element node, LaTeXDocumentPortion ldp, Context oc) {
-        if (node.hasChildNodes()) {
-            NodeList nList = node.getChildNodes();
-            int len = nList.getLength();
-            
-            for (int i = 0; i < len; i++) {
-                Node childNode = nList.item(i);
+    	Node child = node.getFirstChild();
+    	boolean bAfterParagraph = false;
+    	while (child!=null) {
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                Element elm = (Element)child;
+                String nodeName = elm.getTagName();
+
+                palette.getInfo().addDebugInfo(elm,ldp);
                 
-                if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element child = (Element)childNode;
-                    String nodeName = child.getTagName();
-
-                    palette.getInfo().addDebugInfo(child,ldp);
-                    
-                    // Headings inside footnotes are considere a mistake and exported as ordinary paragraphs
-                    if (nodeName.equals(XMLString.TEXT_H) || nodeName.equals(XMLString.TEXT_P)) {
-                    	StyleWithProperties style = ofr.getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
-                    	oc.resetFormattingFromStyle(style);
-                        palette.getInlineCv().traverseInlineText(child,ldp,oc);
-                        if (i<len-1) {
-                            if (nList.item(i+1).getNodeName().startsWith(XMLString.TEXT_)) {
-                                ldp.append("\\par ");
-                            }
-                            else {
-                                ldp.nl();
-                            }
-                        }
-                    }
-					
-                    else if (nodeName.equals(XMLString.TEXT_LIST)) { // oasis
-                        palette.getListCv().handleList(child,ldp,oc);
-                    }
-
-                    if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                        palette.getListCv().handleList(child,ldp,oc);
-                    }
-                    
-                    if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
-                        palette.getListCv().handleList(child,ldp,oc);
-                    }
+                // Headings inside footnotes are considered a mistake and exported as ordinary paragraphs
+                if (nodeName.equals(XMLString.TEXT_H) || nodeName.equals(XMLString.TEXT_P)) {
+                	StyleWithProperties style = ofr.getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
+                	oc.resetFormattingFromStyle(style);
+                	if (bAfterParagraph) { ldp.append("\\par "); }
+                    palette.getInlineCv().traverseInlineText(elm,ldp,oc);
+                    bAfterParagraph = true;
+                }					
+                else if (nodeName.equals(XMLString.TEXT_LIST)) {
+                	// The \par before the list is important if we export full formatting
+                	if (bAfterParagraph) { ldp.append("\\par "); }
+                    palette.getListCv().handleList(elm,ldp,oc);
+                    bAfterParagraph = true;
                 }
             }
+            child = child.getNextSibling();
         }
-    }
-	
-    // Convert footnotes configuration.
-    private void convertFootnotesConfiguration(LaTeXDocumentPortion ldp) {
-        // Note: Continuation notices are not supported in LaTeX
-        // TODO: Support text:footnotes-postion="document" (footnotes as endnotes)
-        // TODO: Support text:start-numbering-at="page" (footnpag.sty/footmisc.sty)
-        convertFootEndnotesConfiguration(ofr.getFootnotesConfiguration(),"foot",ldp);
-    }
-
-    // Convert endnotes configuration.
-    private void convertEndnotesConfiguration(LaTeXDocumentPortion ldp) {
-        // Note: Continuation notices are not supported in LaTeX
-        convertFootEndnotesConfiguration(ofr.getEndnotesConfiguration(),"end",ldp);
     }
 	
     /* Convert {foot|end}notes configuration.
-     * Note: All {foot|end}notes are formatted with the default style for {foot|end}footnotes.
-     * (This doesn't conform with the file format specification, but in LaTeX
-     * all {foot|end}notes are usually formatted in a fixed style.)
      */
-    private void convertFootEndnotesConfiguration(PropertySet notes, String sType, LaTeXDocumentPortion ldp) {
-        if (config.formatting()<LaTeXConfig.CONVERT_BASIC) { return; }
-        String sTypeShort = sType.equals("foot") ? "fn" : "en";
-        if (notes==null) { return; }
-        ldp.append("% ").append(sType).append("notes configuration").nl()
-           .append("\\makeatletter").nl();
-
-        // The numbering style is controlled by \the{foot|end}note
+    private void convertNotesConfiguration(PropertySet notes, String sType, LaTeXDocumentPortion ldp) {
+    	if (notes!=null) {
+            if (config.notesNumbering()) {
+            	convertNotesNumbering(notes, sType, ldp);
+            }
+        	// Formatting of the note citation and note text is still controlled by the formatting option
+            if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
+            	convertNotesFormatting(notes, sType, ldp);
+            }
+    	}
+    }
+    
+    private void convertNotesNumbering(PropertySet notes, String sType, LaTeXDocumentPortion ldp) {
+		// The numbering style is controlled by \the{foot|end}note
 		String sFormat = notes.getProperty(XMLString.STYLE_NUM_FORMAT);
-        if (sFormat!=null) {
-            ldp.append("\\renewcommand\\the").append(sType).append("note{")
-               .append(ListConverter.numFormat(sFormat))
-               .append("{").append(sType).append("note}}").nl();
-        }
-        
-        // Number {foot|end}notes by sections
-        if ("chapter".equals(notes.getProperty(XMLString.TEXT_START_NUMBERING_AT))) {
-            ldp.append("\\@addtoreset{").append(sType).append("note}{section}").nl();
-        }
+		if (sFormat!=null) {
+		    ldp.append("\\renewcommand\\the").append(sType).append("note{")
+		    .append(ListConverter.numFormat(sFormat))
+		    .append("{").append(sType).append("note}}").nl();
+		}
 		
-        // Set start value offset (default 0)
-        int nStartValue = Misc.getPosInteger(notes.getProperty(XMLString.TEXT_START_VALUE),0);
-        if (nStartValue!=0) {
-            ldp.append("\\setcounter{").append(sType).append("note}{"+nStartValue+"}").nl();
-        }
-        
-        if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
-            // The formatting of the {foot|end}note citation is controlled by \@make{fn|en}mark
-            String sCitBodyStyle = notes.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
-            if (sCitBodyStyle!=null && ofr.getTextStyle(sCitBodyStyle)!=null) {
-                BeforeAfter baText = new BeforeAfter();
-                palette.getCharSc().applyTextStyle(sCitBodyStyle,baText,new Context());
-                ldp.append("\\renewcommand\\@make").append(sTypeShort).append("mark{\\mbox{")
-                   .append(baText.getBefore())
-                   .append("\\@the").append(sTypeShort).append("mark")
-                   .append(baText.getAfter())
-                   .append("}}").nl();
-            }
+		if (sType.equals("foot")) {
+			String sStartAt = notes.getProperty(XMLString.TEXT_START_NUMBERING_AT);
+			if ("chapter".equals(sStartAt)) {
+				// Number footnotes by sections
+				ldp.append("\\makeatletter").nl()
+				.append("\\@addtoreset{").append(sType).append("note}{section}").nl()
+				.append("\\makeatother").nl();    	
+			}
+			else if ("page".equals(sStartAt)) {
+				// Number footnotes by pages
+				bNeedPerpage = true;
+				ldp.append("\\MakePerPage{").append(sType).append("note}").nl();
+			}
+		}
 		
-            // The layout and formatting of the {foot|end}note is controlled by \@make{fn|en}text
-            String sCitStyle = notes.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
-            String sStyleName = notes.getProperty(XMLString.TEXT_DEFAULT_STYLE_NAME);
-            if (sStyleName!=null) {
-                BeforeAfter baText = new BeforeAfter();
-                palette.getCharSc().applyTextStyle(sCitStyle,baText,new Context());
-                StyleWithProperties style = ofr.getParStyle(sStyleName);
-                if (style!=null) {
-                    BeforeAfter baPar = new BeforeAfter();
-                    palette.getCharSc().applyHardCharFormatting(style,baPar);
-                    ldp.append("\\renewcommand\\@make").append(sTypeShort)
-                       .append("text[1]{\\noindent")
-                       .append(baText.getBefore())
-                       .append("\\@the").append(sTypeShort).append("mark\\ ")
-                       .append(baText.getAfter())
-                       .append(baPar.getBefore())
-                       .append("#1")
-                       .append(baPar.getAfter());
-                    ldp.append("}").nl();
-                }	 
-            }
-        }
-        
-        ldp.append("\\makeatother").nl();		
+		// Set start value offset (default 0)
+		int nStartValue = Misc.getPosInteger(notes.getProperty(XMLString.TEXT_START_VALUE),0);
+		if (nStartValue!=0) {
+			ldp.append("\\setcounter{").append(sType).append("note}{"+nStartValue+"}").nl();
+		}
     }
 
+    /* Note: All {foot|end}notes are formatted with the default style for {foot|end}footnotes.
+     * (This doesn't conform with the file format specification, but in LaTeX
+     * all {foot|end}notes are usually formatted in a fixed style.)
+
+     */
+    private void convertNotesFormatting(PropertySet notes, String sType, LaTeXDocumentPortion ldp) {
+        ldp.append("\\makeatletter").nl();
+        String sTypeShort = sType.equals("foot") ? "fn" : "en";
+        // The formatting of the {foot|end}note citation is controlled by \@make{fn|en}mark
+        String sCitBodyStyle = notes.getProperty(XMLString.TEXT_CITATION_BODY_STYLE_NAME);
+        if (sCitBodyStyle!=null && ofr.getTextStyle(sCitBodyStyle)!=null) {
+            BeforeAfter baText = new BeforeAfter();
+            palette.getCharSc().applyTextStyle(sCitBodyStyle,baText,new Context());
+            ldp.append("\\renewcommand\\@make").append(sTypeShort).append("mark{\\mbox{")
+               .append(baText.getBefore())
+               .append("\\@the").append(sTypeShort).append("mark")
+               .append(baText.getAfter())
+               .append("}}").nl();
+        }
+	
+        // The layout and formatting of the footnote is controlled by \@makefntext
+        // The documentation for endnotes.sty wrongly claims the existence for a similar \@makeentext
+        // Currently endnotes are ignored
+        // TODO: Can we use \enoteformat and \enotesize as defined by endnotes.sty?
+        if (sType.equals("foot")) {
+	        String sCitStyle = notes.getProperty(XMLString.TEXT_CITATION_STYLE_NAME);
+	        String sStyleName = notes.getProperty(XMLString.TEXT_DEFAULT_STYLE_NAME);
+	        if (sStyleName!=null) {
+	            BeforeAfter baText = new BeforeAfter();
+	            palette.getCharSc().applyTextStyle(sCitStyle,baText,new Context());
+	            StyleWithProperties style = ofr.getParStyle(sStyleName);
+	            if (style!=null) {
+	            	// If the paragraph uses hanging indentation, the footnote citation is but in a box of this width
+	            	String sTextIndent = style.getAbsoluteParProperty(XMLString.FO_TEXT_INDENT);
+	            	if (Calc.isLessThan(sTextIndent, "0cm")) {
+	            		baText.enclose("\\makebox["+Calc.multiply("-100%", sTextIndent)+"][l]{", "}");
+	            	}
+	                BeforeAfter baPar = new BeforeAfter();
+	                palette.getCharSc().applyHardCharFormatting(style,baPar);
+	                ldp.append("\\renewcommand\\@make").append(sTypeShort)
+	                   .append("text[1]{\\noindent")
+	                   .append(baPar.getBefore())
+	                   .append(baText.getBefore())
+	                   .append("\\@the").append(sTypeShort).append("mark ")
+	                   .append(baText.getAfter())
+	                   .append("#1")
+	                   .append(baPar.getAfter());
+	                ldp.append("}").nl();
+	            }	 
+	        }    
+        }
+    }
 		 
 }

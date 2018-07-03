@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-19)
+ *  Version 2.0 (2018-07-01)
  *
  */
 
@@ -138,17 +138,10 @@ public class BlockConverter extends ConverterHelper {
                         palette.getHeadingCv().handleHeading(child,ldp,ic);
                     }
                     
-                    else if (sTagName.equals(XMLString.TEXT_LIST)) { // oasis
+                    else if (sTagName.equals(XMLString.TEXT_LIST)) {
                         palette.getListCv().handleList(child,ldp,ic);
                     }
 
-                    else if (sTagName.equals(XMLString.TEXT_UNORDERED_LIST)) {
-                    	palette.getListCv().handleList(child,ldp,ic);
-                    }
-                    
-                    else if (sTagName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                    	palette.getListCv().handleList(child,ldp,ic);
-                    }
                     else if (sTagName.equals(XMLString.TABLE_TABLE)) {
                         // Next node *could* be a caption
                         if (i+1<nLen && Misc.isElement(list.item(i+1),XMLString.TEXT_P) &&

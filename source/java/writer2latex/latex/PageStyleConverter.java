@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-07-01)
  *
  */
 
@@ -153,7 +153,7 @@ public class PageStyleConverter extends StyleConverter {
      *  @param sName    name of the master page to use
      *  @param ba      the <code>BeforeAfter</code> to add code to.
      */
-    private void applyMasterPage(String sName, BeforeAfter ba) {
+    void applyMasterPage(String sName, BeforeAfter ba) {
         if (config.useFancyhdr()) {
 	        MasterPage style = ofr.getMasterPage(sName);
 	        if (style!=null) {

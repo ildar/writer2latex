@@ -2,7 +2,7 @@
  *
  *  LaTeXDocumentPortion.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-19)
+ *  Version 2.0 (2018-07-02)
  *
  */
 
@@ -48,7 +48,7 @@ public class LaTeXDocumentPortion {
      */
     public LaTeXDocumentPortion(boolean bWrap){
         this.bWrap = bWrap;
-        nodes = new Vector<Object>();
+        nodes = new Vector<>();
         curText = new StringBuilder();
         bEmpty = true;
     }
@@ -99,6 +99,26 @@ public class LaTeXDocumentPortion {
         curText.append("\n");
         bEmpty = false;
         return this;
+    }
+    
+    /** Returns true exactly if this LaTeX document portion contains and empty string
+     * 
+     * @return true if the LaTeX document portion is empty
+     */
+    public boolean isEmpty() {
+    	// First check the current node
+    	if (!bEmpty) { return false; }
+    	// The iterate through all nodes
+    	int nLen = nodes.size();
+    	for (int i=0; i<nLen; i++) {
+    		if (nodes.get(i) instanceof LaTeXDocumentPortion) {
+    			if (!((LaTeXDocumentPortion)nodes.get(i)).isEmpty()) { return false; }
+    		}
+    		else if (nodes.get(i) instanceof StringBuilder) {
+    			if (((StringBuilder)nodes.get(i)).length()>0) { return false; }
+    		}
+    	}
+    	return true;
     }
     
     /** write a segment of text (eg. a word) to the output */

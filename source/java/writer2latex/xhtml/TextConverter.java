@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-06)
+ *  Version 2.0 (2018-07-01)
  *
  */
 
@@ -240,10 +240,7 @@ public class TextConverter extends ConverterHelper {
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
                     handleHeading((Element)child,(Element)hnode,rememberNode!=hnode);
                 }
-                else if (nodeName.equals(XMLString.TEXT_LIST) || // oasis
-                         nodeName.equals(XMLString.TEXT_UNORDERED_LIST) || // old
-                         nodeName.equals(XMLString.TEXT_ORDERED_LIST)) // old
-                    {
+                else if (nodeName.equals(XMLString.TEXT_LIST)) {
                 	hnode = maybeSplit(hnode,null);
                 	if (listIsOnlyHeadings(child)) {
                         nDontSplitLevel--;
@@ -726,9 +723,7 @@ public class TextConverter extends ConverterHelper {
                         // Check to see if first child is a new list
                         boolean bIsImmediateNestedList = false;
                         Element child1 = Misc.getFirstChildElement(child);
-                        if (child1.getTagName().equals(XMLString.TEXT_ORDERED_LIST) || // old
-                            child1.getTagName().equals(XMLString.TEXT_UNORDERED_LIST) || // old
-                            child1.getTagName().equals(XMLString.TEXT_LIST)) { // oasis
+                        if (child1.getTagName().equals(XMLString.TEXT_LIST)) {
                             bIsImmediateNestedList = true;
                         }
 
@@ -815,14 +810,8 @@ public class TextConverter extends ConverterHelper {
                         if (nodeName.equals(XMLString.TEXT_P)) {
                             traverseInlineText(child,hnode);
                         }
-                        if (nodeName.equals(XMLString.TEXT_LIST)) { // oasis
+                        if (nodeName.equals(XMLString.TEXT_LIST)) {
                             handleList(child,nLevel+1,styleName,hnode);
-                        }
-                        if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) { // old
-                            handleOL(child,nLevel+1,styleName,hnode);
-                        }
-                        if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) { // old
-                            handleUL(child,nLevel+1,styleName,hnode);
                         }
                     }
                 }
@@ -866,12 +855,6 @@ public class TextConverter extends ConverterHelper {
             if (child.getNodeType() == Node.ELEMENT_NODE) {
                 String nodeName = child.getNodeName();
                 if (nodeName.equals(XMLString.TEXT_LIST)) {
-                    if (!listIsOnlyHeadings(child)) return false;
-                }
-                else if (nodeName.equals(XMLString.TEXT_ORDERED_LIST)) {
-                    if (!listIsOnlyHeadings(child)) return false;
-                }
-                else if (nodeName.equals(XMLString.TEXT_UNORDERED_LIST)) {
                     if (!listIsOnlyHeadings(child)) return false;
                 }
                 else if(!nodeName.equals(XMLString.TEXT_H)) {
@@ -945,13 +928,7 @@ public class TextConverter extends ConverterHelper {
                 else if (sNodeName.equals(XMLString.TEXT_P)) {
                      // Currently we only handle fakes lists containing headings
                 }
-                else if (sNodeName.equals(XMLString.TEXT_LIST)) { // oasis
-                     return traverseFakeList(child, hnode, nLevel+1, sStyleName);
-                }
-                else if (sNodeName.equals(XMLString.TEXT_ORDERED_LIST)) { // old
-                     return traverseFakeList(child, hnode, nLevel+1, sStyleName);
-                }
-                else if (sNodeName.equals(XMLString.TEXT_UNORDERED_LIST)) { // old
+                else if (sNodeName.equals(XMLString.TEXT_LIST)) {
                      return traverseFakeList(child, hnode, nLevel+1, sStyleName);
                 }
             }
@@ -1062,13 +1039,7 @@ public class TextConverter extends ConverterHelper {
                         else if (sName.equals(XMLString.TEXT_A)) {
                             handleAnchor(child,hnode);
                         }
-                        else if (sName.equals(XMLString.TEXT_FOOTNOTE)) {
-                            footCv.handleNote(child,hnode);
-                        }
-                        else if (sName.equals(XMLString.TEXT_ENDNOTE)) {
-                            endCv.handleNote(child,hnode);
-                        }
-                        else if (sName.equals(XMLString.TEXT_NOTE)) { // oasis
+                        else if (sName.equals(XMLString.TEXT_NOTE)) {
                             if ("endnote".equals(Misc.getAttribute(child,XMLString.TEXT_NOTE_CLASS))) {
                                 endCv.handleNote(child,hnode);
                             }
@@ -1088,13 +1059,7 @@ public class TextConverter extends ConverterHelper {
                         else if (sName.equals(XMLString.TEXT_SEQUENCE_REF)) {
 	                        handleSequenceRef(child,hnode);
                         }
-                        else if (sName.equals(XMLString.TEXT_FOOTNOTE_REF)) {
-	                        handleNoteRef(child,hnode);
-                        }
-                        else if (sName.equals(XMLString.TEXT_ENDNOTE_REF)) {
-	                        handleNoteRef(child,hnode);
-                        }
-                        else if (sName.equals(XMLString.TEXT_NOTE_REF)) { // oasis
+                        else if (sName.equals(XMLString.TEXT_NOTE_REF)) {
 	                        handleNoteRef(child,hnode);
                         }
                         else if (sName.equals(XMLString.TEXT_REFERENCE_MARK)) {
