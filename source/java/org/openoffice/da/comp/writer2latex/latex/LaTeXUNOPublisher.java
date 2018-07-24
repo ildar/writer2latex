@@ -176,10 +176,8 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         
         boolean bResult = true;
         
-    	System.out.println("trying to texify");
         try {
             if ("pdftex".equals(sBackend)) { //$NON-NLS-1$
-            	System.out.println("trying to pdftexify");
                 bResult = texify.process(file, sBibinputs, TeXify.PDFTEX, true);
             }
             else if ("dvips".equals(sBackend)) { //$NON-NLS-1$

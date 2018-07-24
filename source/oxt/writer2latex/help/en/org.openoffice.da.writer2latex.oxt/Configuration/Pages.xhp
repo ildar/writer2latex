@@ -16,24 +16,31 @@
         
         <paragraph role="heading" level="2" xml-lang="en-US">Pages</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigExportGeometry" id="bm_configexportgeometry"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Export page geometry</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the page geometry. Otherwise the default
-        page geometry of the documentclass will be used.</paragraph>
-
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseGeometry" id="bm_configusegeometry"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export page size and margins (using geometry.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to export the geometry of the page using the package geometry.sty.
         The geometry refers to page size, margins and size of headers and footers. Otherwise LaTeX's default page layout 
         will apply.</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigPageColor" id="bm_configpagecolor"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export page color</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to export the page background color. Note that all pages will get the
+        same color, and that the color will apply to the entire page, including the margins. Otherwise the background color of all
+        pages will be white.</paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseFancyhdr" id="bm_configusefancyhdr"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export headers and footers (using fancyhdr.sty)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this export the contents of headers and footers using the package fancyhdr.sty.
+        <paragraph role="paragraph" xml-lang="en-US">Check this to export the contents of headers and footers using the package fancyhdr.sty.
         Otherwise the default header and footer of the LaTeX document class will apply.</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigPageNumbering" id="bm_configpagenumbering"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export page numbering</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to export the page numbering in the document. This is relevant
+        if you e.g. number with roman numerals or (re)start the page page numbering at a specific page number.
+        Otherwise the default numbering of the LaTeX document class will apply.</paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseLastpage" id="bm_configuselastpage"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Export number of pages (using lastpage.sty)</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export page count fields (using lastpage.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this option to use the package lastpage.sty to represent the page count.
         Otherwise the page count is not exported (e.g. content like "page 3 of 7" cannot be exported).</paragraph>
 

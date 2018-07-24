@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-06-25)
+ *  Version 2.0 (2018-07-22)
  */
  
 package writer2latex.office;
@@ -62,6 +62,8 @@ public class StyleWithProperties extends OfficeStyle {
     	loextMap.put(XMLString.LOEXT_PADDING_BOTTOM,XMLString.FO_PADDING_BOTTOM);
     	loextMap.put(XMLString.LOEXT_SHADOW,XMLString.STYLE_SHADOW);
     }
+    
+    private boolean bEmpty; // Flag to indicate that this style does not contain any properties except rsid
 	
     private PropertySet[] properties = new PropertySet[COUNT];
 
@@ -125,6 +127,12 @@ public class StyleWithProperties extends OfficeStyle {
             }
             child = child.getNextSibling();
         }
+        // Test whether this style contains any real properties
+        int nSize = 0;
+        for (int i=0; i<COUNT; i++) {
+        	nSize+=properties[i].getSize();
+        }
+        bEmpty = (nSize==1 && properties[TEXT].containsProperty(XMLString.OFFICEOOO_RSID));
     }
 	
     private void loadPropertiesFromDOM(int nIndex,Node node) {
@@ -311,6 +319,10 @@ public class StyleWithProperties extends OfficeStyle {
     	}
         // no value!
         return null;
+    }
+    
+    public boolean isEmpty() {
+    	return bEmpty;
     }
 	
     public String getAbsoluteTextProperty(String sName) {

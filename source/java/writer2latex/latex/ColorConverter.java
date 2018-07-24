@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-17)
+ *  Version 2.0 (2018-07-23)
  *
  */
 
@@ -138,7 +138,7 @@ public class ColorConverter extends ConverterHelper {
                     applyColor(sColor, bDecl, ba, context);
                 }
             }
-            else {
+            else if (context.getFontColor()==null) {
                 // No color; maybe automatic color?
                 String sAutomatic = style.getProperty(XMLString.STYLE_USE_WINDOW_FONT_COLOR,bInherit);
                 if (sAutomatic==null && bInherit) {
@@ -237,7 +237,7 @@ public class ColorConverter extends ConverterHelper {
                 return "{white}";
             }
         }
-        return "{black}";
+        return null;
     }
     
     private final String color(String sColor, boolean bFullColors) {

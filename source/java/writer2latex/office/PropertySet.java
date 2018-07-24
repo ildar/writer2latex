@@ -2,7 +2,7 @@
  *
  *  PropertySet.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 2.0 (2018-07-22)
  *
  */
 
@@ -27,19 +27,23 @@ package writer2latex.office;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
-/** <p> Class representing a set of style properties in OOo (actually this
-    is simply the set of attributes of an element). </p> 
+/** Class representing a set of style properties in an ODF document (actually this
+    is simply the set of attributes of an element)</p> 
   */
 public class PropertySet {
-    private Hashtable<String, String> properties = new Hashtable<String, String>();
+    private Map<String, String> properties = new Hashtable<>();
     private String sName;
 
     public PropertySet() {
         properties = new Hashtable<String, String>();
         sName="";
+    }
+    
+    public int getSize() {
+    	return properties.size();
     }
 	
     public String getProperty(String sPropName) {
@@ -84,14 +88,12 @@ public class PropertySet {
     }
 	
     public String toString() {
-        String s="";
-        Enumeration<String> keys = properties.keys();
-        while (keys.hasMoreElements()) {
-            String sKey = keys.nextElement();
+        StringBuilder sb = new StringBuilder();
+        for (String sKey : properties.keySet()) {
             String sValue = properties.get(sKey);
-            s += sKey+"="+sValue+" ";
+            sb.append(sKey).append("=").append(sValue).append(" ");
         }
-        return s;
+        return sb.toString();
     }
 
 }

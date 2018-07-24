@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-01)
+ *  Version 2.0 (2018-07-22)
  *
  */
 
@@ -539,6 +539,10 @@ public class XMLString {
 	public static final String LOEXT_PADDING_TOP = "loext:padding-top";
 	public static final String LOEXT_PADDING_BOTTOM = "loext:padding-bottom";
 	public static final String LOEXT_SHADOW = "loext:shadow";
+	
+	// officeooo namespace (LibreOffice specific)
+	public static final String OFFICEOOO_RSID = "officeooo:rsid";
+	public static final String OFFICEOOO_PARAGRAPH_RSID = "officeooo:paragraph-rsid";
 
 
 }

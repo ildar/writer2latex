@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-09)
+ *  Version 2.0 (2018-07-14)
  *
  */
  
@@ -101,11 +101,10 @@ public interface Converter {
      * @param sTargetFileName the file name to use for the converted document
      *  (if the converted document is a compound document consisting consisting
      *  of several files, this name will be used for the master document)
-     *  @param bDestructive set to true if the converter is allowed to remove contents from the DOM tree (to save memory)
      * @return a <code>ConverterResult</code> containing the converted document
      * @throws IOException if some exception occurs while reading the document
      */
-    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName, boolean bDestructive)
+    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName)
     	throws IOException;
 
 }

@@ -2,7 +2,7 @@
  *
  *  ImageConverter.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2014-11-18)
+ *  Version 2.0 (2018-07-14)
  *
  */
 
@@ -50,13 +50,11 @@ import writer2latex.util.Misc;
 
 /** This class extracts and converts images from an office document.
  *  The images are returned as <code>BinaryGraphicsDocument</code>.
- *  The image converter can be configured as destructive. In this case, the returned
- *  graphics documents will contain the only reference to the image (the original data
- *  will be removed).
+ *  The image converter is destructive: The returned graphics documents will contain the only reference
+ *  to the image (the original data will be removed).
  */
 public final class ImageConverter {
 	private OfficeReader ofr;
-	private boolean bDestructive;
 
     // Data for file name generation
     private String sBaseFileName = "";
@@ -75,7 +73,7 @@ public final class ImageConverter {
     private HashSet<String> acceptedFormats = new HashSet<String>();
     
     // In the package format, the same image file may be used more than once in the document
-    // Hence we keep information of all documents for potential
+    // Hence we keep information of all documents for potential reuse
     private HashMap<String,BinaryGraphicsDocument> recycledImages = new HashMap<String,BinaryGraphicsDocument>();
 
     /** Construct a new <code>ImageConverter</code> referring to a specific document
@@ -83,9 +81,8 @@ public final class ImageConverter {
      * @param ofr the office reader to use
      * @param bExtractEPS set true if EPS content should be extracted from SVM files
      */
-    public ImageConverter(OfficeReader ofr, boolean bDestructive, boolean bExtractEPS) {
+    public ImageConverter(OfficeReader ofr, boolean bExtractEPS) {
         this.ofr = ofr;
-        this.bDestructive = bDestructive;
         this.bExtractEPS = bExtractEPS;
         this.formatter = new DecimalFormat("000");
     }
@@ -224,9 +221,8 @@ public final class ImageConverter {
 	                	sMIME = MIMETypes.getMagicMIMEType(blob);
 	                }
 	            	sExt = MIMETypes.getFileExtension(sMIME);
-	            	if (bDestructive) {
-	            		object.dispose();
-	            	}
+	            	// Be destructive
+	            	object.dispose();
 	            	// We got an image, define ID for recycling
 	            	sId = sHref;
 	            }
@@ -262,9 +258,8 @@ public final class ImageConverter {
     			}
     			sMIME = MIMETypes.getMagicMIMEType(blob);
 	            sExt = MIMETypes.getFileExtension(sMIME);
-	            if (bDestructive) {
-	            	node.removeChild(obd);
-	            }
+	            // Be destructive
+	            node.removeChild(obd);
 	            // We got an image, define ID for recycling
 	            sId = sId1;
 	        }

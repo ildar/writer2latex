@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.6 (2018-03-26)
+ *  Version 2.0 (2018-07-14)
  *  
  */
 package org.openoffice.da.comp.writer2latex.base;
@@ -135,7 +135,7 @@ public class UNOConverter {
 	 * @throws IOException 
 	 */
 	public void convert(Document dom) throws IOException {
-		writeFiles(converter.convert(dom, Misc.makeFileName(getFileName(sURL)),true));
+		writeFiles(converter.convert(dom, Misc.makeFileName(getFileName(sURL))));
 	}
 	
 	/** Convert a document given by an XInputStream

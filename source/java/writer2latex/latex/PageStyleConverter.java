@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-01)
+ *  Version 2.0 (2018-07-23)
  *
  */
 
@@ -82,6 +82,8 @@ public class PageStyleConverter extends StyleConverter {
     }
     
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    	LaTeXDocumentPortion ldp = new LaTeXDocumentPortion(false);
+    	
         if (config.useFancyhdr()) {
         	pacman.usepackage("fancyhdr");
         }
@@ -92,7 +94,7 @@ public class PageStyleConverter extends StyleConverter {
         }
         // Convert page layout and master pages
         boolean bTwosideLayout = convertPageGeometry(pacman);
-        boolean bTwosideHeaderFooter = convertMasterPages(decl);
+        boolean bTwosideHeaderFooter = convertMasterPages(ldp);
         if (config.useGeometry() && bTwosideHeaderFooter && !bTwosideLayout) {
         	// geometry.sty has a special global option for this case
         	palette.addGlobalOption("asymmetric");
@@ -105,11 +107,17 @@ public class PageStyleConverter extends StyleConverter {
         if (firstMasterPage!=null) {
             BeforeAfter ba = new BeforeAfter();
             applyMasterPage(firstMasterPage.getName(),ba);
-            decl.append(ba.getBefore());
+            ldp.append(ba.getBefore());
         }
+        // Convert page color (the context plays no role by now)
+        convertPageColor(ldp, new Context());
         // Convert footnote rule
         if (config.footnoteRule()) {
-        	convertFootnoteRule(decl);
+        	convertFootnoteRule(ldp);
+        }
+        
+        if (!ldp.isEmpty()) {
+        	decl.append("% Pages").nl().append(ldp);
         }
 
     }
@@ -117,9 +125,17 @@ public class PageStyleConverter extends StyleConverter {
     public void setChapterField1(String s) { sChapterField1 = s; }
 	
     public void setChapterField2(String s) { sChapterField2 = s; }
-	
-    public boolean isTwocolumn() {
-        return mainPageLayout!=null && mainPageLayout.getColCount()>1;
+    
+    /** Update context information based on the main page layout (columns and background color)
+     * 
+     * @param context the context that needs to be updated
+     */
+    public void updateContext(Context context) {
+    	if (mainPageLayout!=null) {
+    		context.setInMulticols(mainPageLayout.getColCount()>1);
+    		// We are only interested in the context, the actual code is thrown away for now
+    		convertPageColor(new LaTeXDocumentPortion(false), context);
+    	}
     }
 	
     /** <p>Apply page break properties from a style.</p>
@@ -137,14 +153,18 @@ public class PageStyleConverter extends StyleConverter {
 	        // ...or it can be a new master page
 	        String sMasterPage = style.getMasterPageName();
 	        if (sMasterPage!=null && sMasterPage.length()>0) {
-		        ba.add("\\clearpage","");
-		        String sPageNumber=style.getProperty(XMLString.STYLE_PAGE_NUMBER);
-		        if (sPageNumber!=null) {
-		            int nPageNumber = Misc.getPosInteger(sPageNumber,1);
-		            ba.add("\\setcounter{page}{"+nPageNumber+"}","");
-		        }
-		        ba.add("\n","");
+	        	// First the page break
+		        ba.add("\\clearpage\n","");
+		        // The apply the master page (depending on the use_fancyhdr and page_numbering)
 		        applyMasterPage(sMasterPage,ba);
+		        // Finally an explicit new page number can be applied
+		        if (config.pageNumbering()) {
+			        String sPageNumber=style.getProperty(XMLString.STYLE_PAGE_NUMBER);
+			        if (sPageNumber!=null && !sPageNumber.equals("auto")) {
+			            int nPageNumber = Misc.getPosInteger(sPageNumber,1);
+			            ba.add("\\setcounter{page}{"+nPageNumber+"}\n","");
+			        }
+		        }
 	        }
         }
     }
@@ -154,9 +174,9 @@ public class PageStyleConverter extends StyleConverter {
      *  @param ba      the <code>BeforeAfter</code> to add code to.
      */
     void applyMasterPage(String sName, BeforeAfter ba) {
-        if (config.useFancyhdr()) {
-	        MasterPage style = ofr.getMasterPage(sName);
-	        if (style!=null) {
+        MasterPage style = ofr.getMasterPage(sName);
+        if (style!=null) {
+        	if (config.useFancyhdr()) {
 	        	if (style.getFooterFirst()!=null || style.getHeaderFirst()!=null) {
 	        		// This master page has a special header/footer on the first page.
 	        		// With fancyhdr, we have to create an additional page style for this.
@@ -175,6 +195,30 @@ public class PageStyleConverter extends StyleConverter {
 			        }
 	        	}
 	        }
+	        else if (config.pageNumbering()) {
+	        	// If we were using fancyhdr.sty the page numbering is included with the style.
+	        	// But if not, we have to include it explicitly with the page break
+
+	        	// The format is taken from the next page style (if any)
+		        MasterPage nextStyle = ofr.getMasterPage(style.getProperty(XMLString.STYLE_NEXT_STYLE_NAME));
+		        if (nextStyle==null) { nextStyle=style; }
+	            PageLayout nextPageLayout = ofr.getPageLayout(nextStyle.getProperty(XMLString.STYLE_PAGE_LAYOUT_NAME));
+                if (nextPageLayout!=null) {
+                    String sNumFormat = nextPageLayout.getProperty(XMLString.STYLE_NUM_FORMAT);
+                    if (sNumFormat!=null) {
+                    	ba.addBefore("\\renewcommand\\thepage{"+ListConverter.numFormat(sNumFormat)+"{page}}\n");
+                    }                	
+                }
+                
+                // The first page number is taken directly from this style 
+	            PageLayout pageLayout = ofr.getPageLayout(style.getProperty(XMLString.STYLE_PAGE_LAYOUT_NAME));
+                if (pageLayout!=null) {
+                    String sPageNumber = pageLayout.getProperty(XMLString.STYLE_FIRST_PAGE_NUMBER);
+                    if (sPageNumber!=null && !sPageNumber.equals("continue")) {
+                    	ba.addBefore("\\setcounter{page}{"+Misc.getPosInteger(sPageNumber,0)+"}\n");
+                    }
+                }	    	
+	        }
         }
     }
 	
@@ -187,7 +231,6 @@ public class PageStyleConverter extends StyleConverter {
 	        context.setInHeaderFooter(true);
 				
 	        Enumeration<OfficeStyle> styles = ofr.getMasterPages().getStylesEnumeration();
-	        ldp.append("% Pages styles").nl();
 	        while (styles.hasMoreElements()) {
 	            MasterPage style = (MasterPage) styles.nextElement();
 	            String sName = style.getName();
@@ -274,7 +317,7 @@ public class PageStyleConverter extends StyleConverter {
 	            ldp.append("}").nl();
 	        }
         }
-        // Rules
+        // Rules are defined in the page layout
         ldp.append("  \\renewcommand\\headrulewidth{")
            .append(getBorderWidth(pageLayout,true))
            .append("}").nl()
@@ -304,8 +347,8 @@ public class PageStyleConverter extends StyleConverter {
             else { ldp.append("\\thesubsection\\ ##1"); }
             ldp.append("}{}}").nl();
         }
-        // Page number (this is the only part of the page master used in each page style)
-        if (pageLayout!=null) {
+        // Page number is defined in the page layout
+        if (config.pageNumbering() && pageLayout!=null) {
             String sNumFormat = pageLayout.getProperty(XMLString.STYLE_NUM_FORMAT);
             if (sNumFormat!=null) {
             ldp.append("  \\renewcommand\\thepage{")
@@ -323,7 +366,7 @@ public class PageStyleConverter extends StyleConverter {
         ldp.append("}").nl();
         return bTwoside;
     }
-	
+    
     // Get alignment of first paragraph in node
     private String getParAlignment(Node node) {
         String sAlign = "L";
@@ -379,6 +422,10 @@ public class PageStyleConverter extends StyleConverter {
         if (style!=null && (!ofr.isPackageFormat() || !style.isAutomatic())) {
             palette.getCharSc().applyHardCharFormatting(style,ba);
         }
+        else {
+        	// At least we can apply automatic color if the page background is dark
+        	palette.getColorCv().applyAutomaticColor(ba, true, context);
+        }
 
         if (par.hasChildNodes()) {
             ldp.append(ba.getBefore());
@@ -386,6 +433,28 @@ public class PageStyleConverter extends StyleConverter {
             ldp.append(ba.getAfter());
         }
         
+    }
+    
+    // Convert page color
+    private void convertPageColor(LaTeXDocumentPortion ldp, Context context) {
+    	if (config.pageColor() && config.useXcolor() && mainPageLayout!=null) {
+    		String sColor = null;
+    		// The background color can be a draw attribute or a fo attribute
+    		String sFill = mainPageLayout.getProperty(XMLString.DRAW_FILL, true);
+    		if (sFill!=null) { // draw:fill takes precedence
+    			if (sFill.equals("solid")) { // i.e. color (other values are none, bitmap, gradient and hatch)
+    				sColor = mainPageLayout.getProperty(XMLString.DRAW_FILL_COLOR, true);
+    			}
+    		}
+    		else {
+    			sColor = mainPageLayout.getProperty(XMLString.FO_BACKGROUND_COLOR,true);
+    		}
+    		if (sColor!=null) {
+    			BeforeAfter ba = new BeforeAfter();
+    			palette.getColorCv().applyBgColor("\\pagecolor",sColor, ba, context);
+    			ldp.append(ba.getBefore()).nl();
+    		}
+    	}
     }
 
     // Return true if the layout is mirrored
@@ -396,7 +465,7 @@ public class PageStyleConverter extends StyleConverter {
 	        if ("mirrored".equals(mainPageLayout.getPageUsage())) {
 	            bTwoside = true;
 	        }
-	        if (isTwocolumn()) {
+	        if (mainPageLayout.getColCount()>1) {
 	            palette.addGlobalOption("twocolumn");
 	        }
 	
@@ -534,8 +603,7 @@ public class PageStyleConverter extends StyleConverter {
 		
         String sSkipFootins = Calc.add(sBefore,sHeight);
  
-        ldp.append("% Footnote rule").nl()
-           .append("\\setlength{\\skip\\footins}{").append(sSkipFootins).append("}").nl()
+        ldp.append("\\setlength{\\skip\\footins}{").append(sSkipFootins).append("}").nl()
            .append("\\renewcommand\\footnoterule{\\vspace*{-").append(sHeight)
            .append("}");
         if ("right".equals(sAdjustment)) {

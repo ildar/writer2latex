@@ -202,7 +202,7 @@ public final class ConverterPalette extends ConverterBase {
         // The default language is specified in the default paragraph style:
         mainContext = new Context();
         mainContext.resetFormattingFromStyle(ofr.getDefaultParStyle());
-        mainContext.setInMulticols(pageSc.isTwocolumn());
+        pageSc.updateContext(mainContext);
 		
         // Create main LaTeXDocumentPortions
         LaTeXPacman packages = new LaTeXPacman(false);

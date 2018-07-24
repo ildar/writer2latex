@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-02)
+ *  Version 2.0 (2018-07-23)
  *
  */
 
@@ -98,9 +98,6 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public static final int CONVERT_BASIC = 2;
     public static final int CONVERT_MOST = 3;
     public static final int CONVERT_ALL = 4;
-    // Page formatting
-    public static final int CONVERT_HEADER_FOOTER = 5;
-    public static final int CONVERT_GEOMETRY = 6;
     
     // Handling of other formatting
     public static final int IGNORE = 0;
@@ -194,6 +191,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_endnotes","false"));
         addOption(new Option("notesname",""));
         addOption(new BooleanOption("use_ulem","false"));
+        addOption(new BooleanOption("page_numbering","true"));
+        addOption(new BooleanOption("page_color","false"));
         addOption(new BooleanOption("use_lastpage","false"));
         addOption(new BooleanOption("use_titleref","false"));
         addOption(new BooleanOption("use_bibtex","false"));
@@ -633,6 +632,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useEndnotes() { return ((BooleanOption) options.get("use_endnotes")).getValue(); }
     public String notesname() { return options.get("notesname").getString(); }
     public boolean useUlem() { return ((BooleanOption) options.get("use_ulem")).getValue(); }
+    public boolean pageNumbering() { return ((BooleanOption) options.get("page_numbering")).getValue(); }
+    public boolean pageColor() { return ((BooleanOption) options.get("page_color")).getValue(); }
     public boolean useLastpage() { return ((BooleanOption) options.get("use_lastpage")).getValue(); }
     public boolean useTitleref() { return ((BooleanOption) options.get("use_titleref")).getValue(); }
     public boolean useBibtex() { return ((BooleanOption) options.get("use_bibtex")).getValue(); }

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-10)
+ *  Version 2.0 (2018-07-14)
  *
  */
 
@@ -87,20 +87,20 @@ public abstract class ConverterBase implements Converter {
         // Read document
         odDoc = new OfficeDocument();
         odDoc.read(is);
-        return convert(sTargetFileName,true);
+        return convert(sTargetFileName);
     }
     
-    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName, boolean bDestructive) throws IOException {
+    public ConverterResult convert(org.w3c.dom.Document dom, String sTargetFileName) throws IOException {
     	// Read document
     	odDoc = new OfficeDocument();
     	odDoc.read(dom);
-    	return convert(sTargetFileName,bDestructive);
+    	return convert(sTargetFileName);
     }
     
-    private ConverterResult convert(String sTargetFileName, boolean bDestructive) throws IOException {
+    private ConverterResult convert(String sTargetFileName) throws IOException {
         ofr = new OfficeReader(odDoc,false);
         metaData = new MetaData(odDoc);
-        imageConverter = new ImageConverter(ofr,bDestructive,true);
+        imageConverter = new ImageConverter(ofr,true);
         imageConverter.setGraphicConverter(graphicConverter);
 
         // Prepare output

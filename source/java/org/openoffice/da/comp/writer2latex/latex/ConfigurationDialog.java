@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-02)
+ *  Version 2.0 (2018-07-23)
  *
  */ 
  
@@ -607,7 +607,9 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     private class PagesHandler extends PageHandler {
     	@Override protected void setControls(DialogAccess dlg) {
         	checkBoxFromConfig(dlg,"UseGeometry", "use_geometry");
+        	checkBoxFromConfig(dlg,"PageColor", "page_color");
         	checkBoxFromConfig(dlg,"UseFancyhdr", "use_fancyhdr");
+        	checkBoxFromConfig(dlg,"PageNumbering", "page_numbering");
         	checkBoxFromConfig(dlg,"UseLastpage", "use_lastpage");
         	checkBoxFromConfig(dlg,"UseEndnotes", "use_endnotes");
         	textFieldFromConfig(dlg,"Notesname", "notesname");
@@ -621,7 +623,9 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	
     	@Override protected void getControls(DialogAccess dlg) {
         	checkBoxToConfig(dlg,"UseGeometry", "use_geometry");
+        	checkBoxToConfig(dlg,"PageColor", "page_color");
         	checkBoxToConfig(dlg,"UseFancyhdr", "use_fancyhdr");
+        	checkBoxToConfig(dlg,"PageNumbering", "page_numbering");
         	checkBoxToConfig(dlg,"UseLastpage", "use_lastpage");
         	checkBoxToConfig(dlg,"UseEndnotes", "use_endnotes");
         	textFieldToConfig(dlg,"Notesname", "notesname");
