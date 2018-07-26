@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-23)
+ *  Version 2.0 (2018-07-24)
  *
  */
 
@@ -177,6 +177,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_geometry","true"));
         addOption(new BooleanOption("use_fancyhdr","true"));
         addOption(new BooleanOption("use_perpage","true"));
+        addOption(new BooleanOption("use_tikz","false"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
         addOption(new BooleanOption("use_hyperref","true"));
@@ -618,6 +619,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useGeometry() { return ((BooleanOption) options.get("use_geometry")).getValue(); }
     public boolean useFancyhdr() { return ((BooleanOption) options.get("use_fancyhdr")).getValue(); }
     public boolean usePerpage() { return ((BooleanOption) options.get("use_perpage")).getValue(); }
+    public boolean useTikz() { return ((BooleanOption) options.get("use_tikz")).getValue(); }
     public boolean useLongfbox() { return ((BooleanOption) options.get("use_longfbox")).getValue(); }
     public boolean useTitlesec() { return ((BooleanOption) options.get("use_titlesec")).getValue(); }
     public boolean useHyperref() { return ((BooleanOption) options.get("use_hyperref")).getValue(); }

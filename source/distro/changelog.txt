@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] New option use_tikz to export drawings using tikz.sty. Currently only custom shapes are
+  supported.
+
 [w2l] New option page_numbering to export page numbering independent of the option use_fancyhdr
   
 [w2l] New option page_color to export the page color (same color on all pages)

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-30)
+ *  Version 2.0 (2018-07-25)
  *
  */
 
@@ -323,7 +323,11 @@ public class InlineConverter extends ConverterHelper {
                         else { ldp.append(sTabstop); }
                     }
                     else if (sName.equals(XMLString.TEXT_LINE_BREAK)) {
-                        if (!oc.isInHeaderFooter() && !config.ignoreHardLineBreaks()) {
+                    	if (oc.isInTikZText()) {
+                    		// In this particular case we don't adhere to the option ignore_hard_line_breaks
+                    		ldp.append("\\\\").nl();
+                    	}
+                    	else if (!oc.isInHeaderFooter() && !config.ignoreHardLineBreaks()) {
                             ldp.append("\\newline").nl();
                         }
                         else { ldp.append(" "); }

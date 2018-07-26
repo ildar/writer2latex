@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-14)
+ *  Version 2.0 (2018-07-26)
  *
  */
 package writer2latex.util;
@@ -186,14 +186,22 @@ public class Calc {
 	 * @param sLength the length
 	 * @return the product length
 	 */
-	public static final String multiply(String sPercent, String sLength){
+	public static final String multiply(String sPercent, String sLength) {
 	    if (sLength.equals("0")) { return "0"; }
 	    float fPercent=getFloat(sPercent.substring(0,sPercent.length()-1),1);
+	    return multiply(fPercent/100.0F,sLength);
+	}
+	
+	/** Multiply a length by a float (e.g. 1.5 multiplied with "2cm" returns "3cm")
+	 * 
+	 */
+	public static final String multiply(float f, String sLength) {
 	    float fLength=getFloat(sLength.substring(0,sLength.length()-2),1);
 	    String sUnit=sLength.substring(sLength.length()-2);
-	    return Float.toString(fPercent*fLength/100)+sUnit;
+	    return Float.toString(f*fLength)+sUnit;
+		
 	}
-
+	
 	/** Add two lengths (e.g. "2.5cm" added to "1.08cm" returns "3.58cm")
 	 * 
 	 * @param sLength1 the first length term

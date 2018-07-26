@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-23)
+ *  Version 2.0 (2018-07-24)
  *
  */ 
  
@@ -753,8 +753,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
 
     // The page "Figures"
-    // This page handles the options use_caption, align_frames, figure_sequence_name, image_content,
-    // remove_graphics_extension and image_options
+    // This page handles the options use_caption, align_frames, figure_sequence_name, use_tikz,
+    // image_content, remove_graphics_extension and image_options
 	// Limitation: Cannot handle the values "error" and "warning" for image_content
     private class FiguresHandler extends PageHandler {
     	@Override protected void setControls(DialogAccess dlg) {
@@ -766,6 +766,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	checkBoxFromConfig(dlg,"UseCaption","use_caption");
         	checkBoxFromConfig(dlg,"AlignFrames","align_frames");
         	textFieldFromConfig(dlg,"FigureSequenceName","figure_sequence_name");
+        	checkBoxFromConfig(dlg,"UseTikz","use_tikz");
         	dlg.setCheckBoxStateAsBoolean("NoImages", !"accept".equals(config.getOption("image_content")));
         	checkBoxFromConfig(dlg,"RemoveGraphicsExtension","remove_graphics_extension");
         	textFieldFromConfig(dlg,"ImageOptions","image_options");
@@ -777,6 +778,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	checkBoxToConfig(dlg,"UseCaption","use_caption");
         	checkBoxToConfig(dlg,"AlignFrames","align_frames");
         	textFieldToConfig(dlg,"FigureSequenceName","figure_sequence_name");
+        	checkBoxToConfig(dlg,"UseTikz","use_tikz");
         	config.setOption("image_content", dlg.getCheckBoxStateAsBoolean("NoImages") ? "ignore" : "accept");
         	checkBoxToConfig(dlg,"RemoveGraphicsExtension","remove_graphics_extension");
         	textFieldToConfig(dlg,"ImageOptions","image_options");

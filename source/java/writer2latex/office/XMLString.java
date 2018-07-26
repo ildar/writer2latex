@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-22)
+ *  Version 2.0 (2018-07-25)
  *
  */
 
@@ -61,6 +61,8 @@ public class XMLString {
 	public static final String DRAW_PATH_STRETCHPOINT_X = "draw:path-stretchpoint-x";
 	public static final String DRAW_PATH_STRETCHPOINT_Y = "draw:path-stretchpoint-y";
 	public static final String DRAW_TEXT_AREAS = "draw:text-areas";
+	public static final String DRAW_TEXTAREA_HORIZONTAL_ALIGN = "draw:textarea-horizontal-align";
+	public static final String DRAW_TEXTAREA_VERTICAL_ALIGN = "draw:textarea-vertical-align";
 	public static final String DRAW_MODIFIERS = "draw:modifiers";
 	public static final String DRAW_ENHANCED_PATH = "draw:enhanced-path";
 	public static final String DRAW_FORMULA = "draw:formula";

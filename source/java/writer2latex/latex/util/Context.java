@@ -2,7 +2,7 @@
  *
  *  Context.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-01-24) 
+ *  Version 2.0 (2018-07-26) 
  *
  */
 
@@ -88,6 +88,9 @@ public class Context {
 	
     // within a minipage environment
     private boolean bInFrame = false;
+
+    // within a TikZ text node
+    private boolean bInTikZText = false;
 
     // within a \footnote or \endnote
     private boolean bInFootnote = false;
@@ -208,6 +211,10 @@ public class Context {
     public void setInFrame(boolean bInFrame) { this.bInFrame = bInFrame; }
 	
     public boolean isInFrame() { return bInFrame; }
+    
+    public void setInTikZText(boolean bInTikZText) { this.bInTikZText = bInTikZText; }
+	
+    public boolean isInTikZText() { return bInTikZText; }
 
     public void setInFootnote(boolean bInFootnote) {
         this.bInFootnote = bInFootnote;
@@ -312,6 +319,7 @@ public class Context {
         newContext.setInFigureFloat(bInFigureFloat);
         newContext.setInTableFloat(bInTableFloat);
         newContext.setInFrame(bInFrame);
+        newContext.setInTikZText(bInTikZText);
         newContext.setInFootnote(bInFootnote);
         newContext.setVerbatim(bVerbatim);
         newContext.setMathMode(bMathMode);

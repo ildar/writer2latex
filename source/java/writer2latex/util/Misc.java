@@ -2,7 +2,7 @@
  *
  *  Misc.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-02-16)
+ *  Version 2.0 (2018-07-25)
  *
  */
 
@@ -472,6 +472,21 @@ public class Misc{
 	    return n>0 ? n : nDefault;
 	}
 	
+	/** Test wheter a given string is contained in a list of strings
+	 * 
+	 * @param sItem the string to test
+	 * @param sList the list
+	 * @return true if the string is not null and is contained in the list
+	 */
+	public static boolean isIn(String sItem, String... sList) {
+		if (sItem!=null) {
+			int n = sList.length;
+			for (int i=0; i<n; i++) {
+				if (sItem.equals(sList[i])) { return true; }
+			}
+		}
+		return false;
+	}
 
 
 }

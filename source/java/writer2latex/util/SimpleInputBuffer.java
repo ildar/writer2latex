@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-04)
+ *  Version 2.0 (2018-07-24)
  *
  */
 
@@ -133,14 +133,14 @@ public class SimpleInputBuffer {
     		int nExpStart = nIndex;
     		if (nIndex<nLen && (sContent.charAt(nIndex)=='E' || sContent.charAt(nIndex)=='e')) {
     			nIndex++;
+            	if (nIndex<nLen && (sContent.charAt(nIndex)=='+' || sContent.charAt(nIndex)=='-')) {
+            		nIndex++;
+            	}
+            	while (nIndex<nLen && isDigit(sContent.charAt(nIndex))) {
+            		nIndex++;
+            		bHasExponent = true;
+            	}
     		}
-        	if (nIndex<nLen && (sContent.charAt(nIndex)=='+' || sContent.charAt(nIndex)=='-')) {
-        		nIndex++;
-        	}
-        	while (nIndex<nLen && isDigit(sContent.charAt(nIndex))) {
-        		nIndex++;
-        		bHasExponent = true;
-        	}
         	if (!bHasExponent) { // No exponent, back up
         		nIndex = nExpStart;
         	}
