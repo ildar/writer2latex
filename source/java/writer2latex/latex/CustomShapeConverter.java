@@ -131,7 +131,6 @@ public class CustomShapeConverter extends ConverterHelper {
 			
 			// Finally convert the path
 			String sPath = Misc.getAttribute(geometry, XMLString.DRAW_ENHANCED_PATH);
-			//System.out.println("Convert path "+sPath);
 			if (sPath!=null) {
 				ldp.append("\\begin{tikzpicture}").nl();
 				SimpleInputBuffer in = new SimpleInputBuffer(sPath);
@@ -702,7 +701,6 @@ public class CustomShapeConverter extends ConverterHelper {
 		// Get and parse the property
 		String sTextAreas = Misc.getAttribute(geometry, XMLString.DRAW_TEXT_AREAS);
 		if (sTextAreas!=null) {
-			System.out.println("Parse "+sTextAreas);
 			SimpleInputBuffer in = new SimpleInputBuffer(sTextAreas);
 			in.skipSpaces();
 			dTextAreaLeft = getParameter(in);
@@ -710,7 +708,6 @@ public class CustomShapeConverter extends ConverterHelper {
 			dTextAreaRight = getParameter(in);
 			dTextAreaBottom = getParameter(in);
 		}
-		System.out.println(dTextAreaLeft+" "+dTextAreaTop+" "+dTextAreaRight+" "+dTextAreaBottom);
 	}
 	
 	// Parse the draw:path-stretchpoint-* attributes, which are double values
@@ -772,7 +769,6 @@ public class CustomShapeConverter extends ConverterHelper {
 	
 	private double calculateEquation(String sName) {
 		if (!equationResults.containsKey(sName)) {
-			//System.out.println("Calculate "+equations.get(sName));
 			SimpleInputBuffer in = new SimpleInputBuffer(equations.get(sName));
 			equationResults.put(sName, additiveExpression(in));
 			if (!in.atEnd()) {

@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2l] The color for hyperlinks is now the acutal color used in the document (and exported only
+  if use_xolor is true)
+
+[w2l] Metadata (Title, author, date and for PDF also subject and keywords) are now only exported
+  if they are non-empty
+
 [w2l] New option use_tikz to export drawings using tikz.sty. Currently only custom shapes are
   supported.
 

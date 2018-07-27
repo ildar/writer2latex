@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-28)
+ *  Version 2.0 (2018-07-27)
  *
  */
 
@@ -313,10 +313,10 @@ public final class ConverterPalette extends ConverterBase {
     }
 	
     private void createMeta(String sName, String sValue,LaTeXDocumentPortion ldp) {
-        if (sValue==null) { return; }
-        // Meta data is assumed to be in the default language:
-        ldp.append("\\"+sName+"{"+i18n.convert(sValue,false,mainContext.getLang())+"}").nl();
+        if (sValue!=null && !sValue.isEmpty()) {
+	        // Meta data is assumed to be in the default language:
+	        ldp.append("\\"+sName+"{"+i18n.convert(sValue,false,mainContext.getLang())+"}").nl();
+        }
     }
-
 
 }

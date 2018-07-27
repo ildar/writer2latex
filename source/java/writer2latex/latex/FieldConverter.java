@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-17)
+ *  Version 2.0 (2018-07-27)
  *
  */
 
@@ -40,7 +40,9 @@ import writer2latex.latex.util.Context;
 import writer2latex.latex.util.HeadingMap;
 import writer2latex.office.ListStyle;
 import writer2latex.office.OfficeReader;
+import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.CSVList;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
@@ -65,6 +67,9 @@ public class FieldConverter extends ConverterHelper {
     private ExportNameCollection bookmarknames = new ExportNameCollection(true);
     private ExportNameCollection seqnames = new ExportNameCollection(true);
     private ExportNameCollection seqrefnames = new ExportNameCollection(true);
+    
+    // Options for hyperref
+    private CSVList hyperrefColor = new CSVList(",","=");
 	
     // sequence declarations (maps name->text:sequence-decl element)
     private Hashtable<String, Node> seqDecl = new Hashtable<String, Node>();
@@ -116,21 +121,34 @@ public class FieldConverter extends ConverterHelper {
 
         // use hyperref.sty
         if (bUseHyperref){
+        	CSVList options = new CSVList(",","=");
         	pacman.usepackage("hyperref");
-            pacman.append("\\hypersetup{");
-            if (config.backend()==LaTeXConfig.PDFTEX) pacman.append("pdftex, ");
-            else if (config.backend()==LaTeXConfig.DVIPS) pacman.append("dvips, ");
-            //else pack.append("hypertex");
-            pacman.append("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue");
-            if (config.backend()==LaTeXConfig.PDFTEX) {
-                pacman.append(createPdfMeta("pdftitle",palette.getMetaData().getTitle()));
+        	// Only dvips needs an explicit backend, others are either autodetected or are fine with hypertex
+            if (config.backend()==LaTeXConfig.DVIPS) options.addValue("dvips");
+            // Color links only if we are using color
+            if (config.useXcolor()) {
+            	options.addValue("colorlinks", "true");
+            	if (!hyperrefColor.isEmpty()) {
+            		// The color may have been collected during conversion
+            		options.addValues(hyperrefColor);
+            	}
+            	else {
+            		// Otherwise blue is always available and is a traditional link color
+            		options.addValue("allcolors","blue");
+            	}
+            }
+            // Add PDF meta data if we are using an appropriate backend
+            if (config.backend()==LaTeXConfig.PDFTEX || config.backend()==LaTeXConfig.XETEX) {
+                createPdfMeta("pdftitle",palette.getMetaData().getTitle(),options);
                 if (config.metadata()) {
-                    pacman.append(createPdfMeta("pdfauthor",palette.getMetaData().getCreator()))
-                        .append(createPdfMeta("pdfsubject",palette.getMetaData().getSubject()))
-                        .append(createPdfMeta("pdfkeywords",palette.getMetaData().getKeywords()));
+                    createPdfMeta("pdfauthor",palette.getMetaData().getCreator(),options);
+                    createPdfMeta("pdfsubject",palette.getMetaData().getSubject(),options);
+                    createPdfMeta("pdfkeywords",palette.getMetaData().getKeywords(),options);
                 }
             }
-            pacman.append("}").nl();
+            if (!options.isEmpty()) {
+            	pacman.append("\\hypersetup{").append(options.toString()).append("}").nl();
+            }
         }	
         		
         // Export sequence declarations
@@ -849,6 +867,16 @@ public class FieldConverter extends ConverterHelper {
     public void handleAnchor(Element node, LaTeXDocumentPortion ldp, Context oc) {
         String sHref = node.getAttribute(XMLString.XLINK_HREF);
         if (sHref!=null) {
+        	if (hyperrefColor.isEmpty()) {
+        		// We collect the color now to ensure the color name is defined before we insert xcolor declarations
+        		String sLinkStyleName = Misc.getAttribute(node, XMLString.TEXT_STYLE_NAME);
+            	StyleWithProperties style = ofr.getTextStyle(sLinkStyleName);
+            	if (style!=null) {
+            		palette.getColorCv().applyNamedColor(style.getTextProperty(XMLString.FO_COLOR, true),"allcolors",hyperrefColor);
+            		
+            	}
+        	}
+
             if (sHref.startsWith("#")) {
                 // TODO: hyperlinks to headings (?) and objects
                 if (bUseHyperref) {
@@ -954,12 +982,13 @@ public class FieldConverter extends ConverterHelper {
 
     // Helpers:
 	
-    private String createPdfMeta(String sName, String sValue) {
-        if (sValue==null) { return ""; }
-        // Replace commas with semicolons (the keyval package doesn't like commas):
-        sValue = sValue.replace(',', ';');
-        // Meta data is assumed to be in the default language:
-        return ", "+sName+"="+palette.getI18n().convert(sValue,false,palette.getMainContext().getLang());
+    private void createPdfMeta(String sName, String sValue, CSVList options) {
+        if (sValue!=null && !sValue.isEmpty()) {
+	        // Replace commas with semicolons (the keyval package doesn't like commas):
+	        sValue = sValue.replace(',', ';');
+	        // Meta data is assumed to be in the default language:
+	        options.addValue(sName,palette.getI18n().convert(sValue,false,palette.getMainContext().getLang()));
+        }
     }
 
     // For the argument to a href, we have to escape or encode certain characters
