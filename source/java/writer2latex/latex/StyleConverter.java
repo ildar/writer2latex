@@ -19,13 +19,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-19)
+ *  Version 2.0 (2018-07-30)
  *
  */
 
 package writer2latex.latex;
 
-import writer2latex.latex.util.StyleMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import writer2latex.latex.util.StyleMapItem;
 import writer2latex.util.ExportNameCollection;
 import writer2latex.office.OfficeReader;
 
@@ -36,7 +39,7 @@ public abstract class StyleConverter extends ConverterHelper {
     
     // Names and maps + necessary declarations for these styles
     protected ExportNameCollection styleNames = new ExportNameCollection(false);
-    protected StyleMap styleMap = new StyleMap();
+    protected Map<String,StyleMapItem> styleMap = new HashMap<>();
     protected LaTeXDocumentPortion declarations = new LaTeXDocumentPortion(false);
 	
     protected StyleConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {

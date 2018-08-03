@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-01)
+ *  Version 2.0 (2018-07-29)
  *
  */
 package writer2latex.latex;
@@ -208,9 +208,9 @@ public class ListConverter extends StyleConverter {
 	private void applyListStyle(boolean bOrdered, BeforeAfter ba, Context oc) {
 		// Step 1. We may have a style map, this always takes precedence
 		String sDisplayName = ofr.getListStyles().getDisplayName(oc.getListStyleName());
-		if (config.getListStyleMap().contains(sDisplayName)) {
-			ba.add(config.getListStyleMap().getBefore(sDisplayName),
-					config.getListStyleMap().getAfter(sDisplayName)); 
+		if (config.getListStyleMap().containsKey(sDisplayName)) {
+			ba.add(config.getListStyleMap().get(sDisplayName).getBefore(),
+					config.getListStyleMap().get(sDisplayName).getAfter()); 
 			return;
 		}
 		// Step 2: The list style may not exist, or the user wants to ignore it.
@@ -276,9 +276,9 @@ public class ListConverter extends StyleConverter {
 			boolean bRestart, int nStartValue, BeforeAfter ba, Context oc) {
 		// Step 1. We may have a style map, this always takes precedence
 		String sDisplayName = ofr.getListStyles().getDisplayName(sStyleName);
-		if (config.getListItemStyleMap().contains(sDisplayName)) {
-			ba.add(config.getListItemStyleMap().getBefore(sDisplayName),
-					config.getListItemStyleMap().getAfter(sDisplayName)); 
+		if (config.getListItemStyleMap().containsKey(sDisplayName)) {
+			ba.add(config.getListItemStyleMap().get(sDisplayName).getBefore(),
+					config.getListItemStyleMap().get(sDisplayName).getAfter()); 
 			return;
 		}
 		// Step 2: The list style may not exist, or the user wants to ignore it.

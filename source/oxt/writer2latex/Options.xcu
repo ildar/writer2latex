@@ -172,6 +172,18 @@
                     <value>%origin%/config/article.xml</value>
                 </prop>
             </node>
+            <node oor:name="08w2l-beamer" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value>float_figures,float_tables,float_options,ignore_hard_page_breaks</value>
+                </prop>
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">LaTeX beamer template</value>
+                    <value xml:lang="da-DK">LaTeX beamer-skabelon</value>
+                <value xml:lang="de-DE">LaTeX beamer template</value></prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>%origin%/config/beamer.xml</value>
+                </prop>
+            </node>
         </node>
         
         <!-- Declare the available templates -->
@@ -184,11 +196,19 @@
                     <value>07w2l-article</value>
                 </prop>
             </node>
+            <node oor:name="w2l-beamer-template" oor:op="replace">
+                <prop oor:name="TemplateName" oor:type="xs:string">
+                    <value>LaTeX-beamer</value>
+                </prop>
+                <prop oor:name="ConfigName" oor:type="xs:string">
+                    <value>08w2l-beamer</value>
+                </prop>
+            </node>
         </node>
         
-        <!-- Declare display names for parameters (Note that names and
-        values share the same name space) -->
+        <!-- Declare display names for parameters (Note that names and values share the same name space) -->
         <node oor:name="ParameterStrings">
+            <!-- translation for article.xml -->
             <node oor:name="typesize" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Type size</value>
@@ -317,15 +337,15 @@
             </node>  
             <node oor:name="notitlepage" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">No title page</value>
-                    <value xml:lang="da-DK">Ingen titelside</value>
-                <value xml:lang="de-DE">No title page</value></prop>
+                    <value xml:lang="en-US">On same page as the text</value>
+                    <value xml:lang="da-DK">På samme side som teksten</value>
+                <value xml:lang="de-DE">On same page as the text</value></prop>
             </node>  
             <node oor:name="titlepage" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">On separate title side</value>
+                    <value xml:lang="en-US">On separate title page</value>
                     <value xml:lang="da-DK">På separat titelside</value>
-                <value xml:lang="de-DE">On separate title side</value></prop>
+                <value xml:lang="de-DE">On separate title page</value></prop>
             </node>  
             <node oor:name="columns" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
@@ -398,6 +418,97 @@
                     <value xml:lang="en-US">With indentation</value>
                     <value xml:lang="da-DK">Med indrykning</value>
                 <value xml:lang="de-DE">With indentation</value></prop>
+            </node>  
+            <!-- translation for beamer.xml -->
+            <node oor:name="theme" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Theme</value>
+                    <value xml:lang="da-DK">Tema</value>
+                </prop>
+            </node>  
+            <node oor:name="colortheme" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Color theme</value>
+                    <value xml:lang="da-DK">Farvetema</value>
+                </prop>
+            </node>  
+            <node oor:name="fonttheme" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Font theme</value>
+                    <value xml:lang="da-DK">Skrifttype-tema</value>
+				</prop>
+            </node>  
+            <node oor:name="default" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Default</value>
+                    <value xml:lang="da-DK">Standard</value>
+				</prop>
+            </node>  
+            <node oor:name="mode" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Mode</value>
+                    <value xml:lang="da-DK">Type</value>
+                </prop>
+            </node>  
+            <node oor:name="layout" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Layout</value>
+                    <value xml:lang="da-DK">Sideopsætning</value>
+                </prop>
+            </node>  
+            <node oor:name="presentation" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Presentation</value>
+                    <value xml:lang="da-DK">Præsentation</value>
+                </prop>
+            </node>  
+            <node oor:name="handout" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Handout</value>
+                    <value xml:lang="da-DK">Uddelingskopi</value>
+                </prop>
+            </node>  
+            <node oor:name="1on1" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Print 1 slide per page</value>
+                    <value xml:lang="da-DK">Udskriv 1 dias per side</value>
+                </prop>
+            </node>  
+            <node oor:name="2on1" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Print 2 slides per page</value>
+                    <value xml:lang="da-DK">Udskriv 2 dias per side</value>
+                </prop>
+            </node>  
+            <node oor:name="4on1" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Print 4 slides per page</value>
+                    <value xml:lang="da-DK">Udskriv 4 dias per side</value>
+                </prop>
+            </node>  
+            <node oor:name="serif" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Serif fonts</value>
+                    <value xml:lang="da-DK">Skrifttype med seriffer</value>
+                </prop>
+            </node>  
+            <node oor:name="structurebold" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Structure elements in bold</value>
+                    <value xml:lang="da-DK">Strukturelle elementer med fed skrift</value>
+                </prop>
+            </node>  
+            <node oor:name="structureitalicserif" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Structure elements in italic</value>
+                    <value xml:lang="da-DK">Strukturelle elementer med kursiv skrift</value>
+                </prop>
+            </node>  
+            <node oor:name="structuresmallcapsserif" oor:op="replace">
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Structure elements in small caps</value>
+                    <value xml:lang="da-DK">Strukturelle elementer med kapitæler</value>
+                </prop>
             </node>  
        </node>
         

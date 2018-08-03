@@ -63,7 +63,24 @@
         create a clean LaTeX document that will resemble a LaTeX document created by hand.
         </paragraph>
         
-        <paragraph role="heading" level="3" xml-lang="en-US">Guidelines</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">LaTeX templates</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Furthermore, Writer2LaTeX provides some %PRODUCTNAME Writer templates to facilitate the production
+        of LaTeX code. Currently two templates are provided:
+        <list type="unordered">
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX-article</emph>: This template supports the creation of documents
+        		using the standard LaTeX documentclass <emph>article</emph></paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX-beamer</emph>: This templates supports the creation of
+        		presentations using the LaTeX documentclass <emph>beamer</emph></paragraph>
+        	</listitem>
+        </list>
+        </paragraph>
+    	<paragraph role="paragraph" xml-lang="en-US"><link href="org.openoffice.da.writer2latex.oxt/templates.xhp" name="Templates">Read more about using the templates</link>
+    	</paragraph>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">General guidelines</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Not every feature in %PRODUCTNAME Writer is supported by LaTeX.
         To avoid unexpected results follow these guidelines.</paragraph>
         <list type="unordered">
@@ -81,17 +98,17 @@
         		these will not be exported correctly to LaTeX.</paragraph>
         	</listitem>
         	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Background color</emph>: Background color is currently not supported
-        		except in table cells. You should avoid using background color elsewhere.</paragraph>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Background color</emph>: Background color in paragraphs and
+        		sections is currently not supported.</paragraph>
         	</listitem>
         	<listitem>
         		<paragraph role="paragraph" xml-lang="en-US"><emph>Graphics</emph>: Anchor graphics to paragraph or to character if you
         		want a floating graphic. If you want the graphic to be a part of the text flow, anchor it to character. Do not anchor
         		graphics to page as this will make the graphics turn up the wrong place in your document.
         		You are advised not to wrap text around graphics as this is not exported to LaTeX anyway.</paragraph>
-        		<paragraph role="paragraph" xml-lang="en-US">Also, do not use drawing objects inserted directly in the text (using the
-        		Drawing toolbar). These will not be converted to LaTeX.
-        		If you need to insert a drawing, insert an embedded Draw object (<emph>Insert - Object</emph>).</paragraph>
+        		<paragraph role="paragraph" xml-lang="en-US">Beware that drawing objects inserted directly in the text (using the
+        		Drawing toolbar) is currently not completely supported.
+        		If you need to insert a complex drawing, insert an embedded Draw object (<emph>Insert - Object</emph>).</paragraph>
         	</listitem>
         	<listitem>
         		<paragraph role="paragraph" xml-lang="en-US"><emph>Tables</emph>: Avoid using cells spanning several rows, as this
@@ -100,7 +117,7 @@
         </list>
         <paragraph role="paragraph" xml-lang="en-US">In general you should be aware that not all formatting is exported. The export of formatting
         depends on the selected LaTeX format.</paragraph>
-           
+        
         <paragraph role="heading" level="2" xml-lang="en-US">Authoring web content with Writer2LaTeX</paragraph>
         
         <paragraph role="paragraph" xml-lang="en-US">Writer2xhtml is also a tool for publishing web content

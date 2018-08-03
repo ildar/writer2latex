@@ -10,25 +10,30 @@
         <paragraph role="heading" level="1" xml-lang="en-US">Using the templates</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX provides templates corresponding to various LaTeX document classes.
 		Currently templates for a LaTeX article and a LaTeX beamer presentation are available.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">You can also add your own templates and install them as %PRODUCTNAME extensions.
-		The extension <emph>writer2latex-letter.oxt</emph> is a sample extension, which adds support for writing a LaTeX letter.
-		</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Using the styles supported by these templates, you can easily create standard
+		<paragraph role="paragraph" xml-lang="en-US">Using these these templates, you can easily create standard
 		LaTeX documents using the features of LaTeX document classes.
 		</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">You can also add your own templates and install them as %PRODUCTNAME extensions.
+		The extension <emph>writer2latex-config.oxt</emph> is a sample extension, demonstrating how to create a Writer2LaTeX extension.
+		</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">This templates defines a number of styles that corresponds to LaTeX code.
+        If you use these styles and makes sure to use the corresponding configuration (<emph>Writer2LaTeX article template</emph>
+        or <emph>Writer2LaTeX beamer template</emph>) when you convert
+        your document (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
+        Note that hard formatting and any other styles will be ignored. The available styles are summarized below.
+        </paragraph>
 
         <section id="howtoget" xml-lang="en-US">
       	Choose <emph>File - New - Templates</emph> and select a template from the group <emph>Writer2LaTeX</emph>
         </section>
     
         <paragraph role="heading" level="2" xml-lang="en-US">The article template</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">This template contains a number of styles that corresponds to LaTeX code.
-        If you use these styles and makes sure to use the configuration <emph>Writer2LaTeX article template</emph> when you convert
-        your document (this is selected automatically) with Writer2LaTeX, you will get a result that resembles a handwritten LaTeX file.
-        Note that hard formatting and any other styles will be ignored. The available styles are summarized in the following tables.
+        <paragraph role="paragraph" xml-lang="en-US">This template defines styles for a LaTeX article document. The template contains
+        placeholders for some common content. You can either replace the placeholders with your own content, or delete them.
         </paragraph>
-        <paragraph role="heading" level="3" xml-lang="en-US">Paragraph styles</paragraph>
-        <paragraph role="heading" level="4" xml-lang="en-US">Title styles</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Title styles</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The title part of the article is structured using the following styles
+        </paragraph>        
        	<table>
        		<tablerow>
        			<tablecell>
@@ -80,9 +85,17 @@
        		</tablerow>
        	</table>
        	<paragraph role="paragraph">Note that also \maketitle is added at the end of a sequence of title, author and date.</paragraph>
-        <paragraph role="heading" level="4" xml-lang="en-US">Heading styles</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Heading styles</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Note that the names of the heading styles are localized in %PRODUCTNAME Writer</paragraph>
        	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
        		<tablerow>
        			<tablecell>
        				<paragraph role="tablecontent" xml-lang="en-US">part</paragraph>
@@ -132,8 +145,190 @@
        			</tablecell>
        		</tablerow>
        	</table>
-        <paragraph role="heading" level="4" xml-lang="en-US">Other paragraph styles</paragraph>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Special paragraph styles for tables</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">%PRODUCTNAME Writer supports multipage tables with repeating headers.
+        LaTeX on the other hand also provides support for repeating foots and special header and foot on the first repspectively last
+        page of the table. The article template provides four special paragraph styles to let you use these LaTeX features.
+        Note that the special pagragraphs appear colored in %PRODUCTNAME Writer for clarity, but the colors will be removed in the export
+        to LaTeX.</paragraph>
        	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">table first head</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as first head in table</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">table head</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as head in table</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">table foot</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as foot in table</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">table last foot</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as last foot in table</paragraph>
+       			</tablecell>
+       		</tablerow>
+       	</table>
+
+        <paragraph role="heading" level="2" xml-lang="en-US">The beamer template</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">This template defines styles for a LaTeX beamer presentation. The template contains
+        placeholders for some common content. You can either replace the placeholders with your own content, or delete them.
+        </paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Title styles</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The title frame of the presentation is structured using the following styles
+        </paragraph>        
+       	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">title</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\title{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">subtitle</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\subtitle{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">author</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\author{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">institue</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\institute{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">date</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\date{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       	</table>
+       	<paragraph role="paragraph">Note that also \titlepage is added at the end of a sequence of title, subtitle, author, institute
+       	and date. The title must be provided, the other elements are not compulsory. The title style also ensures that the content is placed
+       	within a frame environment, which may also contain other content.</paragraph>
+       	
+        <paragraph role="heading" level="3" xml-lang="en-US">Heading styles</paragraph>
+       	<paragraph role="paragraph">Headings are used to structure your presentation. It depends on the beamer theme, whether the
+       	headings are shown or not.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Note that the names of the heading styles are localized in %PRODUCTNAME Writer</paragraph>
+       	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Heading 1</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\section{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">Heading 2</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\subsection{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       	</table>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Title styles</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The title frame of the presentation is structured using the following styles
+        </paragraph>        
+       	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">frame title</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablecontent" xml-lang="en-US">\frametitle{...}</paragraph>
+       			</tablecell>
+       		</tablerow>
+       	</table>
+       	<paragraph role="paragraph">The frame title style also ensures that the content is placed
+       	within a frame environment. The content of a frame is everything up to the next frame title or heading.</paragraph>
+       	
+        <paragraph role="heading" level="3" xml-lang="en-US">Pauses</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Beamer frames can be build incrementally. To use this feature, simply
+		insert the symbol ¤ (currency symbol) where you wish to insert a pause on the slide.</paragraph>
+
+        <paragraph role="heading" level="2" xml-lang="en-US">Styles common for all templates</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">A number of styles are common for all the templates. These are summarized in
+		the following tables.</paragraph>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Paragraph styles</paragraph>
+       	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
        		<tablerow>
        			<tablecell>
        				<paragraph role="tablecontent" xml-lang="en-US">flushleft</paragraph>
@@ -242,49 +437,16 @@
        	<paragraph role="paragraph">For the verbatim environment, only characters available in the input encoding are accepted.
        	Other characters are converted to question marks and other content is discarded, eg. footnotes.</paragraph>
 
-        <paragraph role="heading" level="4" xml-lang="en-US">Special paragraph styles for tables</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">%PRODUCTNAME Writer supports multipage tables with repeating headers.
-        LaTeX on the other hand also provides support for repeating foots and special header and foot on the first repspectively last
-        page of the table. The article template provides four special paragraph styles to let you use these LaTeX features.
-        Note that the special pagragraphs appear colored in %PRODUCTNAME Writer for clarity, but the colors will be removed in the export
-        to LaTeX.</paragraph>
-       	<table>
-       		<tablerow>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">table first head</paragraph>
-       			</tablecell>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as first head in table</paragraph>
-       			</tablecell>
-       		</tablerow>
-       		<tablerow>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">table head</paragraph>
-       			</tablecell>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as head in table</paragraph>
-       			</tablecell>
-       		</tablerow>
-       		<tablerow>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">table foot</paragraph>
-       			</tablecell>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as foot in table</paragraph>
-       			</tablecell>
-       		</tablerow>
-       		<tablerow>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">table last foot</paragraph>
-       			</tablecell>
-       			<tablecell>
-       				<paragraph role="tablecontent" xml-lang="en-US">Identifies a row to be used as last foot in table</paragraph>
-       			</tablecell>
-       		</tablerow>
-       	</table>
-
         <paragraph role="heading" level="3">Text styles</paragraph>
        	<table>
+       		<tablerow>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">%PRODUCTNAME Writer Style</paragraph>
+       			</tablecell>
+       			<tablecell>
+       				<paragraph role="tablehead" xml-lang="en-US">LaTeX code</paragraph>
+       			</tablecell>
+       		</tablerow>
        		<tablerow>
        			<tablecell>
        				<paragraph role="tablecontent" xml-lang="en-US">verb</paragraph>

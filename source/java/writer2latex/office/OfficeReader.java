@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-23)
+ *  Version 2.0 (2018-08-01)
  *
  */
 
@@ -1177,10 +1177,10 @@ public class OfficeReader {
         	if (image!=null) { firstImage=image; }
         }
 		
-        // Traverse the children
+        // Traverse the children (except body of indexes, which is always regenerated)
         Node child = node.getFirstChild();
         while (child!=null) {
-            if (child.getNodeType()==Node.ELEMENT_NODE) {
+            if (child.getNodeType()==Node.ELEMENT_NODE && !child.getNodeName().equals(XMLString.TEXT_INDEX_BODY)) {
                 traverseContent((Element) child, sListStyleName, nListLevel, nParLevel);
             }
             child = child.getNextSibling();

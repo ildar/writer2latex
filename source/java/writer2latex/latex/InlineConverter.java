@@ -141,7 +141,7 @@ public class InlineConverter extends ConverterHelper {
 	        if (bDisplayHiddenText || style==null || !"none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) {
 		        // Then check for strict handling of styles
 		        String sDisplayName = ofr.getTextStyles().getDisplayName(sStyleName);
-		        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getTextStyleMap().contains(sDisplayName)) {
+		        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getTextStyleMap().containsKey(sDisplayName)) {
 		            if (config.otherStyles()==LaTeXConfig.WARNING) {
 		                System.err.println("Warning: Text with style "+sDisplayName+" was ignored");
 		            }

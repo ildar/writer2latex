@@ -19,18 +19,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-01)
+ *  Version 2.0 (2018-07-30)
  *
  */
 
 package writer2latex.latex;
+
+import java.util.Map;
+import java.util.Stack;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import writer2latex.latex.util.Context;
-import writer2latex.latex.util.StyleMap;
+import writer2latex.latex.util.StyleMapItem;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
@@ -63,9 +66,9 @@ public class BlockConverter extends ConverterHelper {
     public void traverseBlockText(Element node, LaTeXDocumentPortion ldp, Context oc) {
         Context ic = (Context) oc.clone();
 
-        // The current paragraph block:
-        StyleMap blockMap = config.getParBlockStyleMap();
-        String sBlockName = null;
+        // The current paragraph blocks
+        Map<String,StyleMapItem> blockMap = config.getParBlockStyleMap();
+        Stack<StyleMapItem> blockStack = new Stack<>();
 
         if (node.hasChildNodes()) {
             NodeList list = node.getChildNodes();
@@ -78,34 +81,6 @@ public class BlockConverter extends ConverterHelper {
                     Element child = (Element)childNode;
                     String sTagName = child.getTagName();
 					
-                    // Start/End a paragraph block (not in tables)
-                    if (!ic.isInTable()) {
-                        if (sTagName.equals(XMLString.TEXT_P)) {
-                            String sStyleName = ofr.getParStyles().getDisplayName(child.getAttribute(XMLString.TEXT_STYLE_NAME));
-                            if (sBlockName!=null && !blockMap.isNext(sBlockName,sStyleName)) {
-                                // end current block
-                                String sAfter = blockMap.getAfter(sBlockName);
-                                if (sAfter.length()>0) ldp.append(sAfter).nl();
-                                sBlockName = null;
-                                ic.setVerbatim(false);
-                            }
-                            if (sBlockName==null && blockMap.contains(sStyleName)) {
-                                // start a new block
-                                sBlockName = sStyleName;
-                                String sBefore = blockMap.getBefore(sBlockName);
-                                if (sBefore.length()>0) ldp.append(sBefore).nl();
-                                ic.setVerbatim(blockMap.getVerbatim(sStyleName));
-                            }
-                        }
-                        else if (sBlockName!=null) {
-                            // non-paragraph: end current block
-                            String sAfter = blockMap.getAfter(sBlockName);
-                            if (sAfter.length()>0) ldp.append(sAfter).nl();
-                            sBlockName = null;
-                            ic.setVerbatim(false);
-                        }
-                    }
-					
                     palette.getFieldCv().flushReferenceMarks(ldp,ic);
                     palette.getIndexCv().flushIndexMarks(ldp,ic);
 					
@@ -113,6 +88,16 @@ public class BlockConverter extends ConverterHelper {
 
                     // Basic block content; handle by this class
                     if (sTagName.equals(XMLString.TEXT_P)) {
+                        // End paragraph blocks that does not include this paragraph
+                        String sStyleName = ofr.getParStyles().getDisplayName(child.getAttribute(XMLString.TEXT_STYLE_NAME));
+                        while (!blockStack.isEmpty() && !blockStack.peek().isNext(sStyleName)) {
+                        	endBlock(blockStack,ldp,ic);
+                        }
+                        // start a new block, but not in tables, and only if the top level block allows nesting
+                        if (!ic.isInTable() && blockMap.containsKey(sStyleName) 
+                        		&& (blockStack.isEmpty() || blockStack.peek().allowsNesting())) {
+                           	startBlock(blockMap.get(sStyleName),blockStack,ldp,ic);
+                        }
                         // is this a caption?
                         String sSequence = ofr.getSequenceName(child);
                         if (ofr.isFigureSequenceName(sSequence)) {
@@ -122,6 +107,7 @@ public class BlockConverter extends ConverterHelper {
                             // Next node *should* be a table
                             if (i+1<nLen && Misc.isElement(list.item(i+1),XMLString.TABLE_TABLE)) {
                                 // Found table with caption above
+                            	endBlock("table",blockStack,ldp,ic);
                                 palette.getTableCv().handleTable((Element)list.item(++i),child,true,ldp,ic);
                             }
                             else {
@@ -135,14 +121,17 @@ public class BlockConverter extends ConverterHelper {
                     }
 
                     else if(sTagName.equals(XMLString.TEXT_H)) {
+                    	endBlock("heading",blockStack,ldp,ic);
                         palette.getHeadingCv().handleHeading(child,ldp,ic);
                     }
                     
                     else if (sTagName.equals(XMLString.TEXT_LIST)) {
+                    	endBlock("list",blockStack,ldp,ic);
                         palette.getListCv().handleList(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TABLE_TABLE)) {
+                    	endBlock("table",blockStack,ldp,ic);
                         // Next node *could* be a caption
                         if (i+1<nLen && Misc.isElement(list.item(i+1),XMLString.TEXT_P) &&
                             ofr.isTableSequenceName(ofr.getSequenceName((Element)list.item(i+1)))) {
@@ -156,10 +145,12 @@ public class BlockConverter extends ConverterHelper {
                     }
 
                     else if (sTagName.equals(XMLString.TABLE_SUB_TABLE)) {
+                    	endBlock("table",blockStack,ldp,ic);
                         palette.getTableCv().handleTable(child,null,true,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_SECTION)) {
+                    	endBlock("section",blockStack,ldp,ic);
                         palette.getSectionCv().handleSection(child,ldp,ic);
                     }
 
@@ -171,30 +162,37 @@ public class BlockConverter extends ConverterHelper {
 					
                     // Indexes
                     else if (sTagName.equals(XMLString.TEXT_TABLE_OF_CONTENT)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleTOC(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_ILLUSTRATION_INDEX)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleLOF(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_TABLE_INDEX)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleLOT(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_OBJECT_INDEX)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleObjectIndex(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_USER_INDEX)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleUserIndex(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_ALPHABETICAL_INDEX)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getIndexCv().handleAlphabeticalIndex(child,ldp,ic);
                     }
 
                     else if (sTagName.equals(XMLString.TEXT_BIBLIOGRAPHY)) {
+                    	endBlock("index",blockStack,ldp,ic);
                         palette.getBibCv().handleBibliography(child,ldp,ic);
                     }
 
@@ -207,16 +205,32 @@ public class BlockConverter extends ConverterHelper {
             }
         }
 
-        if (!oc.isInTable() && sBlockName!=null) {
-            // end current block
-            String sAfter = blockMap.getAfter(sBlockName);
-            if (sAfter.length()>0) ldp.append(sAfter).nl();
-            sBlockName = null;
+        // End of block sequence, end all blocks
+        while (!oc.isInTable() && !blockStack.isEmpty()) {
+        	endBlock(blockStack,ldp,ic);
         }
         palette.getFieldCv().flushReferenceMarks(ldp,ic);
         palette.getIndexCv().flushIndexMarks(ldp,ic);
-
-
+    }
+    
+    private void startBlock(StyleMapItem smi, Stack<StyleMapItem> stack, LaTeXDocumentPortion ldp, Context oc) {
+        stack.push(smi);
+        String sBefore = smi.getBefore();
+        if (sBefore.length()>0) ldp.append(sBefore).nl();
+        oc.setVerbatim(smi.getVerbatim());    	
+    }
+    
+    private void endBlock(String sItem, Stack<StyleMapItem> stack, LaTeXDocumentPortion ldp, Context oc) {
+    	while (!stack.isEmpty() && !stack.peek().includes(sItem)) {
+            // This item is not allowed in this block, end the block
+        	endBlock(stack,ldp,oc);
+    	}
+    }
+    
+    private void endBlock(Stack<StyleMapItem> stack, LaTeXDocumentPortion ldp, Context oc) {
+        String sAfter = stack.pop().getAfter();
+        if (sAfter.length()>0) ldp.append(sAfter).nl();
+        oc.setVerbatim(false);    	
     }
    
 }

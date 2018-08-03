@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- article.xml
+<!-- beamer.xml
      This is a configuration file for Writer2LaTeX.
      It contains a lot of style mappings, which correspond to
-     the template LaTeX-article.odt.
-     Some definitions have been chosen for compatibility with tex4ht
+     the template LaTeX-beamer.odt.
  -->
 
 <config>
-  <!-- Parameters (global options) -->
-  <parameter name="typesize" values="10pt,11pt,12pt">
-  	<value-map value="10pt"/>
+  <!-- Parameters (for global options and custom preamble) -->
+  <parameter name="mode" values="presentation,handout">
+    <value-map value="presentation"/>
   </parameter>
-  <parameter name="papersize" values="letterpaper,legalpaper,executivepaper,a4paper,a5paper,b5paper">
-  	<value-map value="letterpaper"/>
+  <parameter name="layout" values="presentation,1on1,2on1,4on1">
+    <value-map value="presentation">%</value-map> <!-- avoid empty line in preamble -->
+    <value-map value="1on1">
+\usepackage{pgfpages}
+\pgfpagesuselayout{resize to}[a4paper,landscape,border shrink=1cm]
+    </value-map>
+    <value-map value="2on1">
+\usepackage{pgfpages}
+\pgfpagesuselayout{2 on 1}[a4paper,border shrink=1cm]
+    </value-map>
+    <value-map value="4on1">
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=1cm]
+    </value-map>
   </parameter>
-  <parameter name="orientation" values="portrait,landscape">
-  	<value-map value="portrait"/>
-  </parameter>
-  <parameter name="duplex" values="oneside,twoside">
-  	<value-map value="oneside"/>
-  </parameter>
-  <parameter name="status" values="final,draft">
-  	<value-map value="final"/>
-  </parameter>
-  <parameter name="title" values="notitlepage,titlepage">
-  	<value-map value="notitlepage"/>
-  </parameter>
-  <parameter name="columns" values="onecolumn,twocolumn">
-  	<value-map value="onecolumn"/>
-  </parameter>
-  <parameter name="equationnumbers" values="reqno,leqno">
-  	<value-map value="reqno"/>
-  </parameter>
-  <parameter name="equationalignment" values="centereqn,fleqn">
-  	<value-map value="centereqn"/>
-  </parameter>
-  <parameter name="bibliography" values="leftbib,openbib">
-  	<value-map value="leftbib"/>
-  </parameter>
+  <parameter name="theme" values="default,AnnArbor,Antibes,Bergen,Berkeley,Berlin,Boadilla,CambridgeUS,Copenhagen,Darmstadt,Dresden,EastLansing,Frankfurt,Goettingen,Hannover,Ilmenau,JuanLesPins,Luebeck,Madrid,Malmoe,Marburg,Montpellier,PaloAlto,Pittsburg,Rochester,Singapore,Szeged,Warsaw"/>
+  <parameter name="colortheme" values="default,albatross,beaver,beetle,crane,dove,fly,monarca,seagull,spruce,wolverine"/>
+  <parameter name="fonttheme" values="default,serif,structurebold,structureitalicserif,structuresmallcapsserif"/>
 
   <!-- Options. These can be adjusted to add support for various packages -->
   <option name="no_preamble" value="false" />
-  <option name="documentclass" value="article" />
-  <option name="global_options" value="{%typesize,papersize,orientation,duplex,status,title,columns,equationnumbers,equationalignment,bibliography%}" />
-  <option name="backend" value="generic" />
+  <option name="documentclass" value="beamer" />
+  <option name="global_options" value="{%mode%}" />
+  <option name="backend" value="pdftex" />
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="true" />
   <option name="greek_math" value="true" />
@@ -63,65 +53,66 @@
   <option name="use_endnotes" value="false" />
   <option name="use_ulem" value="false" />
   <option name="use_lastpage" value="true" />
-  <option name="use_bibtex" value="true" />
-  <option name="bibtex_style" value="plain" />
+  <option name="use_bibtex" value="false" />
   <option name="formatting" value="ignore_most" />
   <option name="use_geometry" value="false" />
   <option name="use_fancyhdr" value="false" />
-  <option name="table_first_head_style" value="table first head" />
-  <option name="table_head_style" value="table head" />
-  <option name="table_foot_style" value="table foot" />
-  <option name="table_last_foot_style" value="table last foot" />
+  <option name="float_figures" value="false" /> <!-- locked in UI -->
+  <option name="float_tables" value="false" /> <!-- locked in UI -->
+  <option name="use_longtable" value="false" />
+  <option name="use_supertabular" value="false" />
   <option name="ignore_empty_paragraphs" value="true" />
-  <option name="ignore_hard_page_breaks" value="false" />
+  <option name="ignore_hard_page_breaks" value="true" /> <!-- locked in UI -->
   <option name="ignore_hard_line_breaks" value="false" />
   <option name="ignore_double_spaces" value="true" />
   <option name="debug" value="false" />
   
-  <custom-preamble>\newtheorem{theorem}{Theorem}</custom-preamble>
+  <custom-preamble>\usetheme{{%theme%}}
+\usecolortheme{{%colortheme%}}
+\usefonttheme{{%fonttheme%}}
+{%layout%}</custom-preamble>
 	
-  <!-- Style maps: These rules defines how styles in OOo are mapped to LaTeX code.
-       Where possible, predefined styles from OOo are used. This include:
-       * Paragraph styles "Title", "Heading 2-6", "Quotations", "Preformatted Text",
+  <!-- Style maps: These rules defines how styles in LO are mapped to LaTeX code.
+       Where possible, predefined styles from LO are used. This include:
+       * Paragraph styles "Title", "Heading 1-2", "Quotations", "Preformatted Text",
          "List Heading", "List Contents", "Text body", "First line indent",
          "Table Heading", "Table contents", "Horizontal line"
        * Text styles Emphasis, Teletype-->
 	   
-  <!-- Definitions for headings. Note that \part{} is not a heading in OOo because
-       it's not part of the outline numbering.
-       Also note that Heading 1 is not used (reserved for \chapter in book and
-       report classes). 
+  <!-- Definitions for headings.
   -->
-  <style-map name="part" class="paragraph" before="\part{" after="}" line-break="false" />
-  <style-map name="part" class="list" before="" after="" />
-  <style-map name="part" class="listitem" before="" after="" />
   
-  <heading-map max-level="6">
+  <heading-map max-level="2">
     <heading-level-map writer-level="1" name="section" level="1" />
-    <heading-level-map writer-level="2" name="section" level="1" />
-    <heading-level-map writer-level="3" name="subsection" level="2" />
-    <heading-level-map writer-level="4" name="subsubsection" level="3" />
-    <heading-level-map writer-level="5" name="paragraph" level="4" />
-    <heading-level-map writer-level="6" name="subparagraph" level="5" />
+    <heading-level-map writer-level="2" name="subsection" level="2" />
   </heading-map>
   
-  <!-- Defintions for \maketitle. At least one of the styles Title/title, Author, Date
-       in any order will give correct results.
-       Uses a predefined style from OOo for the title -->
+  <!-- Definitions for frames -->
+  <style-map name="frame title" class="paragraph" before="\frametitle{" after="}" line-break="false" />
+  <style-map name="frame title" class="paragraph-block" next="Title;title;frame title" negative="true" nesting="true"
+  	include="list;table;section;index" before="\begin{frame}" after="\end{frame}"/>
+  
+  <!-- Defintions for title page. The title page is initiated with Title/title, and using at least one of the styles
+  		Subtitle/subtitle, author, institute, date in any order will insert a \titlepage
+       Uses a predefined style from LO for the title and subtitle -->
   <style-map name="Title" class="paragraph" before="\title{" after="}" line-break="false" />
   <style-map name="title" class="paragraph" before="\title{" after="}" line-break="false" />
+  <style-map name="Subtitle" class="paragraph" before="\subtitle{" after="}" line-break="false" />
+  <style-map name="subtitle" class="paragraph" before="\subtitle{" after="}" line-break="false" />
+  <style-map name="institute" class="paragraph" before="\institute{" after="}" line-break="false" />
   <style-map name="author" class="paragraph" before="\author{" after="}" line-break="false" />
   <style-map name="date" class="paragraph" before="\date{" after="}" line-break="false" />
-  <style-map name="Title" class="paragraph-block" next="author;date" before="" after="\maketitle" />
-  <style-map name="title" class="paragraph-block" next="author;date" before="" after="\maketitle" />
-  <style-map name="author" class="paragraph-block" next="Title;title;date" before="" after="\maketitle" />
-  <style-map name="date" class="paragraph-block" next="Title;title;author" before="" after="\maketitle" />
-  
-  <!-- Definitions for the abstract. The abstract can contain any number of paragraphs -->
-  <style-map name="abstract title" class="paragraph" before="\renewcommand\abstractname{" after="}" line-break="false" />
-  <style-map name="abstract" class="paragraph" before="" after="" />
-  <style-map name="abstract" class="paragraph-block" next="abstract" before="\begin{abstract}" after="\end{abstract}" />
 
+  <style-map name="Title" class="paragraph-block" next="Title;title;frame title" negative="true" nesting="true"
+  	include="list;table;section;index" before="\begin{frame}" after="\end{frame}" />
+  <style-map name="title" class="paragraph-block" next="Title;title;frame title" negative="true" nesting="true"
+  	include="list;table;section;index" before="\begin{frame}" after="\end{frame}" />
+  <style-map name="Subtitle" class="paragraph-block" next="institute;author;date" before="" after="\titlepage" />
+  <style-map name="subtitle" class="paragraph-block" next="institute;author;date" before="" after="\titlepage" />
+  <style-map name="institute" class="paragraph-block" next="Subtitle;subtitle;author;date" before="" after="\titlepage" />
+  <style-map name="author" class="paragraph-block" next="Subtitle;subtitle;institute;date" before="" after="\titlepage" />
+  <style-map name="date" class="paragraph-block" next="Subtitle;subtitle;institute;author" before="" after="\titlepage" />
+  
   <!-- Definitions for standard LaTeX environments. Several paragraphs will be
        conbined into a single environment. -->
   
@@ -141,7 +132,7 @@
   <style-map name="quote" class="paragraph-block" next="quote" before="\begin{quote}" after="\end{quote}" />
   <style-map name="quote" class="paragraph" before="" after="" />
 
-  <!-- quotation; using predefined style from OOo -->
+  <!-- quotation; using predefined style from LO -->
   <style-map name="Quotations" class="paragraph-block" next="Quotations" before="\begin{quotation}" after="\end{quotation}" />
   <style-map name="Quotations" class="paragraph" before="" after="" />
 
@@ -153,8 +144,8 @@
   <style-map name="verse" class="paragraph-block" next="verse" before="\begin{verse}" after="\end{verse}" />
   <style-map name="verse" class="paragraph" before="" after="" />
 
-  <!-- verbatim; using predefined style from OOo. Note the attribute verbatim,
-       which instructs OOo to output the content verbatim (characters not
+  <!-- verbatim; using predefined style from LO. Note the attribute verbatim,
+       which instructs Writer2LaTeX to output the content verbatim (characters not
        available in the inputencoding will be replaced by question marks; non-
        character content will be lost). -->
   <style-map name="Preformatted Text" class="paragraph-block" next="Preformatted Text" before="\begin{verbatim}" after="\end{verbatim}" />
@@ -164,13 +155,7 @@
   <style-map name="verbatim" class="paragraph-block" next="verbatim" before="\begin{verbatim}" after="\end{verbatim}" />
   <style-map name="verbatim" class="paragraph" before="" after="" verbatim="true" />
   
-  <!-- definitions for multi page table support -->
-  <style-map name="table first head" class="paragraph" before="" after="" />
-  <style-map name="table head" class="paragraph" before="" after="" />
-  <style-map name="table foot" class="paragraph" before="" after="" />
-  <style-map name="table last foot" class="paragraph" before="" after="" />
-
-  <!-- Definitions for some standard OOo paragraph styles -->
+  <!-- Definitions for some standard LO paragraph styles -->
   <style-map name="Text body" class="paragraph" before="" after="" />
   <style-map name="First line indent" class="paragraph" before="" after="" />
   <style-map name="Table Heading" class="paragraph" before="\textbf{" after="}" line-break="false" />
@@ -178,7 +163,7 @@
   <style-map name="Horizontal Line" class="paragraph" before="" after="\begin{center}\hrule\end{center}" />
 
   <!-- Definitions for text styles.
-       Uses a predefined OOo style for \emph and \texttt -->
+       Uses a predefined LO style for \emph and \texttt -->
   <style-map name="obeylines-h" class="text" before="" after="" />  
   <style-map name="verb" class="text" before="\verb|" after="|" verbatim="true" />  
   <style-map name="Emphasis" class="text" before="\emph{" after="}" />
@@ -210,7 +195,7 @@
   <style-map name="theorem" class="list" before="" after="" />
   <style-map name="theorem" class="listitem" before="\begin{theorem}" after="\end{theorem}" />
 
-  <!-- Definitions for description list. Uses predefined styles from OOo -->
+  <!-- Definitions for description list. Uses predefined styles from LO -->
   <style-map name="List Heading" class="paragraph-block" next="List Heading;List Contents" before="\begin{description}" after="\end{description}"/>
   <style-map name="List Heading" class="paragraph" before="\item[" after="]" line-break="false" />
   <style-map name="List Contents" class="paragraph" before="" after="" />
@@ -227,8 +212,9 @@
   <!-- Definitions for verbatim LaTeX code -->
   <style-map name="LaTeX" class="paragraph" before="" after="" verbatim="true" />
   <style-map name="LaTeX" class="text" before="" after="{}" verbatim="true" />
-
+  
   <!-- String replace -->
+  <string-replace fontenc="any" input="¤" latex-code="\pause{}" />
   <string-replace fontenc="any" input="LaTeX" latex-code="\LaTeX{}" />
 
 </config>

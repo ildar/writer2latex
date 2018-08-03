@@ -90,7 +90,9 @@ public class HeadingConverter extends ConverterHelper {
 
             // Get formatted content
             LaTeXDocumentPortion ldpContent = new LaTeXDocumentPortion(true);
+            ldpContent.append(baHardChar.getBefore());
             palette.getInlineCv().traverseInlineText(node,ldpContent,ic);
+            ldpContent.append(baHardChar.getAfter());
             String sContent = ldpContent.toString();
             
             // Export the heading
@@ -106,7 +108,7 @@ public class HeadingConverter extends ConverterHelper {
                 ldp.append("[").append(sOpt).append("]");
             }
             
-            ldp.append("{").append(baHardChar.getBefore()).append(sContent).append(baHardChar.getAfter()).append("}").nl();
+            ldp.append("{").append(sContent).append("}").nl();
             ldp.append(baHardPage.getAfter());
 			
             // Include pending index marks, labels, footnotes & floating frames

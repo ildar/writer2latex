@@ -18,6 +18,7 @@
         <paragraph role="heading" level="2" xml-lang="en-US">General</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsConfig" id="bm_options_config"/>
+
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX format</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsConfig" visibility="hidden">Select the general format for the LaTeX document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Conceptually, %PRODUCTNAME Writer and LaTeX are quite different.
@@ -25,12 +26,16 @@
         In addition the use of several LaTeX packages may change various aspects of the LaTeX document.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The result of a conversion into LaTeX will thus depend very much on which
         LaTeX packages are used and how much formatting it is desired to preserve.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX offers a number of default formats, all based on the standard LaTeX document class "article".
-        Each of the formats defines the LaTeX packages to use and the handling of formatting.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Writer2LaTeX offers a number of default formats for different purposes.
+        Each of the formats defines the LaTeX packages to use and the handling of styles and formatting.</paragraph>
+        
+        <paragraph role="heading" level="4" xml-lang="en-US">General purpose formats</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">These are intended for arbitrary Writer documents, and are all based on the
+        standard LaTeX document class "article".</paragraph>
         <list type="unordered">
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Ultra-clean article</emph> will create a very basic LaTeX article,
-				with almost no formatting preserved.</paragraph>
+				with almost no formatting preserved. Use this for documents with inconsistent formatting.</paragraph>
 			</listitem>
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Clean article</emph> will also create a default LaTeX article,
@@ -43,22 +48,136 @@
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Print optimized</emph> on the other hand creates a LaTeX article
 				preserving as much formatting as possible. The result will resemble the %PRODUCTNAME Writer document,
-				but will look slightly different from a standard LaTeX article (and the LaTeX code will be less readable).</paragraph>
+				but will look slightly different from a standard LaTeX article (and the LaTeX code will be less readable).
+				Use this only for documents that are well structured using styles.</paragraph>
 			</listitem>
+        </list>
+        
+        <paragraph role="heading" level="4" xml-lang="en-US">Format for screen reading</paragraph>
+        <list type="unordered">			
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Screen optimized (pdf)</emph> also creates a LaTeX article preserving
-				most of the formatting, but optimized for screen viewing (using the package pdfscreen) rather than printing.</paragraph>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Screen optimized (pdf)</emph> creates a LaTeX article preserving
+				most of the formatting, but optimized for screen viewing (using the package pdfscreen).</paragraph>
 			</listitem>
+        </list>
+
+        <paragraph role="heading" level="4" xml-lang="en-US">Custom format</paragraph>
+        <list type="unordered">			
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Custom</emph> is a user defined format. To configure the custom format,
 				choose <emph><link href="org.openoffice.da.writer2latex.oxt/Configuration/Introduction.xhp"
 				name="Custom configuration">Tools - Options - Writer2LaTeX</link></emph>.
 				</paragraph>
+		        <paragraph role="paragraph" xml-lang="en-US">Note that expert users can extend the list with further formats using
+		        <emph>configuration packages</emph>. See the documentation on the
+		        <link href="http://writer2latex.sourceforge.net" name="Link to the Writer2LaTeX Website">web site for Writer2LaTeX</link>.
+		        </paragraph>
 			</listitem>
         </list>
-        <paragraph role="paragraph" xml-lang="en-US">Expert users can extend the list with further formats using
-        <emph>configuration packages</emph>. See the documentation on the
-        <link href="http://writer2latex.sourceforge.net" name="Link to the Writer2LaTeX Website">web site for Writer2LaTeX</link>.</paragraph>
+
+        <paragraph role="heading" level="4" xml-lang="en-US">Template based formats</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">These formats are intended for documents using the
+        <link href="org.openoffice.da.writer2latex.oxt/templates.xhp" name="Templates">templates for LaTeX documents</link>
+        provided with Writer2LaTeX.</paragraph>
+        <list type="unordered">			
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX article template</emph> is for the LaTeX-article template.
+				The article document class has several options which can be set here:
+				</paragraph>
+				<list type="unordered">
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Type size</emph> defines the base font size for the
+						document, and can be either <emph>10 pt</emph>, <emph>11 pt</emph> or <emph>12 pt</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Paper size</emph> defines the paper size for the document.
+						You can choose from the standard paper sizes <emph>Letter</emph>, <emph>Legal</emph>, <emph>Executive</emph>,
+						<emph>A4</emph>, <emph>A5</emph> and <emph>B5</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Paper orientation</emph> defines whether the paper should
+						be oriented in <emph>Portrait</emph> or <emph>Landscape</emph> format.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Duplex</emph> defines whether the document is intended for
+						<emph>Single-sided</emph> printing or <emph>Double-sided</emph> printing.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Status</emph> can be either <emph>Final</emph> or
+						<emph>Draft</emph>. The latter will produce a document without graphics, which will speed up processing on slow
+						computers. It will also mark bad line breaks (overfull lines) with a black rectangle in the margin.
+						If you get this, it is advisable to refomulate the text and/or add explicit hyphenation points.</paragraph> 
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Title</emph> information of the document,
+						including author and date, can either be <emph>On same page as the text</emph> or 
+						<emph>On separate title page</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Columns</emph> defines whether the text should be set in
+						<emph>One column</emph> or in <emph>Two columns</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Equation numbers</emph> defines whether equation numbers
+						should be paced <emph>To the right</emph> or <emph>To the left</emph> of the equation.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Equation alignment</emph> defines whether display equations
+						should be <emph>Centered</emph> or <emph>Flush left</emph> on the line.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Bibliography</emph> can either be <emph>No indentation</emph>
+						or <emph>With indentation</emph>. In the latter case, each part of a bibliography item is set on a separate line
+						with indentation.</paragraph>
+					</listitem>
+				</list>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX beamer template</emph>.
+				The beamer presentation class has several options which can be set here: </paragraph>
+				<list type="unordered">
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Mode</emph> is used to select either
+						<emph>Presentation</emph> (build the frame incrementally) or <emph>Handout</emph> (include only the
+						completed frame).</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Layout</emph> is used to select the general layout.
+						Either <emph>Presentation</emph> (produce the actual presentation), or Print 1 slide per page,
+						Print 2 slides per page, Print 4 slides per page (all intended for printing the presentation).
+						You would usually want to combine the printing options with handout mode.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Theme</emph> selects a theme for the presentation.
+						A theme defines the general appearance of the presentation, such as layout and colors.
+						The available themes are named after cities and include <emph>Default</emph> (the default beamer theme),
+						<emph>AnnArbor</emph>, <emph>Antibes</emph>, <emph>Bergen</emph>, <emph>Berkeley</emph>, <emph>Berlin</emph>,
+						<emph>Boadilla</emph>, <emph>CambridgeUS</emph>, <emph>Copenhagen</emph>, <emph>Darmstadt</emph>, <emph>Dresden</emph>,
+						<emph>EastLansing</emph>, <emph>Frankfurt</emph>, <emph>Goettingen</emph>, <emph>Hannover</emph>, <emph>Ilmenau</emph>,
+						<emph>JuanLesPins</emph>, <emph>Luebeck</emph>, <emph>Madrid</emph>, <emph>Malmoe</emph>, <emph>Marburg</emph>,
+						<emph>Montpellier</emph>, <emph>PaloAlto</emph>, <emph>Pittsburg</emph>, <emph>Rochester</emph>, <emph>Singapore</emph>,
+						<emph>Szeged</emph>, <emph>Warsaw</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Color theme</emph> defines a separate color theme for the
+						presentation. The available color themes are named after animals and include <emph>default</emph>
+						(the default colors for the selected theme), <emph>albatross</emph>, <emph>beaver</emph>, <emph>beetle</emph>,
+						<emph>crane</emph>, <emph>dove</emph>, <emph>fly</emph>, <emph>monarca</emph>, <emph>seagull</emph>,
+						<emph>spruce</emph>, <emph>wolverine</emph>.</paragraph>
+					</listitem>
+					<listitem>
+						<paragraph role="paragraph" xml-lang="en-US"><emph>Font theme</emph> does not select the font, but some general
+						features of the use of fonts. You can choose between <emph>default</emph> (use sans serif fonts),
+						<emph>Serif fonts</emph>, <emph>Structure elements in bold</emph> (use bold for structural elements like titles
+						and headings), <emph>Structure elements in italic</emph> (likewise, but use italic),
+						<emph>Structure elements in small caps</emph> (likewise, but use small caps).</paragraph>
+					</listitem>
+				</list>
+		        <paragraph role="paragraph" xml-lang="en-US">You can find an overview over beamer themes here:
+		        <link href="https://hartwork.org/beamer-theme-matrix/" name="Beamer theme matrix">https://hartwork.org/beamer-theme-matrix/</link>.
+		        </paragraph>
+			</listitem>
+        </list>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsBackend" id="bm_options_backend"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Backend</paragraph>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-24)
+ *  Version 2.0 (2018-08-01)
  *
  */
 
@@ -40,7 +40,6 @@ import writer2latex.base.Option;
 import writer2latex.latex.util.HeadingMap;
 import writer2latex.latex.i18n.ClassicI18n;
 import writer2latex.latex.i18n.ReplacementTrie;
-import writer2latex.latex.util.StyleMap;
 import writer2latex.latex.util.StyleMapItem;
 import writer2latex.util.Misc;
 
@@ -121,10 +120,19 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     private ComplexOption listMap;
     private ComplexOption listItemMap;
     private ComplexOption textMap;
-    private ComplexOption textAttrMap;
+    private ComplexOption textAttributeMap;
     private ComplexOption stringReplace;
     private ComplexOption mathSymbols;
     private String sCustomPreamble = "";
+    
+    // Cached versions of style maps
+    private Map<String,StyleMapItem> parStyleMap = null;
+    private Map<String,StyleMapItem> parBlockStyleMap = null;
+    private Map<String,StyleMapItem> listStyleMap = null;
+    private Map<String,StyleMapItem> listItemStyleMap = null;
+    private Map<String,StyleMapItem> textAttributeStyleMap = null;
+    private Map<String,StyleMapItem> textStyleMap = null;
+    
 	
 	/////////////////////////////////////////////////////////////////////////
     // V. The rather long constructor setting all defaults
@@ -312,7 +320,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         listMap = addComplexOption("list-map");
         listItemMap = addComplexOption("listitem-map");
         textMap = addComplexOption("text-map");
-        textAttrMap = addComplexOption("text-attribute-map");
+        textAttributeMap = addComplexOption("text-attribute-map");
         
         // Complex options - string replace
         stringReplace=addComplexOption("string-replace");
@@ -397,6 +405,9 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             }
             if ("paragraph-block".equals(sFamily)) {
                 attr.put("next", elm.getAttribute("next"));
+            	if (elm.hasAttribute("nesting")) { attr.put("nesting", elm.getAttribute("nesting")); }
+            	if (elm.hasAttribute("negative")) { attr.put("negative", elm.getAttribute("negative")); }
+                attr.put("include", elm.getAttribute("include"));
             	if (elm.hasAttribute("verbatim")) { attr.put("verbatim", elm.getAttribute("verbatim")); }
                 parBlockMap.put(sName, attr);
             }
@@ -411,7 +422,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             	textMap.put(sName, attr);
             }
             else if ("text-attribute".equals(sFamily)) {
-            	textAttrMap.put(sName, attr);
+            	textAttributeMap.put(sName, attr);
             }
         }
         else if (elm.getTagName().equals("string-replace")) {
@@ -471,7 +482,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         writeStyleMap(dom,listMap,"list");
         writeStyleMap(dom,listItemMap,"listitem");
         writeStyleMap(dom,textMap,"text");
-        writeStyleMap(dom,textAttrMap,"text-attribute");
+        writeStyleMap(dom,textAttributeMap,"text-attribute");
 
         // Write string replace
         Set<String> inputStrings = stringReplace.keySet();
@@ -510,6 +521,15 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
             if (attr.containsKey("next")) {
                 smNode.setAttribute("next",attr.get("next"));
             }
+            if (attr.containsKey("nesting")) {
+                smNode.setAttribute("nesting",attr.get("nesting"));
+            }
+            if (attr.containsKey("negative")) {
+                smNode.setAttribute("negative",attr.get("negative"));
+            }
+            if (attr.containsKey("include")) {
+                smNode.setAttribute("include",attr.get("include"));
+            }
             if (attr.containsKey("line-break")) {
                 smNode.setAttribute("line-break",attr.get("line-break"));
             }
@@ -542,27 +562,58 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     }
     
     // Get style maps
-    public StyleMap getParStyleMap() { return getStyleMap(parMap); }
-    public StyleMap getParBlockStyleMap() { return getStyleMap(parBlockMap); }
-    public StyleMap getListStyleMap() { return getStyleMap(listMap); }
-    public StyleMap getListItemStyleMap() { return getStyleMap(listItemMap); }
-    public StyleMap getTextAttributeStyleMap() { return getStyleMap(textAttrMap); }
-    public StyleMap getTextStyleMap() { return getStyleMap(textMap); }
+    public Map<String,StyleMapItem> getParStyleMap() {
+    	if (parStyleMap==null) { parStyleMap = createStyleMap(parMap); }
+    	return parStyleMap;
+    }
+    public Map<String,StyleMapItem> getParBlockStyleMap() {
+    	if (parBlockStyleMap==null) { parBlockStyleMap = createStyleMap(parBlockMap); }
+    	return parBlockStyleMap;    	
+    }
+    public Map<String,StyleMapItem> getListStyleMap() {
+    	if (listStyleMap==null) { listStyleMap = createStyleMap(listMap); }
+    	return listStyleMap;
+    }
+    public Map<String,StyleMapItem> getListItemStyleMap() {
+    	if (listItemStyleMap==null) { listItemStyleMap = createStyleMap(listItemMap); }
+    	return listItemStyleMap;
+    }
+    public Map<String,StyleMapItem> getTextAttributeStyleMap() {
+    	if (textAttributeStyleMap==null) { textAttributeStyleMap = createStyleMap(textAttributeMap); }
+    	return textAttributeStyleMap;
+    }
+    public Map<String,StyleMapItem> getTextStyleMap() {
+    	if (textStyleMap==null) { textStyleMap = createStyleMap(textMap); }
+    	return textStyleMap;    	
+    }
     
-    private StyleMap getStyleMap(ComplexOption co) {
-    	StyleMap map = new StyleMap();
+    // TODO: Cache the generated style map!!
+    private Map<String,StyleMapItem> createStyleMap(ComplexOption co) {
+    	Map<String,StyleMapItem> map = new HashMap<>();
     	for (String sName : co.keySet()) {
     		Map<String,String> attr = co.get(sName);
     		String sBefore = attr.containsKey("before") ? attr.get("before") : "";
     		String sAfter = attr.containsKey("after") ? attr.get("after") : "";
-    		String sNext = attr.containsKey("next") ? attr.get("next") : "";
+    		String[] sNext = attr.containsKey("next") ? attr.get("next").split(";") : new String[0];
+    		boolean bNesting = attr.containsKey("nesting") && attr.get("nesting").equals("true");
+    		boolean bNegative = attr.containsKey("negative") && attr.get("negative").equals("true");
+    		String[] sInclude = attr.containsKey("include") ? attr.get("include").split(";") : new String[0];
     		boolean bLineBreak = !"false".equals(attr.get("line-break"));
     		int nBreakAfter = StyleMapItem.PAR;
     		String sBreakAfter = attr.get("break-after");
     		if ("none".equals(sBreakAfter)) { nBreakAfter = StyleMapItem.NONE; }
     		else if ("line".equals(sBreakAfter)) { nBreakAfter = StyleMapItem.LINE; }
     		boolean bVerbatim = "true".equals(attr.get("verbatim"));
-    		map.put(sName, sBefore, sAfter, sNext, bLineBreak, nBreakAfter, bVerbatim);
+    		StyleMapItem smi = new StyleMapItem(sName, sBefore, sAfter, bLineBreak, nBreakAfter, bVerbatim);
+    		map.put(sName, smi);
+    		for (int i=0; i<sNext.length; i++) {
+    			smi.addNext(sNext[i]);
+    		}
+    		smi.setNesting(bNesting);
+    		smi.setNegative(bNegative);
+    		for (int i=0; i<sInclude.length; i++) {
+    			smi.addInclude(sInclude[i]);
+    		}
     	}
     	return map;
     }

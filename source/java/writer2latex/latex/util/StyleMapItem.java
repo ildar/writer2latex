@@ -1,8 +1,8 @@
 /************************************************************************
  *
- *  StyleMapItem.java
+ *  StyleMapthis.java
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,22 +19,99 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.2 (2011-03-30) 
+ *  Version 2.0 (2018-08-01) 
  * 
  */
  
 package writer2latex.latex.util;
 
-// A struct to hold data about a style map 
+import java.util.HashSet;
+import java.util.Set;
+
+/** This class defines a LaTeX style map, that is a mapping from a named style to LaTeX code
+ */
 public class StyleMapItem {
 	public static final int NONE = 0;
 	public static final int LINE = 1;
 	public static final int PAR = 2;
 	
-    String sBefore;
-    String sAfter;
-    String sNext;
-    int nBreakAfter;
-    boolean bLineBreak;
-    boolean bVerbatim;
+	// General properties
+	private String sStyleName;
+	private String sBefore;
+	private String sAfter;
+	private int nBreakAfter;
+	private boolean bLineBreak;
+	private boolean bVerbatim;
+	
+	// Properties specific for paragraph block maps
+	private Set<String> next = new HashSet<>();
+	private boolean bNegative = false;
+	private boolean bNesting = false;
+	private Set<String> include = new HashSet<>();
+    
+    public StyleMapItem(String sStyleName, String sBefore, String sAfter, boolean bLineBreak, int nBreakAfter, boolean bVerbatim) {
+    	this.sStyleName = sStyleName;
+    	this.sBefore = sBefore;
+        this.sAfter = sAfter;
+        this.bLineBreak = bLineBreak;
+        this.nBreakAfter = nBreakAfter;
+        this.bVerbatim = bVerbatim;
+    }
+
+    public StyleMapItem(String sStyleName, String sBefore, String sAfter) {
+    	this(sStyleName, sBefore, sAfter, true, StyleMapItem.PAR, false);
+    }
+    
+    public void addNext(String sStyleName) {
+    	next.add(sStyleName);
+    }
+    
+    public void setNegative(boolean bNegative) {
+    	this.bNegative = bNegative;
+    }
+    
+    public void setNesting(boolean bNesting) {
+    	this.bNesting = bNesting;
+    }
+    
+    public void addInclude(String sItem) {
+    	include.add(sItem);
+    }
+    
+    public String getStyleName() {
+    	return sStyleName;
+    }
+    
+    public String getBefore() {
+        return sBefore;
+    }
+
+    public String getAfter() {
+        return sAfter;
+    }
+    
+    public boolean isNext(String sStyleName) {
+        return (!bNegative && next.contains(sStyleName)) || (bNegative && !next.contains(sStyleName));
+    }
+    
+    public boolean allowsNesting() {
+    	return bNesting;
+    }
+    
+    public boolean includes(String sItem) {
+    	return include.contains(sItem);
+    }
+	
+    public boolean getLineBreak() {
+        return bLineBreak;
+    }
+    
+    public int getBreakAfter() {
+    	return nBreakAfter;
+    }
+
+    public boolean getVerbatim() {
+        return bVerbatim;
+    }
+
 }

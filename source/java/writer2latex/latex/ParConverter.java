@@ -19,18 +19,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-07-30)
  *
  */
 
 package writer2latex.latex;
+
+import java.util.Map;
 
 import org.w3c.dom.Element;
 
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.latex.util.StyleMapItem;
-import writer2latex.latex.util.StyleMap;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
@@ -109,7 +110,7 @@ public class ParConverter extends StyleConverter {
         }
 		
         // Check for strict handling of styles
-        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getParStyleMap().contains(sDisplayName)) {
+        if (config.otherStyles()!=LaTeXConfig.ACCEPT && !config.getParStyleMap().containsKey(sDisplayName)) {
             if (config.otherStyles()==LaTeXConfig.WARNING) {
                 System.err.println("Warning: A paragraph with style "+sDisplayName+" was ignored");
             }
@@ -199,20 +200,20 @@ public class ParConverter extends StyleConverter {
             }
             nBreakAfter = StyleMapItem.NONE;
         }
-        else if (config.getParStyleMap().contains(ofr.getParStyles().getDisplayName(sName))) {
+        else if (config.getParStyleMap().containsKey(ofr.getParStyles().getDisplayName(sName))) {
         	// We have a style map in the configuration
-            StyleMap sm = config.getParStyleMap();
+            Map<String,StyleMapItem> sm = config.getParStyleMap();
             String sDisplayName = ofr.getParStyles().getDisplayName(sName);
-            String sBefore = sm.getBefore(sDisplayName);
-            String sAfter = sm.getAfter(sDisplayName);
+            String sBefore = sm.get(sDisplayName).getBefore();
+            String sAfter = sm.get(sDisplayName).getAfter();
             ba.add(sBefore, sAfter);
             // Add line breaks inside?
-            if (sm.getLineBreak(sDisplayName)) {
+            if (sm.get(sDisplayName).getLineBreak()) {
                 if (sBefore.length()>0) { ba.add("\n",""); }
                 if (sAfter.length()>0 && !"}".equals(sAfter)) { ba.add("","\n"); }
             }
-            nBreakAfter = sm.getBreakAfter(sDisplayName);
-            if (sm.getVerbatim(sDisplayName)) { context.setVerbatim(true); }
+            nBreakAfter = getBreakAfter(sm,sDisplayName);
+            if (sm.get(sDisplayName).getVerbatim()) { context.setVerbatim(true); }
         }
         else if (bNoTextPar && (config.formatting()==LaTeXConfig.CONVERT_BASIC || config.formatting()==LaTeXConfig.IGNORE_MOST) ) {
             // only alignment!
@@ -332,16 +333,16 @@ public class ParConverter extends StyleConverter {
         }
         else {
             // Apply the style
-            if (!styleMap.contains(sName)) { createParStyle(sName); }
-            String sBefore = styleMap.getBefore(sName); 
-            String sAfter = styleMap.getAfter(sName);
+            if (!styleMap.containsKey(sName)) { createParStyle(sName); }
+            String sBefore = styleMap.get(sName).getBefore(); 
+            String sAfter = styleMap.get(sName).getAfter();
             ba.add(sBefore,sAfter);
             // Add line breaks inside?
-            if (bBreakInside && styleMap.getLineBreak(sName)) {
+            if (bBreakInside && styleMap.get(sName).getLineBreak()) {
                 if (sBefore.length()>0) { ba.add("\n",""); }
                 if (sAfter.length()>0 && !"}".equals(sAfter)) { ba.add("","\n"); }
             }
-            nBreakAfter = styleMap.getBreakAfter(sName);
+            nBreakAfter = getBreakAfter(styleMap,sName);
         } 
 		
         // Update context
@@ -349,7 +350,7 @@ public class ParConverter extends StyleConverter {
         if (style!=null) {
         	context.updateFormattingFromStyle(style);
         }
-        context.setVerbatim(styleMap.getVerbatim(sName));
+        context.setVerbatim(styleMap.containsKey(sName) && styleMap.get(sName).getVerbatim());
         
         return nBreakAfter;
     }
@@ -365,16 +366,16 @@ public class ParConverter extends StyleConverter {
         Context context = (Context) palette.getMainContext().clone();
         // The style may already be declared in the configuration:
         String sDisplayName = ofr.getParStyles().getDisplayName(sName);
-        StyleMap sm = config.getParStyleMap();
-        if (sm.contains(sDisplayName)) {
-            styleMap.put(sName,sm.getBefore(sDisplayName),sm.getAfter(sDisplayName),
-                               sm.getLineBreak(sDisplayName),sm.getBreakAfter(sDisplayName),sm.getVerbatim(sDisplayName));
+        Map<String,StyleMapItem> sm = config.getParStyleMap();
+        if (sm.containsKey(sDisplayName)) {
+            styleMap.put(sName,new StyleMapItem(sName,sm.get(sDisplayName).getBefore(),sm.get(sDisplayName).getAfter(),
+                               sm.get(sDisplayName).getLineBreak(),getBreakAfter(sm,sDisplayName),sm.get(sDisplayName).getVerbatim()));
             return;
         }
         // Does the style exist?
         StyleWithProperties style = ofr.getParStyle(sName);
         if (style==null) {
-            styleMap.put(sName,"","");
+            styleMap.put(sName,new StyleMapItem(sName,"",""));
             return;
         }
         // Convert the style!
@@ -393,7 +394,7 @@ public class ParConverter extends StyleConverter {
                 return;
             case LaTeXConfig.IGNORE_ALL:
             default:
-                styleMap.put(sName,"","");
+                styleMap.put(sName,new StyleMapItem(sName,"",""));
         }
     }
 
@@ -408,9 +409,9 @@ public class ParConverter extends StyleConverter {
         // Apply paragraph formatting from parent
         // If parent is verbatim, this is all
         String sParentName = style.getParentName();
-        if (styleMap.getVerbatim(sParentName)) {
-            styleMap.put(style.getName(),styleMap.getBefore(sParentName),styleMap.getAfter(sParentName),
-                         styleMap.getLineBreak(sParentName),styleMap.getBreakAfter(sParentName),styleMap.getVerbatim(sParentName));
+        if (styleMap.containsKey(sParentName) && styleMap.get(sParentName).getVerbatim()) {
+            styleMap.put(style.getName(),new StyleMapItem(style.getName(),styleMap.get(sParentName).getBefore(),styleMap.get(sParentName).getAfter(),
+                         styleMap.get(sParentName).getLineBreak(),getBreakAfter(styleMap,sParentName),styleMap.get(sParentName).getVerbatim()));
             return;
         }
         applyParStyle(sParentName,baPar,context,false,false);
@@ -425,14 +426,18 @@ public class ParConverter extends StyleConverter {
         if (baPar.isEmpty() && !baText.isEmpty()) { ba.add("{","}"); }
         else { ba.add(baPar.getBefore(),baPar.getAfter()); }
         ba.add(baText.getBefore(),baText.getAfter());
-        boolean bLineBreak = styleMap.getLineBreak(sParentName);
+        boolean bLineBreak = styleMap.containsKey(sParentName) && styleMap.get(sParentName).getLineBreak();
         if (!bLineBreak && !baText.isEmpty()) { ba.add(" ",""); }
-        styleMap.put(style.getName(),ba.getBefore(),ba.getAfter(),bLineBreak,styleMap.getBreakAfter(sParentName), false);
+        styleMap.put(style.getName(),new StyleMapItem(style.getName(),ba.getBefore(),ba.getAfter(),bLineBreak,getBreakAfter(styleMap,sParentName), false));
+    }
+    
+    public int getBreakAfter(Map<String,StyleMapItem> sm, String sName) {
+    	return sm.containsKey(sName) ? sm.get(sName).getBreakAfter() : StyleMapItem.PAR;
     }
 	
     private void createSimpleParStyle(StyleWithProperties style, Context context) {
         // Export character formatting + alignment only
-        if (style.isAutomatic() && config.getParStyleMap().contains(ofr.getParStyles().getDisplayName(style.getParentName()))) {
+        if (style.isAutomatic() && config.getParStyleMap().containsKey(ofr.getParStyles().getDisplayName(style.getParentName()))) {
             createAutomaticParStyle(style,context);
             return;
         }
@@ -453,13 +458,13 @@ public class ParConverter extends StyleConverter {
         // or alignment we must group the contents.
         if (!baText.isEmpty()) { ba.add("{","}"); }
         ba.add(baText.getBefore(),baText.getAfter());
-        styleMap.put(style.getName(),ba.getBefore(),ba.getAfter());
+        styleMap.put(style.getName(),new StyleMapItem(style.getName(),ba.getBefore(),ba.getAfter()));
     }
 
     private void createSoftParStyle(StyleWithProperties style, Context context) {
         // This style should be converted to an enviroment, except if
         // it's automatic and there is a config style map for the parent
-        if (style.isAutomatic() && config.getParStyleMap().contains(ofr.getParStyles().getDisplayName(style.getParentName()))) {
+        if (style.isAutomatic() && config.getParStyleMap().containsKey(ofr.getParStyles().getDisplayName(style.getParentName()))) {
             createAutomaticParStyle(style,context);
         }
 
@@ -474,7 +479,7 @@ public class ParConverter extends StyleConverter {
         ba.add("\\ignorespaces","");
         // Declare the paragraph style (\newenvironment)
         String sTeXName = "style" + styleNames.getExportName(style.getDisplayName());
-        styleMap.put(style.getName(),"\\begin{"+sTeXName+"}","\\end{"+sTeXName+"}");
+        styleMap.put(style.getName(),new StyleMapItem(style.getName(),"\\begin{"+sTeXName+"}","\\end{"+sTeXName+"}"));
         declarations.append("\\newenvironment{").append(sTeXName)
                     .append("}{").append(ba.getBefore()).append("}{")
                     .append(ba.getAfter()).append("}").nl();

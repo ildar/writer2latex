@@ -19,17 +19,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-17)
+ *  Version 2.0 (2018-07-30)
  *
  */
 
 package writer2latex.latex;
 
+import java.util.Map;
+
 import writer2latex.util.*;
 import writer2latex.office.*;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
-import writer2latex.latex.util.StyleMap;
+import writer2latex.latex.util.StyleMapItem;
 
 /** This class creates LaTeX code from ODF character formatting
    Character formatting in ODF includes font, font effects/decorations and color.
@@ -69,7 +71,7 @@ public class CharStyleConverter extends StyleConverter {
         if (bNeedUlem) {
         	pacman.usepackage("normalem", "ulem");
         }
-        if (bNeedSubscript && !config.getTextAttributeStyleMap().contains("subscript")) {
+        if (bNeedSubscript && !config.getTextAttributeStyleMap().containsKey("subscript")) {
             decl.append("\\providecommand\\textsubscript[1]{\\ensuremath{{}_{\\text{#1}}}}").nl();
         }
         if (!styleNames.isEmpty()) {
@@ -87,31 +89,32 @@ public class CharStyleConverter extends StyleConverter {
 
         if (bIgnoreAll) {
             // Even if all is ignored, we still apply style maps from config..
-            StyleMap sm = config.getTextStyleMap();
-            if (sm.contains(sDisplayName)) {
-                ba.add(sm.getBefore(sDisplayName),sm.getAfter(sDisplayName));
-                context.setVerbatim(sm.getVerbatim(sDisplayName));
-                context.setNoLineBreaks(sm.getVerbatim(sDisplayName));
+            Map<String,StyleMapItem> sm = config.getTextStyleMap();
+            if (sm.containsKey(sDisplayName)) {
+                ba.add(sm.get(sDisplayName).getBefore(),sm.get(sDisplayName).getAfter());
+                boolean bVerbatim = sm.containsKey(sDisplayName) && sm.get(sDisplayName).getVerbatim();
+                context.setVerbatim(bVerbatim);
+                context.setNoLineBreaks(bVerbatim);
             }
             return;
         }
 
         // Style already converted?
-        if (styleMap.contains(sName)) {
-            ba.add(styleMap.getBefore(sName),styleMap.getAfter(sName));
+        if (styleMap.containsKey(sName)) {
+            ba.add(styleMap.get(sName).getBefore(),styleMap.get(sName).getAfter());
             context.updateFormattingFromStyle(ofr.getTextStyle(sName));
             // it's verbatim if specified as such in the configuration
-            StyleMap sm = config.getTextStyleMap();
-            boolean bIsVerbatim = sm.contains(sDisplayName) && sm.getVerbatim(sDisplayName); 
+            Map<String,StyleMapItem> sm = config.getTextStyleMap();
+            boolean bIsVerbatim = sm.containsKey(sDisplayName) && sm.get(sDisplayName).getVerbatim(); 
             context.setVerbatim(bIsVerbatim);
             context.setNoLineBreaks(bIsVerbatim);
             return;
         }
 
         // The style may already be declared in the configuration:
-        StyleMap sm = config.getTextStyleMap();
-        if (sm.contains(sDisplayName)) {
-            styleMap.put(sName,sm.getBefore(sDisplayName),sm.getAfter(sDisplayName));
+        Map<String,StyleMapItem> sm = config.getTextStyleMap();
+        if (sm.containsKey(sDisplayName)) {
+            styleMap.put(sName,new StyleMapItem(sName,sm.get(sDisplayName).getBefore(),sm.get(sDisplayName).getAfter()));
             applyTextStyle(sName,ba,context);
             return;
         }
@@ -119,7 +122,7 @@ public class CharStyleConverter extends StyleConverter {
         // Get the style, if it exists:
         StyleWithProperties style = ofr.getTextStyle(sName);
         if (style==null) {
-            styleMap.put(sName,"","");
+            styleMap.put(sName,new StyleMapItem(sName,"",""));
             applyTextStyle(sName,ba,context);
             return;
         }
@@ -141,7 +144,7 @@ public class CharStyleConverter extends StyleConverter {
         applyFontEffects(style,true,baText);
         // declare the text style (\newcommand)
         String sTeXName = styleNames.getExportName(ofr.getTextStyles().getDisplayName(sName));
-        styleMap.put(sName,"\\textstyle"+sTeXName+"{","}");
+        styleMap.put(sName,new StyleMapItem(sName,"\\textstyle"+sTeXName+"{","}"));
         declarations.append("\\newcommand\\textstyle")
             .append(sTeXName).append("[1]{")
             .append(baText.getBefore()).append("#1").append(baText.getAfter())
@@ -231,9 +234,9 @@ public class CharStyleConverter extends StyleConverter {
         	if (sSeries!=null) {
         		// Temporary: Support text-attribute style maps for this particular case
         		// TODO: Reimplement the CharStyleConverter to properly support this...
-            	if (!bDecl && "bf".equals(sSeries) && config.getTextAttributeStyleMap().contains("bold")) {
-            		ba.add(config.getTextAttributeStyleMap().getBefore("bold"),
-            			   config.getTextAttributeStyleMap().getAfter("bold"));
+            	if (!bDecl && "bf".equals(sSeries) && config.getTextAttributeStyleMap().containsKey("bold")) {
+            		ba.add(config.getTextAttributeStyleMap().get("bold").getBefore(),
+            			   config.getTextAttributeStyleMap().get("bold").getAfter());
             	}
             	else {
             		if (style.isAutomatic()) { // optimize hard formatting
@@ -262,13 +265,13 @@ public class CharStyleConverter extends StyleConverter {
         	if (sShape!=null) {
         		// Temporary: Support text-attribute style maps for this particular case
         		// TODO: Reimplement the CharStyleConverter to properly support this...
-            	if (!bDecl && "sc".equals(sShape) && config.getTextAttributeStyleMap().contains("small-caps")) {
-            		ba.add(config.getTextAttributeStyleMap().getBefore("small-caps"),
-            			   config.getTextAttributeStyleMap().getAfter("small-caps"));
+            	if (!bDecl && "sc".equals(sShape) && config.getTextAttributeStyleMap().containsKey("small-caps")) {
+            		ba.add(config.getTextAttributeStyleMap().get("small-caps").getBefore(),
+            			   config.getTextAttributeStyleMap().get("small-caps").getAfter());
             	}
-            	else if (!bDecl && "it".equals(sShape) && config.getTextAttributeStyleMap().contains("italic")) {
-            		ba.add(config.getTextAttributeStyleMap().getBefore("italic"),
-             			   config.getTextAttributeStyleMap().getAfter("italic"));
+            	else if (!bDecl && "it".equals(sShape) && config.getTextAttributeStyleMap().containsKey("italic")) {
+            		ba.add(config.getTextAttributeStyleMap().get("italic").getBefore(),
+             			   config.getTextAttributeStyleMap().get("italic").getAfter());
             	}
             	else {
             		if (style.isAutomatic()) { // optimize hard formatting
@@ -311,13 +314,13 @@ public class CharStyleConverter extends StyleConverter {
         	String s = textPosition(style.getProperty(XMLString.STYLE_TEXT_POSITION, bInherit));
     		// Temporary: Support text-attribute style maps for this particular case
     		// TODO: Reimplement the CharStyleConverter to properly support this...
-        	if (config.getTextAttributeStyleMap().contains("superscript") && "\\textsuperscript".equals(s)) {
-        		ba.add(config.getTextAttributeStyleMap().getBefore("superscript"),
-        			   config.getTextAttributeStyleMap().getAfter("superscript"));
+        	if (config.getTextAttributeStyleMap().containsKey("superscript") && "\\textsuperscript".equals(s)) {
+        		ba.add(config.getTextAttributeStyleMap().get("superscript").getBefore(),
+        			   config.getTextAttributeStyleMap().get("superscript").getAfter());
         	}
-        	else if (config.getTextAttributeStyleMap().contains("subscript") && "\\textsubscript".equals(s)) {
-        		ba.add(config.getTextAttributeStyleMap().getBefore("subscript"),
-        			   config.getTextAttributeStyleMap().getAfter("subscript"));
+        	else if (config.getTextAttributeStyleMap().containsKey("subscript") && "\\textsubscript".equals(s)) {
+        		ba.add(config.getTextAttributeStyleMap().get("subscript").getBefore(),
+        			   config.getTextAttributeStyleMap().get("subscript").getAfter());
         	}
         	else if (s!=null) {
         		ba.add(s+"{","}");
