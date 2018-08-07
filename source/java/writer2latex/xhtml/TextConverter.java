@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-01)
+ *  Version 2.0 (2018-08-07)
  *
  */
 
@@ -70,10 +70,12 @@ public class TextConverter extends ConverterHelper {
 	
     // Converter helpers used to handle all sorts of indexes
     private TOCConverter tocCv;
+    private UserIndexConverter userCv;
     private LOFConverter lofCv;
     private LOTConverter lotCv;
     private AlphabeticalIndexConverter indexCv;
     private BibliographyConverter bibCv;
+    private int nChapterNumber = 0;
 
     // Converter helpers used to handle footnotes and endnotes
     private FootnoteConverter footCv;
@@ -93,6 +95,7 @@ public class TextConverter extends ConverterHelper {
     public TextConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
         super(ofr,config,converter);
         tocCv = new TOCConverter(ofr, config, converter);
+        userCv = new UserIndexConverter(ofr, config, converter);
         lofCv = new LOFConverter(ofr, config, converter);
         lotCv = new LOTConverter(ofr, config, converter);
         bibCv = new BibliographyConverter(ofr, config, converter);
@@ -134,6 +137,8 @@ public class TextConverter extends ConverterHelper {
         // Generate all indexes
         bInToc = true;
         tocCv.generate();
+        userCv.generate();
+        indexCv.generate();
         bInToc = false;
 		
         // Generate navigation links
@@ -269,7 +274,7 @@ public class TextConverter extends ConverterHelper {
                     if (!ofr.getTocReader((Element)child).isByChapter()) {
                         hnode = maybeSplit(hnode,null,1);
                     }
-                    tocCv.handleIndex((Element)child,(Element)hnode);
+                    tocCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
                 }
                 else if (nodeName.equals(XMLString.TEXT_ILLUSTRATION_INDEX)) {
                     lofCv.handleLOF(child,hnode);
@@ -281,15 +286,16 @@ public class TextConverter extends ConverterHelper {
                     // TODO
                 }
                 else if (nodeName.equals(XMLString.TEXT_USER_INDEX)) {
-                    // TODO
+                    hnode = maybeSplit(hnode,null,1);
+                    userCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
                 }
                 else if (nodeName.equals(XMLString.TEXT_ALPHABETICAL_INDEX)) {
                     hnode = maybeSplit(hnode,null,1);
-                    indexCv.handleIndex((Element)child,(Element)hnode);
+                    indexCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
                 }
                 else if (nodeName.equals(XMLString.TEXT_BIBLIOGRAPHY)) {
                     hnode = maybeSplit(hnode,null,1);
-                    bibCv.handleIndex((Element)child,(Element)hnode);
+                    bibCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
                 }
                 else if (nodeName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                 	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }
@@ -399,6 +405,7 @@ public class TextConverter extends ConverterHelper {
 	
     private void handleHeading(Element onode, Element hnode, boolean bAfterSplit) {
         int nListLevel = getOutlineLevel((Element)onode);
+        if (nListLevel==1) { nChapterNumber++; }
         boolean bUnNumbered = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_IS_LIST_HEADER));
         boolean bRestart = "true".equals(Misc.getAttribute(onode,XMLString.TEXT_RESTART_NUMBERING));
         int nStartValue = Misc.getPosInteger(Misc.getAttribute(onode,XMLString.TEXT_START_VALUE),1)-1;
@@ -488,7 +495,7 @@ public class TextConverter extends ConverterHelper {
     		
     		// Add to toc
     		if (!bInToc) {
-    			tocCv.handleHeading(onode,heading,sLabel);
+    			tocCv.handleHeading(onode,heading,sLabel,nChapterNumber);
     		}
 
     		// Convert content
@@ -1091,6 +1098,12 @@ public class TextConverter extends ConverterHelper {
                         }
                         else if (sName.equals(XMLString.TEXT_TOC_MARK_START)) {
 	                        tocCv.handleTocMark(child,hnode);
+                        }
+                        else if (sName.equals(XMLString.TEXT_USER_INDEX_MARK)) {
+	                       userCv.handleUserMark(child,hnode,nChapterNumber);
+                        }
+                        else if (sName.equals(XMLString.TEXT_USER_INDEX_MARK_START)) {
+	                        userCv.handleUserMark(child,hnode,nChapterNumber);
                         }
                         else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
 	                        handleBibliographyMark(child,hnode);

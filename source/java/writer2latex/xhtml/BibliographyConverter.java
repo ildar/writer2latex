@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-08-06)
  *
  */
 package writer2latex.xhtml;
@@ -32,7 +32,8 @@ import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
 /** This class handles the export of the bibliography. Most of the work is delegated to the
- *  {@link XhtmlBibliographyGenerator} 
+ *  {@link XhtmlBibliographyGenerator}.
+ *  Note that a bibliography cannot be by chapter in ODF
  */
 class BibliographyConverter extends IndexConverterHelper {
 	
@@ -52,8 +53,8 @@ class BibliographyConverter extends IndexConverterHelper {
     	}
     }
     
-    @Override void populateIndex(Element source, Element container) {
-    	bibGenerator.populateBibliography(source, container);
+    @Override void generate(IndexData data) {
+    	bibGenerator.populateBibliography(data.onode, data.hnode);
     }
 
 }

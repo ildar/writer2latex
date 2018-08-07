@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-25)
+ *  Version 2.0 (2018-08-07)
  *
  */
 
@@ -328,6 +328,8 @@ public class XMLString {
 	public static final String TEXT_TABLE_INDEX_ENTRY_TEMPLATE = "text:table-index-entry-template";
 	public static final String TEXT_OBJECT_INDEX = "text:object-index";
 	public static final String TEXT_USER_INDEX = "text:user-index";
+	public static final String TEXT_USER_INDEX_SOURCE = "text:user-index-source";
+	public static final String TEXT_USER_INDEX_ENTRY_TEMPLATE = "text:user-index-entry-template";
 	public static final String TEXT_BIBLIOGRAPHY = "text:bibliography";
 	public static final String TEXT_BIBLIOGRAPHY_SOURCE = "text:bibliography-source";
 	public static final String TEXT_BIBLIOGRAPHY_ENTRY_TEMPLATE = "text:bibliography-entry-template";
@@ -359,6 +361,9 @@ public class XMLString {
 	public static final String TEXT_TOC_MARK = "text:toc-mark";
 	public static final String TEXT_TOC_MARK_START = "text:toc-mark-start";
 	public static final String TEXT_TOC_MARK_END = "text:toc-mark-end";
+	public static final String TEXT_USER_INDEX_MARK = "text:user-index-mark";
+	public static final String TEXT_USER_INDEX_MARK_START = "text:user-index-mark-start";
+	public static final String TEXT_USER_INDEX_MARK_END = "text:user-index-mark-end";
 	public static final String TEXT_REFERENCE_MARK = "text:reference-mark";
 	public static final String TEXT_REFERENCE_MARK_START = "text:reference-mark-start";
 	public static final String TEXT_REFERENCE_MARK_END = "text:reference-mark-end";
@@ -380,6 +385,7 @@ public class XMLString {
 	public static final String TEXT_USE_CAPTION = "text:use-caption";
 	public static final String TEXT_CAPTION_SEQUENCE_NAME = "text:caption-sequence-name";
 	public static final String TEXT_STRING_VALUE = "text:string-value";
+	public static final String TEXT_INDEX_NAME = "text:index-name";
 	public static final String TEXT_KEY1 = "text:key1";
 	public static final String TEXT_KEY2 = "text:key2";
 	public static final String TEXT_LEVEL = "text:level";

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-10)
+ *  Version 2.0 (2018-08-06)
  *
  */
 package writer2latex.xhtml;
@@ -40,21 +40,12 @@ import writer2latex.xhtml.l10n.L10n;
 //Helper class (a struct) to contain information about a toc entry (ie. a heading, other paragraph or toc-mark)
 final class TocEntry {
 	Element onode; // the original node
+	int nChapterNumber; // The chapter number for this heading
 	String sLabel = null; // generated label for the entry
 	int nFileIndex; // the file index for the generated content
 	int nOutlineLevel; // the outline level for this heading
 	int[] nOutlineNumber; // the natural outline number for this heading
 }
-
-//Helper class (a struct) to point back to indexes that should be processed
-final class IndexData {
-	int nOutFileIndex; // the index of the out file containing the index
-	Element onode; // the original node
-	Element chapter; // the chapter containing this toc
-	Element hnode; // a block node where the index should be added
-}
-
-// TODO: This class needs some refactoring
 
 /** This class processes table of content index marks and the associated table of content
  */
@@ -62,10 +53,8 @@ class TOCConverter extends IndexConverterHelper {
 	
 	private static final String TOC_LINK_PREFIX = "toc";
 	
-    private List<IndexData> indexes = new ArrayList<IndexData>(); // All tables of content
 	private List<TocEntry> tocEntries = new ArrayList<TocEntry>(); // All potential(!) toc items
 	private int nTocFileIndex = -1; // file index for main toc
-	private Element currentChapter = null; // Node for the current chapter (level 1) heading
 	private int nTocIndex = -1; // Current index for id's (of form tocN)
 	private ListCounter naturalOutline = new ListCounter(); // Current "natural" outline number 
 
@@ -76,7 +65,7 @@ class TOCConverter extends IndexConverterHelper {
        	nExternalTocDepth = Math.max(config.splitLevel(),1);
 	}
    
-	/** Return the id of the file containing the alphabetical index
+	/** Return the id of the file containing the main table of contents
 	* 
 	* @return the file id
 	*/
@@ -89,17 +78,17 @@ class TOCConverter extends IndexConverterHelper {
 	 * @param onode the text:h element
      * @param heading the link target will be added to this inline HTML node
 	 * @param sLabel the numbering label of this heading
+	 * @param nChapterNumber the chapter containing this heading
 	 */
-	void handleHeading(Element onode, Element heading, String sLabel) {
+	void handleHeading(Element onode, Element heading, String sLabel, int nChapterNumber) {
 		int nLevel = getTextCv().getOutlineLevel(onode);
 		String sTarget = TOC_LINK_PREFIX+(++nTocIndex);
 		converter.addTarget(heading,sTarget);
 		
-		this.currentChapter = onode;
-		
 		// Add to real toc
 		TocEntry entry = new TocEntry();
 		entry.onode = onode;
+		entry.nChapterNumber = nChapterNumber;
 		entry.sLabel = sLabel;
 		entry.nFileIndex = converter.getOutFileIndex();
 		entry.nOutlineLevel = nLevel; 
@@ -153,43 +142,22 @@ class TOCConverter extends IndexConverterHelper {
      * @param onode a text:alphabetical-index node
      * @param hnode the index will be added to this block HTML node
      */
-    @Override void handleIndex(Element onode, Element hnode) {
+    @Override void handleIndex(Element onode, Element hnode, int nChapterNumber) {
     	if (config.includeToc()) {
-	    	if (!ofr.getTocReader((Element)onode).isByChapter()) { 
+    		// Identify main toc
+	    	if (!ofr.getTocReader(onode).isByChapter()) { 
 	    		nTocFileIndex = converter.getOutFileIndex(); 
 	    	}
-	    	super.handleIndex(onode,hnode);
+	    	super.handleIndex(onode,hnode,nChapterNumber);
     	}
     }
 
-    @Override void populateIndex(Element source, Element container) {
-    	// Actually we are not populating the index, but collects information to generate it later
-    	IndexData data = new IndexData();
-    	data.nOutFileIndex = converter.getOutFileIndex();
-    	data.onode = source;
-    	data.chapter = currentChapter;
-    	data.hnode = container;
-    	indexes.add(data);
-    }
-
-    /** Generate the content of all tables of content
-     * 
-     */
-    void generate() {
-	    int nIndexCount = indexes.size();
-	    for (int i=0; i<nIndexCount; i++) {
-	        generateToc(indexes.get(i));
-	    }
-    }
-
-    private void generateToc(IndexData data) {
+	@Override
+	void generate(IndexData data) {
     	Element onode = data.onode;
-        Element chapter = data.chapter;
+    	int nChapterNumber = data.nChapterNumber;
         Element ul = data.hnode;
 
-        int nSaveOutFileIndex = converter.getOutFileIndex();
-        converter.changeOutFile(data.nOutFileIndex);
- 
         TocReader tocReader = ofr.getTocReader((Element)onode.getParentNode());
 
         // TODO: Read the entire content of the entry templates!
@@ -205,27 +173,23 @@ class TOCConverter extends IndexConverterHelper {
         int nLen = tocEntries.size();
 
         // Find the chapter
-        if (tocReader.isByChapter() && chapter!=null) {
+        if (tocReader.isByChapter() && nChapterNumber>0) {
             for (int i=0; i<nLen; i++) {
                 TocEntry entry = tocEntries.get(i);
-                if (entry.onode==chapter) { nStart=i; break; }
+                if (entry.nChapterNumber==nChapterNumber) { nStart=i; break; }
             }
-            
         }
 
         // Generate entries
         for (int i=nStart; i<nLen; i++) {
-        	Element li = converter.createElement("li");
-        	ul.appendChild(li);
-        	
             TocEntry entry = tocEntries.get(i);
             String sNodeName = entry.onode.getTagName();
             if (XMLString.TEXT_H.equals(sNodeName)) {
                 int nLevel = getTextCv().getOutlineLevel(entry.onode);
 
-                if (nLevel==1 && tocReader.isByChapter() && entry.onode!=chapter) { break; }
+                if (nLevel==1 && tocReader.isByChapter() && entry.nChapterNumber>nChapterNumber) { break; }
                 if (tocReader.useOutlineLevel() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
+                    Element p = createEntry(ul,sEntryStyleName[nLevel]);
                     if (entry.sLabel!=null) {
                         Element span = converter.createElement("span");
                         p.appendChild(span);
@@ -240,7 +204,7 @@ class TOCConverter extends IndexConverterHelper {
                     String sStyleName = getParSc().getRealParStyleName(entry.onode.getAttribute(XMLString.TEXT_STYLE_NAME));
                     nLevel = tocReader.getIndexSourceStyleLevel(sStyleName);
                     if (tocReader.useIndexSourceStyles() && 1<=nLevel && nLevel<=tocReader.getOutlineLevel()) {
-                        Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
+                        Element p = createEntry(ul,sEntryStyleName[nLevel]);
                         if (entry.sLabel!=null) {
                             p.appendChild(converter.createTextNode(entry.sLabel));
                         }
@@ -254,7 +218,7 @@ class TOCConverter extends IndexConverterHelper {
                 String sStyleName = getParSc().getRealParStyleName(entry.onode.getAttribute(XMLString.TEXT_STYLE_NAME));
                 int nLevel = tocReader.getIndexSourceStyleLevel(sStyleName);
                 if (tocReader.useIndexSourceStyles() && 1<=nLevel && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
+                    Element p = createEntry(ul,sEntryStyleName[nLevel]);
                     if (entry.sLabel!=null) {
                         p.appendChild(converter.createTextNode(entry.sLabel));
                     }
@@ -266,7 +230,7 @@ class TOCConverter extends IndexConverterHelper {
             else if (XMLString.TEXT_TOC_MARK.equals(sNodeName)) {
                 int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
                 if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
+                    Element p = createEntry(ul,sEntryStyleName[nLevel]);
                     Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
@@ -275,7 +239,7 @@ class TOCConverter extends IndexConverterHelper {
             else if (XMLString.TEXT_TOC_MARK_START.equals(sNodeName)) {
                 int nLevel = Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1);
                 if (tocReader.useIndexMarks() && nLevel<=tocReader.getOutlineLevel()) {
-                    Element p = getTextCv().createParagraph(li,sEntryStyleName[nLevel]);
+                    Element p = createEntry(ul,sEntryStyleName[nLevel]);
                     Element a = converter.createLink(TOC_LINK_PREFIX+i);
                     p.appendChild(a);
                     a.appendChild(converter.createTextNode(IndexMark.getIndexValue(entry.onode)));
@@ -283,8 +247,14 @@ class TOCConverter extends IndexConverterHelper {
             }
         }
 		
-        converter.changeOutFile(nSaveOutFileIndex);
     }
+	
+	// Create an entry in this list with that paragraph style name
+	private Element createEntry(Element ul, String sStyleName) {
+    	Element li = converter.createElement("li");
+    	ul.appendChild(li);
+    	return getTextCv().createParagraph(li,sStyleName);
+	}
     
     // The panel is populated with a minitoc
     void generatePanels(int nSplit) {

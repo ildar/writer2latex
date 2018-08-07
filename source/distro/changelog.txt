@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.2 ---------
 
+[w2x] Bugfix: The alphabetical index can now be placed anywhere in the document
+
+[w2x] Added support for keys in alphabetical index
+
+[w2x] Added support for user index (index marks only)
+
 [w2l] Added template and configuration for beamer presentations
 
 [w2l] Style maps for paragraph blocks now allows nesting, and can include other elements like
