@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 1.6.1 (2018-08-07)
  *
  */
 package writer2latex.xhtml;
@@ -40,7 +40,7 @@ class BibliographyConverter extends IndexConverterHelper {
 	private XhtmlBibliographyGenerator bibGenerator;
 
     BibliographyConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-        super(ofr,config,converter,XMLString.TEXT_BIBLIOGRAPHY_SOURCE,"bibliography");
+        super(ofr,config,converter,XMLString.TEXT_BIBLIOGRAPHY_SOURCE);
         bibGenerator = new XhtmlBibliographyGenerator(ofr,converter);
     }
     
@@ -53,8 +53,8 @@ class BibliographyConverter extends IndexConverterHelper {
     	}
     }
     
-    @Override void populateIndex(Element source, Element container) {
-    	bibGenerator.populateBibliography(source, container);
+    @Override void generate(IndexData data) {
+    	bibGenerator.populateBibliography(data.onode, data.hnode);
     }
 
 }

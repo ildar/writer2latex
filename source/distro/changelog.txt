@@ -1,5 +1,15 @@
 Changelog for Writer2LaTeX version 1.4 -> 1.6
 
+---------- version 1.6.1 ----------
+
+[w2x] Bugfix: The alphabetical index can now be placed anywhere in the document (backported from v2.0)
+
+[w2x] Added support for keys in alphabetical index (backported from v2.0)
+
+[w2x] Added support for user index (index marks only) (backported from v2.0)
+
+[w2x] Toc-marks are now also included in the external table of contents (used by the EPUB export)
+
 ---------- version 1.6 final ----------
 
 [w2x] Updated URL to MathJax

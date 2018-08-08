@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-19)
+ *  Version 1.6.1 (2018-08-08)
  *
  */
 package writer2latex.xhtml;
@@ -39,7 +39,7 @@ import writer2latex.util.StringComparator;
 
 // Helper class (a struct) to contain information about an alphabetical index entry.
 final class AlphabeticalEntry {
-	String sWord; // the word for the index
+	String[] sWord=new String[3]; // the words for the index in the order key1,key2,word
 	int nIndex; // the original index of this entry
 }
 
@@ -49,10 +49,10 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
 	
     private List<AlphabeticalEntry> index = new ArrayList<AlphabeticalEntry>(); // All words for the index
     private int nIndexIndex = -1; // Current index used for id's (of form idxN) 
-    private int nAlphabeticalIndex = -1; // File containing alphabetical index
+    private int nAlphabeticalIndex = -1; // File containing main alphabetical index
 
     AlphabeticalIndexConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
-        super(ofr,config,converter,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE,"index");
+        super(ofr,config,converter,XMLString.TEXT_ALPHABETICAL_INDEX_SOURCE);
     }
     
     /** Return the id of the file containing the alphabetical index
@@ -69,7 +69,7 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
      * @param hnode the link target will be added to this inline HTML node
      */
     void handleIndexMark(Node onode, Node hnode) {
-        handleIndexMark(Misc.getAttribute(onode,XMLString.TEXT_STRING_VALUE),hnode);
+        handleIndexMark(Misc.getAttribute(onode,XMLString.TEXT_STRING_VALUE),onode,hnode);
     }
 
     /** Handle an alphabetical index mark start
@@ -78,14 +78,19 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
      * @param hnode the link target will be added to this inline HTML node
      */
     void handleIndexMarkStart(Node onode, Node hnode) {
-        handleIndexMark(IndexMark.getIndexValue(onode),hnode);
+        handleIndexMark(IndexMark.getIndexValue(onode),onode,hnode);
     }
     
     // Create an entry for an index mark
-    void handleIndexMark(String sWord, Node hnode) {
+    void handleIndexMark(String sWord, Node onode, Node hnode) {
         if (sWord!=null) {
 	        AlphabeticalEntry entry = new AlphabeticalEntry();
-	        entry.sWord = sWord;
+	        short i=0;
+	        String sKey1 = Misc.getAttribute(onode, XMLString.TEXT_KEY1);
+	        if (sKey1!=null) { entry.sWord[i++]=sKey1; }
+	        String sKey2 = Misc.getAttribute(onode, XMLString.TEXT_KEY2);
+	        if (sKey2!=null) { entry.sWord[i++]=sKey2; }
+	        entry.sWord[i] = sWord;
 	        entry.nIndex = ++nIndexIndex; 
 	        index.add(entry);
 	        hnode.appendChild(converter.createTarget("idx"+nIndexIndex));
@@ -97,25 +102,51 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
      * @param onode a text:alphabetical-index node
      * @param hnode the index will be added to this block HTML node
      */
-    @Override void handleIndex(Element onode, Element hnode) {
+    @Override void handleIndex(Element onode, Element hnode, int nChapterNumber) {
     	// Register the file index (we assume that there is only one alphabetical index)
         nAlphabeticalIndex = converter.getOutFileIndex();
-        converter.setIndexFile(null);
-        super.handleIndex(onode, hnode);
+        super.handleIndex(onode, hnode, nChapterNumber);
     }
     
-    @Override void populateIndex(Element source, Element container) {
+    void generate(IndexData data) {
+    	Element source = data.onode;
+    	Element container = data.hnode;
+
        	sortEntries(source);
-        String sEntryStyleName = getEntryStyleName(source);
+        String[] sEntryStyleName = getEntryStyleName(source);
+        String[] sLastKey = new String[2];
         for (int i=0; i<=nIndexIndex; i++) {
             AlphabeticalEntry entry = index.get(i);
-            Element li = converter.createElement("li");
-            container.appendChild(li);
-            Element p = getTextCv().createParagraph(li,sEntryStyleName);
-            Element a = converter.createLink("idx"+entry.nIndex);
-            p.appendChild(a);
-            a.appendChild(converter.createTextNode(entry.sWord));
-        }
+            for (int j=0; j<3; j++) {
+            	if (entry.sWord[j]!=null) {
+		            Element li = converter.createElement("li");
+		            container.appendChild(li);
+		            Element p = getTextCv().createParagraph(li,sEntryStyleName[j]);
+		            if (j<2 && entry.sWord[j+1]!=null) {
+		            	// This is a key, and may already be inserted
+		            	if (!entry.sWord[j].equals(sLastKey[j])) {
+			            	// The key is inserted as plain text
+			            	p.appendChild(converter.createTextNode(entry.sWord[j]));
+		            	}
+		            }
+		            else {
+		            	// This is the word itself and is added with a link to the text
+			            Element a = converter.createLink("idx"+entry.nIndex);
+			            p.appendChild(a);
+			            a.appendChild(converter.createTextNode(entry.sWord[j]));
+		            }
+            	}
+            }
+            // Update the current keys
+            sLastKey[0]=entry.sWord[0];
+            sLastKey[1]=entry.sWord[1];
+        }   
+        
+        // Add to external content
+        Element title = Misc.getChildByTagName(source, XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+        String sTitle = title!=null ? Misc.getPCDATA(title) : "Alphabetical Index";
+        converter.addContentEntry(sTitle, 1, 
+            converter.getTarget(Misc.getAttribute(source.getParentNode(),XMLString.TEXT_NAME)));
     }
     
     // Sort the list of words based on the language defined by the index source
@@ -125,28 +156,48 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
         		Misc.getAttribute(source, XMLString.FO_COUNTRY)) {
 
 			public int compare(AlphabeticalEntry a, AlphabeticalEntry b) {
-				return getCollator().compare(a.sWord, b.sWord);
+				int nResult=0;
+				for (int i=0; i<3; i++) {
+					nResult = getCollator().compare(a.sWord[i], b.sWord[i]);
+					if (nResult!=0) { // We have a final result
+						return nResult;
+					}
+					else if (i<2) { // the final result depends on the next values
+						if (a.sWord[i+1]==null && b.sWord[i+1]!=null) { // null<string
+							return -1;
+						}
+						else if (a.sWord[i+1]!=null && b.sWord[i+1]==null) { // string>null
+							return 1;
+						}
+						else if (a.sWord[i+1]==null && b.sWord[i+1]==null) { // null==null
+							return nResult;
+						}
+						// if both are not null, we will try again with the next level
+					}
+				}
+				return nResult;
 			}
 		};
 		Collections.sort(index,comparator);
     }
     
-    // Get the style name to use for the individual words
-    private String getEntryStyleName(Element source) {
+    // Get the style names to use for the individual words from the index source
+    private String[] getEntryStyleName(Element source) {
         // TODO: Should read the entire template
+    	String[] sStyleName = new String[3];
     	Node child = source.getFirstChild();
     	while (child!=null) {
             if (child.getNodeType() == Node.ELEMENT_NODE
                 && child.getNodeName().equals(XMLString.TEXT_ALPHABETICAL_INDEX_ENTRY_TEMPLATE)) {
-                // Note: There are actually three outline-levels: separator, 1, 2 and 3
+                // Note: The last value of text:outline-level is "separator"
                 int nLevel = Misc.getPosInteger(Misc.getAttribute(child,XMLString.TEXT_OUTLINE_LEVEL),0);
-                if (nLevel==1) {
-                    return Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
+                if (1<=nLevel && nLevel<=3) {
+                    sStyleName[nLevel-1]=Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME);
                 }
             }
             child = child.getNextSibling();
         }
-        return null;
+        return sStyleName;
     }    
 
 }

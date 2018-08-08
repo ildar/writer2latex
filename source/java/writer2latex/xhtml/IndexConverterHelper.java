@@ -16,15 +16,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 1.6.1 (2018-08-07)
  *
  */
-
 package writer2latex.xhtml;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,12 +36,13 @@ import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 
 /** This is a base class for conversion of indexes (table of contents, bibliography, alphabetical index,
- *  list of tables, list of figures)
+ *  list of tables, list of figures, user index)
  */
 abstract class IndexConverterHelper extends ConverterHelper {
 	
-	private String sEpubType;
 	private String sSourceName;
+	
+    private List<IndexData> indexes = new ArrayList<IndexData>(); // Data for all indexes of this type
     
 	/** Construct a new index converter
 	 * 
@@ -47,43 +50,50 @@ abstract class IndexConverterHelper extends ConverterHelper {
 	 * @param config the configuration
 	 * @param converter the converter
 	 * @param sSourceName the name of the source data element in the index
-	 * @param sEpubType the EPUB 3 semantic type of the index
 	 */
-	IndexConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter,
-			String sSourceName, String sEpubType) {
+	IndexConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter, String sSourceName) {
         super(ofr,config,converter);
 		this.sSourceName = sSourceName;
-		this.sEpubType = sEpubType;
     }
 	
-    /** Generate the actual contents of the index
-     * 
-     * @param source the index source
-     * @param container an ul element to populate with list items
+	/** Generate the contents of the index given by the supplied index data
+	 * 
+	 * @param data the data describing the index
+	 */
+	abstract void generate(IndexData data);
+	
+    /** Generate all indexes of this type. This method should be called after all other content has been converted.
      */
-    abstract void populateIndex(Element source, Element container);
+    void generate() {
+        int nSaveOutFileIndex = converter.getOutFileIndex();
+	    int nIndexCount = indexes.size();
+	    for (int i=0; i<nIndexCount; i++) {
+	        converter.changeOutFile(indexes.get(i).nOutFileIndex);
+	        generate(indexes.get(i));
+	    }
+        converter.changeOutFile(nSaveOutFileIndex);
+    }
 	
     /** Handle an index
      * 
      * @param onode an index node
      * @param hnode the index will be added to this block HTML node
+     * @param nChapterNumber the chapter number for this index
      */
-    void handleIndex(Element onode, Element hnode) {
+    void handleIndex(Element onode, Element hnode, int nChapterNumber) {
         Element source = Misc.getChildByTagName(onode,sSourceName);
         if (source!=null) {
             Element container = createContainer(onode, hnode); 
-            generateTitle(source, container);
-            generateIndex(source, container);
+            convertTitle(source, container);
+            convertContent(source, container, nChapterNumber);
         }
     }
     
     // Create a container node for the index
     private Element createContainer(Element source, Element hnode) {
-		Element container = converter.createElement(converter.isHTML5() ? "section" : "div");
+		Element container = converter.createElement("section");
 		hnode.appendChild(container);
 
-		converter.addEpubType(container, sEpubType);
-		
 		String sName = source.getAttribute(XMLString.TEXT_NAME);
 		if (sName!=null) {
 			converter.addTarget(container,sName);
@@ -98,8 +108,8 @@ abstract class IndexConverterHelper extends ConverterHelper {
 		return container;
     }
     
-    // Generate the index title and add it to the container
-    private void generateTitle(Element source, Element container) {
+    // Convert the index title and add it to the container
+    private void convertTitle(Element source, Element container) {
         Node title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
         if (title!=null) {
             Element h1 = converter.createElement("h1");
@@ -113,13 +123,20 @@ abstract class IndexConverterHelper extends ConverterHelper {
         }
     }
     
-    // Generate the index and add it to the container
-    private void generateIndex(Element source, Element container) {
+    // Convert the index body and add it to the container
+    private void convertContent(Element source, Element container, int nChapterNumber) {
     	Element ul = converter.createElement("ul");
     	// TODO: Support column formatting from the index source
     	ul.setAttribute("style", "list-style-type:none;margin:0;padding:0");
     	container.appendChild(ul);
-    	populateIndex(source,ul);
+    	
+    	// We are not populating the index now, but collects information to generate it later
+    	IndexData data = new IndexData();
+    	data.nOutFileIndex = converter.getOutFileIndex();
+    	data.onode = source;
+    	data.nChapterNumber = nChapterNumber;
+    	data.hnode = ul;
+    	indexes.add(data);
     }
 
 }

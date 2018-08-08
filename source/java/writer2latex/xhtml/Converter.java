@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-28)
+ *  Version 1.6.1 (2018-08-08)
  *
  */
 
@@ -807,6 +807,11 @@ public class Converter extends ConverterBase {
     public void addTarget(Element node,String sId) {
         node.setAttribute("id",targetNames.getExportName(sId));
         targets.put(sId, new Integer(nOutFileIndex));
+    }
+    
+    // get at target id
+    String getTarget(String sId) {
+    	return targetNames.getExportName(sId);
     }
 
     // create an internal link
