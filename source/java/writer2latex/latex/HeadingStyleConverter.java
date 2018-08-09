@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-08-09)
  *
  */
 
@@ -156,7 +156,7 @@ class HeadingStyleConverter extends ConverterHelper {
         palette.getPageSc().applyPageBreak(style,true,ba);
         applyAlignment(style,ba);
         palette.getCharSc().applyNormalFont(ba);
-        palette.getCharSc().applyFont(style,true,true,ba,new Context());
+        palette.getCharSc().applyFullFont(style,true,true,ba,new Context());
         ldp.append(ba.getBefore());
         
         ldp.append("}");
@@ -252,9 +252,10 @@ class HeadingStyleConverter extends ConverterHelper {
 		ListStyle outline = ofr.getOutlineStyle();
 		
         // Get text style to use for label:
-        String sTextStyleName = outline.getLevelProperty(nLevel,XMLString.TEXT_STYLE_NAME);
+        StyleWithProperties textStyle = ofr.getTextStyle(outline.getLevelProperty(nLevel,XMLString.TEXT_STYLE_NAME));
         BeforeAfter baText = new BeforeAfter();
-        palette.getCharSc().applyTextStyle(sTextStyleName,baText,new Context());
+        palette.getCharSc().applyFullFont(textStyle, false, true, baText, new Context());
+        palette.getCharSc().applyFullFontEffects(textStyle, true, baText);
 
         // Get prefix and suffix text to decorate the label
         String sPrefix = outline.getLevelProperty(nLevel,XMLString.STYLE_NUM_PREFIX);
@@ -307,7 +308,7 @@ class HeadingStyleConverter extends ConverterHelper {
 	private void convertTitleBody(StyleWithProperties style, LaTeXDocumentPortion ldp) {
 		BeforeAfter ba = new BeforeAfter();
         palette.getI18n().applyLanguage(style,false,true,ba);
-        palette.getCharSc().applyFontEffects(style,true,ba);
+        palette.getCharSc().applyFullFontEffects(style,true,ba);
         ldp.append("{").append(ba.getBefore()).append("#1").append(ba.getAfter()).append("}");
 	}
 	

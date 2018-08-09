@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18) 
+ *  Version 2.0 (2018-08-08) 
  * 
  */
 
@@ -56,7 +56,6 @@ public abstract class I18n {
     protected int nScript; // Main script
     protected boolean bAlwaysUseDefaultLang; // Ignore sLang parameter to convert()
     protected boolean bGreekMath; // Use math mode for Greek letters
-    private boolean bIgnoreFont; // Do not convert font family
 
     // Collected data
     protected Set<String> languages = new HashSet<>(); // All western languages used
@@ -87,7 +86,6 @@ public abstract class I18n {
         stringReplace = config.getStringReplace();
         bAlwaysUseDefaultLang = !config.multilingual();
         bGreekMath = config.greekMath();
-        bIgnoreFont = config.formatting()<=LaTeXConfig.IGNORE_MOST;
         
         // Read the default languages from the default paragraph style
         if (ofr!=null) {
@@ -235,7 +233,7 @@ public abstract class I18n {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     public void applyFontFamily(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
-        if (style!=null && !bIgnoreFont) {
+        if (style!=null) {
 	        String sFontName=style.getProperty(XMLString.STYLE_FONT_NAME,bInherit);
 	        if (sFontName!=null){
 	            String sFamily = convertFontDeclaration(sFontName);

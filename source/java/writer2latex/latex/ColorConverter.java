@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-23)
+ *  Version 2.0 (2018-08-08)
  *
  */
 
@@ -71,9 +71,8 @@ public class ColorConverter extends ConverterHelper {
         Pattern colorPattern = Pattern.compile("#[A-Fa-f0-9]{6}");
         colorMatcher = colorPattern.matcher("");
 
-        // We use color if requested in the configuration, however ignoring
-        // all formatting overrides this
-        bUseColor = config.useXcolor() && config.formatting()>LaTeXConfig.IGNORE_ALL;
+        // We use color if requested in the configuration
+        bUseColor = config.useXcolor();
         
         // Create map of the 19 standard colors provided by xcolor
     	// These are given as decimal rgb values in xcolor.sty and converted to hex using the

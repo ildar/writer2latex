@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-30)
+ *  Version 2.0 (2018-08-08)
  *
  */
 
@@ -46,6 +46,7 @@ public class CharStyleConverter extends StyleConverter {
     // Which formatting should we export?
     private boolean bIgnoreHardFontsize;
     private boolean bIgnoreFontsize;
+    private boolean bIgnoreFont;
     private boolean bIgnoreAll;
     private boolean bUseUlem;
     // Do we need actually use ulem.sty or \textsubscript?
@@ -61,6 +62,8 @@ public class CharStyleConverter extends StyleConverter {
 
         // No character formatting at all:
         bIgnoreAll = config.formatting()==LaTeXConfig.IGNORE_ALL;
+        // No font family:
+        bIgnoreFont = config.formatting()<=LaTeXConfig.IGNORE_MOST;
         // No fontsize:
         bIgnoreFontsize = config.formatting()<=LaTeXConfig.CONVERT_BASIC;
         // No hard fontsize
@@ -181,20 +184,46 @@ public class CharStyleConverter extends StyleConverter {
         if (!ba.isEmpty()) { ba.add(" ",""); }
     }
 
-    /** <p>Apply all font attributes (family, series, shape, size and color).</p>
-     *  @param style the ODF style to read attributesfrom
+    /** Apply all font attributes (family, series, shape, size and color), disregarding the setting of the
+     * formatting attribute
+     *  @param style the ODF style to read attributes from
+     *  @param bDecl true if declaration form is required
+     *  @param bInherit true if inherited properties should be used
+     *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
+     */
+    public void applyFullFont(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
+        // Note: if bDecl is true, nothing will be put in the "after" part of ba.
+        if (style!=null) {
+        	applyNfssSize(style,bDecl,bInherit,ba,context);
+	        palette.getI18n().applyFontFamily(style,bDecl,bInherit,ba,context);
+	        applyNfssSeries(style,bDecl,bInherit,ba,context);
+	        applyNfssShape(style,bDecl,bInherit,ba,context);
+	        palette.getColorCv().applyColor(style,bDecl,bInherit,ba,context);
+        }
+    }
+	
+    /** Apply all font attributes (family, series, shape, size and color), taking the formatting attribute into account
+     *  @param style the ODF style to read attributes from
      *  @param bDecl true if declaration form is required
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     public void applyFont(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
-        if (style==null) { return; }
-        applyNfssSize(style,bDecl,bInherit,ba,context);
-        palette.getI18n().applyFontFamily(style,bDecl,bInherit,ba,context);
-        applyNfssSeries(style,bDecl,bInherit,ba,context);
-        applyNfssShape(style,bDecl,bInherit,ba,context);
-        palette.getColorCv().applyColor(style,bDecl,bInherit,ba,context);
+    	// What gets converted depends on the formatting attribute
+        if (style!=null) {
+	        if (!(bIgnoreFontsize || (bIgnoreHardFontsize && style.isAutomatic()))) {
+	        	applyNfssSize(style,bDecl,bInherit,ba,context);
+	        }
+	        if (!bIgnoreFont) {
+	        	palette.getI18n().applyFontFamily(style,bDecl,bInherit,ba,context);
+	        }
+	        if (!bIgnoreAll) {
+	        	applyNfssSeries(style,bDecl,bInherit,ba,context);
+	        	applyNfssShape(style,bDecl,bInherit,ba,context);
+		        palette.getColorCv().applyColor(style,bDecl,bInherit,ba,context);
+	        }
+        }
     }
 	
     /** <p>Reset to normal font, size and color.</p>
@@ -205,18 +234,30 @@ public class CharStyleConverter extends StyleConverter {
         palette.getColorCv().applyNormalColor(ba);
     }
 
-    /** <p>Apply font effects (position, underline, cross out, change case.</p>
+    /** <p>Apply font effects (position, underline, cross out, change case, disregarding the formatting property</p>
+     *  @param style the ODF style to read attributes from
+     *  @param bInherit true if inherited properties should be used
+     *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
+     */
+    public void applyFullFontEffects(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
+        if (style!=null) {
+        	applyTextPosition(style, bInherit, ba);
+        	applyUnderline(style, bInherit, ba);
+        	applyCrossout(style, bInherit, ba);
+        	applyChangeCase(style, bInherit, ba);
+        	palette.getMicrotypeCv().applyLetterspace(style, bInherit, ba);
+        }
+    }
+	
+    /** <p>Apply font effects (position, underline, cross out, change case</p>
      *  @param style the ODF style to read attributes from
      *  @param bInherit true if inherited properties should be used
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     public void applyFontEffects(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style==null) { return; }
-        applyTextPosition(style, bInherit, ba);
-        applyUnderline(style, bInherit, ba);
-        applyCrossout(style, bInherit, ba);
-        applyChangeCase(style, bInherit, ba);
-        palette.getMicrotypeCv().applyLetterspace(style, bInherit, ba);
+        if (!bIgnoreAll) {
+        	applyFullFontEffects(style, bInherit, ba);
+        }
     }
 	
     // Remaining methods are private
@@ -229,7 +270,7 @@ public class CharStyleConverter extends StyleConverter {
      */
     private void applyNfssSeries(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
-        if (style!=null && !bIgnoreAll) {
+        if (style!=null) {
         	String sSeries = nfssSeries(style.getProperty(XMLString.FO_FONT_WEIGHT,bInherit));
         	if (sSeries!=null) {
         		// Temporary: Support text-attribute style maps for this particular case
@@ -258,7 +299,7 @@ public class CharStyleConverter extends StyleConverter {
      */
     private void applyNfssShape(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
-        if (style!=null && !bIgnoreAll) {
+        if (style!=null) {
         	String sVariant = style.getProperty(XMLString.FO_FONT_VARIANT, bInherit);
         	String sStyle = style.getProperty(XMLString.FO_FONT_STYLE, bInherit);
         	String sShape = nfssShape(sVariant,sStyle);
@@ -293,13 +334,14 @@ public class CharStyleConverter extends StyleConverter {
      */
     private void applyNfssSize(StyleWithProperties style, boolean bDecl, boolean bInherit, BeforeAfter ba, Context context) {
         // Note: if bDecl is true, nothing will be put in the "after" part of ba.
-        if (style==null|| bIgnoreFontsize || (bIgnoreHardFontsize && style.isAutomatic())) { return; }
-        if (style.getProperty(XMLString.FO_FONT_SIZE, bInherit)==null) { return; }
-        String sSize = nfssSize(style.getAbsoluteProperty(XMLString.FO_FONT_SIZE));
-        if (sSize==null) { return; }
-        if (sSize.equals(nfssSize(context.getFontSize()))) { return; } 
-        if (bDecl) { ba.add(sSize,""); }
-        else { ba.add("{"+sSize+" ","}"); }
+        if (style!=null) {
+	        if (style.getProperty(XMLString.FO_FONT_SIZE, bInherit)==null) { return; }
+	        String sSize = nfssSize(style.getAbsoluteProperty(XMLString.FO_FONT_SIZE));
+	        if (sSize==null) { return; }
+	        if (sSize.equals(nfssSize(context.getFontSize()))) { return; } 
+	        if (bDecl) { ba.add(sSize,""); }
+	        else { ba.add("{"+sSize+" ","}"); }
+        }
     }
 
     // Remaining methods are not context-sensitive
@@ -310,7 +352,7 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyTextPosition(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style!=null && !bIgnoreAll) {
+        if (style!=null) {
         	String s = textPosition(style.getProperty(XMLString.STYLE_TEXT_POSITION, bInherit));
     		// Temporary: Support text-attribute style maps for this particular case
     		// TODO: Reimplement the CharStyleConverter to properly support this...
@@ -334,7 +376,7 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyUnderline(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style!=null && bUseUlem && !bIgnoreAll) {
+        if (style!=null && bUseUlem) {
 	        String sStyle = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_STYLE,bInherit);
 	        String sType = style.getProperty(XMLString.STYLE_TEXT_UNDERLINE_TYPE,bInherit);
 	        String s = underline(sStyle, sType);
@@ -350,7 +392,7 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyCrossout(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style!=null && bUseUlem && !bIgnoreAll) {
+        if (style!=null && bUseUlem) {
 	        String sStyle = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_STYLE,bInherit);
 	        String sText = style.getProperty(XMLString.STYLE_TEXT_LINE_THROUGH_TEXT,bInherit);
 	        String s = crossout(sStyle, sText);
@@ -366,10 +408,10 @@ public class CharStyleConverter extends StyleConverter {
      *  @param ba the <code>BeforeAfter</code> to add LaTeX code to.
      */
     private void applyChangeCase(StyleWithProperties style, boolean bInherit, BeforeAfter ba) {
-        if (style==null) { return; }
-        if (bIgnoreAll) { return; }
-        String s = changeCase(style.getProperty(XMLString.FO_TEXT_TRANSFORM));
-        if (s!=null) { ba.add(s+"{","}"); }
+        if (style!=null) {
+	        String s = changeCase(style.getProperty(XMLString.FO_TEXT_TRANSFORM));
+	        if (s!=null) { ba.add(s+"{","}"); }
+        }
     }
 
     // The remaining methods are static helpers to convert single style properties
