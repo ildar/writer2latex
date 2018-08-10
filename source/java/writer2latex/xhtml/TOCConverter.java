@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-07)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 package writer2latex.xhtml;
@@ -153,9 +153,12 @@ class TOCConverter extends IndexConverterHelper {
         tocEntries.add(entry);
         
         // Add to external toc
-		converter.addContentEntry(entry.onode.getAttribute(XMLString.TEXT_STRING_VALUE),
+        int nLevel = Misc.getPosInteger(Misc.getAttribute(entry.onode, XMLString.TEXT_OUTLINE_LEVEL),1);
+		if (nLevel<=nExternalTocDepth) {
+			converter.addContentEntry(entry.onode.getAttribute(XMLString.TEXT_STRING_VALUE),
 				Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1),
 				sTarget);
+		}
     }
     
     /** Handle a table of contents
@@ -164,14 +167,12 @@ class TOCConverter extends IndexConverterHelper {
      * @param hnode the index will be added to this block HTML node
      */
     @Override void handleIndex(Element onode, Element hnode, int nChapterNumber) {
-    	if (config.includeToc()) {
-    		// Identify main toc
-	    	if (!ofr.getTocReader(onode).isByChapter()) { 
-	    		nTocFileIndex = converter.getOutFileIndex(); 
-	    	}
-	    	converter.setTocFile(null);
-	    	super.handleIndex(onode,hnode,nChapterNumber);
+		// Identify main toc
+    	if (!ofr.getTocReader(onode).isByChapter()) { 
+    		nTocFileIndex = converter.getOutFileIndex(); 
     	}
+    	converter.setTocFile(null);
+    	super.handleIndex(onode,hnode,nChapterNumber);
     }
 
     /** Generate the content of all tables of content

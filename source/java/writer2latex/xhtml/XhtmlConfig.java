@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-15)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2latex.util.Misc;
 
 public class XhtmlConfig extends writer2latex.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 59; }
+    protected int getOptionCount() { return 60; }
     protected String getDefaultConfigPath() { return "/writer2latex/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -159,6 +159,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     private static final int UPLINK = 56;
     private static final int DIRECTORY_ICON = 57;
     private static final int DOCUMENT_ICON = 58;
+    private static final int INDEX_LINKS = 59;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -292,6 +293,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
         options[UPLINK] = new Option("uplink","");
         options[DIRECTORY_ICON] = new Option("directory_icon","");
         options[DOCUMENT_ICON] = new Option("document_icon","");
+        options[INDEX_LINKS] = new BooleanOption("index_links","true");
     }
     
 	protected void readInner(Element elm) {
@@ -434,6 +436,7 @@ public class XhtmlConfig extends writer2latex.base.ConfigBase {
     public String getXhtmlUplink() { return options[UPLINK].getString(); }
     public String getXhtmlDirectoryIcon() { return options[DIRECTORY_ICON].getString(); }
     public String getXhtmlDocumentIcon() { return options[DOCUMENT_ICON].getString(); }
+    public boolean indexLinks() { return ((BooleanOption) options[INDEX_LINKS]).getValue(); }
 	
     public XhtmlStyleMap getXParStyleMap() { return getStyleMap(xpar); }
     public XhtmlStyleMap getXHeadingStyleMap() { return getStyleMap(xheading); }

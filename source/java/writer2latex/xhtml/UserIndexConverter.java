@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-08)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 package writer2latex.xhtml;
@@ -101,9 +101,11 @@ class UserIndexConverter extends IndexConverterHelper {
         }		
         
         // Add to external content
-        Element title = Misc.getChildByTagName(onode, XMLString.TEXT_INDEX_TITLE_TEMPLATE);
-        String sTitle = title!=null ? Misc.getPCDATA(title) : "User Index";
-        converter.addContentEntry(sTitle, 1, converter.getTarget(Misc.getAttribute(onode.getParentNode(),XMLString.TEXT_NAME)));
+        if (config.indexLinks()) {
+	        Element title = Misc.getChildByTagName(onode, XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+	        String sTitle = title!=null ? Misc.getPCDATA(title) : "User Index";
+	        converter.addContentEntry(sTitle, 1, converter.getTarget(Misc.getAttribute(onode.getParentNode(),XMLString.TEXT_NAME)));
+        }
     }
 	
     // Get the style names to use for the individual words from the index source

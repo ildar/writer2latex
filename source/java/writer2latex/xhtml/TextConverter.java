@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-07)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -286,10 +286,12 @@ public class TextConverter extends ConverterHelper {
                     nDontSplitLevel++;
                 }
                 else if (nodeName.equals(XMLString.TEXT_TABLE_OF_CONTENT)) {
-                    if (!ofr.getTocReader((Element)child).isByChapter()) {
-                        hnode = maybeSplit(hnode,null,1);
-                    }
-                    tocCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
+                	if (config.includeToc()) {
+	                    if (!ofr.getTocReader((Element)child).isByChapter()) {
+	                        hnode = maybeSplit(hnode,null,1);
+	                    }
+	                    tocCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
+                	}
                 }
                 else if (nodeName.equals(XMLString.TEXT_ILLUSTRATION_INDEX)) {
                     lofCv.handleLOF(child,hnode);
@@ -1174,19 +1176,19 @@ public class TextConverter extends ConverterHelper {
                         	if (!bInToc) { indexCv.handleIndexMarkStart(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_TOC_MARK)) {
-	                        tocCv.handleTocMark(child,hnode);
+	                        if (!bInToc) { tocCv.handleTocMark(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_TOC_MARK_START)) {
-	                        tocCv.handleTocMark(child,hnode);
+                        	if (!bInToc) { tocCv.handleTocMark(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_USER_INDEX_MARK)) {
-                        	userCv.handleUserMark(child,hnode,nChapterNumber);
+                        	if (!bInToc) { userCv.handleUserMark(child,hnode,nChapterNumber); }
                         }
                         else if (sName.equals(XMLString.TEXT_USER_INDEX_MARK_START)) {
-                        	userCv.handleUserMark(child,hnode,nChapterNumber);
+                        	if (!bInToc) { userCv.handleUserMark(child,hnode,nChapterNumber); }
                         }
                         else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
-	                        handleBibliographyMark(child,hnode);
+                        	if (!bInToc) { handleBibliographyMark(child,hnode); }
                         }
                         else if (sName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                         	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }

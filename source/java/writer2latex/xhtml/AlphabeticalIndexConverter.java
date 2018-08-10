@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-08)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 package writer2latex.xhtml;
@@ -143,10 +143,12 @@ class AlphabeticalIndexConverter extends IndexConverterHelper {
         }   
         
         // Add to external content
-        Element title = Misc.getChildByTagName(source, XMLString.TEXT_INDEX_TITLE_TEMPLATE);
-        String sTitle = title!=null ? Misc.getPCDATA(title) : "Alphabetical Index";
-        converter.addContentEntry(sTitle, 1, 
-            converter.getTarget(Misc.getAttribute(source.getParentNode(),XMLString.TEXT_NAME)));
+        if (config.indexLinks()) {
+	        Element title = Misc.getChildByTagName(source, XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+	        String sTitle = title!=null ? Misc.getPCDATA(title) : "Alphabetical Index";
+	        converter.addContentEntry(sTitle, 1, 
+	            converter.getTarget(Misc.getAttribute(source.getParentNode(),XMLString.TEXT_NAME)));
+        }
     }
     
     // Sort the list of words based on the language defined by the index source

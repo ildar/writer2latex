@@ -1,4 +1,4 @@
-Changelog for Writer2LaTeX version 1.4 -> 1.6
+Changelog for Writer2LaTeX version 1.4 -> 1.6.1
 
 ---------- version 1.6.1 ----------
 
@@ -8,7 +8,10 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6
 
 [w2x] Added support for user index (index marks only) (backported from v2.0)
 
-[w2x] Toc-marks are now also included in the external table of contents (used by the EPUB export)
+[w2x] Toc-marks are now also included in the external table of contents used by the EPUB export
+  
+[w2x] New EPUB option index_links to include links to alphabetical index and user index in the external
+  table of contents
 
 ---------- version 1.6 final ----------
 
