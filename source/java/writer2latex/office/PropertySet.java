@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -41,6 +41,10 @@ public class PropertySet {
     public PropertySet() {
         properties = new Hashtable<String, String>();
         sName="";
+    }
+    
+    public int getSize() {
+    	return properties.size();
     }
 	
     public String getProperty(String sPropName) {

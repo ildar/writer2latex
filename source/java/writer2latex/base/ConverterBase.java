@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-03)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -111,7 +111,7 @@ public abstract class ConverterBase implements Converter {
     }
     
     private ConverterResult convert(String sTargetFileName, boolean bDestructive) throws IOException {
-        ofr = new OfficeReader(odDoc,false);
+        ofr = new OfficeReader(odDoc,false,bDestructive);
         metaData = new MetaData(odDoc);
         imageConverter = new ImageConverter(ofr,bDestructive,true);
         imageConverter.setGraphicConverter(graphicConverter);

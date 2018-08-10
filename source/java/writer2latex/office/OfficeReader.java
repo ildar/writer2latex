@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-16)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -39,6 +39,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
+import org.w3c.dom.Text;
 
 import writer2latex.util.Misc;
 
@@ -832,10 +833,10 @@ public class OfficeReader {
     }
 
     /** Constructor; read a document */
-    public OfficeReader(OfficeDocument oooDoc, boolean bAllParagraphsAreSoft) {
+    public OfficeReader(OfficeDocument oooDoc, boolean bAllParagraphsAreSoft, boolean bDestructive) {
         this.oooDoc = oooDoc;
         loadStylesFromDOM(oooDoc.getStyleDOM(),oooDoc.getContentDOM(),bAllParagraphsAreSoft);
-        loadContentFromDOM(oooDoc.getContentDOM());
+        loadContentFromDOM(oooDoc.getContentDOM(),bDestructive);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1075,7 +1076,7 @@ public class OfficeReader {
 
     }
 	
-    private void loadContentFromDOM(Document contentDOM) {
+    private void loadContentFromDOM(Document contentDOM, boolean bDestructive) {
      // Get the office:body element
         NodeList list = contentDOM.getElementsByTagName(XMLString.OFFICE_BODY);
         if (list.getLength()>0) {
@@ -1135,7 +1136,7 @@ public class OfficeReader {
                 }
             }                
 
-            traverseContent(body,null,0,-1);
+            traverseContent(body,null,0,-1,bDestructive);
 
             if (sAutoFigureSequenceName!=null) {
                 addFigureSequenceName(sAutoFigureSequenceName);
@@ -1150,11 +1151,12 @@ public class OfficeReader {
         }*/
     }
 	
-    private void traverseContent(Element node, String sListStyleName, int nListLevel, int nParLevel) {
+    private void traverseContent(Element node, String sListStyleName, int nListLevel, int nParLevel, boolean bDestructive) {
         // Handle this node first
         String sName = node.getTagName();
         if (sName.equals(XMLString.TEXT_P)) {
         	nParLevel=0;
+        	if (bDestructive) { optimize(node); }
             //collectMasterPage(getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME)));
         }
         else if (sName.equals(XMLString.TEXT_H)) {
@@ -1176,6 +1178,7 @@ public class OfficeReader {
                     heading[nLevel] = style;
                 }
             }
+        	if (bDestructive) { optimize(node); }
         }
         else if (sName.equals(XMLString.TEXT_LIST) || 
         		 sName.equals(XMLString.TEXT_ORDERED_LIST) || sName.equals(XMLString.TEXT_UNORDERED_LIST)) {
@@ -1278,7 +1281,7 @@ public class OfficeReader {
         Node child = node.getFirstChild();
         while (child!=null) {
             if (child.getNodeType()==Node.ELEMENT_NODE) {
-                traverseContent((Element) child, sListStyleName, nListLevel, nParLevel);
+                traverseContent((Element) child, sListStyleName, nListLevel, nParLevel, bDestructive);
             }
             child = child.getNextSibling();
         }
@@ -1322,5 +1325,88 @@ public class OfficeReader {
             }
         }
     }
-	
+
+    // Optimize a heading or paragraph
+    private void optimize(Node node) {
+    	Node child = node.getFirstChild();
+    	while (child!=null) {
+    		if (child.getNodeType()==Node.ELEMENT_NODE && child.getNodeName().equals(XMLString.TEXT_SPAN)) {
+    			String sStyleName = Misc.getAttribute(child, XMLString.TEXT_STYLE_NAME);
+    			StyleWithProperties style = getTextStyle(sStyleName);
+    			if (style!=null && style.isEmpty()) {
+    				// Found a text span which only represents a session id
+    				child = removeSpan(node, child); 
+    			}
+    			else {
+    				Node next = child.getNextSibling();
+    				if (next!=null && sStyleName.equals(Misc.getAttribute(next, XMLString.TEXT_STYLE_NAME))) {
+    					// Found two adjacent text spans with the same style name
+    					System.out.println("Merging to nodes with style "+sStyleName);
+    					child = mergeSpan(node, child, next);
+    				}
+    				else {
+    					// Found ordinary text span, optimize children and continue with next child
+    					optimize(child);
+    					child = child.getNextSibling();
+    				}
+    			}
+    		}
+    		else if (child.getNodeType()==Node.TEXT_NODE) {
+    			Node next = child.getNextSibling();
+    			if (next!=null && next.getNodeType()==Node.TEXT_NODE) {
+    				// Found two adjacent text nodes
+    				child = mergeText(node, child, next);
+    			}
+    			else {
+    				// Found isolated text node
+    				child = child.getNextSibling();
+    			}
+    		}
+    		else {
+    			// All other nodes are ignored
+    			child = child.getNextSibling();
+    		}
+    	}
+    }
+    
+    private Node removeSpan(Node parent, Node span) {
+    	// After removing the span, we should reexamine the previous node (if any)
+    	// (This may be a text node to be merged with a text node from the span)
+    	Node next = span.getPreviousSibling();
+    	// Move all children out of the span
+    	Node child = span.getFirstChild();
+    	while (child!=null) {
+    		span.removeChild(child);
+    		parent.insertBefore(child, span);
+    		child = span.getFirstChild();
+    	}
+    	// Remove the (now empty) span
+    	parent.removeChild(span);
+    	// Continue with the previous node (if any), or the first node of the parent
+    	return next!=null ? next : parent.getFirstChild();
+    }
+    
+    private Node mergeSpan(Node parent, Node span1, Node span2) {
+    	// Move all child nodes from the second span into the first span
+    	Node child;
+    	while ((child=span2.getFirstChild())!=null) {
+    		span2.removeChild(child);
+    		span1.appendChild(child);
+    	}
+    	// Remove the second (now empty) span
+    	parent.removeChild(span2);
+    	// Continue with the merged node, as more merges may happen (this will also ensure the node gets optimized)
+    	return span1;
+    }
+    
+    private Node mergeText(Node parent, Node text1, Node text2) {
+    	// Replace the two text nodes with a single text node
+    	Text merged = parent.getOwnerDocument().createTextNode(text1.getNodeValue()+text2.getNodeValue());
+    	parent.insertBefore(merged, text1);
+    	parent.removeChild(text1);
+    	parent.removeChild(text2);
+    	// After the merge, we should examine the merged node, as more text nodes may follow
+    	return merged;
+    }
+
 }

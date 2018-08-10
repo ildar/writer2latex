@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.0 (2008-11-22)
+ *  Version 1.6.1 (2018-08-10)
  */
  
 package writer2latex.office;
@@ -48,6 +48,8 @@ public class StyleWithProperties extends OfficeStyle {
     private final static int PAGE = 9;
     //private final static int DRAWPAGE = 10;
     private final static int COUNT = 10;
+	
+    private boolean bEmpty; // Flag to indicate that this style does not contain any properties except rsid
 	
     private PropertySet[] properties = new PropertySet[COUNT];
     private boolean bIsOldProps = false;
@@ -110,6 +112,12 @@ public class StyleWithProperties extends OfficeStyle {
             }
             child = child.getNextSibling();
         }
+        // Test whether this style contains any real properties
+        int nSize = 0;
+        for (int i=0; i<COUNT; i++) {
+        	nSize+=properties[i].getSize();
+        }
+        bEmpty = (nSize==1 && properties[TEXT].containsProperty(XMLString.OFFICEOOO_RSID));
     }
 	
     private void loadPropertiesFromDOM(int nIndex,Node node) {
@@ -134,6 +142,10 @@ public class StyleWithProperties extends OfficeStyle {
             }
             child = child.getNextSibling();
         }
+    }
+    
+    public boolean isEmpty() {
+    	return bEmpty;
     }
 	
     protected String getProperty(int nIndex, String sName, boolean bInherit) {

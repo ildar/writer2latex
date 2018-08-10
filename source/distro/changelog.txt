@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6.1
 
 ---------- version 1.6.1 ----------
 
+[w2l] Bugfix: String replace now works consistently again (backported from v2.0)
+
 [w2x] Bugfix: The alphabetical index can now be placed anywhere in the document (backported from v2.0)
 
 [w2x] Added support for keys in alphabetical index (backported from v2.0)

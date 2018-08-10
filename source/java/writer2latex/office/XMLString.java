@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-07)
+ *  Version 1.6.1 (2018-08-10)
  *
  */
 
@@ -485,5 +485,9 @@ public class XMLString {
 	public static final String MATH="math";
     public static final String SEMANTICS="semantics";
 	public static final String ANNOTATION="annotation";
+	
+	// officeooo namespace (LibreOffice specific)
+	public static final String OFFICEOOO_RSID = "officeooo:rsid";
+	public static final String OFFICEOOO_PARAGRAPH_RSID = "officeooo:paragraph-rsid";
     
 }

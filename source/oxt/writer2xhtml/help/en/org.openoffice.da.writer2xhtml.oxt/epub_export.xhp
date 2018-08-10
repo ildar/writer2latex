@@ -213,9 +213,15 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Number of heading levels to include</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsExternalTocDepth" visibility="hidden">Select the number of heading levels to include in the content table in the EPUB document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">An EPUB document contains a content table, which the EPUB reader can use to let the
-        user navigate through the document. Writer2xhtml generates this table based on the headings in the document.
+        user navigate through the document. Writer2xhtml generates this table based on the headings and index marks in the document.
         You can select the number of heading levels to include.</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsIndexLinks" id="bm_options_indexlinks"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Include links to other indexes</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIndexLinks" visibility="hidden">Check this to add links to alphabetical index and user index to the EPUB content table</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If the document contains an alphabetical index and/or a user defined index,
+        you can add these to the EPUB content table by checking this option.</paragraph>
+        
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeToc" id="bm_options_includetoc"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Also include original table of contents</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeToc" visibility="hidden">Check this to include the original table of contents in addition to the EPUB content table</ahelp></paragraph>

@@ -294,6 +294,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         // Navigation table
         setControlEnabled("ExternalTocDepthLabel", !isLocked("external_toc_depth"));
         setControlEnabled("ExternalTocDepth", !isLocked("external_toc_depth"));
+        setControlEnabled("IndexLinks", !isLocked("index_links"));
         setControlEnabled("IncludeToc", !isLocked("include_toc"));
         setControlEnabled("IncludeNCX", (this instanceof Epub3OptionsDialog) && !isLocked("include_ncx"));
     }
