@@ -1,6 +1,16 @@
 Version history for Writer2LaTeX
 ================================
 
+Version 1.6.1 beta (August 2018)
+  - Writer2LaTeX:
+       - Fix bug with string replace
+  - Writer2xhtml:
+       - Fix bug with images (EPUB only)
+       - Improved support for alphabetical index
+       - Added support for user index
+       - New EPUB options external_toc_depth_marks and index_links for the content table
+       - New EPUB option avoid_html5 for enhanced EPUB 2 compatibility 
+
 Version 1.6 (May 2018)
   - Writer2LaTex extension:
        - New toolbar replacing the previous separate extension Writer4LaTeX

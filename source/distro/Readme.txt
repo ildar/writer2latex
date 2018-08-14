@@ -1,7 +1,7 @@
-Writer2LaTeX version 1.6.1
-==========================
+Writer2LaTeX version 1.6.1 beta
+===============================
 
-This is the distribution of Writer2LaTeX version 1.6.1
+This is the distribution of Writer2LaTeX version 1.6.1 beta
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net

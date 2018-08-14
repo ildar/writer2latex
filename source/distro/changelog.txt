@@ -1,6 +1,6 @@
 Changelog for Writer2LaTeX version 1.4 -> 1.6.1
 
----------- version 1.6.1 ----------
+---------- version 1.6.1 beta ----------
 
 [w2l] Bugfix: String replace now works consistently again (backported from v2.0)
 
