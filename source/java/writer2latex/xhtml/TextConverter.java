@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-10)
+ *  Version 1.6.1 (2018-08-12)
  *
  */
 
@@ -610,7 +610,10 @@ public class TextConverter extends ConverterHelper {
         
         if (converter.isOPS() && !par.hasChildNodes()) {
             // Finally, in EPUB export, if the exported paragraph turns out to be empty, remove it
-        	hnode.removeChild(par);
+    		// Note that par may not be the p-element, but some child of the p-element
+        	// The method applyAttributes causes this effect.
+        	// Hence we cannot do hnode.removeChild(par), but must use:
+    		hnode.removeChild(hnode.getLastChild());
         }
         else {
         	// Otherwise, add before/after text if required

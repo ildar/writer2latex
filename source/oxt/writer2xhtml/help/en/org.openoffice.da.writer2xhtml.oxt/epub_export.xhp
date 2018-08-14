@@ -210,11 +210,17 @@
         <paragraph role="heading" level="2" xml-lang="en-US">Navigation table</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsExternalTocDepth" id="bm_options_externaltocdepth"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Number of heading levels to include</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Heading levels to include</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsExternalTocDepth" visibility="hidden">Select the number of heading levels to include in the content table in the EPUB document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">An EPUB document contains a content table, which the EPUB reader can use to let the
         user navigate through the document. Writer2xhtml generates this table based on the headings and index marks in the document.
-        You can select the number of heading levels to include.</paragraph>
+        You can select the number of heading levels to include (choose 0 if you do not want any headings in the table).</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsExternalTocDepthMarks" id="bm_options_externaltocdepthmarks"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Index mark levels to include</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsExternalTocDepthMarks" visibility="hidden">Select the number of index mark levels to include in the content table in the EPUB document</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">This is a companion to the previous option.
+        You can select the number of index mark levels to include (choose 0 if you do not want any index marks in the table).</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsIndexLinks" id="bm_options_indexlinks"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Include links to other indexes</paragraph>
@@ -228,12 +234,25 @@
         <paragraph role="paragraph" xml-lang="en-US">Your document may also include a normal table of contents.
         Check this if you want to include this table of contents in addition to the navigation table.</paragraph>
         
+        <paragraph role="heading" level="2" xml-lang="en-US">EPUB 2 compatibility</paragraph>
+
+        <paragraph role="paragraph" xml-lang="en-US">These settings are only avaliable if the export format is EPUB 3.
+        They provide two compatibility options for older EPUB readers which are not fully compatible with EPUB 3.
+        Alternatively, you can set the export format to EPUB 2 under
+        <emph><link href="org.openoffice.da.writer2xhtml.oxt/settings.xhp"
+				name="Custom configuration">Tools - Options - Writer2xhtml toolbar</link></emph></paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeNCX" id="bm_options_includencx"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Include EPUB 2 navigation (EPUB 3 only)</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Include EPUB 2 navigation</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeNCX" visibility="hidden">Check this to include navigation information in EPUB 2 format</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">EPUB 3 uses a new format for the navigation information.
-        Check this option if you also want to include navigation information in the old format.
-        This will ensure compatibility with older EPUB readers.</paragraph>
+        Check this option if you also want to helt older EPUB readers by include navigation information in the old format.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsAvoidHtml5" id="bm_options_includencx"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Avoid HTML5 elements</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsAvoidHtml5" visibility="hidden">Check this to avoid the use of elements specific for HTML5</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">EPUB 3 uses HTML5 for the text. Check this option if you want to help older EPUB
+        readers by avoiding elements that are specific for HTML5.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Document properties</paragraph>        
         

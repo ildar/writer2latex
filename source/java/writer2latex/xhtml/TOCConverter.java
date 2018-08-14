@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-10)
+ *  Version 1.6.1 (2018-08-13)
  *
  */
 package writer2latex.xhtml;
@@ -63,13 +63,15 @@ class TOCConverter extends IndexConverterHelper {
 	private ListCounter naturalOutline = new ListCounter(); // Current "natural" outline number 
 
 	private int nExternalTocDepth = 1; // The number of levels to include in the "external" table of contents
+	private int nExternalTocDepthMarks = 1; // The number of levels of index makrs to include in the "external" table of contents
 
 	TOCConverter(OfficeReader ofr, XhtmlConfig config, Converter converter) {
 		super(ofr,config,converter,XMLString.TEXT_TABLE_OF_CONTENT_SOURCE);
         nExternalTocDepth = config.externalTocDepth();
-        if (nExternalTocDepth==0) { // A value of zero means auto (i.e. determine from split level)
+        if (nExternalTocDepth==-1) { // A value of -1 means auto (i.e. determine from split level)
         	nExternalTocDepth = Math.max(config.getXhtmlSplitLevel(),1);
         }
+        nExternalTocDepthMarks = config.externalTocDepthMarks();
 	}
    
 	/** Return the id of the file containing the alphabetical index
@@ -92,7 +94,7 @@ class TOCConverter extends IndexConverterHelper {
 		String sTarget = TOC_LINK_PREFIX+(++nTocIndex);
 		converter.addTarget(heading,sTarget);
 		
-		// Add in external content. For single file output we include all level 1 headings + their target
+		// Add in external content.
 		// Targets are added only when the toc level is deeper than the split level 
 		if (nLevel<=nExternalTocDepth) {
 			converter.addContentEntry(sLabel+converter.getPlainInlineText(onode), nLevel,
@@ -154,7 +156,7 @@ class TOCConverter extends IndexConverterHelper {
         
         // Add to external toc
         int nLevel = Misc.getPosInteger(Misc.getAttribute(entry.onode, XMLString.TEXT_OUTLINE_LEVEL),1);
-		if (nLevel<=nExternalTocDepth) {
+		if (nLevel<=nExternalTocDepthMarks) {
 			converter.addContentEntry(entry.onode.getAttribute(XMLString.TEXT_STRING_VALUE),
 				Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1),
 				sTarget);

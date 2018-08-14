@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-10)
+ *  Version 1.6.1 (2018-08-13)
  *
  */
 
@@ -102,6 +102,10 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         loadCheckBoxOption(xProps, "IgnoreHardLineBreaks");
         loadCheckBoxOption(xProps, "IgnoreEmptyParagraphs");
         loadCheckBoxOption(xProps, "IgnoreDoubleSpaces");
+        
+        // Compatibility
+        loadCheckBoxOption(xProps, "IncludeNCX");
+        loadCheckBoxOption(xProps, "AvoidHtml5");
 
         // Special content
         loadCheckBoxOption(xProps, "DisplayHiddenText");
@@ -118,9 +122,9 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         
         // Navigation table
         loadListBoxOption(xProps, "ExternalTocDepth");
+        loadListBoxOption(xProps, "ExternalTocDepthMarks");
         loadCheckBoxOption(xProps, "IndexLinks");
         loadCheckBoxOption(xProps, "IncludeToc");
-        loadCheckBoxOption(xProps, "IncludeNCX");
 
         updateLockedOptions();
         enableControls();
@@ -158,6 +162,10 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         saveCheckBoxOption(xProps, helper, "IgnoreEmptyParagraphs", "ignore_empty_paragraphs");
         saveCheckBoxOption(xProps, helper, "IgnoreDoubleSpaces", "ignore_double_spaces");
 
+        // Compatibility
+        saveCheckBoxOption(xProps, helper, "IncludeNCX", "include_ncx");
+        saveCheckBoxOption(xProps, helper, "AvoidHtml5", "avoid_html5");
+        
         // Special content
         saveCheckBoxOption(xProps, helper, "DisplayHiddenText", "display_hidden_text");
         saveCheckBoxOption(xProps, helper, "Notes", "notes");
@@ -204,10 +212,11 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         
         // Navigation table
         short nExternalTocDepth = saveListBoxOption(xProps, "ExternalTocDepth");
-        helper.put("external_toc_depth", Integer.toString(nExternalTocDepth+1));
-        saveCheckBoxOption(xProps, helper, "IncludeToc", "include_toc");
+        helper.put("external_toc_depth", Integer.toString(nExternalTocDepth));
+        short nExternalTocDepthMarks = saveListBoxOption(xProps, "ExternalTocDepthMarks");
+        helper.put("external_toc_depth_marks", Integer.toString(nExternalTocDepthMarks));
         saveCheckBoxOption(xProps, helper, "IndexLinks", "index_links");
-        saveCheckBoxOption(xProps, helper, "IncludeNCX", "include_ncx");
+        saveCheckBoxOption(xProps, helper, "IncludeToc", "include_toc");
     }
 	
 	
@@ -267,6 +276,11 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         setControlEnabled("IgnoreEmptyParagraphs",!isLocked("ignore_empty_paragraphs"));
         setControlEnabled("IgnoreDoubleSpaces",!isLocked("ignore_double_spaces"));
 
+        // Compatibility
+        setControlEnabled("CompatibilityLabel", this instanceof Epub3OptionsDialog);
+        setControlEnabled("IncludeNCX", (this instanceof Epub3OptionsDialog) && !isLocked("include_ncx"));
+        setControlEnabled("AvoidHtml5", (this instanceof Epub3OptionsDialog) && !isLocked("avoid_html5"));
+
         // Special content
         setControlEnabled("DisplayHiddenText",!isLocked("display_hidden_text"));
         setControlEnabled("Notes",!isLocked("notes"));
@@ -294,9 +308,10 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         // Navigation table
         setControlEnabled("ExternalTocDepthLabel", !isLocked("external_toc_depth"));
         setControlEnabled("ExternalTocDepth", !isLocked("external_toc_depth"));
+        setControlEnabled("ExternalTocDepthMarksLabel", !isLocked("external_toc_depth_marks"));
+        setControlEnabled("ExternalTocDepthMarks", !isLocked("external_toc_depth_marks"));
         setControlEnabled("IndexLinks", !isLocked("index_links"));
         setControlEnabled("IncludeToc", !isLocked("include_toc"));
-        setControlEnabled("IncludeNCX", (this instanceof Epub3OptionsDialog) && !isLocked("include_ncx"));
     }
 	
     private void relativeFontSizeChange() {

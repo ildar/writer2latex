@@ -4,16 +4,22 @@ Changelog for Writer2LaTeX version 1.4 -> 1.6.1
 
 [w2l] Bugfix: String replace now works consistently again (backported from v2.0)
 
+[w2x] Bugfix: Fixed crash in EPUB export caused by some paragraphs with an image as only content
+
 [w2x] Bugfix: The alphabetical index can now be placed anywhere in the document (backported from v2.0)
+
+[w2x] New EPUB compatibility option avoid_html5, which turns of the use of HTML5-specific tags in EPUB 3
+
+[w2x] The EPUB option external_toc_depth can now have the value 0 (do not include any headings)
+
+[w2x] New EPUB option external_toc_depth_marks to include toc-marks in the external table of contents
+
+[w2x] New EPUB option index_links to include links to alphabetical index and user index in the external
+  table of contents
 
 [w2x] Added support for keys in alphabetical index (backported from v2.0)
 
 [w2x] Added support for user index (index marks only) (backported from v2.0)
-
-[w2x] Toc-marks are now also included in the external table of contents used by the EPUB export
-  
-[w2x] New EPUB option index_links to include links to alphabetical index and user index in the external
-  table of contents
 
 ---------- version 1.6 final ----------
 

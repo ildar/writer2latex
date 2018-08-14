@@ -94,7 +94,7 @@ class NoteConverter extends ConverterHelper {
     }
     
     Element createNoteSection(Node hnode, String sEpubType) {
-    	Element section = converter.createElement(converter.isHTML5() ? "section" : "div");
+    	Element section = converter.createAlternativeElement("section","div");
     	hnode.appendChild(section);
     	converter.addEpubType(section, sEpubType);
     	return section;
@@ -124,7 +124,7 @@ class NoteConverter extends ConverterHelper {
 		for (int i=0; i<nSize; i++) {
 			Node note = notes.get(i);
 			// Create container
-			Element aside = converter.createElement(converter.isHTML5() ? "aside" : "div");
+			Element aside = converter.createAlternativeElement("aside","div");
 			hnode.appendChild(aside);
 			converter.addEpubType(aside, sEpubType);
 			// Get the citation
@@ -184,6 +184,6 @@ class NoteConverter extends ConverterHelper {
 
         // Save it for later insertion
         getTextCv().setAsapNode(span);
-    }
+    }    
     
 }

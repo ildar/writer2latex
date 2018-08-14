@@ -94,6 +94,12 @@
         <prop oor:name="IgnoreDoubleSpaces" oor:type="xs:boolean">
             <value>false</value>
         </prop>
+        <prop oor:name="IncludeNCX" oor:type="xs:boolean">
+            <value>true</value>
+        </prop>
+        <prop oor:name="AvoidHtml5" oor:type="xs:boolean">
+            <value>false</value>
+        </prop>
         <prop oor:name="DisplayHiddenText" oor:type="xs:boolean">
             <value>false</value>
         </prop>
@@ -125,12 +131,15 @@
             <value>150</value>
         </prop>
         <prop oor:name="ExternalTocDepth" oor:type="xs:short">
+            <value>1</value>
+        </prop>
+        <prop oor:name="ExternalTocDepthMarks" oor:type="xs:short">
             <value>0</value>
         </prop>
-        <prop oor:name="IncludeToc" oor:type="xs:boolean">
-            <value>true</value>
+        <prop oor:name="IndexLinks" oor:type="xs:boolean">
+            <value>false</value>
         </prop>
-        <prop oor:name="IncludeNCX" oor:type="xs:boolean">
+        <prop oor:name="IncludeToc" oor:type="xs:boolean">
             <value>true</value>
         </prop>
     </node>

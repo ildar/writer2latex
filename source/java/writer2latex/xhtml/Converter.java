@@ -228,6 +228,18 @@ public class Converter extends ConverterBase {
     }
 	
     protected Element createElement(String s) { return htmlDOM.createElement(s); }
+    
+    Element createAlternativeElement(String sHTML5, String sHTML) {
+		if (isHTML5() && !(isOPS() && config.avoidHtml5())) {
+			// Exception is for compatibility with older EPUB readers not understanding HTML5 tags
+			return createElement(sHTML5);
+		}
+		else {
+			return createElement(sHTML);
+		}
+
+    }
+
 	
     protected Text createTextNode(String s) { return htmlDOM.createTextNode(s); }
 	

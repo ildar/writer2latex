@@ -91,7 +91,7 @@ abstract class IndexConverterHelper extends ConverterHelper {
     
     // Create a container node for the index
     private Element createContainer(Element source, Element hnode) {
-		Element container = converter.createElement("section");
+		Element container = converter.createAlternativeElement("section","div");
 		hnode.appendChild(container);
 
 		String sName = source.getAttribute(XMLString.TEXT_NAME);
