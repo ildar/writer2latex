@@ -357,7 +357,7 @@
             <value>%origin%/W2HDialogs2/General.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -379,7 +379,7 @@
             <value>%origin%/W2HDialogs2/Template.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -401,7 +401,7 @@
             <value>%origin%/W2HDialogs2/Stylesheets.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -423,7 +423,7 @@
             <value>%origin%/W2HDialogs2/Styles1.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -445,7 +445,7 @@
             <value>%origin%/W2HDialogs2/Styles2.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -467,7 +467,7 @@
             <value>%origin%/W2HDialogs2/Formatting.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 
@@ -489,7 +489,7 @@
             <value>%origin%/W2HDialogs2/Content.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2xhtml.ConfigurationDialog</value>
+             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
           </prop>
         </node>
 	  </node>

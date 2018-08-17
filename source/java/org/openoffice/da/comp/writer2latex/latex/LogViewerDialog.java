@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-21)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -49,7 +49,7 @@ public class LogViewerDialog extends DialogBase
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.LogViewerDialog";
+    public static String __implementationName = LogViewerDialog.class.getName();
 
     /** Return the name of the library containing the dialog
      */

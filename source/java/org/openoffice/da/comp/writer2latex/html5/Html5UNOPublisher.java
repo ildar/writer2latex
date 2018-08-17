@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-04-12)
+ *  Version 2.0 (2018-08-17)
  *  
  */
 package org.openoffice.da.comp.writer2latex.html5;
@@ -54,7 +54,7 @@ public class Html5UNOPublisher extends UNOPublisher {
     }
     
     protected String getDialogName() { 
-    	return "org.openoffice.da.comp.writer2latex.Html5FilterDialog";  //$NON-NLS-1$
+    	return org.openoffice.da.comp.writer2latex.html5.Html5FilterDialog.class.getName();
 	}
 
     protected  String getFilterName() {

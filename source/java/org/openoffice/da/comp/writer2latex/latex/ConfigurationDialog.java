@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-24)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -52,7 +52,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.ConfigurationDialog";
+    public static String __implementationName = ConfigurationDialog.class.getName();
 
     // Implement the interface XServiceInfo
     public boolean supportsService(String sServiceName) {

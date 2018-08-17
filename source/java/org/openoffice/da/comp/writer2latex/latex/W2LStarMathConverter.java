@@ -2,7 +2,7 @@
  *
  *  W2LStarMathConverter.java
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 1.0 (2008-11-22)
+ *  Version 2.0 (2018-08-17)
  */
 
 package org.openoffice.da.comp.writer2latex.latex;
@@ -50,7 +50,7 @@ public class W2LStarMathConverter implements
      */
     public static final String __serviceName = "org.openoffice.da.writer2latex.W2LStarMathConverter";
 	
-    public static final String __implementationName = "org.openoffice.da.comp.writer2latex.W2LStarMathConverter";
+    public static final String __implementationName = W2LStarMathConverter.class.getName();
 
     //private static XComponentContext xComponentContext = null;
     private static StarMathConverter starMathConverter; 

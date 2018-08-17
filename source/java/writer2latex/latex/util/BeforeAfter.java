@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-25)
+ *  Version 2.0 (2018-08-17)
  *
  */
 
@@ -68,7 +68,7 @@ public class BeforeAfter {
     /** Add data to the <code>BeforeAfter</code>. The new data will be added "inside", and no data
      *  will be added to the "before" part
      * 
-     * @param sBefore1 LaTeX code to put after
+     * @param sAfter1 LaTeX code to put after
      */
     public void addAfter(String sAfter1) {
         sAfter=sAfter1+sAfter;    	

@@ -2,7 +2,7 @@
  *
  *  TeXDetectService.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2014-10-29)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
 
@@ -51,7 +51,7 @@ public class TeXDetectService extends WeakBase implements XExtendedFilterDetecti
 	// Constants
 	
 	// Identify this service
-	public static final String __implementationName = "org.openoffice.da.writer2latex.latex.TeXDetectService";
+	public static final String __implementationName = TeXDetectService.class.getName();
 	public static final String __serviceName = "com.sun.star.document.ExtendedTypeDetection"; 
 	private static final String[] m_serviceNames = { __serviceName };
 	

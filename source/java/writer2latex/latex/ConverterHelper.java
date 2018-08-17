@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-19)
+ *  Version 2.0 (2018-08-17)
  *
  */
 
@@ -41,10 +41,8 @@ abstract class ConverterHelper {
         this.palette = palette;
     }
 	
-    /** Add any declarations to the preamble. Either by invoking the methods
-     *  {@link writer2latex.latex.ConverterPalette#usepackage(String,String) usepackage} and 
-     *  {@link ConverterPalette#usepackage(String) usepackage}
-     *  or by adding content to the provided <code>LaTeXDocumentPortion</code> 
+    /** Add any declarations to the preamble by adding content to the provided
+     * <code>LaTeXPacman</code> and <code>LaTeXDocumentPortion</code> 
      * 
      * @param pacman the <code>LaTeXPacman</code> containing the package loading part of the LaTeX preamble
      * @param decl the <code>LaTeXDocumentPortion</code> containing the free form part of the LaTeX preamble

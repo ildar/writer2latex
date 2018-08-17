@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-09)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -52,10 +52,10 @@ XDocumentHandler,
 XTypeProvider {
 
     /** Service name for the component */
-    public static final String __serviceName = "org.openoffice.da.comp.writer2latex.W2LExportFilter";
+    public static final String __serviceName = "org.openoffice.da.writer2latex.W2LExportFilter";
 	
     /** Implementation name for the component */
-    public static final String __implementationName = "org.openoffice.da.comp.writer2latex.W2LExportFilter";
+    public static final String __implementationName = W2LExportFilter.class.getName();
 	
 	/** Filter name to include in error messages */
 	private static String DISPLAY_NAME = "Writer2LaTeX";

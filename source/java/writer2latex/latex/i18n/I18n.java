@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-08) 
+ *  Version 2.0 (2018-08-17) 
  * 
  */
 
@@ -125,7 +125,7 @@ public abstract class I18n {
 	
     /** Load symbol font packages common for classic and modern
      * 
-     * @param ldp the document portion to which declarations are added
+     * @param pacman the preamble document portion to which declarations are added
      */
     protected void useSymbolFonts(LaTeXPacman pacman) {
         if (config.useTipa()) {

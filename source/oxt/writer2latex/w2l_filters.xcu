@@ -15,7 +15,7 @@
 		<prop oor:name="FileFormatVersion"><value>0</value></prop>
 		<prop oor:name="Type"><value>writer_latex_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.LaTeXFilterDialog</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.latex.LaTeXFilterDialog</value></prop>
 		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2latex.W2LExportFilter unused com.sun.star.comp.Writer.XMLOasisImporter com.sun.star.comp.Writer.XMLOasisExporter staroffice/sxw application/x-latex</value></prop>
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>
@@ -44,7 +44,7 @@
 		<prop oor:name="UIName"><value>LaTeX [Writer2LaTeX]</value></prop>
 		<prop oor:name="Type"><value>org.openoffice.da.writer2latex.LaTeX_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.TeXImportFilter</value></prop>
+		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.latex.TeXImportFilter</value></prop>
 		<prop oor:name="UIComponent"/>
 		<prop oor:name="Flags"><value>IMPORT TEMPLATE TEMPLATEPATH ALIEN 3RDPARTYFILTER</value></prop>
 		<prop oor:name="UserData"/>
@@ -56,7 +56,7 @@
 		<prop oor:name="UIName"><value>XeLaTeX [Writer2LaTeX]</value></prop>
 		<prop oor:name="Type"><value>org.openoffice.da.writer2latex.XeLaTeX_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.TeXImportFilter</value></prop>
+		<prop oor:name="FilterService"><value>org.openoffice.da.comp.writer2latex.latex.TeXImportFilter</value></prop>
 		<prop oor:name="UIComponent"/>
 		<prop oor:name="Flags"><value>IMPORT TEMPLATE TEMPLATEPATH ALIEN 3RDPARTYFILTER</value></prop>
 		<prop oor:name="UserData"/>
@@ -68,7 +68,7 @@
 		<prop oor:name="FileFormatVersion"><value>0</value></prop>
 		<prop oor:name="Type"><value>writer_html5_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
-        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.Html5FilterDialog</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2latex.html5.Html5FilterDialog</value></prop>
 		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2latex.W2LExportFilter unused com.sun.star.comp.Writer.XMLOasisImporter com.sun.star.comp.Writer.XMLOasisExporter staroffice/sxw text/html</value></prop>
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop>
 		<prop oor:name="TemplateName"/>

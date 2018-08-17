@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-30)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -71,7 +71,7 @@ public final class BibliographyDialog
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.BibliographyDialog"; //$NON-NLS-1$
+    public static String __implementationName = BibliographyDialog.class.getName();
 
     /** Create a new ConfigurationDialog */
     public BibliographyDialog(XComponentContext xContext) {

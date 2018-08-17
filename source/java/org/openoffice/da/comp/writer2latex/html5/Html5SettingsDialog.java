@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-30)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -66,7 +66,7 @@ public final class Html5SettingsDialog
 
     /** The component should also have an implementation name.
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.Hhtml5SettingsDialog";
+    public static String __implementationName = Html5SettingsDialog.class.getName();
 
     /** Create a new ToolbarSettingsDialog */
     public Html5SettingsDialog(XComponentContext xContext) {

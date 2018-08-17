@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-23)
+ *  Version 2.0 (2018-08-17)
  *
  */ 
  
@@ -90,7 +90,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 
     /** The implementation name of the component
      */
-    public static String __implementationName = "org.openoffice.da.comp.writer2latex.BibTeXDialog"; //$NON-NLS-1$
+    public static String __implementationName = BibTeXDialog.class.getName();
 
     // **** Member variables
     
