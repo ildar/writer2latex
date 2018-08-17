@@ -17,7 +17,7 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 [w2l] Fixed bug with the optimized handling of optional arguments for headings
 
-[w2l] The color for hyperlinks is now the acutal color used in the document (and exported only
+[w2l] The color for hyperlinks is now the actual color used in the document (and exported only
   if use_xolor is true)
 
 [w2l] Metadata (Title, author, date and for PDF also subject and keywords) are now only exported

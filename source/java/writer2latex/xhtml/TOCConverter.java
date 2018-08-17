@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-06)
+ *  Version 2.0 (2018-08-10)
  *
  */
 package writer2latex.xhtml;
@@ -143,13 +143,11 @@ class TOCConverter extends IndexConverterHelper {
      * @param hnode the index will be added to this block HTML node
      */
     @Override void handleIndex(Element onode, Element hnode, int nChapterNumber) {
-    	if (config.includeToc()) {
-    		// Identify main toc
-	    	if (!ofr.getTocReader(onode).isByChapter()) { 
-	    		nTocFileIndex = converter.getOutFileIndex(); 
-	    	}
-	    	super.handleIndex(onode,hnode,nChapterNumber);
+		// Identify main toc
+    	if (!ofr.getTocReader(onode).isByChapter()) { 
+    		nTocFileIndex = converter.getOutFileIndex(); 
     	}
+    	super.handleIndex(onode,hnode,nChapterNumber);
     }
 
 	@Override

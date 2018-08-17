@@ -313,7 +313,7 @@
        	
         <paragraph role="heading" level="3" xml-lang="en-US">Pauses</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Beamer frames can be build incrementally. To use this feature, simply
-		insert the symbol ¤ (currency symbol) where you wish to insert a pause on the slide.</paragraph>
+		insert the symbol &#x00A4; (currency symbol) where you wish to insert a pause on the slide.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Styles common for all templates</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">A number of styles are common for all the templates. These are summarized in

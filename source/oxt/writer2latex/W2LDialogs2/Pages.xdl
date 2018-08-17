@@ -19,7 +19,7 @@
   </dlg:checkbox>
   <dlg:checkbox dlg:id="UsePerpage" dlg:tab-index="9" dlg:left="10" dlg:top="148" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUsePerpage" dlg:value="Support footnote numbering per page (using perpage.sty)" dlg:checked="false"/>
   <dlg:text dlg:id="NotesnameLabel" dlg:tab-index="12" dlg:left="10" dlg:top="120" dlg:width="100" dlg:height="12" dlg:value="Endnotes heading"/>
-  <dlg:textfield dlg:id="Notesname" dlg:tab-index="7" dlg:left="120" dlg:top="118" dlg:width="130" dlg:height="12"/>
+  <dlg:textfield dlg:id="Notesname" dlg:tab-index="7" dlg:left="120" dlg:top="118" dlg:width="130" dlg:height="12"  dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigNotesname"/>
   <dlg:checkbox dlg:id="PageNumbering" dlg:tab-index="4" dlg:left="10" dlg:top="64" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigPageNumbering" dlg:value="Export page numbering" dlg:checked="false"/>
   <dlg:checkbox dlg:id="PageColor" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigPageColor" dlg:value="Export page color" dlg:checked="false"/>
  </dlg:bulletinboard>

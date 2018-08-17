@@ -46,14 +46,32 @@
 
         <paragraph role="heading" level="2" xml-lang="en-US">Footnotes and endnotes</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseEndnotes" id="bm_configuseendnotes"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export endnotes (using endnotes.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to use the package endnotes.sty to format the endnotes in the
+        LaTeX document. Otherwise endnotes will be converted to footnotes.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNotesname" id="bm_confignotesname"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Endnotes heading</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Unlike in %PRODUCTNAME Writer, endnotes in LaTeX has a heading.
+        You can type the heading here. If you leave the field blank, the default heading "Endnotes" will be used, regardsless
+        of the document language.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNotesNumbering" id="bm_confignotesnumbering"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export footnote and endnote numbering</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the numbering format for footnotes and endnotes.
+        Otherwise the default format in LaTeX will be used. Note that the default in LaTeX is identical for footnotes and endnotes,
+        which may cause confusion in a document with both types of notes.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUsePerpage" id="bm_configuseperpage"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Support footnote numbering per page (using perpage.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this option to enable the use of the package perpage.sty, which allows
+        numbering of footnotes to be reset on every page. Without this package, this setting cannot be exported.</paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFootnoteRule" id="bm_configfootnoterule"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export footnote rule</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to export the formatting of the footnote rule separating the main text
         from the footnotes. Otherwise the default format of the LaTeX document class will be used.</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseEndnotes" id="bm_configuseendnotes"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Export endnotes (using endnotes.sty)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to use the package endnotes.sty to format the endnotes in the
-        LaTeX document. Otherwise endnotes will be converted to footnotes.</paragraph>
     </body>
 </helpdocument>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-07)
+ *  Version 2.0 (2018-08-10)
  *
  */
 
@@ -271,10 +271,12 @@ public class TextConverter extends ConverterHelper {
                     nDontSplitLevel++;
                 }
                 else if (nodeName.equals(XMLString.TEXT_TABLE_OF_CONTENT)) {
-                    if (!ofr.getTocReader((Element)child).isByChapter()) {
-                        hnode = maybeSplit(hnode,null,1);
-                    }
-                    tocCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
+                	if (config.includeToc()) {
+	                    if (!ofr.getTocReader((Element)child).isByChapter()) {
+	                        hnode = maybeSplit(hnode,null,1);
+	                    }
+	                    tocCv.handleIndex((Element)child,(Element)hnode,nChapterNumber);
+                	}
                 }
                 else if (nodeName.equals(XMLString.TEXT_ILLUSTRATION_INDEX)) {
                     lofCv.handleLOF(child,hnode);

@@ -214,7 +214,7 @@
   <style-map name="LaTeX" class="text" before="" after="{}" verbatim="true" />
   
   <!-- String replace -->
-  <string-replace fontenc="any" input="¤" latex-code="\pause{}" />
+  <string-replace fontenc="any" input="&#x00A4;" latex-code="\pause{}" />
   <string-replace fontenc="any" input="LaTeX" latex-code="\LaTeX{}" />
 
 </config>
