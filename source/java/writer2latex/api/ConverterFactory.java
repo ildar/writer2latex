@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-24)
+ *  Version 2.0 (2018-08-17)
  *
  */
  
@@ -31,8 +31,8 @@ package writer2latex.api;
 public class ConverterFactory {
 
     // Version information
-    private static final String VERSION = "1.9.2";
-    private static final String DATE = "2018-07-24";
+    private static final String VERSION = "1.9.3";
+    private static final String DATE = "2018-08-17";
 
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
