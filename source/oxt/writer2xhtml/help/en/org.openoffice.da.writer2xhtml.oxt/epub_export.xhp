@@ -246,7 +246,7 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Include EPUB 2 navigation</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIncludeNCX" visibility="hidden">Check this to include navigation information in EPUB 2 format</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">EPUB 3 uses a new format for the navigation information.
-        Check this option if you also want to helt older EPUB readers by include navigation information in the old format.</paragraph>
+        Check this option if you want to help older EPUB readers by including navigation information in the old format.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsAvoidHtml5" id="bm_options_includencx"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Avoid HTML5 elements</paragraph>

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-13)
+ *  Version 1.6.1 (2018-08-15)
  *
  */
 package writer2latex.xhtml;
@@ -157,7 +157,7 @@ class TOCConverter extends IndexConverterHelper {
         // Add to external toc
         int nLevel = Misc.getPosInteger(Misc.getAttribute(entry.onode, XMLString.TEXT_OUTLINE_LEVEL),1);
 		if (nLevel<=nExternalTocDepthMarks) {
-			converter.addContentEntry(entry.onode.getAttribute(XMLString.TEXT_STRING_VALUE),
+			converter.addContentEntry(IndexMark.getIndexValue(entry.onode),
 				Misc.getPosInteger(entry.onode.getAttribute(XMLString.TEXT_OUTLINE_LEVEL),1),
 				sTarget);
 		}
