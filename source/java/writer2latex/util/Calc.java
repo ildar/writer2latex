@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-26)
+ *  Version 2.0 (2018-08-22)
  *
  */
 package writer2latex.util;
@@ -244,6 +244,21 @@ public class Calc {
 	    return sub(sThis,sThat).startsWith("-");
 	}
 	
+	/** Return the maximum of some lengths, discarding null values
+	 * 
+	 * @param sLengths one or more lengths
+	 * @return the minimum length (or null if all lengths were null)
+	 */
+	public static String max(String... sLengths) {
+		String sMax = null;
+		for (String sLength : sLengths) {
+			if (sMax==null || (sMax!=null && sLength!=null && isLessThan(sMax,sLength))) {
+				sMax = sLength;
+			}
+		}
+		return sMax;
+	}
+
 	/** Return the minimum of some lengths, discarding null values
 	 * 
 	 * @param sLengths one or more lengths

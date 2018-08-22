@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-27)
+ *  Version 2.0 (2018-08-20)
  *
  */
 
@@ -82,6 +82,8 @@ public final class ConverterPalette extends ConverterBase {
     private FieldConverter fieldCv;
     private DrawConverter drawCv;
     private CustomShapeConverter customShapeCv;
+    private LineShapeConverter lineShapeCv;
+    private PolyShapeConverter polyShapeCv;
     private MathConverter mathCv;
     private Info info;
 	
@@ -124,6 +126,8 @@ public final class ConverterPalette extends ConverterBase {
     public FieldConverter getFieldCv() { return fieldCv; }
     public DrawConverter getDrawCv() { return drawCv; }
     public CustomShapeConverter getCustomShapeCv() { return customShapeCv; }
+    public LineShapeConverter getLineShapeCv() { return lineShapeCv; }
+    public PolyShapeConverter getPolyShapeCv() { return polyShapeCv; }
     public MathConverter getMathCv() { return mathCv; }
     public Info getInfo() { return info; }
 	
@@ -184,6 +188,8 @@ public final class ConverterPalette extends ConverterBase {
         fieldCv = new FieldConverter(ofr,config,this);
         drawCv = new DrawConverter(ofr,config,this);
         customShapeCv = new CustomShapeConverter(ofr,config,this);
+        lineShapeCv = new LineShapeConverter(ofr,config,this);
+        polyShapeCv = new PolyShapeConverter(ofr,config,this);
         mathCv = new MathConverter(ofr,config,this);
         info = new Info(ofr,config,this);
 
@@ -242,8 +248,10 @@ public final class ConverterPalette extends ConverterBase {
         captionCv.appendDeclarations(packages,declarations); // usepackage caption
         inlineCv.appendDeclarations(packages,declarations); // no packages
         fieldCv.appendDeclarations(packages,declarations); // usepackage natbib, lastpage, titleref, hyperref 
-        drawCv.appendDeclarations(packages,declarations); // usepackage graphicx
-        customShapeCv.appendDeclarations(packages,declarations); // usepackage tikz
+        drawCv.appendDeclarations(packages,declarations); // usepackage graphicx, tikz
+        customShapeCv.appendDeclarations(packages,declarations); // no packages
+        lineShapeCv.appendDeclarations(packages,declarations); // no packages
+        polyShapeCv.appendDeclarations(packages,declarations); // no packages
         mathCv.appendDeclarations(packages,declarations); // usepackage calc
 
         // Add custom preamble

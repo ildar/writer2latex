@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-07)
+ *  Version 2.0 (2018-08-20)
  *
  */
 
@@ -41,6 +41,9 @@ public class XMLString {
 	public static final String DRAW_TEXT_BOX = "draw:text-box";
 	public static final String DRAW_G = "draw:g";
 	public static final String DRAW_CONTROL = "draw:control";
+	public static final String DRAW_LINE = "draw:line";
+	public static final String DRAW_POLYGON = "draw:polygon";
+	public static final String DRAW_POLYLINE = "draw:polyline";
 	public static final String DRAW_CUSTOM_SHAPE = "draw:custom-shape";
 	public static final String DRAW_ENHANCED_GEOMETRY = "draw:enhanced-geometry";
 	public static final String DRAW_EQUATION = "draw:equation";
@@ -66,6 +69,9 @@ public class XMLString {
 	public static final String DRAW_MODIFIERS = "draw:modifiers";
 	public static final String DRAW_ENHANCED_PATH = "draw:enhanced-path";
 	public static final String DRAW_FORMULA = "draw:formula";
+	public static final String DRAW_MARKER_START = "draw:marker-start";
+	public static final String DRAW_MARKER_END = "draw:marker-end";
+	public static final String DRAW_POINTS = "draw:points";
 
 	// dc namespace - elements
 	public static final String DC_CREATOR = "dc:creator";
@@ -518,6 +524,10 @@ public class XMLString {
 	public static final String SVG_STROKE_OPACITY = "svg:stroke-opacity";
 	public static final String SVG_X = "svg:x";
 	public static final String SVG_Y = "svg:y";
+	public static final String SVG_X1 = "svg:x1";
+	public static final String SVG_Y1 = "svg:y1";
+	public static final String SVG_X2 = "svg:x2";
+	public static final String SVG_Y2 = "svg:y2";
 	public static final String SVG_HEIGHT = "svg:height";
 	public static final String SVG_WIDTH = "svg:width";
 	public static final String SVG_VIEWBOX = "svg:viewBox";

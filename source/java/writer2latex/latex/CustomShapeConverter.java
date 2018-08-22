@@ -19,52 +19,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-26)
+ *  Version 2.0 (2018-08-22)
  *
  */
 
 package writer2latex.latex;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
-import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
-import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
 /** Convert draw:custom-shape elements to TikZ pictures
  */
-public class CustomShapeConverter extends ConverterHelper {
+class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	
-	// Do we export custom shapes?
-	private boolean bUseTikz;
-	private boolean bNeedTikz;
-	
-	// Parameters for the current shape derived from the draw:custom-shape element
-	private double dWidth=0; // Width in cm (from svg:width)
-	private double dHeight=0; // Height in cm (from svg:height)
-	private boolean bHasfill=false; // Flag to indicate that a fill style is present
-	private boolean bHasstroke=false; // Flag to indicate that a stroke style is present
 	// Parameters for the current shape derived from the draw:enhanced-geometry element
-	private double dViewBoxMinX=0;
-	private double dViewBoxMinY=0;
-	private double dViewBoxWidth=0;
-	private double dViewBoxHeight=0;
-	private double dTextAreaLeft=0;
-	private double dTextAreaTop=0;
-	private double dTextAreaRight=0;
-	private double dTextAreaBottom=0;	
 	private double dStretchX=0;
 	private double dStretchY=0;
 	private Vector<Double> modifiers = new Vector<>();
@@ -77,315 +56,82 @@ public class CustomShapeConverter extends ConverterHelper {
 	private boolean bNostroke; // This set of subpaths have specified the nostroke command S
 	private boolean bNofill; // This set of subpaths have specified the nofill command F
 
-	public CustomShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+	CustomShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
-		bUseTikz = config.useTikz();
-		bNeedTikz = false;
 	}
 
-	@Override
-	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-		if (bNeedTikz) {
-			pacman.usepackage("tikz");
-		}
-	}
-	
-	/** Convert a <code>draw:custom-shape</code> element to a TikZ drawing
+	/** Convert a <code>draw:custom-shape</code> element to TikZ paths
 	 * 
 	 * @param shape the Office node
+	 * @param dTranslateY translation of the y-coordinate
 	 * @param ldp the LaTeX document portion to which the drawing should be added
 	 * @param oc the current context
 	 */
-	void handleCustomShape(Element shape, LaTeXDocumentPortion ldp, Context oc) {
-		if (bUseTikz) {
-			bNeedTikz = true;
+	@Override
+	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
+		super.handleShape(shape, dTranslateY, ldp, oc);
 
-			// First set up global parameters that may be needed for the path
-			String sWidth = Misc.getAttribute(shape, XMLString.SVG_WIDTH);
-			dWidth = sWidth!=null ? Calc.length2cm(sWidth) : 0;
-			String sHeight = Misc.getAttribute(shape, XMLString.SVG_HEIGHT);
-			dHeight = sHeight!=null ? Calc.length2cm(sHeight) : 0;		
-	
-			// Next apply style, which sets further global parameters (bHasfill and bHasstroke)
-			StyleWithProperties style = ofr.getFrameStyle(shape.getAttribute(XMLString.DRAW_STYLE_NAME));
-			CSVList fillOptions = new CSVList(",","=");
-			applyFillStyle(style, fillOptions);
-			CSVList strokeOptions = new CSVList(",","=");
-			applyStrokeStyle(style, strokeOptions);
-			
-			// Next parse the path parameters and formulas
-			Element geometry = Misc.getChildByTagName(shape, XMLString.DRAW_ENHANCED_GEOMETRY);
-			if (geometry!=null) {
+		// Next parse the path parameters and formulas
+		Element geometry = Misc.getChildByTagName(shape, XMLString.DRAW_ENHANCED_GEOMETRY);
+		if (geometry!=null) {
+			try {
+				parseViewBox(geometry);
+				parseStretchPoints(geometry);
+				parseModifiers(geometry);
+				parseEquations(geometry);
+				parseTextAreas(geometry);
+			}
+			catch (Exception e) {
+				System.err.println("Error "+e.getMessage());
+				return;
+			}
+		}
+		
+		// Finally convert the path
+		String sPath = Misc.getAttribute(geometry, XMLString.DRAW_ENHANCED_PATH);
+		if (sPath!=null) {
+			SimpleInputBuffer in = new SimpleInputBuffer(sPath);
+			in.skipSpaces();
+			while (!in.atEnd()) {
+				StringBuilder tikz = new StringBuilder();
 				try {
-					parseViewBox(geometry);
-					parseStretchPoints(geometry);
-					parseModifiers(geometry);
-					parseEquations(geometry);
-					parseTextAreas(geometry);
+					convertSubPath(in, tikz);
+					ldp.append("\\path");
+					CSVList options = new CSVList(",","=");
+					if (!bNostroke) options.addValues(strokeOptions);
+					if (!bNofill) options.addValues(fillOptions);
+					if (!options.isEmpty()) {
+						ldp.append("[").append(options.toString()).append("]");
+					}
+					ldp.append(tikz.toString()).append(";").nl();
 				}
 				catch (Exception e) {
 					System.err.println("Error "+e.getMessage());
-					return;
+					break;
 				}
 			}
-			
-			// Finally convert the path
-			String sPath = Misc.getAttribute(geometry, XMLString.DRAW_ENHANCED_PATH);
-			if (sPath!=null) {
-				ldp.append("\\begin{tikzpicture}").nl();
-				SimpleInputBuffer in = new SimpleInputBuffer(sPath);
-				in.skipSpaces();
-				while (!in.atEnd()) {
-					StringBuilder tikz = new StringBuilder();
-					try {
-						convertSubPath(in, tikz);
-						ldp.append("\\path");
-						CSVList options = new CSVList(",","=");
-						if (!bNostroke) options.addValues(strokeOptions);
-						if (!bNofill) options.addValues(fillOptions);
-						if (!options.isEmpty()) {
-							ldp.append("[").append(options.toString()).append("]");
-						}
-						ldp.append(tikz.toString()).append(";").nl();
-					}
-					catch (Exception e) {
-						System.err.println("Error "+e.getMessage());
-						break;
-					}
-				}
-				// Add text node
-				if (hasText(shape)) {
-					// Get the paragraph style associated with the shape
-					StyleWithProperties parStyle1 = ofr.getParStyle(shape.getAttribute(XMLString.DRAW_TEXT_STYLE_NAME));
-					// Get the paragraph style associated with the first paragraph
-					StyleWithProperties parStyle2 = null;
-					Element firstPar = Misc.getChildByTagName(shape, XMLString.TEXT_P);
-					if (firstPar!=null) { // actually we already know that
-						parStyle2 = ofr.getParStyle(firstPar.getAttribute(XMLString.TEXT_STYLE_NAME));
-					}
-					Context ic = (Context) oc.clone();
-					ic.setInTikZText(true);
-					BeforeAfter ba = new BeforeAfter();
-					applyNodeProperties(style,parStyle1,parStyle2,ba,ic);
-					ldp.append(ba.getBefore());
-					traverseText(shape, ldp, ic);
-					ldp.append(ba.getAfter()).nl();
-				}
-				ldp.append("\\end{tikzpicture}").nl();
-			}
+			// Add text node
+			convertText(shape,ldp,oc);
 		}
 	}
 	
-	// Set fill color, fill opacity and even odd rule
-	private void applyFillStyle(StyleWithProperties style, CSVList props) {
-    	String s = getGraphicProperty(style,XMLString.DRAW_FILL);
-    	if (s==null || s.equals("solid")) { // solid seems to be default
-    		// TODO: Other values are bitmap, gradient, hatch and none
-    		s = getGraphicProperty(style,XMLString.DRAW_FILL_COLOR);
-    		if (palette.getColorCv().applyNamedColor(s, "fill", props)) {
-    			bHasfill = true;
-    			props.addValue("even odd rule");
-    			s = getGraphicProperty(style,XMLString.DRAW_OPACITY);
-    			if (s!=null) {
-    				float f = Calc.getFloat(s.substring(0,s.length()-1), 100)/100.0F;
-    				props.addValue("fill opacity", format(f));
-    			}
-    		}
-    	}
+	// Parse the draw:text-areas attribute for the current enhanced geometry
+	// It is a space separated string of four values representing left, top, right and bottom in that order
+	// (Another set for LTR may follow the first four values, this is currently ignored)
+	private void parseTextAreas(Element geometry) {
+		// Get and parse the property
+		String sTextAreas = Misc.getAttribute(geometry, XMLString.DRAW_TEXT_AREAS);
+		if (sTextAreas!=null) {
+			SimpleInputBuffer in = new SimpleInputBuffer(sTextAreas);
+			in.skipSpaces();
+			dTextAreaLeft = getParameter(in);
+			dTextAreaTop = getParameter(in);
+			dTextAreaRight = getParameter(in);
+			dTextAreaBottom = getParameter(in);
+		}
 	}
+
 	
-	// Set path style, width, color and opacity
-	private void applyStrokeStyle(StyleWithProperties style, CSVList props) {
-        String s = getGraphicProperty(style,XMLString.DRAW_STROKE);
-        if (s==null || s.equals("solid") || s.equals("dash")) {
-        	// solid seems to be the default, last value is "none"
-        	bHasstroke = true;
-        	// Set the style
-        	if ("dash".equals(s)) {
-        		// TODO: Convert ODF dash styles to TikZ dash patterns
-        		props.addValue("dashed");
-        	}
-    		// Set the width
-        	s = getGraphicProperty(style,XMLString.SVG_STROKE_WIDTH);
-        	if (s!=null) {
-        		props.addValue("line width", s);
-        	}
-        	// Set the color
-        	s = getGraphicProperty(style,XMLString.SVG_STROKE_COLOR);
-    		if (!palette.getColorCv().applyNamedColor(s, "draw", props)) {
-    			// No color, use default (black)
-    			props.addValue("draw");
-    		}
-    		// Set the opacity
-        	s = getGraphicProperty(style,XMLString.SVG_STROKE_OPACITY);
-			if (s!=null) {
-				float f = Calc.getFloat(s.substring(0,s.length()-1), 100)/100.0F;
-				props.addValue("draw opacity", format(f));
-			}
-    	}
-	}
-	
-	// Always look in default style if a property is not set
-	private String getGraphicProperty(StyleWithProperties style, String sProperty) {
-		String s = style.getGraphicProperty(sProperty, true);
-		return s!=null ? s : ofr.getDefaultFrameStyle().getGraphicProperty(sProperty, false);
-	}
-	
-	private boolean hasText(Element shape) {
-		Node child = shape.getFirstChild();
-		while (child!=null) {
-			if (child.getNodeType()==Node.ELEMENT_NODE) {
-				if (child.getNodeName().equals(XMLString.TEXT_P)) {
-					if (child.hasChildNodes()) {
-						// Only non-empty paragraph counts (LO always exports an empty paragraph)
-						return true;
-					}
-				}
-				// TODO: List are currently ignored (LO does not support lists, anyway)
-			}
-			child = child.getNextSibling();
-		}
-		return false;
-	}
-	
-	// Create node
-	private void applyNodeProperties(StyleWithProperties style, StyleWithProperties parStyle1, StyleWithProperties parStyle2,
-			BeforeAfter ba, Context oc) {		
-		// Create node options
-		CSVList options = new CSVList(",","=");
-
-		// Get the padding - the text area must be shrinked slightly by these amounts
-		// Note that padding is a length with unit, not a number within the coordinate system defined by the view box
-		String sPaddingLeft = getGraphicProperty(style,XMLString.FO_PADDING_LEFT);
-		String sPaddingRight = getGraphicProperty(style,XMLString.FO_PADDING_RIGHT);
-		String sPaddingTop = getGraphicProperty(style,XMLString.FO_PADDING_TOP);
-		String sPaddingBottom = getGraphicProperty(style,XMLString.FO_PADDING_BOTTOM);
-		
-		// Calculate the anchor point from the style, taking the padding into account
-		// ODF offers 9 anchor positions within the text area, and for each of these we should specify the
-		// placement of the TikZ node. For example the anchor point (top,left) needs position below right
-		String sAnchorX;
-		String sAnchorY;
-		CSVList placement = new CSVList(" ");
-		
-		String sVerticalAlign = getGraphicProperty(style, XMLString.DRAW_TEXTAREA_VERTICAL_ALIGN);
-		if (sVerticalAlign==null) { sVerticalAlign="top"; }
-		switch(sVerticalAlign) {
-		case "bottom":
-			sAnchorY = format(transformY(dTextAreaBottom))+"cm";
-			if (sPaddingBottom!=null) { sAnchorY = Calc.add(sAnchorY, sPaddingBottom); }
-			placement.addValue("above"); // or south anchor
-			break;
-		case "middle":
-			sAnchorY = format(transformY((dTextAreaTop+dTextAreaBottom)/2))+"cm";
-			if (sPaddingTop!=null && sPaddingBottom!=null) {
-				// In case of asymmetric padding, the center should be shifted slightly
-				sAnchorY = Calc.sub(sAnchorY,Calc.multiply(0.5F, Calc.sub(sPaddingTop, sPaddingBottom)));
-			}
-			break;
-		case "top":
-		case "justify":
-		default:
-			sAnchorY = format(transformY(dTextAreaTop))+"cm";
-			if (sPaddingTop!=null) { sAnchorY = Calc.sub(sAnchorY, sPaddingTop); }
-			placement.addValue("below"); // or north anchor
-		}
-		sAnchorY = sAnchorY.substring(0, sAnchorY.length()-2); // strip the unit
-
-		String sHorizontalAlign = getGraphicProperty(style, XMLString.DRAW_TEXTAREA_HORIZONTAL_ALIGN);
-		if (sHorizontalAlign==null) { sHorizontalAlign="center"; }
-		switch(sHorizontalAlign) {
-		case "right":
-			sAnchorX = format(transformX(dTextAreaRight))+"cm";
-			if (sPaddingRight!=null) { sAnchorX = Calc.sub(sAnchorX, sPaddingRight); }
-			placement.addValue("left"); // or east anchor
-			break;
-		case "center":
-			sAnchorX = format(transformX((dTextAreaLeft+dTextAreaRight)/2))+"cm";
-			if (sPaddingLeft!=null && sPaddingRight!=null) {
-				// In case of asymmetric padding, the center should be shifted slightly
-				sAnchorX = Calc.add(sAnchorX,Calc.multiply(0.5F, Calc.sub(sPaddingLeft, sPaddingRight)));
-			}
-			break;
-		case "left":
-		case "justify":
-		default:
-			sAnchorX = format(transformX(dTextAreaLeft))+"cm";
-			if (sPaddingLeft!=null) { sAnchorX = Calc.add(sAnchorX, sPaddingLeft); }
-			placement.addValue("right"); // or west anchor
-		}
-		sAnchorX = sAnchorX.substring(0, sAnchorX.length()-2); // strip the unit
-		
-		if (!placement.isEmpty()) { options.addValue(placement.toString()); }
-
-		// Determine the alignment from the provided paragraph styles
-		String sAlign = null;
-		if (parStyle2!=null) { sAlign=parStyle2.getParProperty(XMLString.FO_TEXT_ALIGN, true); }
-		if (sAlign==null && parStyle1!=null) { sAlign=parStyle1.getParProperty(XMLString.FO_TEXT_ALIGN, true); }
-		if (sAlign==null) { sAlign="left"; }
-		switch (sAlign) {
-		case "justify":
-		case "center": break;
-		case "right":
-		case "end": sAlign = "right"; break;
-		case "left":
-		case "start":
-		default: sAlign = "left";
-		}
-		// TODO: left, right and center could/should be preceded by flush for narrow nodes
-
-		options.addValue("align", sAlign);
-		
-		// Determine automatic wrapping from the style
-		if ("wrap".equals(getGraphicProperty(style,XMLString.FO_WRAP_OPTION))) {
-			// In TikZ, automatic wrapping of text is equivalent to setting the width
-			String sWidth = format(transformLengthX(dTextAreaRight-dTextAreaLeft))+"cm"; // Unit is required here
-			// If there is padding, we have to shrink the width slightly
-			if (sPaddingLeft!=null) { sWidth = Calc.sub(sWidth,sPaddingLeft); }
-			if (sPaddingRight!=null) { sWidth = Calc.sub(sWidth,sPaddingRight); }
-			options.addValue("text width", sWidth);
-		}
-		
-		// Determine text formatting from the first paragraph style
-		BeforeAfter baTextFormat = new BeforeAfter();
-		palette.getCharSc().applyFont(parStyle1, true, true, baTextFormat, oc);
-		oc.resetFormattingFromStyle(parStyle1);
-		
-		// Finally create the node (as a separate path, as the text does not belong to a specific path)
-		ba.add("\\path ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");
-		if (!baTextFormat.getBefore().isEmpty()) {
-			ba.addBefore(baTextFormat.getBefore()+" ");
-		}
-	}
-	
-	private void traverseText(Element shape, LaTeXDocumentPortion ldp, Context oc) {
-    	Node child = shape.getFirstChild();
-    	boolean bAfterParagraph = false;
-    	while (child!=null) {
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                Element elm = (Element)child;
-                String nodeName = elm.getTagName();
-
-                if (nodeName.equals(XMLString.TEXT_P)) {
-                	Context ic = (Context) oc.clone();
-                	StyleWithProperties style = ofr.getParStyle(shape.getAttribute(XMLString.TEXT_STYLE_NAME));
-                	BeforeAfter ba = new BeforeAfter();
-            		palette.getCharSc().applyFont(style, true, true, ba, ic);
-                	ic.updateFormattingFromStyle(style);
-                	// TODO: if the text width option is set, \par would be fine
-                	// In this case it would also be possible to use separate alignment for each paragraph
-                	if (bAfterParagraph) { ldp.append("\\\\"); }
-                	ldp.append(ba.getBefore());
-                    palette.getInlineCv().traverseInlineText(elm,ldp,ic);
-                    bAfterParagraph = true;
-                }
-                // TODO: Lists are currently ignored (LO does not support them anyway)
-                // Note that the text width option is required for lists to work
-            }
-            child = child.getNextSibling();
-        }
-	}
-
 	// Convert draw:enhanced-path to a TikZ path
 	private void convertSubPath(SimpleInputBuffer in, StringBuilder tikz) {
 		dCurrentX = 0;
@@ -612,102 +358,6 @@ public class CustomShapeConverter extends ConverterHelper {
 		in.skipSpaces();
 		if (in.peekChar()==',') in.getChar();
 		in.skipSpaces();		
-	}
-	
-	// Transform a horizontal dimension
-	private double transformLengthX(double dX) {
-		return dX*dWidth/dViewBoxWidth;
-	}
-	
-	// Transform a vertical dimension
-	private double transformLengthY(double dY) {
-		return dY*dHeight/dViewBoxHeight;
-	}
-	
-	// Transform x coordinate (just an alias for transformLengthX)
-	private double transformX(double dX) {
-		return transformLengthX(dX);
-	}
-	
-	// Transform y coordinate
-	// y coordinate is reversed because we go from an upside down y-axis to a standard y-axis
-	private double transformY(double dY) {
-		return transformLengthY(dViewBoxHeight-dY);
-	}
-	
-	// Transform a point from the coordinate system given by svg:viewBox to the actual coordinate system given
-	// by svg:width and svg:height. Return a textual representation of the point in TikZ syntax 
-	// TODO: Add translation as per minX and minY?
-	private String transformPoint(double dX, double dY) {
-		return "(" + format(transformX(dX)) + "," + format(transformY(dY)) + ")";
-	}
-		
-	// Transform an angle from the coordinate system given by svg:viewBox to the actual coordinate system given
-	// by svg:width and svg:height. Return a textual representation of the angle.
-	private String transformAngle(double dV) {
-		double dNewV = Math.atan2(
-				transformLengthY(Math.sin(dV*Math.PI/180.0)),
-				transformLengthX(Math.cos(dV*Math.PI/180.0))
-				)*180.0/Math.PI;
-		// If the old angle is outside (-180;180], so must the new angle
-		if (dV>180) dNewV+=360;
-		if (dV<-180) dNewV-=360;
-		// Change sign because we go from an upside down y-axis to a standard y-axis
-		return format(-dNewV);
-	}
-	
-	// Parse the svg:viewBox attribute for the current enhanced geometry
-	// svg:viewBox, following the SVG spec, is a set of four numbers separated by whitespace and/or a comma.
-	// The order of the numbers is <min-x>, <min-y>, <width> and <height>.
-	// Numbers in SVG seems to indicate floating point numbers, but the ODF spec says integers?
-	private void parseViewBox(Element geometry) {
-		// LO sometimes exports without a view box. This means trouble, but it seems that LO always use these values?
-		dViewBoxMinX=0;
-		dViewBoxMinY=0;
-		dViewBoxWidth=21600;
-		dViewBoxHeight=21600;
-		String sViewBox = Misc.getAttribute(geometry, XMLString.SVG_VIEWBOX);
-		if (sViewBox!=null) {
-			SimpleInputBuffer in = new SimpleInputBuffer(sViewBox);
-			in.skipSpaces();
-			dViewBoxMinX=parseViewBoxItem(in);
-			dViewBoxMinY=parseViewBoxItem(in);
-			dViewBoxWidth=parseViewBoxItem(in);
-			dViewBoxHeight=parseViewBoxItem(in);
-		}
-	}
-	
-	private double parseViewBoxItem(SimpleInputBuffer in) {
-		String sValue = in.getSignedDouble();
-		if (sValue.length()>0) {
-			in.skipSpaces();
-			if (in.peekChar()==',') in.getChar();
-			in.skipSpaces();
-			return Double.parseDouble(sValue);
-		}
-		// Something's wrong
-		return 0;
-	}
-	
-	// Parse the draw:text-areas attribute for the current enhanced geometry
-	// It is a space separated string of four values representing left, top, right and bottom in that order
-	// (Another set for LTR may follow the first four values, this is currently ignored)
-	private void parseTextAreas(Element geometry) {
-		// Use view box as fallback
-		dTextAreaLeft = dViewBoxMinX;
-		dTextAreaTop = dViewBoxMinY;
-		dTextAreaRight = dViewBoxMinX+dViewBoxWidth;
-		dTextAreaBottom = dViewBoxMinY+dViewBoxHeight;
-		// Get and parse the property
-		String sTextAreas = Misc.getAttribute(geometry, XMLString.DRAW_TEXT_AREAS);
-		if (sTextAreas!=null) {
-			SimpleInputBuffer in = new SimpleInputBuffer(sTextAreas);
-			in.skipSpaces();
-			dTextAreaLeft = getParameter(in);
-			dTextAreaTop = getParameter(in);
-			dTextAreaRight = getParameter(in);
-			dTextAreaBottom = getParameter(in);
-		}
 	}
 	
 	// Parse the draw:path-stretchpoint-* attributes, which are double values
@@ -1000,14 +650,5 @@ public class CustomShapeConverter extends ConverterHelper {
 		throw new IllegalArgumentException("Uknown modifier index");
 	}
 	
-	// Some helper methods
-	private String format(double d) {
-		String s = String.format(Locale.ROOT, "%.3f", d);
-		if (s.endsWith(".000")) {
-			// Special treatment of (near) integers
-			s = Integer.toString((int)d);
-		}
-		return s;
-	}
 	
 }

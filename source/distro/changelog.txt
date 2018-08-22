@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.3 ---------
 
+[w2l] Added support for line, polyline and polygon shapes
+
+[w2l] Added support for grouped drawing shapes
+
 ---------- version 1.9.2 ---------
 
 [w2x] Bugfix: The alphabetical index can now be placed anywhere in the document
