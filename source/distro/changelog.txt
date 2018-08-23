@@ -2,6 +2,10 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.3 ---------
 
+[w2x] Bugfix: Fixed problem with bibliography, which was missing in export (regression i 1.9.2)
+
+[w2x] Bugfix: Do not export writing direction on headings and paragraphs is multilingual is false
+
 [w2l] Added support for line, polyline and polygon shapes
 
 [w2l] Added support for grouped drawing shapes

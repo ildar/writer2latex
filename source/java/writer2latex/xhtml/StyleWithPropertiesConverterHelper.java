@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-08-23)
  *
  */
 
@@ -57,8 +57,10 @@ public abstract class StyleWithPropertiesConverterHelper
         StyleWithProperties style = (StyleWithProperties) getStyles().getStyle(sStyleName);
         info.sTagName = getDefaultTagName(style);
         if (style!=null) {
-            if (config.multilingual()) { applyLang(style,info); }
-            applyDirection(style,info);
+            if (config.multilingual()) {
+            	applyLang(style,info);
+            	applyDirection(style,info);
+            }
             if (style.isAutomatic()) {
                 // Apply parent style + hard formatting
                 applyStyle(style.getParentName(),info);

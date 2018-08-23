@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-10)
+ *  Version 2.0 (2018-08-23)
  *
  */
 
@@ -139,6 +139,7 @@ public class TextConverter extends ConverterHelper {
         tocCv.generate();
         userCv.generate();
         indexCv.generate();
+        bibCv.generate();
         bInToc = false;
 		
         // Generate navigation links

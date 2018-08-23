@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-08)
+ *  Version 2.0 (2018-08-23)
  *
  */
 package writer2latex.xhtml;
@@ -94,8 +94,10 @@ public class HeadingStyleConverter extends StyleConverterHelper {
 	public void applyStyle(int nLevel, String sStyleName, StyleInfo info) {
         StyleWithProperties style = (StyleWithProperties) getStyles().getStyle(sStyleName);
         if (style!=null) {
-            if (config.multilingual()) { applyLang(style,info); }
-            applyDirection(style,info);
+            if (config.multilingual()) {
+            	applyLang(style,info);
+            	applyDirection(style,info);
+            }
             if (style.isAutomatic()) {
                 // Apply parent style + hard formatting
                 applyStyle(nLevel, style.getParentName(),info);
