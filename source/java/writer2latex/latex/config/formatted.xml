@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- clean.xml
+<!-- formatted.xml
      This is a sample configuration file for Writer2LaTeX.
-     The options are set to produce a clean
-     LaTeX file from an arbitrary Writer document
-     - at the expense of loss of formatting.
-     An even cleaner LaTeX file is produced with ultraclean.xml.
+     The options are set to produce a well structured 
+     LaTeX file from well structured Writer document
+     preserving the formatting that can be exported using
+     standard LaTeX packages
  -->
 
 <config>
@@ -14,29 +14,34 @@
   <option name="multilingual" value="false" />
   
   <option name="use_xcolor" value="true" />
-  <option name="use_longfbox" value="false" />
-  <option name="border_radius" value="0%" />
-  <option name="use_microtype" value="false" />
-  <option name="use_letterspace" value="false" />
-  <option name="use_ulem" value="false" />
-  <option name="use_titlesec" value="false" />
-  <option name="outline_numbering" value="false" />
-  <option name="formatting" value="ignore_most" />
-  <option name="use_multicol" value="false" />
-  <option name="multicols_format" value="false" />
+  <option name="use_longfbox" value="true" />
+  <option name="border_radius" value="100%" />
+  <option name="use_microtype" value="true" />
+  <option name="use_letterspace" value="true" />
+  <option name="use_ulem" value="true" />
+  <option name="use_titlesec" value="true" />
+  <option name="outline_numbering" value="true" />
+  <option name="formatting" value="convert_basic" />
+  <option name="use_multicol" value="true" />
+  <option name="multicols_format" value="true" />
   <option name="use_hyperref" value="true" />
   <option name="use_geometry" value="true" />
-  <option name="page_color" value="false" />
-  <option name="use_fancyhdr" value="false" />
-  <option name="page_numbering" value="false" />
-  <option name="use_lastpage" value="false" />
-  <option name="use_endnotes" value="false" />
-  <option name="notes_numbering" value="false" />
-  <option name="use_perpage" value="false" />
-  <option name="footnote_rule" value="false" />
-  <option name="use_colortbl" value="false" />
+  <option name="page_color" value="true" />
+  <option name="use_fancyhdr" value="true" />
+  <option name="page_numbering" value="true" />
+  <option name="use_lastpage" value="true" />
+  <option name="use_endnotes" value="true" />
+  <option name="notes_numbering" value="true" />
+  <option name="use_perpage" value="true" />
+  <option name="footnote_rule" value="true" />
+  <option name="use_colortbl" value="true" />
   <option name="use_caption" value="true" />
   <option name="align_frames" value="true" />
+  
+  <option name="use_pifont" value="true" />
+  <option name="use_ifsym" value="true" />
+  <option name="use_wasysym" value="true" />
+  <option name="use_eurosym" value="true" />
   
   <option name="use_bibtex" value="true" />
   <option name="bibtex_style" value="plain" />

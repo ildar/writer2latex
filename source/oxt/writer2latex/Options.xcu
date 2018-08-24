@@ -82,33 +82,31 @@
                     <value>*default.xml</value>
                 </prop>
             </node>
-            <node oor:name="04w2l-pdfprint" oor:op="replace">
+            <node oor:name="04w2l-formatted" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value />
                 </prop>
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Print optimized</value>
-                    <value xml:lang="da-DK">Udskriftsoptimeret</value>
-                    <value xml:lang="ca">Optimitzat per impressió</value>
-                    <value xml:lang="de-DE">Druck optimiert</value>
-                    <value xml:lang="es-ES">Impresión optimizada</value>
-                    <value xml:lang="fa-IR">بهینه شده برای چاپ</value>
-                    <value xml:lang="fi-FI">Tulostukseen optimoitu</value>
-                    <value xml:lang="fr-FR">Adapté pour une impression</value>
-                    <value xml:lang="it-IT">Ottimizzato per stampa</value>
-                    <value xml:lang="nl-NL">Voor druk geoptimaliseerd</value>
-                    <value xml:lang="nn-NO">Optimalisert for utskrift</value>
-                    <value xml:lang="pl-PL">Optymalizowany do wydruku</value>
-                    <value xml:lang="pt-BR">Optimizado para impressão</value>
-                    <value xml:lang="ru-RU">Оптимизированный для печати</value>
-                    <value xml:lang="tr-TR">Yazጜı İçin</value>
-                    <value xml:lang="uk-UA">Оптимізованний для друку</value>
+                    <value xml:lang="en-US">Article with formatting</value>
+                    <value xml:lang="da-DK">Artikel med formatering</value>
+                </prop>
+                <prop oor:name="ConfigURL" oor:type="xs:string">
+                    <value>*formatted.xml</value>
+                </prop>
+            </node>
+            <node oor:name="05w2l-pdfprint" oor:op="replace">
+                <prop oor:name="LockedOptions" oor:type="xs:string">
+                    <value />
+                </prop>
+                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Article with full formatting</value>
+                    <value xml:lang="da-DK">Artikel med fuld formatering</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*pdfprint.xml</value>
                 </prop>
             </node>
-            <node oor:name="05w2l-pdfscreen" oor:op="replace">
+            <node oor:name="06w2l-pdfscreen" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>backend</value>
                 </prop>
@@ -134,7 +132,7 @@
                     <value>*pdfscreen.xml</value>
                 </prop>
             </node>
-            <node oor:name="06w2l-custom" oor:op="replace">
+            <node oor:name="07w2l-custom" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>additional_symbols</value>
                 </prop>
@@ -160,7 +158,7 @@
                     <value>$(user)/writer2latex.xml</value>
                 </prop>
             </node>
-            <node oor:name="07w2l-article" oor:op="replace">
+            <node oor:name="08w2l-article" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value />
                 </prop>
@@ -172,7 +170,7 @@
                     <value>%origin%/config/article.xml</value>
                 </prop>
             </node>
-            <node oor:name="08w2l-beamer" oor:op="replace">
+            <node oor:name="09w2l-beamer" oor:op="replace">
                 <prop oor:name="LockedOptions" oor:type="xs:string">
                     <value>float_figures,float_tables,float_options,ignore_hard_page_breaks</value>
                 </prop>

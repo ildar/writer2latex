@@ -12,20 +12,35 @@
   <option name="backend" value="generic" />
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="false" />
+  
   <option name="use_xcolor" value="false" />
-  <option name="use_colortbl" value="false" />
-  <option name="use_geometry" value="false" />
-  <option name="use_fancyhdr" value="false" />
   <option name="use_longfbox" value="false" />
   <option name="border_radius" value="0%" />
+  <option name="use_microtype" value="false" />
+  <option name="use_letterspace" value="false" />
+  <option name="use_ulem" value="false" />
   <option name="use_titlesec" value="false" />
   <option name="outline_numbering" value="false" />
+  <option name="formatting" value="ignore_all" />
+  <option name="use_multicol" value="false" />
+  <option name="multicols_format" value="false" />
   <option name="use_hyperref" value="false" />
-  <option name="use_caption" value="true" />
+  <option name="use_geometry" value="false" />
+  <option name="page_color" value="false" />
+  <option name="use_fancyhdr" value="false" />
+  <option name="page_numbering" value="false" />
+  <option name="use_lastpage" value="false" />
   <option name="use_endnotes" value="false" />
+  <option name="notes_numbering" value="false" />
+  <option name="use_perpage" value="false" />
+  <option name="footnote_rule" value="false" />
+  <option name="use_colortbl" value="false" />
+  <option name="use_caption" value="false" />
+  <option name="align_frames" value="false" />
+  
   <option name="use_bibtex" value="true" />
   <option name="bibtex_style" value="plain" />
-  <option name="formatting" value="ignore_all" />
+  
   <option name="ignore_empty_paragraphs" value="true" />
   <option name="ignore_hard_page_breaks" value="true" />
   <option name="ignore_hard_line_breaks" value="true" />

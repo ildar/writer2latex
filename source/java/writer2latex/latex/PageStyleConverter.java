@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-23)
+ *  Version 2.0 (2018-08-24)
  *
  */
 
@@ -107,7 +107,7 @@ public class PageStyleConverter extends StyleConverter {
         if (firstMasterPage!=null) {
             BeforeAfter ba = new BeforeAfter();
             applyMasterPage(firstMasterPage.getName(),ba);
-            ldp.append(ba.getBefore());
+            if (!ba.getBefore().isEmpty()) { ldp.append(ba.getBefore()); }
         }
         // Convert page color (the context plays no role by now)
         convertPageColor(ldp, new Context());

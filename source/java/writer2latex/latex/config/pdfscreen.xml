@@ -10,27 +10,41 @@
   <option name="documentclass" value="article" />
   <option name="backend" value="pdftex" />
   <option name="inputencoding" value="ascii" />
-  <option name="use_geometry" value="false" />
-  <option name="use_fancyhdr" value="false" />
+  <option name="multilingual" value="false" />
+  
+  <option name="use_xcolor" value="true" />
   <option name="use_longfbox" value="true" />
   <option name="border_radius" value="100%" />
+  <option name="use_microtype" value="true" />
+  <option name="use_letterspace" value="true" />
+  <option name="use_ulem" value="true" />
   <option name="use_titlesec" value="true" />
+  <option name="outline_numbering" value="true" />
+  <option name="formatting" value="convert_basic" />
+  <option name="use_multicol" value="true" />
+  <option name="multicols_format" value="true" />
+  <option name="use_hyperref" value="true" />
+  <option name="use_geometry" value="false" />
+  <option name="page_color" value="true" />
+  <option name="use_fancyhdr" value="true" />
+  <option name="page_numbering" value="true" />
+  <option name="use_lastpage" value="true" />
+  <option name="use_endnotes" value="true" />
+  <option name="notes_numbering" value="true" />
+  <option name="use_perpage" value="true" />
+  <option name="footnote_rule" value="true" />
+  <option name="use_colortbl" value="true" />
+  <option name="use_caption" value="true" />
+  <option name="align_frames" value="true" />
+  
   <option name="use_pifont" value="true" />
   <option name="use_ifsym" value="true" />
   <option name="use_wasysym" value="true" />
-  <option name="use_bbding" value="false" />
   <option name="use_eurosym" value="true" />
-  <option name="use_xcolor" value="true" />
-  <option name="use_colortbl" value="true" />
-  <option name="use_longfbox" value="true" />
-  <option name="border_radius" value="100%" />
-  <option name="use_titlesec" value="true" />
-  <option name="outline_numbering" value="true" />
-  <option name="use_hyperref" value="true" />
-  <option name="use_endnotes" value="true" />
-  <option name="use_ulem" value="true" />
-  <option name="use_lastpage" value="true" />
-  <option name="formatting" value="convert_all" />
+
+  <option name="use_bibtex" value="true" />
+  <option name="bibtex_style" value="plain" />
+  
   <option name="ignore_empty_paragraphs" value="false" />
   <option name="ignore_hard_page_breaks" value="false" />
   <option name="ignore_hard_line_breaks" value="false" />

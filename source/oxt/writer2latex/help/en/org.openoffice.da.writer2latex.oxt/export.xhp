@@ -46,10 +46,17 @@
 				as it is possible without any significant deviations from LaTeX standards.</paragraph>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Print optimized</emph> on the other hand creates a LaTeX article
-				preserving as much formatting as possible. The result will resemble the %PRODUCTNAME Writer document,
-				but will look slightly different from a standard LaTeX article (and the LaTeX code will be less readable).
-				Use this only for documents that are well structured using styles.</paragraph>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Article with formatting</emph> creates a LaTeX article preserving
+				as much formatting as possible with standard LaTeX packages. This will produce good results if the %PRODUCTNAME
+				Writer document is well structured.</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Article with full formatting</emph> creates
+				a LaTeX article preserving as much formatting as possible, even if this means to deviate from LaTeX
+				standards. The result will thus look slightly different from a standard LaTeX article (and the LaTeX code will be
+				less readable).
+				The result will however resemble the %PRODUCTNAME Writer document, but use this only for documents that are well structured
+				using styles.</paragraph>
 			</listitem>
         </list>
         

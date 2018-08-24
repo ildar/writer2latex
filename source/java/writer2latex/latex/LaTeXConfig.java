@@ -193,7 +193,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_letterspace","false"));
         addOption(new BooleanOption("use_multicol","true"));
         addOption(new BooleanOption("multicols_format","false"));
-        addOption(new BooleanOption("use_caption","false"));
+        addOption(new BooleanOption("use_caption","true"));
         addOption(new BooleanOption("use_longtable","false"));
         addOption(new BooleanOption("use_supertabular","true"));
         addOption(new BooleanOption("use_tabulary","false"));
