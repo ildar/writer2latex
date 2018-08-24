@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-12)
+ *  Version 1.6.1 (2018-08-23)
  *
  */
 
@@ -149,6 +149,7 @@ public class TextConverter extends ConverterHelper {
         tocCv.generate();
         userCv.generate();
         indexCv.generate();
+        bibCv.generate();
         bInToc = false;
 		
         // Generate navigation links

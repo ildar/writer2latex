@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2018 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-10-24)
+ *  Version 1.6.1 (2018-08-23)
  *
  */
 
@@ -62,8 +62,10 @@ public abstract class StyleWithPropertiesConverterHelper
         StyleWithProperties style = (StyleWithProperties) getStyles().getStyle(sStyleName);
         info.sTagName = getDefaultTagName(style);
         if (style!=null) {
-            if (config.multilingual()) { applyLang(style,info); }
-            applyDirection(style,info);
+            if (config.multilingual()) {
+            	applyLang(style,info);
+                applyDirection(style,info);
+            }
             if (style.isAutomatic()) {
                 // Apply parent style + hard formatting
                 applyStyle(style.getParentName(),info);

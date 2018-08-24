@@ -1,5 +1,11 @@
 Changelog for Writer2LaTeX version 1.4 -> 1.6.1
 
+---------- version 1.6.1 final ----------
+
+[w2x] Bugfix: Fixed problem with bibliography, which was missing in export (regression in 1.6.1 beta)
+
+[w2x] Bugfix: Do not export writing direction on headings and paragraphs if multilingual is false
+
 ---------- version 1.6.1 beta ----------
 
 [w2l] Bugfix: String replace now works consistently again (backported from v2.0)
