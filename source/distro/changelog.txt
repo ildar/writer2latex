@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.3 ---------
 
+[w2l] Exporting with backend=xetex, script=western and multilingual=true now also supports CTL
+  languages, but currently only the default CTL language
+
 [w2l] Revised standard configurations, in particular:
   pdfprint.xml now uses convert_most rather than convert_all
   formatted.xml is a new standard configuration which is a compromise between default and pdfprint

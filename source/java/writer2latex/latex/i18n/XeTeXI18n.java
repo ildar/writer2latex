@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-09-04)
  * 
  */
 
@@ -72,6 +72,11 @@ public class XeTeXI18n extends I18n {
     private boolean bBidi = false;
     private String sLTRCommand = null;
     private String sRTLCommand = null;
+    
+    // Data for western text conversion 
+	private String sCTLCommand = null;
+	private String sCTLLanguage = null;
+
 
     /** Construct a new XeTeXI18n as ConverterHelper
      *  @param ofr the OfficeReader to get language information from
@@ -118,7 +123,6 @@ public class XeTeXI18n extends I18n {
     		break;
     	case LaTeXConfig.CTL:
     		bBidi = polyglossia.isBidi(sDefaultCTLLanguage, sDefaultCTLCountry);
-    		System.out.println("This is bidi "+bBidi);
     		if (bBidi) {
             	if ("fa".equals(sDefaultCTLLanguage)) {
                 	// For farsi, we load xepersian.sty
@@ -201,6 +205,9 @@ public class XeTeXI18n extends I18n {
     		switch (nScript) {
     		case LaTeXConfig.WESTERN:
 	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
+	    		if (sCTLLanguage!=null && !sCTLLanguage.isEmpty()) {
+	    			useDefaultFont("\\newfontfamily\\"+sCTLLanguage+"font[Scale=MatchUppercase]",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
+	    		}
 	    		break;
     		case LaTeXConfig.CTL:
 	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
@@ -226,7 +233,6 @@ public class XeTeXI18n extends I18n {
     
     private void useDefaultFont(String sCommand, String sXMLStyleName, LaTeXDocumentPortion decl) {
 		String sFont = getDefaultFontFamily(sXMLStyleName);
-		System.out.println("Got "+sFont);
 		if (sFont!=null) {
     		decl.append(sCommand).append("{").append(sFont).append("}").nl();
 		}    		    	
@@ -283,7 +289,7 @@ public class XeTeXI18n extends I18n {
      *  @param sLang the ISO language of the string
      *  @return the LaTeX string
      */
-    public String convert(String s, boolean bMathMode, String sLang){
+    public String convert(String s, boolean bMathMode, String sLang) {
     	boolean bGreekText = "el".equals(sLang);
     	StringBuilder buf = new StringBuilder();
         if (bMathMode) {
@@ -292,6 +298,9 @@ public class XeTeXI18n extends I18n {
         else if (bBidi) {
         	convertBidiText(s,buf,bGreekText);
         }
+        else if (nScript==LaTeXConfig.WESTERN && !bAlwaysUseDefaultLang && sDefaultCTLLanguage!=null) {
+        	convertWesternText(s,buf,bGreekText);
+		}
         else {
         	convertText(s,buf,bGreekText);
 		}
@@ -305,6 +314,41 @@ public class XeTeXI18n extends I18n {
     	for (int i=0; i<nLen; i++) {
     		convert(s.charAt(i),buf,false,bGreekText);
     	}        	    	
+    }
+    
+    private void convertWesternText(String s, StringBuilder buf, boolean bGreekText) {
+    	boolean bComplex = false;
+    	int i = 0;
+    	int nLen = s.length();
+    	while (i<nLen) {
+    		char c = s.charAt(i);
+    		if (bComplex && isWestern(c)) {
+    			buf.append("}");
+    			bComplex = false;
+    		}
+    		else if (!bComplex && isComplex(c)) {
+    			if (sCTLCommand==null) {
+    				String[] commands = polyglossia.applyLanguage(sDefaultCTLLanguage, sDefaultCTLCountry);
+    				sCTLCommand = commands[0];
+    				sCTLLanguage = commands[3];
+    			}
+    			if (!sCTLCommand.isEmpty()) {
+        			buf.append(sCTLCommand).append("{");
+        			bComplex = true;
+    			}
+    		}
+    		ReplacementTrieNode node = stringReplace.get(s,i,nLen);
+    		if (node!=null) {
+    			buf.append(node.getLaTeXCode());
+    			i += node.getInputLength();
+    		}
+    		else {
+    			convert(s.charAt(i++),buf,true,bGreekText);
+    		}
+    	}
+    	if (bComplex) {
+    		buf.append("}");
+    	}
     }
     
     private void convertText(String s, StringBuilder buf, boolean bGreekText) {
@@ -330,7 +374,6 @@ public class XeTeXI18n extends I18n {
 		if (nCurrentLevel%2==0) { // Base direction is LTR
 			buf.append(sLTRCommand).append("{");
 			nNestingLevel++;
-			System.out.println("LTR: "+s);
 		}
     	int nLen = s.length();
 		for (int i=0; i<nLen; i++) {
@@ -375,6 +418,46 @@ public class XeTeXI18n extends I18n {
     		// Character which does not require any special treatment
     		buf.append(c);
     	}
+    }
+    
+    private static boolean isWestern(char c) {
+    	return inRange(c,'\u0003','\u001F')
+    			|| inRange(c,'\u0021','\u009F')
+    			|| inRange(c,'\u00A1','\u04FF')
+    			|| inRange(c,'\u0530','\u058F')
+    			|| inRange(c,'\u10A0','\u10FF')
+    			|| inRange(c,'\u13A0','\u16FF')
+    			|| inRange(c,'\u1E00','\u1FFF')
+    			|| inRange(c,'\u2C60','\u2C7F')
+    			|| inRange(c,'\u2C80','\u2CE3')
+    			|| inRange(c,'\uA720','\uA7FF');
+    }
+    
+    private static boolean isComplex(char c) {
+    	return inRange(c,'\u0590','\u074F')
+    			|| inRange(c,'\u0780','\u07BF')
+    			|| inRange(c,'\u0900','\u109F')
+    			|| inRange(c,'\u1200','\u137F')
+    			|| inRange(c,'\u1780','\u18AF')
+    			|| inRange(c,'\uFB50','\uFDFF')
+    			|| inRange(c,'\uFE70','\uFEFF');
+    }
+    
+    private static boolean isAsian(char c) {
+    	return inRange(c,'\u1100','\u11FF')
+    			|| inRange(c,'\u2E80','\u31BF')
+    			|| inRange(c,'\u31C0','\u31EF')
+    			|| inRange(c,'\u3200','\u4DBF')
+    			|| inRange(c,'\u4E00','\uA4CF')
+    			|| inRange(c,'\uAC00','\uD7AF')
+    			|| inRange(c,'\uF900','\uFAFF')
+    			|| inRange(c,'\uFE30','\uFE4F')
+    			|| inRange(c,'\uFF00','\uFFEF');
+    	// Note: Also U+20000..U+2A6DF and U+2F800..U+2FA1F, we don't support characters outside BMP currently
+    }
+    
+    private static boolean inRange(char c,char c1,char c2) {
+    	return (c>=c1) && (c<=c2);
     }
     
 }

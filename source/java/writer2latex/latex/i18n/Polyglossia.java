@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-19) 
+ *  Version 2.0 (2018-09-06) 
  * 
  */
 
@@ -214,7 +214,7 @@ public class Polyglossia {
 	 * @param sLang The language
 	 * @param sCountry The country (may be null)
 	 * @return a string array containing definitions to apply the language: Entry 0 contains a command
-	 * and Entry 1 and 2 contains an environment
+	 * and Entry 1 and 2 contains an environment, finally entry 3 contains the polyglossia name
 	 */
 	public String[] applyLanguage(String sLang, String sCountry) {
 		String sLocale = sCountry!=null ? sLang+"-"+sCountry : sLang;
@@ -247,20 +247,22 @@ public class Polyglossia {
 					sVariant = ""; // Do not apply variant directly
 				}
 				
-				String[] sCommand = new String[3];
+				String[] sCommand = new String[4];
 				sCommand[0] = "\\text"+sPolyLang+sVariant;
 				if ("arabic".equals(sPolyLang)) { sPolyLang="Arabic"; }
 				sCommand[1] = "\\begin{"+sPolyLang+"}"+sVariant;
 				sCommand[2] = "\\end{"+sPolyLang+"}";
+				sCommand[3] = sPolyLang;
 				commands.put(sLocale, sCommand);
 				return sCommand;
 			}
 			else {
 				// Unknown language
-				String[] sCommand = new String[3];
+				String[] sCommand = new String[4];
 				sCommand[0] = "";
 				sCommand[1] = "";
 				sCommand[2] = "";
+				sCommand[3] = "";
 				commands.put(sLocale, sCommand);
 				return sCommand;
 			}
