@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
+ *  Version 2.0 (2018-09-08)
  *
  */
 
@@ -40,10 +40,8 @@ public class PolyShapeConverter extends ShapeWithViewBoxConverterHelper {
 		super(ofr, config, palette);
 	}
 	
-	@Override
-	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		super.handleShape(shape, dTranslateY, ldp, oc);
-		
+	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
+		super.handleShapeInner(shape, dTranslateY, ldp, oc);
 		parseViewBox(shape);
 	
 		// Can either handle a closed polygon (draw:polygon) or and open polyline (draw:polyline)

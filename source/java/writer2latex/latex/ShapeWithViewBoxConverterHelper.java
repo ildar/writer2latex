@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
+ *  Version 2.0 (2018-09-08)
  *
  */
 package writer2latex.latex;
@@ -61,16 +61,15 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 		return getParameter(shape,XMLString.SVG_Y) + getParameter(shape,XMLString.SVG_HEIGHT);
     }
 	
-	@Override
-	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		super.handleShape(shape, dTranslateY, ldp, oc);
+	// The subclass should extend this
+	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
 		this.dTranslateY = dTranslateY;
 
 		// Set up global parameters
 		dOffsetX = getParameter(shape,XMLString.SVG_X);
 		dOffsetY = getParameter(shape,XMLString.SVG_Y);
 		dWidth = getParameter(shape,XMLString.SVG_WIDTH);
-		dHeight = getParameter(shape,XMLString.SVG_HEIGHT);		
+		dHeight = getParameter(shape,XMLString.SVG_HEIGHT);
 	}
 	
 	void convertText(Element shape, LaTeXDocumentPortion ldp, Context oc) {

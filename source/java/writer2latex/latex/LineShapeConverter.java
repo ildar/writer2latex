@@ -19,8 +19,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
- *
+ *  Version 2.0 (2018-09-08)
+ *  
  */
 package writer2latex.latex;
 
@@ -43,9 +43,7 @@ class LineShapeConverter extends ShapeConverterHelper {
 		return Math.max(getParameter(shape,XMLString.SVG_Y1), getParameter(shape,XMLString.SVG_Y2));
     }
 	
-	@Override
-	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		super.handleShape(shape, dTranslateY, ldp, oc);
+	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
 		ldp.append("\\path");
 
 		// Apply style properties
@@ -64,7 +62,7 @@ class LineShapeConverter extends ShapeConverterHelper {
 		ldp.append("(").append(format(dX1)).append(",").append(format(dTranslateY-dY1)).append(")--(")
 			.append(format(dX2)).append(",").append(format(dTranslateY-dY2)).append(");").nl();
 		// Add text node
-		// Eks. \path[rotate around={-30:(2.04,1.158)}] (2.04,1.158) node[transform shape,align=center] {Text!};
+		// Eg. \path[rotate around={-30:(2.04,1.158)}] (2.04,1.158) node[transform shape,align=center] {Text!};
 		String sMidX = ((dX1+dX2)/2)+"cm";
 		String sMidY = ((2*dTranslateY-dY1-dY2)/2)+"cm";
 		String sLength = Math.sqrt((dX2-dX1)*(dX2-dX1)+(dY2-dY1)*(dY2-dY1))+"cm";

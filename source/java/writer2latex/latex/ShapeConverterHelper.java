@@ -38,6 +38,7 @@ import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 import writer2latex.util.Calc;
 import writer2latex.util.Misc;
+import writer2latex.util.SimpleInputBuffer;
 
 abstract class ShapeConverterHelper extends ConverterHelper {
 	
@@ -67,7 +68,35 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		applyFillStyle(style, fillOptions);
 		strokeOptions = new CSVList(",","=");
 		applyStrokeStyle(style, strokeOptions);
+
+		// Apply transformation
+		CSVList transformOptions = new CSVList(";","=");
+		try {
+			applyTransformOptions(shape, dTranslateY, transformOptions);
+		}
+		catch (Exception e) {
+			System.err.println("Error in draw:transform "+e.getMessage());
+		}
+		if (!transformOptions.isEmpty()) {
+			// TikZ reads the transformations in reverse order (unlike ODF)
+			// TODO: Extend CSVList to avoid this less elegant method...
+			CSVList reversed = new CSVList(",");
+			String[] s = transformOptions.toString().split(";");
+			int n = s.length;
+			for (int i=n-1; i>=0; i--) {
+				reversed.addValue(s[i]);
+			}
+			ldp.append("\\begin{scope}[").append(reversed.toString()).append("]").nl();
+		}
+		
+		handleShapeInner(shape,dTranslateY, ldp, oc);
+		
+		if (!transformOptions.isEmpty()) {
+			ldp.append("\\end{scope}").nl();
+		}
 	}
+	
+	abstract void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc);
 	
 	void convertText(Element shape, 
 		String sTop, String sRight, String sBottom, String sLeft,
@@ -244,6 +273,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		palette.getCharSc().applyFont(parStyle1, true, true, baTextFormat, oc);
 		oc.resetFormattingFromStyle(parStyle1);
 		
+		// Nodes should always be transformed
+		options.addValue("transform shape");
+
 		// Finally create the node (as a separate path, as the text does not belong to a specific path)
 		if (Math.abs(dAngle)<0.01) { // No rotation
 			ba.add("\\path ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");
@@ -251,8 +283,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		else {
 			String sMidX = Calc.multiply(0.5F, Calc.add(sLeft, sRight));
 			String sMidY = Calc.multiply(0.5F, Calc.add(sTop, sBottom));
-			options.addValue("transform shape");
-			ba.add("\\path[rotate around={"+dAngle+":("+sMidX+","+sMidY+")}] ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");			
+			ba.add("\\path[rotate around={"+format(dAngle)+":("+sMidX+","+sMidY+")}] ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");			
 		}
 		if (!baTextFormat.getBefore().isEmpty()) {
 			ba.addBefore(baTextFormat.getBefore()+" ");
@@ -331,6 +362,116 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		return s!=null ? s : ofr.getDefaultFrameStyle().getGraphicProperty(sProperty, false);
 	}
 	
+	// Transformations
+	private void applyTransformOptions(Element shape, double dTranslateY, CSVList props) {
+		String sTransform = Misc.getAttribute(shape, XMLString.DRAW_TRANSFORM);
+		if (sTransform!=null) {
+			SimpleInputBuffer in = new SimpleInputBuffer(sTransform);
+			in.skipSpaces();
+			while (!in.atEnd()) {
+				if (Character.isLetter(in.peekChar())) {
+					String s = in.getIdentifier();
+					switch (s) {
+					case "rotate": applyRotate(in, dTranslateY, props); break;
+					case "translate": applyTranslate(in, props); break;
+					case "skewX": applySkewX(in, props); break;
+					default: // Unhandled transformation, give up
+						System.out.println("Cannot handle "+s+" yet in draw:transform");
+						return;
+					}
+				}
+				else { // Syntax error, give up
+					System.out.println("Syntax error in draw:transform");
+					return;
+				}
+				in.skipSpaces();
+			}
+		}
+	}
+	
+	private void applyRotate(SimpleInputBuffer in, double dTranslateY, CSVList props) {
+		// Syntax is rotate(<double>)
+		in.skipSpaces();
+		if (in.peekChar()=='(') {
+			in.getChar();
+			in.skipSpaces();
+			double dAngle = getDouble(in);
+			in.skipSpaces();
+			if (in.peekChar()==')') {
+				in.getChar();
+				// We must rotate around the upper left corner (which is (0,0) in ODF)
+				props.addValue("rotate around", "{"+format(dAngle*180.0/Math.PI)+":(0,"+format(dTranslateY)+")}");
+				return;
+			}
+			throw new IllegalArgumentException("Syntax error in draw:transform, expected ')'");
+		}
+		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");
+	}
+	
+	private void applyTranslate(SimpleInputBuffer in, CSVList props) {
+		// Syntax is translate(<double><unit> [<double><unit>])
+		in.skipSpaces();
+		if (in.peekChar()=='(') {
+			in.getChar();
+			in.skipSpaces();
+			double dTranslateX = getLength(in);
+			double dTranslateY = 0;
+			in.skipSpaces();
+			if (in.peekChar()!=')') { // Must have a y coordinate too
+				dTranslateY = getLength(in);
+				in.skipSpaces();
+			}
+			if (in.peekChar()==')') {
+				in.getChar();
+				// Change sign because of upside down y-axis in ODF
+				String s = format(-dTranslateY);
+				if (!s.equals("0")) {
+					props.addValue("yshift", s+"cm");					
+				}
+				props.addValue("xshift", format(dTranslateX)+"cm");
+				return;
+			}
+			throw new IllegalArgumentException("Syntax error in draw:transform, expected ')'");
+		}
+		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");		
+	}
+	
+	private void applySkewX(SimpleInputBuffer in, CSVList props) {
+		// Syntax is skewX(<double>)
+		in.skipSpaces();
+		if (in.peekChar()=='(') {
+			in.getChar();
+			in.skipSpaces();
+			double dAngle = getDouble(in);
+			in.skipSpaces();
+			if (in.peekChar()==')') {
+				in.getChar();
+				// TikZ uses a slant factor, x is replaced with x+k*y, which implies tan(v)=k
+				props.addValue("xslant",format(Math.tan(dAngle)));
+				return;
+			}
+			throw new IllegalArgumentException("Syntax error in draw:transform, expected ')'");
+		}
+		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");		
+	}
+	
+	private double getLength(SimpleInputBuffer in) {
+		double dValue = getDouble(in);
+		String sUnit = in.getIdentifier();
+		if (!sUnit.isEmpty()) {
+			return Calc.length2cm(dValue+sUnit);
+		}
+		throw new IllegalArgumentException("Syntax error in draw:transform, expected length");
+	}
+	
+	private double getDouble(SimpleInputBuffer in) {
+		String s = in.getSignedDouble();
+		if (s.length()>0) {
+			return Double.parseDouble(s);
+		}
+		throw new IllegalArgumentException("Syntax error in draw:transform, expected double");
+	}
+	
 	// Some helper methods
 	
 	double getParameter(Element shape, String sXML) {
@@ -342,7 +483,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		String s = String.format(Locale.ROOT, "%.3f", d);
 		if (s.endsWith(".000")) {
 			// Special treatment of (near) integers
-			s = Integer.toString((int)d);
+			s = s.substring(0,s.length()-4);
 		}
 		return s;
 	}

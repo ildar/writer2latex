@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-20)
+ *  Version 2.0 (2018-09-07)
  *
  */
 
@@ -61,6 +61,7 @@ public class XMLString {
 	public static final String DRAW_SHADOW_OFFSET_X = "draw:shadow-offset-x";
 	public static final String DRAW_SHADOW_OFFSET_Y = "draw:shadow-offset-y";
 	public static final String DRAW_SHADOW_OPACITY = "draw:shadow-opacity";
+	public static final String DRAW_TRANSFORM = "draw:transform";
 	public static final String DRAW_PATH_STRETCHPOINT_X = "draw:path-stretchpoint-x";
 	public static final String DRAW_PATH_STRETCHPOINT_Y = "draw:path-stretchpoint-y";
 	public static final String DRAW_TEXT_AREAS = "draw:text-areas";

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-08)
+ *  Version 2.0 (2018-09-07)
  *
  */
 
@@ -441,14 +441,23 @@ public class CharStyleConverter extends StyleConverter {
     // other character formatting
         
     private final String textPosition(String sTextPosition){
-        if (sTextPosition==null) return null;
-        if (sTextPosition.startsWith("super")) return "\\textsuperscript";
-        if (sTextPosition.startsWith("sub") || sTextPosition.startsWith("-")) {
-            bNeedSubscript = true;
-            return "\\textsubscript";
-        }
-        if (sTextPosition.startsWith("0%")) return null;
-        return "\\textsuperscript";
+    	if (sTextPosition!=null && !sTextPosition.isEmpty()) {
+    		// Value is <relative position> [<relative size>]
+    		String[] sArguments = sTextPosition.split(" ");
+    		if (sArguments.length==1 || !sArguments[1].equals("100%")) {
+    			// Only export if font size is unspecified or different from 100%
+		        if (sArguments[0].equals("sub") || sArguments[0].startsWith("-")) {
+		        	// sub or any negative percentage implies subscript
+		            bNeedSubscript = true;
+		            return "\\textsubscript";
+		        }
+		        else if (sArguments[0].equals("super") || !sArguments[0].equals("0%")) {
+		        	// super or any positive percentage implies superscript
+		        	return "\\textsuperscript";
+		        }
+    		}
+    	}
+    	return null;
     }
     
     private static final String underline(String sStyle, String sType) {

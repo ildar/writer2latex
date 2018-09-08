@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
+ *  Version 2.0 (2018-09-08)
  *
  */
 
@@ -67,10 +67,8 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	 * @param ldp the LaTeX document portion to which the drawing should be added
 	 * @param oc the current context
 	 */
-	@Override
-	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		super.handleShape(shape, dTranslateY, ldp, oc);
-
+	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
+		super.handleShapeInner(shape, dTranslateY, ldp, oc);
 		// Next parse the path parameters and formulas
 		Element geometry = Misc.getChildByTagName(shape, XMLString.DRAW_ENHANCED_GEOMETRY);
 		if (geometry!=null) {
