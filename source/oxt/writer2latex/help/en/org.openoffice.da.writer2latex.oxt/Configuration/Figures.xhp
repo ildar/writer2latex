@@ -42,7 +42,7 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseTikz" id="bm_configusetikz"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export drawings (using tikz.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to export drawings made with the drawing tools in
-        %PRODUCTNAME Writer. Currently not all drawing shapes are supported.</paragraph>
+        %PRODUCTNAME Writer. This does not affect embedded %PRODUCTNAME Draw objects.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Graphics</paragraph>
         

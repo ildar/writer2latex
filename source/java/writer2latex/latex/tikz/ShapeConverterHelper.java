@@ -19,17 +19,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
-package writer2latex.latex;
+package writer2latex.latex.tikz;
 
 import java.util.Locale;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import writer2latex.latex.ConverterHelper;
+import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXConfig;
+import writer2latex.latex.LaTeXDocumentPortion;
+import writer2latex.latex.LaTeXPacman;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
@@ -40,11 +45,15 @@ import writer2latex.util.Calc;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
+/** This is a base class for all TikZ shape converters. It handles stroke and fill formatting,
+ *  transformations and text nodes.
+ */
 abstract class ShapeConverterHelper extends ConverterHelper {
 	
-	// Stroke and fill options for the current shape, derived from the graphic style
-	CSVList strokeOptions=null;
+	// Fill, stroke and arrow options for the current shape, derived from the graphic style
 	CSVList fillOptions=null;
+	CSVList strokeOptions=null;
+	CSVList arrowOptions=null;
 	
 	// Parameters for the current shape derived from the graphic style
 	boolean bHasfill=false; // Flag to indicate that a fill style is present
@@ -55,19 +64,37 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	}
 	
 	@Override
-	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-		// Nothing to do, the DrawConverter class does the work
+	public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+		// Nothing to do, the TikZConverter class does the work
 	}
 	
+	/** Each shape converter must be able to determine the maximal y-coordinate. Because ODF uses an upside down
+	 *  y axis we have to change sign on all y-coordinates. To avoid negative coordinates (which would be OK, but
+	 *  looks rather unusual) we translate the y-axis such that the orgin is in the lower left corner.
+	 *  This method is used to calculate the necessary translation.
+	 *  
+	 *  @return the maximal y-coordinate in cm
+	 */
 	abstract double getMaxY(Element shape);
 	
+	/** This method converts a shape. The subclass must convert the actual path, and use the members and
+	 *  methods of this class to apply the stroke and fill style and to convert text nodes.
+	 * 
+	 * @param shape the ODF draw shape to convert
+	 * @param dTranslateY the translation of the y-axis to apply
+	 * @param ldp the LaTeXDocumentPortion to which code should be added
+	 * @param oc the current context
+	 */
 	void handleShape(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		// Apply style, which also sets the global parameters bHasfill and bHasstroke
+		// Apply style, which also sets the members bHasfill and bHasstroke
+		// The subclass must use the members fillOptions and strokeOptions when constructing the path options
 		StyleWithProperties style = ofr.getFrameStyle(shape.getAttribute(XMLString.DRAW_STYLE_NAME));
 		fillOptions = new CSVList(",","=");
 		applyFillStyle(style, fillOptions);
 		strokeOptions = new CSVList(",","=");
 		applyStrokeStyle(style, strokeOptions);
+		arrowOptions = new CSVList(",","=");
+		applyArrowOptions(style, arrowOptions);
 
 		// Apply transformation
 		CSVList transformOptions = new CSVList(";","=");
@@ -96,8 +123,53 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		}
 	}
 	
+	/** The subclass must implement this method to convert a draw shape to TikZ paths
+	 * 
+	 * @param shape the ODF draw shape to convert
+	 * @param dTranslateY the translation of the y-axis to apply
+	 * @param ldp the LaTeXDocumentPortion to which code should be added
+	 * @param oc the current context
+	 */
 	abstract void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc);
 	
+	/** Get a length attribute from a draw shape in cm
+	 * 
+	 * @param shape the ODF draw shape
+	 * @param sXML the name of the attribute
+	 * @return the length in cm
+	 */
+	protected double getParameter(Element shape, String sXML) {
+		String s = Misc.getAttribute(shape, sXML);
+		return s!=null ? Calc.length2cm(s) : 0;
+	}
+
+	/** Format a double to 3 decimal points (or none if the are all zero). This method should be used on all
+	 *  numbers in the TikZ path.
+	 * 
+	 * @param d the double to format
+	 * @return a String with the required format
+	 */
+	String format(double d) {
+		String s = String.format(Locale.ROOT, "%.3f", d);
+		if (s.endsWith(".000")) {
+			// Special treatment of (near) integers
+			s = s.substring(0,s.length()-4);
+		}
+		return s;
+	}
+	
+	/** This method creates a text node for a draw element. The subclass should use this in and appropriate place in 
+	 *  the <code>handleShapeInner</code> method.
+	 * 
+	 * @param shape the ODF draw element to convert
+	 * @param sTop the top edge of the text area as a length with unit
+	 * @param sRight the right edge of the text area 
+	 * @param sBottom the bottom edge of the text area
+	 * @param sLeft the left edge of the text are
+	 * @param dAngle the angle (in degress) by which the text node should be rotated
+	 * @param ldp the LaTeXDocumentPortion to which code should be added
+	 * @param oc the current context
+	 */
 	void convertText(Element shape, 
 		String sTop, String sRight, String sBottom, String sLeft,
 		double dAngle,
@@ -122,6 +194,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		}
 	}
 	
+	// Remaining methods are private
+	
+	// Test whether a draw element has a text node
 	private boolean hasText(Element shape) {
 		Node child = shape.getFirstChild();
 		while (child!=null) {
@@ -139,6 +214,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		return false;
 	}
 	
+	// Convert the text content of a draw element
 	private void traverseText(Element shape, LaTeXDocumentPortion ldp, Context oc) {
     	Node child = shape.getFirstChild();
     	boolean bAfterParagraph = false;
@@ -167,9 +243,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
         }
     }
 	
-	// Formatting
-	
-	// Text node formatting
+	// Convert text node formatting
 	private void applyNodeProperties(StyleWithProperties style, StyleWithProperties parStyle1, StyleWithProperties parStyle2,
 			String sTop, String sRight, String sBottom, String sLeft, double dAngle,
 			BeforeAfter ba, Context oc) {		
@@ -290,7 +364,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		}
 	}
 		
-	// Set fill color, fill opacity and even odd rule
+	// Convert fill color, fill opacity and even odd rule
 	private void applyFillStyle(StyleWithProperties style, CSVList props) {
     	String s = getGraphicProperty(style,XMLString.DRAW_FILL);
     	if (s==null || s.equals("solid")) { // solid seems to be default
@@ -308,7 +382,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
     	}
 	}
 	
-	// Set path style, width, color and opacity
+	// Convert path style, width, color and opacity
 	private void applyStrokeStyle(StyleWithProperties style, CSVList props) {
         String s = getGraphicProperty(style,XMLString.DRAW_STROKE);
         if (s==null || s.equals("solid") || s.equals("dash")) {
@@ -339,8 +413,8 @@ abstract class ShapeConverterHelper extends ConverterHelper {
     	}
 	}
 	
-	// Set arrow style (simplistic version not taking the actual arrow style into account)
-	void applyArrowStyle(StyleWithProperties style, CSVList props) {
+	// Convert arrow style (simplistic version not taking the actual arrow style into account)
+	private void applyArrowOptions(StyleWithProperties style, CSVList props) {
 		String sStart = getGraphicProperty(style,XMLString.DRAW_MARKER_START);
 		boolean bStart = sStart!=null && !sStart.isEmpty();
 		String sEnd = getGraphicProperty(style,XMLString.DRAW_MARKER_END);
@@ -356,13 +430,13 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		}
 	}
 	
-	// Always look in default style if a property is not set
-	String getGraphicProperty(StyleWithProperties style, String sProperty) {
+	// Get a graphic style property, using the default graphic style if a property is not set
+	private String getGraphicProperty(StyleWithProperties style, String sProperty) {
 		String s = style.getGraphicProperty(sProperty, true);
 		return s!=null ? s : ofr.getDefaultFrameStyle().getGraphicProperty(sProperty, false);
 	}
 	
-	// Transformations
+	// Apply the transformations associated with a shape
 	private void applyTransformOptions(Element shape, double dTranslateY, CSVList props) {
 		String sTransform = Misc.getAttribute(shape, XMLString.DRAW_TRANSFORM);
 		if (sTransform!=null) {
@@ -375,22 +449,24 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 					case "rotate": applyRotate(in, dTranslateY, props); break;
 					case "translate": applyTranslate(in, props); break;
 					case "skewX": applySkewX(in, props); break;
+					case "skewY":
+					case "scale":
+					case "matrix": ignoreCommand(in); break;
 					default: // Unhandled transformation, give up
-						System.out.println("Cannot handle "+s+" yet in draw:transform");
-						return;
+						throw new IllegalArgumentException("Syntax error in draw:transform");
 					}
 				}
 				else { // Syntax error, give up
-					System.out.println("Syntax error in draw:transform");
-					return;
+					throw new IllegalArgumentException("Syntax error in draw:transform");
 				}
 				in.skipSpaces();
 			}
 		}
 	}
 	
+	// Apply rotation
+	// Syntax is rotate(<double>)
 	private void applyRotate(SimpleInputBuffer in, double dTranslateY, CSVList props) {
-		// Syntax is rotate(<double>)
 		in.skipSpaces();
 		if (in.peekChar()=='(') {
 			in.getChar();
@@ -408,8 +484,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");
 	}
 	
+	// Apply translation
+	// Syntax is translate(<double><unit> [<double><unit>])
 	private void applyTranslate(SimpleInputBuffer in, CSVList props) {
-		// Syntax is translate(<double><unit> [<double><unit>])
 		in.skipSpaces();
 		if (in.peekChar()=='(') {
 			in.getChar();
@@ -436,8 +513,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");		
 	}
 	
+	// Apply skewing along the x-axis
+	// Syntax is skewX(<double>)
 	private void applySkewX(SimpleInputBuffer in, CSVList props) {
-		// Syntax is skewX(<double>)
 		in.skipSpaces();
 		if (in.peekChar()=='(') {
 			in.getChar();
@@ -453,6 +531,20 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			throw new IllegalArgumentException("Syntax error in draw:transform, expected ')'");
 		}
 		throw new IllegalArgumentException("Syntax error in draw:transform, expected '('");		
+	}
+	
+	// Skip an unsupported transformation command
+	private void ignoreCommand(SimpleInputBuffer in) {
+		in.skipSpaces();
+		if (in.peekChar()=='(') {
+			in.getChar();
+			while (!in.atEnd() && in.peekChar()!=')') {
+				in.getChar();
+			}
+			if (!in.atEnd() && in.peekChar()==')') {
+				in.getChar();
+			}
+		}
 	}
 	
 	private double getLength(SimpleInputBuffer in) {
@@ -472,19 +564,4 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		throw new IllegalArgumentException("Syntax error in draw:transform, expected double");
 	}
 	
-	// Some helper methods
-	
-	double getParameter(Element shape, String sXML) {
-		String s = Misc.getAttribute(shape, sXML);
-		return s!=null ? Calc.length2cm(s) : 0;
-	}
-
-	String format(double d) {
-		String s = String.format(Locale.ROOT, "%.3f", d);
-		if (s.endsWith(".000")) {
-			// Special treatment of (near) integers
-			s = s.substring(0,s.length()-4);
-		}
-		return s;
-	}
 }

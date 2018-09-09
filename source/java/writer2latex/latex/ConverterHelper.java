@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -29,13 +29,13 @@ import writer2latex.office.OfficeReader;
 
 /** This is an abstract superclass for LaTeX converter helpers</p>
  */
-abstract class ConverterHelper {
+public abstract class ConverterHelper {
     
-    OfficeReader ofr;
-    LaTeXConfig config;
-    ConverterPalette palette;
+    public OfficeReader ofr;
+    public LaTeXConfig config;
+    public ConverterPalette palette;
 	
-    ConverterHelper(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+    public ConverterHelper(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         this.ofr = ofr;
         this.config = config;
         this.palette = palette;
@@ -47,6 +47,6 @@ abstract class ConverterHelper {
      * @param pacman the <code>LaTeXPacman</code> containing the package loading part of the LaTeX preamble
      * @param decl the <code>LaTeXDocumentPortion</code> containing the free form part of the LaTeX preamble
      */
-    abstract void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl);
+    public abstract void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl);
     
 }

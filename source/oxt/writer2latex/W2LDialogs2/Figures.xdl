@@ -18,6 +18,6 @@
   <dlg:textfield dlg:id="ImageOptions" dlg:tab-index="8" dlg:left="120" dlg:top="132" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigImageOptions"/>
   <dlg:text dlg:style-id="0" dlg:id="GraphicsLabel" dlg:tab-index="9" dlg:left="5" dlg:top="92" dlg:width="245" dlg:height="12" dlg:value="Graphics"/>
   <dlg:text dlg:style-id="0" dlg:id="DrawingsLabel" dlg:tab-index="11" dlg:left="5" dlg:top="64" dlg:width="245" dlg:height="12" dlg:value="Drawings"/>
-  <dlg:checkbox dlg:id="UseTikz" dlg:tab-index="5" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTikz" dlg:value="Export drawings (using tikz.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseTikz" dlg:tab-index="5" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTikz" dlg:value="Export drawings (using tikz.sty)" dlg:checked="true"/>
  </dlg:bulletinboard>
 </dlg:window>

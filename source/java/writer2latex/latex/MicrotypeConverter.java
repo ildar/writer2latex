@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -51,7 +51,7 @@ public class MicrotypeConverter extends ConverterHelper {
 	}
 
 	@Override
-	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+	public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.useMicrotype() && (config.backend()==LaTeXConfig.PDFTEX || config.backend()==LaTeXConfig.XETEX)) {
 			pacman.usepackage("microtype");
 		}

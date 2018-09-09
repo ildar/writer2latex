@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-19)
+ *  Version 2.0 (2018-09-09)
  *
  */
  
@@ -30,8 +30,6 @@ import java.util.Stack;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import writer2latex.base.BinaryGraphicsDocument;
 import writer2latex.latex.util.BeforeAfter;
 import writer2latex.latex.util.Context;
@@ -50,10 +48,6 @@ import writer2latex.util.Misc;
  */
 public class DrawConverter extends ConverterHelper {
 	
-	// Do we export custom shapes?
-	private boolean bUseTikz;
-	private boolean bNeedTikz;
-
 	// Do we include any external graphics?
     private boolean bNeedGraphicx = false;
 
@@ -66,8 +60,6 @@ public class DrawConverter extends ConverterHelper {
 	
     public DrawConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
-		bUseTikz = config.useTikz();
-		bNeedTikz = false;
         floatingFramesStack.push(new LinkedList<Element>());
     }
 
@@ -78,9 +70,6 @@ public class DrawConverter extends ConverterHelper {
             else if (config.backend()==LaTeXConfig.DVIPS) sOptions = "dvips";
             pacman.usepackage(sOptions, "graphicx");
         }
-		if (bNeedTikz) {
-			pacman.usepackage("tikz");
-		}
     }
     	
     public void handleCaption(Element node, LaTeXDocumentPortion ldp, Context oc) {
@@ -128,79 +117,18 @@ public class DrawConverter extends ConverterHelper {
         		handleDrawElement(Misc.getFirstChildElement(node),ldp,oc);
         	}
         }
-        else if (sName.equals(XMLString.DRAW_G)) {
-        	if (!palette.getMathCv().handleTexMathsEquation(node,ldp)) {
-        		handleGroup(node,ldp,oc);
-        	}
+        else if (sName.equals(XMLString.DRAW_G) && palette.getMathCv().handleTexMathsEquation(node,ldp)) {
+        	// This is a TeXMaths equation
         }
-        else {
-        	ShapeConverterHelper sch = getShapeConverterHelper(sName);
-        	if (sch!=null) {
-            	if (bUseTikz) {
-            		bNeedTikz=true;
-    				ldp.append("\\begin{tikzpicture}").nl();
-    	        	sch.handleShape(node, sch.getMaxY(node), ldp, oc);
-    				ldp.append("\\end{tikzpicture}").nl();
-            	}
-            	// TODO: Add warning otherwise?
-        	}
-        	else {
-	            // Other drawing objects are currently not supported
-	            ldp.append("[Warning: Draw object ignored]");
-        	}
+        else if (!palette.getTikZCv().handleDrawing(node,ldp,oc)) {
+            // This drawing object cannot be converted currently
+            ldp.append("[Warning: Draw object ignored]");
         }
     }
 	
     //-----------------------------------------------------------------
     // handle draw:object elements (OOo objects such as Chart, Math,...)
     
-    private void handleGroup(Element node, LaTeXDocumentPortion ldp, Context oc) {
-    	if (bUseTikz) {
-    		bNeedTikz=true;
-	    	// First get the maximal y coordinate
-	    	//  (used to avoid negative y-coordinates, which is not important but looks better)
-	    	double dMaxY = 0.0;
-	    	Node child = node.getFirstChild();
-	    	while (child!=null) {
-	    		if (child.getNodeType()==Node.ELEMENT_NODE) {
-	            	ShapeConverterHelper sch = getShapeConverterHelper(child.getNodeName());
-	            	if (sch!=null) {
-	            		dMaxY = Math.max(dMaxY, sch.getMaxY((Element)child));
-	            	}
-	    		}
-	    		child = child.getNextSibling();
-	    	}
-	    	// Next do the actual export
-			ldp.append("\\begin{tikzpicture}").nl();
-	    	child = node.getFirstChild();
-	    	while (child!=null) {
-	    		if (child.getNodeType()==Node.ELEMENT_NODE) {
-	            	ShapeConverterHelper sch = getShapeConverterHelper(child.getNodeName());
-	            	if (sch!=null) {
-	            		sch.handleShape((Element)child, dMaxY, ldp, oc);
-	            	}
-	    		}
-	    		child = child.getNextSibling();
-	    	}
-			ldp.append("\\end{tikzpicture}").nl();
-    	}
-    }
-    
-    private ShapeConverterHelper getShapeConverterHelper(String sXML) {
-    	if (XMLString.DRAW_CUSTOM_SHAPE.equals(sXML)) {
-    		return palette.getCustomShapeCv();
-    	}
-    	else if (XMLString.DRAW_LINE.equals(sXML)) {
-    		return palette.getLineShapeCv();
-    	}
-    	else if (XMLString.DRAW_POLYLINE.equals(sXML)) {
-    		return palette.getPolyShapeCv();
-    	}
-    	else if (XMLString.DRAW_POLYGON.equals(sXML)) {
-    		return palette.getPolyShapeCv();
-    	}
-    	return null;
-    }
     
     private void handleDrawObject(Element node, LaTeXDocumentPortion ldp, Context oc) {
     	

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-09)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -54,7 +54,8 @@ class HeadingStyleConverter extends ConverterHelper {
 		super(ofr, config, palette);
 	}
 
-	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+	@Override
+	public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.useTitlesec()) {
 			pacman.usepackage("explicit", "titlesec");
 			convertHeadingStyles(decl);

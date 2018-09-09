@@ -19,13 +19,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-08)
+ *  Version 2.0 (2018-09-09)
  *  
  */
-package writer2latex.latex;
+package writer2latex.latex.tikz;
 
 import org.w3c.dom.Element;
 
+import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXConfig;
+import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
@@ -49,7 +52,7 @@ class LineShapeConverter extends ShapeConverterHelper {
 		// Apply style properties
 		CSVList options = new CSVList(",","=");
 		options.addValues(strokeOptions);
-		applyArrowStyle(ofr.getFrameStyle(shape.getAttribute(XMLString.DRAW_STYLE_NAME)),options);
+		options.addValues(arrowOptions);
 		if (!options.isEmpty()) {
 			ldp.append("[").append(options.toString()).append("]");
 		}

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-19)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -181,7 +181,7 @@ class BibConverter extends ConverterHelper {
      * @param pack the LaTeXPacman to which declarations of packages (\\usepackage) should be added.
      * @param decl the LaTeXDocumentPortion to which other declarations should be added.
      */
-    void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
     	// Currently nothing
     }
 

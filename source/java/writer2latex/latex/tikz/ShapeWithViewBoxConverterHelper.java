@@ -19,18 +19,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-08)
+ *  Version 2.0 (2018-09-09)
  *
  */
-package writer2latex.latex;
+package writer2latex.latex.tikz;
 
 import org.w3c.dom.Element;
+
+import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXConfig;
+import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
+/** This is a base class for TikZ shape converters for draw elements providing a view box
+ */
 abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 	
 	// Translation for final y coordinate
@@ -79,7 +85,6 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 			0.0,ldp,oc);
 	}
 
-	
 	// Parse the svg:viewBox attribute for the current sjape
 	// svg:viewBox, following the SVG spec, is a set of four numbers separated by whitespace and/or a comma.
 	// The order of the numbers is <min-x>, <min-y>, <width> and <height>.

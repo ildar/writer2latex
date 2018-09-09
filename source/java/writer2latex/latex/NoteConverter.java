@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-02)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -73,7 +73,7 @@ class NoteConverter extends ConverterHelper {
      * @param decl the <code>LaTeXDocumentPortion</code> to which
      * other declarations should be added.
      */
-    void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+    public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bContainsEndnotes) { pacman.usepackage("endnotes"); }
         LaTeXDocumentPortion ldp = new LaTeXDocumentPortion(false);
         if (bContainsFootnotes) { 

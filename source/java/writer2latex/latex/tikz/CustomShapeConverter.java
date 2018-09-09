@@ -19,11 +19,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-08)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
-package writer2latex.latex;
+package writer2latex.latex.tikz;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +32,9 @@ import java.util.Vector;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import writer2latex.latex.ConverterPalette;
+import writer2latex.latex.LaTeXConfig;
+import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
@@ -60,13 +63,7 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 		super(ofr, config, palette);
 	}
 
-	/** Convert a <code>draw:custom-shape</code> element to TikZ paths
-	 * 
-	 * @param shape the Office node
-	 * @param dTranslateY translation of the y-coordinate
-	 * @param ldp the LaTeX document portion to which the drawing should be added
-	 * @param oc the current context
-	 */
+	@Override
 	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
 		super.handleShapeInner(shape, dTranslateY, ldp, oc);
 		// Next parse the path parameters and formulas

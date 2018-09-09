@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-01)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -185,7 +185,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_geometry","true"));
         addOption(new BooleanOption("use_fancyhdr","true"));
         addOption(new BooleanOption("use_perpage","true"));
-        addOption(new BooleanOption("use_tikz","false"));
+        addOption(new BooleanOption("use_tikz","true"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
         addOption(new BooleanOption("use_hyperref","true"));

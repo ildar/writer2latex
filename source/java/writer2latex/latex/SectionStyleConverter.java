@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-25)
+ *  Version 2.0 (2018-09-09)
  *
  */
 
@@ -53,7 +53,7 @@ public class SectionStyleConverter extends ConverterHelper {
 	}
 
 	@Override
-	void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
+	public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedMulticol) { pacman.usepackage("multicol"); }
 	}
 	
