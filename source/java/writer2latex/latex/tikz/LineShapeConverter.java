@@ -62,7 +62,7 @@ class LineShapeConverter extends ShapeConverterHelper {
 		double dY1 = getParameter(shape,XMLString.SVG_Y1);
 		double dX2 = getParameter(shape,XMLString.SVG_X2);
 		double dY2 = getParameter(shape,XMLString.SVG_Y2);
-		ldp.append("(").append(format(dX1)).append(",").append(format(dTranslateY-dY1)).append(")--(")
+		ldp.append(" (").append(format(dX1)).append(",").append(format(dTranslateY-dY1)).append(") -- (")
 			.append(format(dX2)).append(",").append(format(dTranslateY-dY2)).append(");").nl();
 		// Add text node
 		// Eg. \path[rotate around={-30:(2.04,1.158)}] (2.04,1.158) node[transform shape,align=center] {Text!};

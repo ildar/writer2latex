@@ -78,6 +78,7 @@ public class PageStyleConverter extends StyleConverterHelper {
                 	if (sMarginRight!=null) {
                 		sWidth = Calc.sub(sWidth, sMarginRight);
                 	}
+                	System.out.println(sWidth+"-"+sMarginLeft+"-"+sMarginRight);
                 	return sWidth;
                 }
             }

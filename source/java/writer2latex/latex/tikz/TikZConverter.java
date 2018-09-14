@@ -49,12 +49,14 @@ public class TikZConverter extends ConverterHelper {
 	private CustomShapeConverter customShapeCv;
     private LineShapeConverter lineShapeCv;
     private PolyShapeConverter polyShapeCv;
+    private PathShapeConverter pathShapeCv;
 
 	public TikZConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
         customShapeCv = new CustomShapeConverter(ofr,config,palette);
         lineShapeCv = new LineShapeConverter(ofr,config,palette);
         polyShapeCv = new PolyShapeConverter(ofr,config,palette);
+        pathShapeCv = new PathShapeConverter(ofr,config,palette);
 		bUseTikZ = config.useTikz();
 		bNeedTikZ = false;
 	}
@@ -67,7 +69,7 @@ public class TikZConverter extends ConverterHelper {
 	}
 		
 	/** Convert an ODF element to a TikZ picture. Supported elements are draw:g,
-	 *  draw:custom-shape, draw:line, draw:polyline and draw:polygon
+	 *  draw:custom-shape, draw:line, draw:polyline, draw:polygon and draw:path
 	 * 
 	 * @param node the ODF element to handle
 	 * @param ldp the LaTeXDocumentPortion to which code should be added
@@ -138,6 +140,9 @@ public class TikZConverter extends ConverterHelper {
     	}
     	else if (XMLString.DRAW_POLYGON.equals(sXML)) {
     		return polyShapeCv;
+    	}
+    	else if (XMLString.DRAW_PATH.equals(sXML)) {
+    		return pathShapeCv;
     	}
     	return null;
     }
