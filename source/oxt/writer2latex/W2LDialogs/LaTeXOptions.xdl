@@ -110,11 +110,11 @@
   <dlg:text dlg:id="ScriptLabel" dlg:tab-index="50" dlg:left="12" dlg:top="64" dlg:width="60" dlg:height="12" dlg:help-text="&amp;169.LaTeXOptions.ScriptLabel.HelpText" dlg:value="&amp;170.LaTeXOptions.ScriptLabel.Label"/>
   <dlg:menulist dlg:id="Script" dlg:tab-index="13" dlg:left="75" dlg:top="62" dlg:width="86" dlg:height="12" dlg:help-text="&amp;172.LaTeXOptions.Script.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsScript" dlg:spin="true" dlg:linecount="4">
    <dlg:menupopup>
-    <dlg:menuitem dlg:value="&amp;184.Script.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;185.Script.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;186.Script.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;187.Script.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;242.Script.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;243.Script.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;244.Script.StringItemList"/>
    </dlg:menupopup>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:ScriptChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:checkbox dlg:id="ConvertIndexNames" dlg:tab-index="43" dlg:left="193" dlg:top="161" dlg:width="149" dlg:height="12" dlg:help-text="&amp;190.LaTeXOptions.ConvertIndexNames.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsConvertIndexNames" dlg:value="&amp;191.LaTeXOptions.ConvertIndexNames.Label" dlg:checked="false"/>
   <dlg:menulist dlg:id="Fontspec" dlg:tab-index="16" dlg:left="75" dlg:top="90" dlg:width="86" dlg:height="12" dlg:help-text="&amp;193.LaTeXOptions.Fontspec.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsFontspec" dlg:spin="true">

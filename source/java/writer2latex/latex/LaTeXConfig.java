@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-14)
  *
  */
 
@@ -86,10 +86,9 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public static final int XETEX = 4;
     
     // Main script
-    public static final int AUTO = 0;
-    public static final int WESTERN = 1;
-    public static final int CTL = 2;
-    public static final int CJK = 3;
+    public static final int WESTERN = 0;
+    public static final int CTL = 1;
+    public static final int CJK = 2;
 	
     // Formatting (must be ordered)
     public static final int IGNORE_ALL = 0;
@@ -163,10 +162,9 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 nValue = ClassicI18n.readInputenc(sValue);
             }
         });
-        addOption(new IntegerOption("script","auto") {
+        addOption(new IntegerOption("script","western") {
             public void setString(String sValue) {
                 super.setString(sValue);
-                if ("auto".equals(sValue)) nValue = AUTO;
                 if ("western".equals(sValue)) nValue = WESTERN;
                 if ("ctl".equals(sValue)) nValue = CTL;
                 if ("cjk".equals(sValue)) nValue = CJK;

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2018-09-14)
  *  
  */
 
@@ -46,7 +46,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
     private static final String[] INPUTENCODING_VALUES =
         { "ascii", "latin1", "latin2", "iso-8859-7", "cp1250", "cp1251", "koi8-r", "utf8" };
     private static final String[] SCRIPT_VALUES =
-        { "auto", "western", "ctl", "cjk" };
+        { "western", "ctl", "cjk" };
     private static final String[] NOTES_VALUES =
         { "ignore", "comment", "marginpar", "pdfannotation" };
     private static final String[] FLOATOPTIONS_VALUES =
@@ -234,6 +234,9 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         else if (sMethod.equals("ParameterValueChange")) {
         	parameterValueChange();
         }
+        else if (sMethod.equals("ScriptChange")) {
+        	enableMultilingual();
+        }
         else if (sMethod.equals("UseBibtexChange")) {
             enableBibtexStyle();
         }
@@ -254,7 +257,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
 	
     public String[] getSupportedMethodNames() {
         String[] sNames = { "ConfigChange", "ParameterNameChange", "ParameterValueChange",
-        		"UseBibtexChange", "WrapLinesChange",
+        		"ScriptChange", "UseBibtexChange", "WrapLinesChange",
         		"OptimizeSimpleTablesChange", "FloatTablesChange", "FloatFiguresChange" };
         return sNames;
     }
@@ -309,7 +312,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         setControlEnabled("Inputencoding",!isLocked("inputencoding"));
         setControlEnabled("ScriptLabel",!isLocked("script"));
         setControlEnabled("Script",!isLocked("script"));
-        setControlEnabled("Multilingual",!isLocked("multilingual"));
+        setControlEnabled("Multilingual",!isLocked("multilingual") && getListBoxSelectedItem("Script")==0);
         setControlEnabled("FontLabel",!isLocked("font") || !isLocked("fontspec"));
         setControlEnabled("Font",!isLocked("font"));
         setControlEnabled("Fontspec",!isLocked("fontspec"));
@@ -365,6 +368,13 @@ public class LaTeXFilterDialog extends FilterDialogBase {
 		setControlVisible("ScriptLabel",bXeTeX);
 		setControlVisible("Script",bXeTeX);
 		setControlVisible("Fontspec",bXeTeX);
+    }
+    
+    private void enableMultilingual() {
+    	if (!isLocked("multilingual")) {
+    		// Currently multilingual text is only support if the main script is western
+    		setControlEnabled("Multilingual",getListBoxSelectedItem("Script")==0);
+    	}
     }
 	
     private void enableBibtexStyle() {

@@ -2,10 +2,13 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.3 ---------
 
+[w2l] The script option no longer supports the value auto; western is the new default. Also the
+  multilingual option is now disabled in the export dialog if the main script is not western
+
 [w2l] Raised and lowered text is now only exported if the relative font size is less than 100%
 
 [w2l] Exporting with backend=xetex, script=western and multilingual=true now also supports CTL
-  languages, but currently only the default CTL language
+  and CJK languages, but currently only the default CTL language
 
 [w2l] Revised standard configurations, in particular:
   pdfprint.xml now uses convert_most rather than convert_all

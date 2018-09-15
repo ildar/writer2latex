@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-04)
+ *  Version 2.0 (2018-09-14)
  * 
  */
 
@@ -41,7 +41,7 @@ import writer2latex.latex.util.Context;
 /** This class (and the helpers in the same package) takes care of i18n in
  *  Writer2LaTeX. In XeLaTeX, i18n is simpler than in Classic LaTeX:
  *  Input encoding is always UTF-8, and font encoding is mostly UTF-8.
- *  Languages is handled with polyglossia, xepersian and xeCJK.
+ *  Languages are handled with polyglossia, xepersian and xeCJK.
  *  The class XeTeXI18n thus manages these, and like the classic version
  *  implements a Unicode->LaTeX translation that can handle unicode
  *  characters which requires a special treatment.
@@ -76,6 +76,7 @@ public class XeTeXI18n extends I18n {
     // Data for western text conversion 
 	private String sCTLCommand = null;
 	private String sCTLLanguage = null;
+	private boolean bNeedCJK = true;
 
 
     /** Construct a new XeTeXI18n as ConverterHelper
@@ -97,19 +98,8 @@ public class XeTeXI18n extends I18n {
             }
         }
         
-        // Determine main script type
+        // Get main script type
     	nScript = config.script();
-        if (nScript==LaTeXConfig.AUTO) {
-        	if (sDefaultCJKLanguage!=null && sDefaultCJKLanguage.length()>0) {
-        		nScript = LaTeXConfig.CJK;
-        	}
-        	else if (sDefaultCTLLanguage!=null && sDefaultCTLLanguage.length()>0) {
-        		nScript = LaTeXConfig.CTL;
-        	}
-        	else {
-        		nScript = LaTeXConfig.WESTERN;
-        	}
-        }
         
         // Determine whether or not to use the generic fonts rm, sf and tt
         bUseGenericFonts = config.fontspec().equals("default");
@@ -144,6 +134,8 @@ public class XeTeXI18n extends I18n {
     	case LaTeXConfig.WESTERN:
     	default:
     		// For western languages, we use polyglossia
+    		// The same applies for CTL languages embedded in the western text
+    		// (Currently only one CTL language per document is supported)
     		polyglossia.applyLanguage(sDefaultLanguage, sDefaultCountry);
     	}
 
@@ -177,8 +169,8 @@ public class XeTeXI18n extends I18n {
     
     // Load
     private void useLanguages(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-    	// Load xeCJK
-    	if (nScript==LaTeXConfig.CJK) {
+    	// Load xeCJK if the main script is CJK or western with CJK text
+    	if (nScript==LaTeXConfig.CJK || bNeedCJK) {
     		pacman.usepackage("xeCJK");
     	}
     	// Load xepersian or polyglossia 
@@ -203,20 +195,21 @@ public class XeTeXI18n extends I18n {
     		useDefaultFont("\\setmathsfont(Digits,Latin,Greek)",XMLString.STYLE_FONT_NAME,decl);
     	case "original":
     		switch (nScript) {
-    		case LaTeXConfig.WESTERN:
+			case LaTeXConfig.WESTERN:
 	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
 	    		if (sCTLLanguage!=null && !sCTLLanguage.isEmpty()) {
 	    			useDefaultFont("\\newfontfamily\\"+sCTLLanguage+"font[Scale=MatchUppercase]",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
 	    		}
+	    		if (bNeedCJK) {
+	    			useDefaultFont("\\setCJKmainfont",XMLString.STYLE_FONT_NAME_ASIAN,decl);
+	    		}
 	    		break;
     		case LaTeXConfig.CTL:
-	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
-	    		break;
+    			useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME_COMPLEX,decl);
+    			break;
     		case LaTeXConfig.CJK:
-	    		useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
-	    		useDefaultFont("\\setCJKmainfont",XMLString.STYLE_FONT_NAME_ASIAN,decl);
-	    	default:
-	    		// There are no other possible values
+    			useDefaultFont("\\setmainfont",XMLString.STYLE_FONT_NAME,decl);
+    			useDefaultFont("\\setCJKmainfont",XMLString.STYLE_FONT_NAME_ASIAN,decl);
     		}
 	    	break;
     	case "default":
@@ -322,7 +315,7 @@ public class XeTeXI18n extends I18n {
     	int nLen = s.length();
     	while (i<nLen) {
     		char c = s.charAt(i);
-    		if (bComplex && isWestern(c)) {
+    		if (bComplex && (isWestern(c) || isAsian(c))) {
     			buf.append("}");
     			bComplex = false;
     		}
@@ -336,6 +329,9 @@ public class XeTeXI18n extends I18n {
         			buf.append(sCTLCommand).append("{");
         			bComplex = true;
     			}
+    		}
+    		if (isAsian(c)) {
+    			bNeedCJK = true;
     		}
     		ReplacementTrieNode node = stringReplace.get(s,i,nLen);
     		if (node!=null) {
