@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-17)
  *
  */
 
@@ -172,7 +172,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 */
 	void convertText(Element shape, 
 		String sTop, String sRight, String sBottom, String sLeft,
-		double dAngle,
+		double dAngle,boolean bForceWrap,
 		LaTeXDocumentPortion ldp, Context oc) {
 		if (hasText(shape)) {
 			// Get the paragraph style associated with the shape
@@ -187,7 +187,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			ic.setInTikZText(true);
 			BeforeAfter ba = new BeforeAfter();
 			StyleWithProperties style = ofr.getFrameStyle(shape.getAttribute(XMLString.DRAW_STYLE_NAME));
-			applyNodeProperties(style,parStyle1,parStyle2,sTop,sRight,sBottom,sLeft,dAngle,ba,ic);
+			applyNodeProperties(style,parStyle1,parStyle2,sTop,sRight,sBottom,sLeft,dAngle,bForceWrap,ba,ic);
 			ldp.append(ba.getBefore());
 			traverseText(shape, ldp, ic);
 			ldp.append(ba.getAfter()).nl();
@@ -245,17 +245,23 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	
 	// Convert text node formatting
 	private void applyNodeProperties(StyleWithProperties style, StyleWithProperties parStyle1, StyleWithProperties parStyle2,
-			String sTop, String sRight, String sBottom, String sLeft, double dAngle,
-			BeforeAfter ba, Context oc) {		
-		// Create node options
-		CSVList options = new CSVList(",","=");
-
-		// Get the padding - the text area must be shrinked slightly by these amounts
-		// Note that padding is a length with unit, not a number within the coordinate system defined by the view box
+			String sTop, String sRight, String sBottom, String sLeft, double dAngle, boolean bForceWrap,
+			BeforeAfter ba, Context oc) {
+		
+		// TODO: Check for vertical text (adjust angle with -90 degrees)
+		// boolean bVertical = "tb-rl".equals(style.getParProperty(XMLString.STYLE_WRITING_MODE, true));
+	
+		// Get the padding
 		String sPaddingLeft = getGraphicProperty(style,XMLString.FO_PADDING_LEFT);
 		String sPaddingRight = getGraphicProperty(style,XMLString.FO_PADDING_RIGHT);
 		String sPaddingTop = getGraphicProperty(style,XMLString.FO_PADDING_TOP);
 		String sPaddingBottom = getGraphicProperty(style,XMLString.FO_PADDING_BOTTOM);
+
+		// Create node options
+		CSVList options = new CSVList(",","=");
+		
+		// Get the padding - the text area must be shrinked slightly by these amounts
+		// Note that padding is a length with unit, not a number within the coordinate system defined by the view box
 		
 		// Calculate the anchor point from the style, taking the padding into account
 		// ODF offers 9 anchor positions within the text area, and for each of these we should specify the
@@ -286,7 +292,6 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			if (sPaddingTop!=null) { sAnchorY = Calc.sub(sAnchorY, sPaddingTop); }
 			placement.addValue("below"); // or north anchor
 		}
-		sAnchorY = sAnchorY.substring(0, sAnchorY.length()-2); // strip the unit
 
 		String sHorizontalAlign = getGraphicProperty(style, XMLString.DRAW_TEXTAREA_HORIZONTAL_ALIGN);
 		if (sHorizontalAlign==null) { sHorizontalAlign="center"; }
@@ -310,7 +315,6 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			if (sPaddingLeft!=null) { sAnchorX = Calc.add(sAnchorX, sPaddingLeft); }
 			placement.addValue("right"); // or west anchor
 		}
-		sAnchorX = sAnchorX.substring(0, sAnchorX.length()-2); // strip the unit
 		
 		if (!placement.isEmpty()) { options.addValue(placement.toString()); }
 
@@ -333,7 +337,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		options.addValue("align", sAlign);
 		
 		// Determine automatic wrapping from the style
-		if ("wrap".equals(getGraphicProperty(style,XMLString.FO_WRAP_OPTION))) {
+		if (bForceWrap || "wrap".equals(getGraphicProperty(style,XMLString.FO_WRAP_OPTION))) {
 			// In TikZ, automatic wrapping of text is equivalent to setting the width
 			String sWidth = Calc.sub(sRight, sLeft);
 			// If there is padding, we have to shrink the width slightly
@@ -349,15 +353,20 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		
 		// Nodes should always be transformed
 		options.addValue("transform shape");
-
+		
 		// Finally create the node (as a separate path, as the text does not belong to a specific path)
+		// Vertical writing implies a further rotation of 90 degrees
+		double dAnchorX = Calc.length2cm(sAnchorX);
+		double dAnchorY = Calc.length2cm(sAnchorY);
+		
 		if (Math.abs(dAngle)<0.01) { // No rotation
-			ba.add("\\path ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");
+			ba.add("\\path ("+format(dAnchorX)+","+format(dAnchorY)+") node["+options.toString()+"] {","};");
 		}
 		else {
 			String sMidX = Calc.multiply(0.5F, Calc.add(sLeft, sRight));
 			String sMidY = Calc.multiply(0.5F, Calc.add(sTop, sBottom));
-			ba.add("\\path[rotate around={"+format(dAngle)+":("+sMidX+","+sMidY+")}] ("+sAnchorX+","+sAnchorY+") node["+options.toString()+"] {","};");			
+			ba.add("\\path[rotate around={"+format(dAngle)+":("+sMidX+","+sMidY+")}] ("
+					+format(dAnchorX)+","+format(dAnchorY)+") node["+options.toString()+"] {","};");			
 		}
 		if (!baTextFormat.getBefore().isEmpty()) {
 			ba.addBefore(baTextFormat.getBefore()+" ");

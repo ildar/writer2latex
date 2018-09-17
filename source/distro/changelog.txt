@@ -23,7 +23,7 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 [w2l] Added support for rotation, translation and skewing of drawing shapes (TikZ)
 
-[w2l] Added support for line, polyline, polygon and path drawing shapes (TikZ)
+[w2l] Added support for line, polyline, polygon, caption and path drawing shapes (TikZ)
 
 [w2l] Added support for grouped drawing shapes (TikZ)
 

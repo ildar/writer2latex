@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-15)
  *
  */
  
@@ -49,6 +49,7 @@ public class TikZConverter extends ConverterHelper {
 	private CustomShapeConverter customShapeCv;
     private LineShapeConverter lineShapeCv;
     private PolyShapeConverter polyShapeCv;
+    private CaptionShapeConverter captionShapeCv;
     private PathShapeConverter pathShapeCv;
 
 	public TikZConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
@@ -56,6 +57,7 @@ public class TikZConverter extends ConverterHelper {
         customShapeCv = new CustomShapeConverter(ofr,config,palette);
         lineShapeCv = new LineShapeConverter(ofr,config,palette);
         polyShapeCv = new PolyShapeConverter(ofr,config,palette);
+        captionShapeCv = new CaptionShapeConverter(ofr,config,palette);
         pathShapeCv = new PathShapeConverter(ofr,config,palette);
 		bUseTikZ = config.useTikz();
 		bNeedTikZ = false;
@@ -140,6 +142,9 @@ public class TikZConverter extends ConverterHelper {
     	}
     	else if (XMLString.DRAW_POLYGON.equals(sXML)) {
     		return polyShapeCv;
+    	}
+    	else if (XMLString.DRAW_CAPTION.endsWith(sXML)) {
+    		return captionShapeCv;
     	}
     	else if (XMLString.DRAW_PATH.equals(sXML)) {
     		return pathShapeCv;

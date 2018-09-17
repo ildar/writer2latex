@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-17)
  *
  */
 package writer2latex.latex.tikz;
@@ -82,7 +82,7 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 		convertText(shape,
 			format(transformY(dTextAreaTop))+"cm",format(transformX(dTextAreaRight))+"cm",
 			format(transformY(dTextAreaBottom))+"cm",format(transformX(dTextAreaLeft))+"cm",
-			0.0,ldp,oc);
+			0.0,false,ldp,oc);
 	}
 
 	// Parse the svg:viewBox attribute for the current sjape
