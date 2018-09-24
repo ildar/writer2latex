@@ -57,6 +57,17 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		super.handleShapeInner(shape, dTranslateY, ldp, oc);
 		parseViewBox(shape);
 		
+		// Experimental code for connectors
+		/*if (shape.getNodeName().equals(XMLString.DRAW_CONNECTOR)) {
+			// A connector does not specify the width and height, but rather start and end points
+			double dX1 = getParameter(shape,XMLString.SVG_X1);
+			double dY1 = getParameter(shape,XMLString.SVG_Y1);
+			double dX2 = getParameter(shape,XMLString.SVG_X2);
+			double dY2 = getParameter(shape,XMLString.SVG_Y2);
+			dWidth = Math.abs(dX2-dX1);
+			dHeight = Math.abs(dY2-dY1);
+		}*/
+		
 		String sPath = Misc.getAttribute(shape, XMLString.SVG_D);		
 		if (sPath!=null) {
 			SimpleInputBuffer in = new SimpleInputBuffer(sPath);

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-17)
+ *  Version 2.0 (2018-09-23)
  *
  */
 
@@ -75,7 +75,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 *  
 	 *  @return the maximal y-coordinate in cm
 	 */
-	abstract double getMaxY(Element shape);
+	double getMaxY(Element shape) {
+		return getParameter(shape,XMLString.SVG_Y);
+	}
 	
 	/** This method converts a shape. The subclass must convert the actual path, and use the members and
 	 *  methods of this class to apply the stroke and fill style and to convert text nodes.
@@ -95,6 +97,10 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		applyStrokeStyle(style, strokeOptions);
 		arrowOptions = new CSVList(",","=");
 		applyArrowOptions(style, arrowOptions);
+		
+		// Apply placement
+		CSVList placementOptions = new CSVList(",","=");
+		applyPlacement(shape, dTranslateY, placementOptions);
 
 		// Apply transformation
 		CSVList transformOptions = new CSVList(";","=");
@@ -115,9 +121,15 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			}
 			ldp.append("\\begin{scope}[").append(reversed.toString()).append("]").nl();
 		}
+		if (!placementOptions.isEmpty()) {
+			ldp.append("\\begin{scope}[").append(placementOptions.toString()).append("]").nl();			
+		}
 		
 		handleShapeInner(shape,dTranslateY, ldp, oc);
 		
+		if (!placementOptions.isEmpty()) {
+			ldp.append("\\end{scope}").nl();
+		}
 		if (!transformOptions.isEmpty()) {
 			ldp.append("\\end{scope}").nl();
 		}
@@ -154,6 +166,9 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		if (s.endsWith(".000")) {
 			// Special treatment of (near) integers
 			s = s.substring(0,s.length()-4);
+			if (s.equals("-0")) {
+				s = "0";
+			}
 		}
 		return s;
 	}
@@ -162,6 +177,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 *  the <code>handleShapeInner</code> method.
 	 * 
 	 * @param shape the ODF draw element to convert
+	 * @param the element containing the text
 	 * @param sTop the top edge of the text area as a length with unit
 	 * @param sRight the right edge of the text area 
 	 * @param sBottom the bottom edge of the text area
@@ -170,16 +186,16 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 * @param ldp the LaTeXDocumentPortion to which code should be added
 	 * @param oc the current context
 	 */
-	void convertText(Element shape, 
+	void convertText(Element shape, Element text, 
 		String sTop, String sRight, String sBottom, String sLeft,
 		double dAngle,boolean bForceWrap,
 		LaTeXDocumentPortion ldp, Context oc) {
-		if (hasText(shape)) {
+		if (hasText(text)) {
 			// Get the paragraph style associated with the shape
 			StyleWithProperties parStyle1 = ofr.getParStyle(shape.getAttribute(XMLString.DRAW_TEXT_STYLE_NAME));
 			// Get the paragraph style associated with the first paragraph
 			StyleWithProperties parStyle2 = null;
-			Element firstPar = Misc.getChildByTagName(shape, XMLString.TEXT_P);
+			Element firstPar = Misc.getChildByTagName(text, XMLString.TEXT_P);
 			if (firstPar!=null) { // actually we already know that
 				parStyle2 = ofr.getParStyle(firstPar.getAttribute(XMLString.TEXT_STYLE_NAME));
 			}
@@ -189,7 +205,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			StyleWithProperties style = ofr.getFrameStyle(shape.getAttribute(XMLString.DRAW_STYLE_NAME));
 			applyNodeProperties(style,parStyle1,parStyle2,sTop,sRight,sBottom,sLeft,dAngle,bForceWrap,ba,ic);
 			ldp.append(ba.getBefore());
-			traverseText(shape, ldp, ic);
+			traverseText(text, ldp, ic);
 			ldp.append(ba.getAfter()).nl();
 		}
 	}
@@ -443,6 +459,19 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	private String getGraphicProperty(StyleWithProperties style, String sProperty) {
 		String s = style.getGraphicProperty(sProperty, true);
 		return s!=null ? s : ofr.getDefaultFrameStyle().getGraphicProperty(sProperty, false);
+	}
+	
+	private void applyPlacement(Element shape, double dTranslateY, CSVList props) {
+		double dX = getParameter(shape, XMLString.SVG_X);
+		String s = format(dX);
+		if (!s.equals("0")) {
+			props.addValue("xshift", s+"cm");
+		}		
+		double dY = getParameter(shape, XMLString.SVG_Y);
+		s = format(-dY); // As always: Upside down axis in ODF
+		if (!s.equals("0")) {
+			props.addValue("yshift", s+"cm");					
+		}
 	}
 	
 	// Apply the transformations associated with a shape

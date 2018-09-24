@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-23)
  *
  */
  
@@ -278,7 +278,7 @@ public class DrawConverter extends ConverterHelper {
         ldp.append(ba.getAfter());
     }
 
-    private void includeGraphics(Element node, LaTeXDocumentPortion ldp, Context oc) {
+    public void includeGraphics(Element node, LaTeXDocumentPortion ldp, Context oc) {
         String sFileName = null;
         boolean bCommentOut = true;
         

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-17)
+ *  Version 2.0 (2018-09-23)
  *
  */
 package writer2latex.latex.tikz;
@@ -43,8 +43,8 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 	private double dTranslateY;
 	
 	// Parameters for the current shape derived from the draw:custom-shape element
-	private double dOffsetX=0; // horizontal position in cm (from svg:x)
-	private double dOffsetY=0; // vertical position in cm (from svg:y)
+	// private double dOffsetX=0; // horizontal position in cm (from svg:x)
+	// private double dOffsetY=0; // vertical position in cm (from svg:y)
 	double dWidth=0; // Width in cm (from svg:width)
 	double dHeight=0; // Height in cm (from svg:height)
 	// Parameters for the current shape
@@ -64,7 +64,7 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 	
 	@Override
     double getMaxY(Element shape) {
-		return getParameter(shape,XMLString.SVG_Y) + getParameter(shape,XMLString.SVG_HEIGHT);
+		return super.getMaxY(shape) + getParameter(shape,XMLString.SVG_HEIGHT);
     }
 	
 	// The subclass should extend this
@@ -72,14 +72,14 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 		this.dTranslateY = dTranslateY;
 
 		// Set up global parameters
-		dOffsetX = getParameter(shape,XMLString.SVG_X);
-		dOffsetY = getParameter(shape,XMLString.SVG_Y);
+		//dOffsetX = getParameter(shape,XMLString.SVG_X);
+		//dOffsetY = getParameter(shape,XMLString.SVG_Y);
 		dWidth = getParameter(shape,XMLString.SVG_WIDTH);
 		dHeight = getParameter(shape,XMLString.SVG_HEIGHT);
 	}
 	
 	void convertText(Element shape, LaTeXDocumentPortion ldp, Context oc) {
-		convertText(shape,
+		convertText(shape,shape,
 			format(transformY(dTextAreaTop))+"cm",format(transformX(dTextAreaRight))+"cm",
 			format(transformY(dTextAreaBottom))+"cm",format(transformX(dTextAreaLeft))+"cm",
 			0.0,false,ldp,oc);
@@ -104,7 +104,7 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 			dViewBoxWidth=parseViewBoxItem(in);
 			dViewBoxHeight=parseViewBoxItem(in);
 		}
-		// The view box is also provides default valuse for the text area
+		// The view box is also provides default values for the text area
 		dTextAreaLeft = dViewBoxMinX;
 		dTextAreaTop = dViewBoxMinY;
 		dTextAreaRight = dViewBoxMinX+dViewBoxWidth;
@@ -135,13 +135,13 @@ abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 	
 	// Transform x coordinate (just an alias for transformLengthX)
 	double transformX(double dX) {
-		return transformLengthX(dX)+dOffsetX;
+		return transformLengthX(dX); // +dOffsetX;
 	}
 	
 	// Transform y coordinate
 	// y coordinate is reversed because we go from an upside down y-axis to a standard y-axis
 	double transformY(double dY) {
-		return transformLengthY(dViewBoxHeight-dY)-dHeight-dOffsetY+dTranslateY;
+		return transformLengthY(dViewBoxHeight-dY)-dHeight+dTranslateY; // -dOffsetY
 	}
 	
 	// Transform a point from the coordinate system given by svg:viewBox to the actual coordinate system given

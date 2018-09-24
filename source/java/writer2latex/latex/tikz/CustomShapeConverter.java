@@ -299,8 +299,8 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	
 	// Path commands X (ellipticalquadrantx) and Y (ellipticalquadranty)
 	private void convertEllipticalquadrant(SimpleInputBuffer in, StringBuilder tikz, boolean bTangentX) {
+		int nCount = bTangentX ? 0 : 1;
 		do {
-			int nCount = bTangentX ? 0 : 1;
 			double dX=getParameter(in);
 			double dY=getParameter(in);
 			// This is a another case, where LO's behavior contradicts the ODF spec.
@@ -308,11 +308,49 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 			// Note that we use slightly smaller rounded corners than LO (factor should be 1.0)
 			// because of limitations in the rounded corner implementation in TikZ
 			// Also note that this is the only case where the current point is actually used in the code
-			double dRadius = 0.5*Math.min(transformLengthX(Math.abs(dX-dCurrentX)),transformLengthY(Math.abs(dY-dCurrentY)));
+			/*double dRadius = 0.5*Math.min(transformLengthX(Math.abs(dX-dCurrentX)),transformLengthY(Math.abs(dY-dCurrentY)));
 			tikz.append(" [rounded corners=").append(format(dRadius)).append("cm]"); // unit is required here
 			if ((nCount++)%2==0) { tikz.append(" -| "); }
 			else { tikz.append(" |- "); }
-			tikz.append(transformPoint(dX,dY));			
+			tikz.append(transformPoint(dX,dY));
+			*/
+			double dDeltaX = dX-dCurrentX;
+			double dDeltaY = dY-dCurrentY;
+			double dStart=0,dEnd=0;
+			if ((nCount++)%2==0) { // x axis is tangent at starting point
+				if (dDeltaX>0 && dDeltaY>0) {
+					dStart=90; dEnd=0;
+				}
+				else if (dDeltaX>0 && dDeltaY<0) {
+					dStart=270; dEnd=360;					
+				}
+				else if (dDeltaX<0 && dDeltaY>0) {
+					dStart=90; dEnd=180;					
+				}
+				else if (dDeltaX<0 && dDeltaY<0) {
+					dStart=270; dEnd=180;					
+				}
+			}
+			else { // y axis is tangent at starting point
+				if (dDeltaX>0 && dDeltaY>0) {
+					dStart=180; dEnd=270;
+				}
+				else if (dDeltaX>0 && dDeltaY<0) {
+					dStart=180; dEnd=90;					
+				}
+				else if (dDeltaX<0 && dDeltaY>0) {
+					dStart=360; dEnd=270;					
+				}
+				else if (dDeltaX<0 && dDeltaY<0) {
+					dStart=0; dEnd=90;				
+				}				
+			}
+			CSVList options = new CSVList(",","=");
+			options.addValue("x radius", format(transformLengthX(Math.abs(dDeltaX))));
+			options.addValue("y radius", format(transformLengthY(Math.abs(dDeltaY))));
+			options.addValue("start angle",format(dStart));
+			options.addValue("end angle",format(dEnd));
+			tikz.append(" arc[").append(options.toString()).append("]");
 			dCurrentX = dX; dCurrentY = dY;
 		} while (isParameterStart(in.peekChar()));
 	}
@@ -623,11 +661,13 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	
 	private double functionReference(SimpleInputBuffer in) {
 		in.getChar();
-		// The name if a string of arbitrary charaters except spaces and tabs
-		String sName = "";
+		// The name of a string is supposed to be a sequence of arbitrary characters except spaces and tabs
+		// In reality it is an ordinary identifier
+		/*String sName = "";
 		while (!in.atEnd() && in.peekChar()!=' ' && in.peekChar()!='\u0009') {
 			sName+=in.getChar();
-		}
+		}*/
+		String sName = in.getIdentifier();
 		if (equations.containsKey(sName)) {
 			return calculateEquation(sName);
 		}

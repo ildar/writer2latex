@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-17)
+ *  Version 2.0 (2018-09-23)
  *  
  */
 package writer2latex.latex.tikz;
@@ -70,7 +70,7 @@ class LineShapeConverter extends ShapeConverterHelper {
 		String sMidY = ((2*dTranslateY-dY1-dY2)/2)+"cm";
 		String sLength = Math.sqrt((dX2-dX1)*(dX2-dX1)+(dY2-dY1)*(dY2-dY1))+"cm";
 		double dAngle = -Math.atan2(dY2-dY1, dX2-dX1)*180.0/Math.PI;
-		convertText(shape,
+		convertText(shape,shape,
 				Calc.add(sMidY, "0.1cm"),
 				Calc.add(sMidX, Calc.multiply(0.5F, sLength)),
 				Calc.sub(sMidY, "0.1cm"),
