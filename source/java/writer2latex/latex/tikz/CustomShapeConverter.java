@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-09-25)
  *
  */
 
@@ -58,6 +58,11 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	private double dCurrentY; // y-coordinate of current point
 	private boolean bNostroke; // This set of subpaths have specified the nostroke command S
 	private boolean bNofill; // This set of subpaths have specified the nofill command F
+	
+	private boolean bStretchX;
+	private boolean bStretchY;
+	private double dUnstretchedWidth;
+	private double dUnstretchedHeight;
 
 	CustomShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
@@ -80,6 +85,22 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 				System.err.println("Error "+e.getMessage());
 				return;
 			}
+		}
+		
+		// Determine stretching. If the shape should be stretched, we expand the view box accordingly.
+		bStretchX=false;
+		bStretchY=false;
+		dUnstretchedWidth = dWidth;
+		dUnstretchedHeight = dHeight;
+		double dViewBoxAspect = dViewBoxWidth/dViewBoxHeight;
+		double dShapeAspect = dWidth/dHeight;
+		if (dStretchX>0.1 && (dViewBoxAspect < dShapeAspect)) {
+			bStretchX=true;
+			dUnstretchedWidth = dViewBoxAspect/dShapeAspect*dWidth;
+		}
+		else if (dStretchY>0.1 && (dViewBoxAspect > dShapeAspect)) {
+			bStretchY=true;
+			dUnstretchedHeight = dShapeAspect/dViewBoxAspect*dHeight;
 		}
 		
 		// Finally convert the path
@@ -303,17 +324,6 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 		do {
 			double dX=getParameter(in);
 			double dY=getParameter(in);
-			// This is a another case, where LO's behavior contradicts the ODF spec.
-			// The spec defines this to be an ellipse, but LO uses rounded corners (which we follow here)
-			// Note that we use slightly smaller rounded corners than LO (factor should be 1.0)
-			// because of limitations in the rounded corner implementation in TikZ
-			// Also note that this is the only case where the current point is actually used in the code
-			/*double dRadius = 0.5*Math.min(transformLengthX(Math.abs(dX-dCurrentX)),transformLengthY(Math.abs(dY-dCurrentY)));
-			tikz.append(" [rounded corners=").append(format(dRadius)).append("cm]"); // unit is required here
-			if ((nCount++)%2==0) { tikz.append(" -| "); }
-			else { tikz.append(" |- "); }
-			tikz.append(transformPoint(dX,dY));
-			*/
 			double dDeltaX = dX-dCurrentX;
 			double dDeltaY = dY-dCurrentY;
 			double dStart=0,dEnd=0;
@@ -685,5 +695,36 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 		throw new IllegalArgumentException("Uknown modifier index");
 	}
 	
+	// Override coordinate transformations to handle the special stretch feature of custom shapes
+	
+	// As described in the ODF spec, we first convert to a (fake) shape with the same aspect ratio as the view box
+	double transformLengthX(double dX) {
+		return dX*dUnstretchedWidth/dViewBoxWidth;
+	}
+	
+	double transformLengthY(double dY) {
+		return dY*dUnstretchedHeight/dViewBoxHeight;
+	}
+	
+	// Coordinates in the upper portion of the axis are then translated to the fill the real shape size
+	// Strange things will happen if the two halves are connected with anything but straight lines
+	// (LO always connects them with vertical and horizontal lines, so we are fine)
+	double transformX(double dX) {
+		if (bStretchX && dX>dStretchX) {
+			return transformLengthX(dX)+dWidth-dUnstretchedWidth;
+		}
+		else {
+			return transformLengthX(dX);
+		}
+	}
+	
+	double transformY(double dY) {
+		if (bStretchY && dY<dStretchY) {
+			return transformLengthY(dViewBoxHeight-dY)-dUnstretchedHeight+dTranslateY;
+		}
+		else {
+			return transformLengthY(dViewBoxHeight-dY)-dHeight+dTranslateY;
+		}
+	}
 	
 }

@@ -40,22 +40,22 @@ import writer2latex.util.SimpleInputBuffer;
 abstract class ShapeWithViewBoxConverterHelper extends ShapeConverterHelper {
 	
 	// Translation for final y coordinate
-	private double dTranslateY;
+	protected double dTranslateY;
 	
 	// Parameters for the current shape derived from the draw:custom-shape element
 	// private double dOffsetX=0; // horizontal position in cm (from svg:x)
 	// private double dOffsetY=0; // vertical position in cm (from svg:y)
-	double dWidth=0; // Width in cm (from svg:width)
-	double dHeight=0; // Height in cm (from svg:height)
+	protected double dWidth=0; // Width in cm (from svg:width)
+	protected double dHeight=0; // Height in cm (from svg:height)
 	// Parameters for the current shape
-	double dViewBoxMinX=0;
-	double dViewBoxMinY=0;
-	double dViewBoxWidth=0;
-	double dViewBoxHeight=0;
-	double dTextAreaLeft=0;
-	double dTextAreaTop=0;
-	double dTextAreaRight=0;
-	double dTextAreaBottom=0;	
+	protected double dViewBoxMinX=0;
+	protected double dViewBoxMinY=0;
+	protected double dViewBoxWidth=0;
+	protected double dViewBoxHeight=0;
+	protected double dTextAreaLeft=0;
+	protected double dTextAreaTop=0;
+	protected double dTextAreaRight=0;
+	protected double dTextAreaBottom=0;	
 	
 	
 	ShapeWithViewBoxConverterHelper(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-23)
+ *  Version 2.0 (2018-09-24)
  *  
  */
 package writer2latex.latex.tikz;
@@ -75,6 +75,8 @@ public class FrameConverter extends ShapeConverterHelper {
 					.append(") node[inner sep=0pt] {");
 				palette.getDrawCv().includeGraphics((Element)child, ldp, oc);
 				ldp.append("};").nl();
+				// An image might also have a text node
+				convertText(shape,(Element)child,dTranslateY+"cm",dWidth+"cm",(dTranslateY-dHeight)+"cm","0cm",0,false,ldp,oc);
 			}
 		}
 	}

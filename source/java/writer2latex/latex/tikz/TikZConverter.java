@@ -151,9 +151,10 @@ public class TikZConverter extends ConverterHelper {
     	else if (XMLString.DRAW_PATH.equals(sXML)) {
     		return pathShapeCv;
     	}
-    	/*else if (XMLString.DRAW_CONNECTOR.equals(sXML)) {
-    		return pathShapeCv;
-    	}*/
+    	else if (XMLString.DRAW_CONNECTOR.equals(sXML)) {
+    		return lineShapeCv;
+    		//return pathShapeCv;
+    	}
     	else if (XMLString.DRAW_FRAME.equals(sXML)) {
     		return frameCv;
     	}
