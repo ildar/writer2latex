@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-14)
+ *  Version 2.0 (2018-10-01)
  *
  */
 
@@ -37,13 +37,18 @@ import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
+/** Convert draw:path and draw:connector shapes
+ * 
+ */
 public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 	
 	// State while parsing the current path
+	private double dFirstX; // x-coordinate of first point on path
+	private double dFirstY; // y-coordinate of first point on path
 	private double dCurrentX; // x-coordinate of current point
 	private double dCurrentY; // y-coordinate of current point
 	private boolean bClosed; // at least one sub-path is closed (by the Z or z command)
-	private char cPreviousCommand;
+	private char cPreviousCommand; // the previous applied command
 	private double dControlX; // x-coordinate of last control point
 	private double dControlY; // y-coordinate of last control point
 	private boolean bControlIsRelative; // flag to indicate relative coordinates for control point
@@ -57,46 +62,121 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		super.handleShapeInner(shape, dTranslateY, ldp, oc);
 		parseViewBox(shape);
 		
-		// Experimental code for connectors
-		/*if (shape.getNodeName().equals(XMLString.DRAW_CONNECTOR)) {
-			// A connector does not specify the width and height, but rather start and end points
-			double dX1 = getParameter(shape,XMLString.SVG_X1);
-			double dY1 = getParameter(shape,XMLString.SVG_Y1);
-			double dX2 = getParameter(shape,XMLString.SVG_X2);
-			double dY2 = getParameter(shape,XMLString.SVG_Y2);
-			dWidth = Math.abs(dX2-dX1);
-			dHeight = Math.abs(dY2-dY1);
-		}*/
+		// Some data only used by connectors
+		CSVList placementOptions = new CSVList(",","=");
+		double dX1=0,dX2=0,dY1=0,dY2=0;
 		
 		String sPath = Misc.getAttribute(shape, XMLString.SVG_D);		
 		if (sPath!=null) {
-			SimpleInputBuffer in = new SimpleInputBuffer(sPath);
-			wsp(in);
-			while (!in.atEnd()) {
-				StringBuilder tikz = new StringBuilder();
-				try {
-					path(in, tikz);
+			if (shape.getNodeName().equals(XMLString.DRAW_CONNECTOR)) {
+				// A connector needs some special treatment: It does not specify the svg:width, svg:height, svg:x and svg:y.
+				// Hence we must reconstruct these from the available data, which is the start and end point of the path
+				
+				// Get the start point (dX1,dY1) and the end point (dX2,dY2)
+				dX1 = getParameter(shape,XMLString.SVG_X1);
+				dY1 = getParameter(shape,XMLString.SVG_Y1);
+				dX2 = getParameter(shape,XMLString.SVG_X2);
+				dY2 = getParameter(shape,XMLString.SVG_Y2);
+				
+				// Special treatment of horizontal and vertical lines: These are exported as lines
+				if (Math.abs(dX1-dX2)<0.0001 || Math.abs(dY1-dY2)<0.0001) {
 					ldp.append("\\path");
 					CSVList options = new CSVList(",","=");
 					options.addValues(strokeOptions);
-					// SVG and TikZ always applies fill options if they are present (by implicitly closing the path)
-					// ODF (or at least LO) on the other hand only fills closed path, hence the flag bClosed
-					// This may be too simplistic if the path contains several sub-paths which are not all closed
-					if (bClosed) { options.addValues(fillOptions); }
+					options.addValues(arrowOptions);
 					if (!options.isEmpty()) {
 						ldp.append("[").append(options.toString()).append("]");
 					}
-					ldp.append(tikz.toString()).append(";").nl();
+					ldp.append(" (").append(format(dX1)).append(",").append(format(dTranslateY-dY1)).append(") -- (")
+					.append(format(dX2)).append(",").append(format(dTranslateY-dY2)).append(");").nl();
 					// Add text node
-					convertText(shape,ldp,oc);
+					if (Math.abs(dX1-dX2)<0.001) { // Vertical line
+						convertText(shape, shape, 
+								Math.max(dTranslateY-dY1, dTranslateY-dY2)+"cm", (dX1+0.1)+"cm",
+								Math.min(dTranslateY-dY1, dTranslateY-dY2)+"cm", (dX1-0.1)+"cm",
+								0.0, false,
+								ldp, oc);						
+					}
+					else { // Horizontal line
+						convertText(shape, shape, 
+								(dTranslateY-dY1+0.1)+"cm", Math.max(dX1, dX2)+"cm",
+								(dTranslateY-dY1-0.1)+"cm", Math.min(dX1, dX2)+"cm",
+								0.0, false,
+								ldp, oc);						
+					}
+					return;
+				}
+				
+				// Determine coordinates of (dX1,dX2) and (dY1,dY2) relative to view box
+				// This involves parsing the path with a fake width and height
+				dWidth=dViewBoxWidth;
+				dHeight=dViewBoxHeight;
+				SimpleInputBuffer in = new SimpleInputBuffer(sPath);
+				wsp(in);
+				StringBuilder tikz = new StringBuilder();
+				try {
+					path(in, tikz);
 				}
 				catch (Exception e) {
 					System.err.println("Error "+e.getMessage());
-					break;
+					return;
 				}
-				return;
+				// We are now able to calculate the width and height using (dFirstX,dFirstY) and (dCurrentX,dCurrentY),
+				// which the coordinates mentioned above
+				dWidth = Math.abs(dX2-dX1)/Math.abs(dCurrentX-dFirstX)*dViewBoxWidth;
+				dHeight = Math.abs(dY2-dY1)/Math.abs(dCurrentY-dFirstY)*dViewBoxHeight;
+				// Calculate the upper right corner of the view box
+				double dX = dX1-(dFirstX-dViewBoxMinX)/dViewBoxWidth*dWidth;
+				double dY = dY1-(dFirstY-dViewBoxMinY)/dViewBoxHeight*dHeight;
+				// Create options for placement scope
+				String s = format(dX);
+				if (!s.equals("0")) { placementOptions.addValue("xshift", s+"cm"); }		
+				s = format(-dY); // As always: Upside down axis in ODF
+				if (!s.equals("0")) { placementOptions.addValue("yshift", s+"cm"); }
 			}
-		}
+			
+			// We now have a suitable width and height in all cases an can convert the path 
+			SimpleInputBuffer in = new SimpleInputBuffer(sPath);
+			StringBuilder tikz = new StringBuilder();
+			try {
+				path(in, tikz);
+				if (!placementOptions.isEmpty()) { // Connectors may need additional placement
+					ldp.append("\\begin{scope}[").append(placementOptions.toString()).append("]").nl();			
+				}
+				ldp.append("\\path");
+				CSVList options = new CSVList(",","=");
+				options.addValues(strokeOptions);
+				// SVG and TikZ always applies fill options if they are present (by implicitly closing the path)
+				// ODF (or at least LO) on the other hand only fills closed path, hence the flag bClosed
+				// This may be too simplistic if the path contains several sub-paths which are not all closed
+				if (bClosed) { options.addValues(fillOptions); }
+				else { options.addValues(arrowOptions); }
+				if (!options.isEmpty()) {
+					ldp.append("[").append(options.toString()).append("]");
+				}
+				ldp.append(tikz.toString()).append(";").nl();
+				if (!placementOptions.isEmpty()) {
+					ldp.append("\\end{scope}").nl();
+				}
+				// Add text node
+				if (shape.getNodeName().equals(XMLString.DRAW_CONNECTOR)) {
+					// Placement of text nodes on connectors is somewhat strange in LO, this 
+					// interpretation seems to be close to the behavior in LO
+					convertText(shape, shape, 
+						Math.max(dTranslateY-dY1, dTranslateY-dY2)+"cm", Math.max(dX1, dX2)+"cm",
+						Math.min(dTranslateY-dY1, dTranslateY-dY2)+"cm", Math.min(dX1, dX2)+"cm",
+						0.0, false,
+						ldp, oc);
+				}
+				else {
+					// For ordinary paths we can use the view box
+					convertText(shape,ldp,oc);
+				}
+			}
+			catch (Exception e) {
+				System.err.println("Error "+e.getMessage());
+			}
+		}		
 	}
 	
 	// SVG path grammar
@@ -106,6 +186,8 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 	// moveto-drawto-command-group: moveto wsp* drawto-commands?
 	private void path(SimpleInputBuffer in, StringBuilder tikz) {
 		cPreviousCommand='\u0000';
+		dFirstX=0;
+		dFirstY=0;
 		dCurrentX=0;
 		dCurrentY=0;
 		dControlX=0;
@@ -169,6 +251,10 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 			double dY = number(in);
 			commawsp(in);
 			insertPoint(dX,dY,bRelative,tikz);
+			if (cPreviousCommand=='\u0000') {
+				// This is the first point on the path
+				dFirstX = dCurrentX; dFirstY = dCurrentY;
+			}
 			linetoArgumentSequence(in,tikz,bRelative);
 		}
 	}

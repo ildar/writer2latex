@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-24)
+ *  Version 2.0 (2018-09-26)
  *
  */
  
@@ -152,8 +152,7 @@ public class TikZConverter extends ConverterHelper {
     		return pathShapeCv;
     	}
     	else if (XMLString.DRAW_CONNECTOR.equals(sXML)) {
-    		return lineShapeCv;
-    		//return pathShapeCv;
+    		return pathShapeCv;
     	}
     	else if (XMLString.DRAW_FRAME.equals(sXML)) {
     		return frameCv;

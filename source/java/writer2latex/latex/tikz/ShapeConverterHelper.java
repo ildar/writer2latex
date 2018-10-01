@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-23)
+ *  Version 2.0 (2018-09-30)
  *
  */
 
@@ -295,6 +295,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			placement.addValue("above"); // or south anchor
 			break;
 		case "middle":
+		case "justify":
 			sAnchorY = Calc.multiply(0.5F, Calc.add(sTop, sBottom));
 			if (sPaddingTop!=null && sPaddingBottom!=null) {
 				// In case of asymmetric padding, the center should be shifted slightly
@@ -302,7 +303,6 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			}
 			break;
 		case "top":
-		case "justify":
 		default:
 			sAnchorY = sTop;
 			if (sPaddingTop!=null) { sAnchorY = Calc.sub(sAnchorY, sPaddingTop); }
@@ -318,6 +318,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			placement.addValue("left"); // or east anchor
 			break;
 		case "center":
+		case "justify":
 			sAnchorX = Calc.multiply(0.5F, Calc.add(sLeft, sRight));
 			if (sPaddingLeft!=null && sPaddingRight!=null) {
 				// In case of asymmetric padding, the center should be shifted slightly
@@ -325,7 +326,6 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			}
 			break;
 		case "left":
-		case "justify":
 		default:
 			sAnchorX = sLeft;
 			if (sPaddingLeft!=null) { sAnchorX = Calc.add(sAnchorX, sPaddingLeft); }
