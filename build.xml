@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.9.3 (2018-08-19)
+  # version 1.9.4 (2018-10-11)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -35,7 +35,7 @@
     <!-- configure the directories -->
     <property name="jarfile" value="writer2latex"/>
     <property name="basename" value="writer2latex19"/>
-    <property name="distrofile" value="${basename}3alpha.zip" />
+    <property name="distrofile" value="${basename}4alpha.zip" />
     <!--<property name="sourcedistrofile" value="${basename}source.zip" />-->
     <property name="src" location="source/java"/>
     <property name="source.distro" location="source/distro" />

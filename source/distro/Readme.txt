@@ -1,7 +1,7 @@
-Writer2LaTeX version 1.9.3 (alpha test release)
+Writer2LaTeX version 1.9.4 (alpha test release)
 ===============================================
 
-This is the distribution of Writer2LaTeX version 1.9.3 alpha
+This is the distribution of Writer2LaTeX version 1.9.4 alpha
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net
@@ -14,5 +14,5 @@ Bugs and feature requests should be reported to
   writer2latex (at) gmail.com
   
 
-August 2018
+October 2018
 Henrik Just

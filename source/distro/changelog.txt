@@ -1,5 +1,7 @@
 Changelog for Writer2LaTeX version 1.6 -> 2.0
 
+---------- version 1.9.4 ---------
+
 ---------- version 1.9.3 ---------
 
 [w2l] The script option no longer supports the value auto; western is the new default. Also the
