@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-10-01)
+ *  Version 2.0 (2018-10-03)
  *
  */
 
@@ -80,15 +80,9 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 				
 				// Special treatment of horizontal and vertical lines: These are exported as lines
 				if (Math.abs(dX1-dX2)<0.0001 || Math.abs(dY1-dY2)<0.0001) {
-					ldp.append("\\path");
-					CSVList options = new CSVList(",","=");
-					options.addValues(strokeOptions);
-					options.addValues(arrowOptions);
-					if (!options.isEmpty()) {
-						ldp.append("[").append(options.toString()).append("]");
-					}
-					ldp.append(" (").append(format(dX1)).append(",").append(format(dTranslateY-dY1)).append(") -- (")
-					.append(format(dX2)).append(",").append(format(dTranslateY-dY2)).append(");").nl();
+					startPath(ldp,strokeOptions,arrowOptions);
+					ldp.append(point(dX1,dTranslateY-dY1)).append(" --").append(point(dX2,dTranslateY-dY2));
+					endPath(ldp);
 					// Add text node
 					if (Math.abs(dX1-dX2)<0.001) { // Vertical line
 						convertText(shape, shape, 
@@ -143,18 +137,13 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 				if (!placementOptions.isEmpty()) { // Connectors may need additional placement
 					ldp.append("\\begin{scope}[").append(placementOptions.toString()).append("]").nl();			
 				}
-				ldp.append("\\path");
-				CSVList options = new CSVList(",","=");
-				options.addValues(strokeOptions);
 				// SVG and TikZ always applies fill options if they are present (by implicitly closing the path)
 				// ODF (or at least LO) on the other hand only fills closed path, hence the flag bClosed
 				// This may be too simplistic if the path contains several sub-paths which are not all closed
-				if (bClosed) { options.addValues(fillOptions); }
-				else { options.addValues(arrowOptions); }
-				if (!options.isEmpty()) {
-					ldp.append("[").append(options.toString()).append("]");
-				}
-				ldp.append(tikz.toString()).append(";").nl();
+				if (bClosed) { startPath(ldp,strokeOptions,fillOptions); }
+				else { startPath(ldp,strokeOptions,arrowOptions); }
+				ldp.append(tikz.toString());
+				endPath(ldp);
 				if (!placementOptions.isEmpty()) {
 					ldp.append("\\end{scope}").nl();
 				}
@@ -280,7 +269,7 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 			commawsp(in);
 			double dY = number(in);
 			commawsp(in);
-			tikz.append(" -- ");
+			tikz.append(" --");
 			insertPoint(dX,dY,bRelative,tikz);
 		}
 	}
@@ -306,7 +295,7 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		while (!in.atEnd() && !Character.isLetter(in.peekChar())) {
 			double dY = number(in);
 			commawsp(in);
-			tikz.append(" -- ");
+			tikz.append(" --");
 			insertPoint(bRelative?0:dCurrentX,dY,bRelative,tikz);
 		}		
 	}
@@ -343,11 +332,11 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 			dX2-=dX;
 			dY2-=dY;
 		}
-		tikz.append(" .. controls ");
+		tikz.append(" .. controls");
 		insertControlPoint(dX1,dY1,bRelative,tikz);
-	    tikz.append(" and ");
+	    tikz.append(" and");
 		insertControlPoint(dX2,dY2,bRelative,tikz);
-	    tikz.append(" .. ");
+	    tikz.append(" ..");
 		insertPoint(dX,dY,bRelative,tikz);
 	}
 	
@@ -373,11 +362,11 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		double dY = number(in);
 		commawsp(in);
 		// Syntax for bezier curves is ".. controls (x1,y1) and (x2,y2) .. (x,y)"
-		tikz.append(" .. controls ");
+		tikz.append(" .. controls");
 		insertAutomaticControlPoint('C','S',tikz);
-	    tikz.append(" and ");
+	    tikz.append(" and");
 		insertControlPoint(dX1,dY1,bRelative,tikz);
-	    tikz.append(" .. ");
+	    tikz.append(" ..");
 		insertPoint(dX,dY,bRelative,tikz);
 	}
 		
@@ -404,9 +393,9 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		double dY = number(in);
 		commawsp(in);
 		// Syntax for bezier curves is ".. controls (x1,y1) .. (x,y)"
-		tikz.append(" .. controls ");
+		tikz.append(" .. controls");
 		insertControlPoint(dX1,dY1,bRelative,tikz);
-	    tikz.append(" .. ");
+	    tikz.append(" ..");
 		insertPoint(dX,dY,bRelative,tikz);
 	}
 	
@@ -429,7 +418,7 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		// Syntax for bezier curves is ".. controls (x1,y1) .. (x,y)"
 		tikz.append(" .. controls ");
 		insertAutomaticControlPoint('Q','T',tikz);
-	    tikz.append(" .. ");
+	    tikz.append(" ..");
 		insertPoint(dX,dY,bRelative,tikz);
 	}
 
@@ -463,7 +452,7 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		double dY = number(in);
 		commawsp(in);
 		// Currently we don't support elliptical arcs, using a simple lineto as replacement
-		tikz.append(" -- ");
+		tikz.append(" --");
 		insertPoint(dX,dY,bRelative,tikz);		
 	}
 	
@@ -527,10 +516,8 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 		dControlX=dX;
 		dControlY=dY;
 		bControlIsRelative = bRelative;
-		tikz.append(" ");
 		if (bRelative) {
-			tikz.append("+");
-			tikz.append("(").append(format(transformLengthX(dX))).append(",").append(format(-transformLengthY(dY))).append(")");
+			tikz.append(point("+",transformLengthX(dX),-transformLengthY(dY)));
 		}
 		else {
 			tikz.append(transformPoint(dX,dY));		
@@ -538,12 +525,10 @@ public class PathShapeConverter extends ShapeWithViewBoxConverterHelper {
 	}
 	
 	private void insertPoint(double dX, double dY, boolean bRelative, StringBuilder tikz) {
-		tikz.append(" ");
 		if (bRelative) {
 			dCurrentX+=dX;
 			dCurrentY+=dY;
-			tikz.append("++");
-			tikz.append("(").append(format(transformLengthX(dX))).append(",").append(format(-transformLengthY(dY))).append(")");		
+			tikz.append(point("++",transformLengthX(dX),-transformLengthY(dY)));
 		}
 		else {
 			dCurrentX=dX;

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-26)
+ *  Version 2.0 (2018-10-08)
  *
  */
  
@@ -48,18 +48,24 @@ public class TikZConverter extends ConverterHelper {
 	// Converter helpers for the individual shape categories
 	private CustomShapeConverter customShapeCv;
     private LineShapeConverter lineShapeCv;
+    private RectShapeConverter rectShapeCv;
+    private EllipseShapeConverter ellipseShapeCv;
     private PolyShapeConverter polyShapeCv;
     private CaptionShapeConverter captionShapeCv;
     private PathShapeConverter pathShapeCv;
+    private MeasureShapeConverter measureShapeCv;
     private FrameConverter frameCv;
 
 	public TikZConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
         customShapeCv = new CustomShapeConverter(ofr,config,palette);
         lineShapeCv = new LineShapeConverter(ofr,config,palette);
+        rectShapeCv = new RectShapeConverter(ofr,config,palette);
+        ellipseShapeCv = new EllipseShapeConverter(ofr,config,palette);
         polyShapeCv = new PolyShapeConverter(ofr,config,palette);
         captionShapeCv = new CaptionShapeConverter(ofr,config,palette);
         pathShapeCv = new PathShapeConverter(ofr,config,palette);
+        measureShapeCv = new MeasureShapeConverter(ofr,config,palette);
         frameCv = new FrameConverter(ofr,config,palette);
 		bUseTikZ = config.useTikz();
 		bNeedTikZ = false;
@@ -139,20 +145,23 @@ public class TikZConverter extends ConverterHelper {
     	else if (XMLString.DRAW_LINE.equals(sXML)) {
     		return lineShapeCv;
     	}
-    	else if (XMLString.DRAW_POLYLINE.equals(sXML)) {
-    		return polyShapeCv;
+    	else if (XMLString.DRAW_RECT.equals(sXML)) {
+    		return rectShapeCv;
     	}
-    	else if (XMLString.DRAW_POLYGON.equals(sXML)) {
+    	else if (XMLString.DRAW_ELLIPSE.equals(sXML) || XMLString.DRAW_CIRCLE.equals(sXML)) {
+    		return ellipseShapeCv;
+    	}
+    	else if (XMLString.DRAW_POLYLINE.equals(sXML) || XMLString.DRAW_POLYGON.equals(sXML)) {
     		return polyShapeCv;
     	}
     	else if (XMLString.DRAW_CAPTION.endsWith(sXML)) {
     		return captionShapeCv;
     	}
-    	else if (XMLString.DRAW_PATH.equals(sXML)) {
+    	else if (XMLString.DRAW_PATH.equals(sXML) || XMLString.DRAW_CONNECTOR.equals(sXML)) {
     		return pathShapeCv;
     	}
-    	else if (XMLString.DRAW_CONNECTOR.equals(sXML)) {
-    		return pathShapeCv;
+    	else if (XMLString.DRAW_MEASURE.equals(sXML)) {
+    		return measureShapeCv;
     	}
     	else if (XMLString.DRAW_FRAME.equals(sXML)) {
     		return frameCv;

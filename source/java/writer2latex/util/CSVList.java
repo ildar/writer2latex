@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-14)
+ *  Version 2.0 (2018-10-10)
  *
  */
 
@@ -93,6 +93,18 @@ public class CSVList{
     	for (String sKey : list.items.keySet()) {
     		items.put(sKey, list.items.get(sKey));
     	}
+    }
+    
+    /** Return the value associated with a key
+     * 
+     * @param sKey the key of the value pair
+     * @return the value, or null if the key does not exist or represents a simple value
+     */
+    public String getValue(String sKey) {
+    	if (items.containsKey(sKey)) {
+    		return items.get(sKey);
+    	}
+    	return null;
     }
     
     /** Remove all values from the list

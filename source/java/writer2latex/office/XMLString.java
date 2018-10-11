@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-24)
+ *  Version 2.0 (2018-10-10)
  *
  */
 
@@ -45,6 +45,10 @@ public class XMLString {
 	public static final String DRAW_POLYGON = "draw:polygon";
 	public static final String DRAW_POLYLINE = "draw:polyline";
 	public static final String DRAW_CONNECTOR = "draw:connector";
+	public static final String DRAW_RECT = "draw:rect";
+	public static final String DRAW_ELLIPSE = "draw:ellipse";
+	public static final String DRAW_CIRCLE = "draw:circle";
+	public static final String DRAW_MEASURE = "draw:measure";
 	public static final String DRAW_CAPTION = "draw:caption";
 	public static final String DRAW_CUSTOM_SHAPE = "draw:custom-shape";
 	public static final String DRAW_ENHANCED_GEOMETRY = "draw:enhanced-geometry";
@@ -77,8 +81,19 @@ public class XMLString {
 	public static final String DRAW_FORMULA = "draw:formula";
 	public static final String DRAW_MARKER_START = "draw:marker-start";
 	public static final String DRAW_MARKER_END = "draw:marker-end";
+	public static final String DRAW_TYPE = "draw:type";
 	public static final String DRAW_POINTS = "draw:points";
-
+	public static final String DRAW_KIND = "draw:kind";
+	public static final String DRAW_START_ANGLE = "draw:start-angle";
+	public static final String DRAW_END_ANGLE = "draw:end-angle";
+	public static final String DRAW_CORNER_RADIUS = "draw:corner-radius";
+	public static final String DRAW_LINE_DISTANCE = "draw:line-distance";
+	public static final String DRAW_PLACING = "draw:placing";
+	public static final String DRAW_GUIDE_DISTANCE = "draw:guide-distance";
+	public static final String DRAW_START_GUIDE = "draw:start-guide";
+	public static final String DRAW_END_GUIDE = "draw:end-guide";
+	public static final String DRAW_GUIDE_OVERHANG = "draw:guide-overhang";
+	
 	// dc namespace - elements
 	public static final String DC_CREATOR = "dc:creator";
 	public static final String DC_DATE = "dc:date";

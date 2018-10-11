@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-23)
+ *  Version 2.0 (2018-10-02)
  *
  */ 
 
@@ -283,17 +283,12 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		
 		public CustomFileHandler() {
 			super();
-			System.out.println("Starting custom file handler");
 			try {
-				System.out.println("The file name is "+getFileName());
 				sCustomFileName = xPathSub.substituteVariables("$(user)/"+getFileName(), false);
-				System.out.println("The new file name is "+sCustomFileName);
 			}
 			catch (NoSuchElementException e) {
 				sCustomFileName = getFileName();
-				System.out.println("Failed, the file name is "+sCustomFileName);
 			}
-			System.out.println("Custom file handler ready");
 		}
 		
 		// The subclass must provide these

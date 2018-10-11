@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-01)
+ *  Version 2.0 (2018-10-02)
  *
  */
 
@@ -1241,7 +1241,6 @@ public class OfficeReader {
     				Node next = child.getNextSibling();
     				if (next!=null && sStyleName.equals(Misc.getAttribute(next, XMLString.TEXT_STYLE_NAME))) {
     					// Found two adjacent text spans with the same style name
-    					System.out.println("Merging to nodes with style "+sStyleName);
     					child = mergeSpan(node, child, next);
     				}
     				else {

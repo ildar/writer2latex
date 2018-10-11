@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2018-10-02)
  *
  */
 
@@ -33,7 +33,6 @@ import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
-import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 import writer2latex.util.SimpleInputBuffer;
 
@@ -57,21 +56,15 @@ class PolyShapeConverter extends ShapeWithViewBoxConverterHelper {
 			StringBuilder tikz = new StringBuilder();
 			convertPath(in,tikz);
 			if (tikz.length()>0) {
-				ldp.append("\\path");
-				CSVList options = new CSVList(",","=");
-				options.addValues(strokeOptions);
 				if (bPolygon) {
-					options.addValues(fillOptions);
+					startPath(ldp,strokeOptions,fillOptions);
 				}
 				else {
-					options.addValues(arrowOptions);
-				}
-				if (!options.isEmpty()) {
-					ldp.append("[").append(options.toString()).append("]");
+					startPath(ldp,strokeOptions,arrowOptions);
 				}
 				ldp.append(tikz.toString());
 				if (bPolygon) { ldp.append(" -- cycle"); }
-				ldp.append(";").nl();
+				endPath(ldp);
 				// Add text node
 				convertText(shape,ldp,oc);
 			}

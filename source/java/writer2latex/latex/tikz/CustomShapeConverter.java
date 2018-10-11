@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-25)
+ *  Version 2.0 (2018-10-10)
  *
  */
 
@@ -46,6 +46,10 @@ import writer2latex.util.SimpleInputBuffer;
  */
 class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 	
+	// In LO some specific shapes have subpaths which are in a darker or brighter shade
+	// This is *not* part of ODF, but we emulate the LO behavior for these shapes
+	private Map<String,Short[]> subpathShades = new HashMap<>();
+	
 	// Parameters for the current shape derived from the draw:enhanced-geometry element
 	private double dStretchX=0;
 	private double dStretchY=0;
@@ -66,12 +70,30 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 
 	CustomShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
+		// Define LO shades for specific shades (other shapes are not shaded)
+		// The shades are ordered by sub path
+		// - Zero means original color
+		// - Positive means shade with white, i.e. color!number
+		// - Negative means shade with black, i.e. color!(-number)!black
+		// The actual numbers were found by probing a screenshot from LO
+		subpathShades.put("can", new Short[]{0, 60}); // UI name: ?
+		subpathShades.put("cube", new Short[]{0, 80, -80}); // UI name: Cube
+		subpathShades.put("paper", new Short[]{0, -80}); // UI name: Folded Corner
+		subpathShades.put("smiley", new Short[]{0, -80, -80}); // UI name: Smile Face
+		subpathShades.put("quad-bevel", new Short[]{0, 80, -60, -80, 60}); // UI name: Square Bevel
+		subpathShades.put("col-502ad400", new Short[]{0, 80, -70, 60, 60}); // UI name: Diamond Bevel
+		subpathShades.put("col-60da8460", new Short[]{0, -70, -20, 40, 40, 40}); // UI name: Octagon Bevel
+		subpathShades.put("vertical-scroll", new Short[]{0, -80, -80}); // UI name: Vertical Scroll
+		subpathShades.put("horizontal-scroll", new Short[]{0, -80, -80}); // UI name: Horizontal Scroll
 	}
 
 	@Override
 	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
 		super.handleShapeInner(shape, dTranslateY, ldp, oc);
-		// Next parse the path parameters and formulas
+		
+		Short[] nShades = null;
+
+		// Parse the path parameters and formulas
 		Element geometry = Misc.getChildByTagName(shape, XMLString.DRAW_ENHANCED_GEOMETRY);
 		if (geometry!=null) {
 			try {
@@ -80,13 +102,18 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 				parseModifiers(geometry);
 				parseEquations(geometry);
 				parseTextAreas(geometry);
+				// Get the LO specific shades, if any
+				String sType = Misc.getAttribute(geometry, XMLString.DRAW_TYPE);
+				if (sType!=null && subpathShades.containsKey(sType)) {
+					nShades = subpathShades.get(sType);
+				}
 			}
 			catch (Exception e) {
 				System.err.println("Error "+e.getMessage());
 				return;
 			}
 		}
-		
+
 		// Determine stretching. If the shape should be stretched, we expand the view box accordingly.
 		bStretchX=false;
 		bStretchY=false;
@@ -106,20 +133,36 @@ class CustomShapeConverter extends ShapeWithViewBoxConverterHelper {
 		// Finally convert the path
 		String sPath = Misc.getAttribute(geometry, XMLString.DRAW_ENHANCED_PATH);
 		if (sPath!=null) {
+			// Remember the original fill color
+			String sFill = fillOptions.getValue("fill");
+			// We need to keep track of the sub paths in order to apply shading
+			int nSubPath = 0;
+			// Parse the path
 			SimpleInputBuffer in = new SimpleInputBuffer(sPath);
 			in.skipSpaces();
 			while (!in.atEnd()) {
 				StringBuilder tikz = new StringBuilder();
 				try {
 					convertSubPath(in, tikz);
-					ldp.append("\\path");
 					CSVList options = new CSVList(",","=");
+					// Use shade or original fill color
+					if (sFill!=null) {
+						fillOptions.addValue("fill",sFill);
+						if (nShades!=null && nSubPath<nShades.length) {
+							if (nShades[nSubPath]>0) { // Shade with white
+								fillOptions.addValue("fill",sFill+"!"+nShades[nSubPath]);
+							}
+							else if (nShades[nSubPath]<0) { // Shade with black
+								fillOptions.addValue("fill",sFill+"!"+(-nShades[nSubPath])+"!black");
+							}
+						}
+					}
 					if (!bNostroke) options.addValues(strokeOptions);
 					if (!bNofill) options.addValues(fillOptions);
-					if (!options.isEmpty()) {
-						ldp.append("[").append(options.toString()).append("]");
-					}
-					ldp.append(tikz.toString()).append(";").nl();
+					startPath(ldp,options);
+					ldp.append(tikz.toString());
+					endPath(ldp);
+					nSubPath++;
 				}
 				catch (Exception e) {
 					System.err.println("Error "+e.getMessage());

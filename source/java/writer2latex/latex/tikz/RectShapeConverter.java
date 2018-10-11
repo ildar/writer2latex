@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  CaptionShapeConverter.java
+ *  RectShapeConverter.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -32,41 +32,39 @@ import writer2latex.latex.LaTeXDocumentPortion;
 import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.XMLString;
+import writer2latex.util.CSVList;
 
-public class CaptionShapeConverter extends ShapeConverterHelper {
+public class RectShapeConverter extends ShapeConverterHelper {
 
-	public CaptionShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
+	RectShapeConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
 		super(ofr, config, palette);
 	}
-	
+
 	@Override
-    double getMaxY(Element shape) {
-		return super.getMaxY(shape) + getParameter(shape,XMLString.SVG_HEIGHT);
-    }
-	
 	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
-		// A caption has two parts. The first is a rectangle, which may be filled and contains the text
+		// Corner radius is a special rectangle feature
+		CSVList cornerOptions = new CSVList(",","=");
+		applyCornerRadius(shape,cornerOptions);
+
+		// Get dimensions of the rectangle
 		double dWidth = getParameter(shape,XMLString.SVG_WIDTH);
 		double dHeight = getParameter(shape,XMLString.SVG_HEIGHT);
 		
-		startPath(ldp,strokeOptions,fillOptions);
+		// Convert the path
+		startPath(ldp,strokeOptions,fillOptions,cornerOptions);
 		ldp.append(point(0,dTranslateY)).append(" rectangle").append(point(dWidth,dTranslateY-dHeight));
 		endPath(ldp);
-	
-		// The other part of the caption is a line, which may have an arrow
-		double dX = getParameter(shape,XMLString.DRAW_CAPTION_POINT_X);
-		double dY = getParameter(shape,XMLString.DRAW_CAPTION_POINT_Y);
-		double dX2 = dX<dWidth/2.0 ? 0 : dWidth;
-		double dY2 = dHeight/2;
-
-		startPath(ldp,strokeOptions,arrowOptions);
-		ldp.append(point(dX,dTranslateY-dY)).append(" --")
-			.append(point((dX+dX2)/2,dTranslateY-dY2)).append(" --")
-			.append(point(dX2,dTranslateY-dY2));
-		endPath(ldp);
 		
-		// Add text node (In LO a caption always wraps text despite fo:wrap-option is not set, hence true for bForceWrap)
-		convertText(shape,shape,dTranslateY+"cm",dWidth+"cm",(dTranslateY-dHeight)+"cm","0cm",0,true,ldp,oc);
+		// Add text node
+		convertText(shape,shape,dTranslateY+"cm",dWidth+"cm",(dTranslateY-dHeight)+"cm","0cm",0,false,ldp,oc);
+	}
+	
+	static void applyCornerRadius(Element shape,CSVList options) {
+		double dCornerRadius = getParameter(shape,XMLString.DRAW_CORNER_RADIUS);
+		if (Math.abs(dCornerRadius)>0.001) {
+			options.addValue("rounded corners", format(dCornerRadius)+"cm");
+		}
+		
 	}
 
 }

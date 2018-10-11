@@ -21,9 +21,13 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 [w2x] Bugfix: Do not export writing direction on headings and paragraphs if multilingual is false
 
+[w2l] Added support for color shades on nine custom shapes from LO (e.g. smiley face). This is an
+  emulation of a LO specific behavior; shading is not supported by ODF (TikZ) 
+
 [w2l] Added support for rotation, translation and skewing of drawing shapes (TikZ)
 
-[w2l] Added support for line, polyline, polygon, caption, path and connector drawing shapes (TikZ)
+[w2l] Added support for all remaining drawing shapes. Only exception is draw:regular-polygon,
+  which is not supported by LO (TikZ)
 
 [w2l] Added support for grouped drawing shapes, in particular frames in groups are exported
   as TikZ objects (TikZ)

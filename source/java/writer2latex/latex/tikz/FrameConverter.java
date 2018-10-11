@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  CaptionShapeConverter.java
+ *  FrameShapeConverter.java
  *
  *  Copyright: 2002-2018 by Henrik Just
  *
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-24)
+ *  Version 2.0 (2018-10-03)
  *  
  */
 package writer2latex.latex.tikz;
@@ -48,19 +48,14 @@ public class FrameConverter extends ShapeConverterHelper {
 	
 	void handleShapeInner(Element shape, double dTranslateY, LaTeXDocumentPortion ldp, Context oc) {
 		// A frame is a rectangle, so we will start with that
-		ldp.append("\\path");
-
-		CSVList options = new CSVList(",","=");
-		options.addValues(strokeOptions);
-		options.addValues(fillOptions);
-		if (!options.isEmpty()) {
-			ldp.append("[").append(options.toString()).append("]");
-		}
-
+		CSVList cornerOptions = new CSVList(",","=");
+		RectShapeConverter.applyCornerRadius(shape,cornerOptions);
 		double dWidth = getParameter(shape,XMLString.SVG_WIDTH);
 		double dHeight = getParameter(shape,XMLString.SVG_HEIGHT);
-		ldp.append(" (0,").append(format(dTranslateY)).append(") rectangle (")
-			.append(format(dWidth)).append(",").append(format(dTranslateY-dHeight)).append(");").nl();
+
+		startPath(ldp,strokeOptions,fillOptions,cornerOptions);
+		ldp.append(point(0,dTranslateY)).append(" rectangle").append(point(dWidth,dTranslateY-dHeight));
+		endPath(ldp);
 		
 		// Next determine the frame type
 		Node child = shape.getFirstChild();
@@ -71,10 +66,10 @@ public class FrameConverter extends ShapeConverterHelper {
 			}
 			else if(child.getNodeName().equals(XMLString.DRAW_IMAGE)) {
 				// Create a node with the image
-				ldp.append("\\path (").append(format(0.5*dWidth)).append(",").append(format(dTranslateY-0.5*dHeight))
-					.append(") node[inner sep=0pt] {");
+				ldp.append("node[inner sep=0pt] at").append(point(0.5*dWidth,dTranslateY-0.5*dHeight)).append(" {");
 				palette.getDrawCv().includeGraphics((Element)child, ldp, oc);
-				ldp.append("};").nl();
+				ldp.append("}");
+				endPath(ldp);
 				// An image might also have a text node
 				convertText(shape,(Element)child,dTranslateY+"cm",dWidth+"cm",(dTranslateY-dHeight)+"cm","0cm",0,false,ldp,oc);
 			}

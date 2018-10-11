@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-30)
+ *  Version 2.0 (2018-10-10)
  *
  */
 
@@ -150,7 +150,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 * @param sXML the name of the attribute
 	 * @return the length in cm
 	 */
-	protected double getParameter(Element shape, String sXML) {
+	static double getParameter(Element shape, String sXML) {
 		String s = Misc.getAttribute(shape, sXML);
 		return s!=null ? Calc.length2cm(s) : 0;
 	}
@@ -161,7 +161,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	 * @param d the double to format
 	 * @return a String with the required format
 	 */
-	String format(double d) {
+	static String format(double d) {
 		String s = String.format(Locale.ROOT, "%.3f", d);
 		if (s.endsWith(".000")) {
 			// Special treatment of (near) integers
@@ -171,6 +171,30 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 			}
 		}
 		return s;
+	}
+	
+	void startPath(LaTeXDocumentPortion ldp, CSVList... options) {
+		ldp.append("\\path");
+		CSVList fullOptions = new CSVList(",","=");
+		for (CSVList option : options) {
+			fullOptions.addValues(option);
+		}
+		if (!fullOptions.isEmpty()) {
+			ldp.append("[").append(fullOptions.toString()).append("]");
+		}
+	}
+	
+	void endPath(LaTeXDocumentPortion ldp) {
+		ldp.append(";").nl();
+	}
+	
+	String point(double dX, double dY) {
+		return point("",dX,dY);
+	}
+	
+	String point(String sPrefix, double dX, double dY) {
+		return new StringBuilder().append(" ").append(sPrefix)
+				.append("(").append(format(dX)).append(",").append(format(dY)).append(")").toString();
 	}
 	
 	/** This method creates a text node for a draw element. The subclass should use this in and appropriate place in 
@@ -376,11 +400,11 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 		double dAnchorY = Calc.length2cm(sAnchorY);
 		
 		if (Math.abs(dAngle)<0.01) { // No rotation
-			ba.add("\\path ("+format(dAnchorX)+","+format(dAnchorY)+") node["+options.toString()+"] {","};");
+			ba.add("\\node["+options.toString()+"] at ("+format(dAnchorX)+","+format(dAnchorY)+") {","};");
 		}
 		else {
-			String sMidX = Calc.multiply(0.5F, Calc.add(sLeft, sRight));
-			String sMidY = Calc.multiply(0.5F, Calc.add(sTop, sBottom));
+			String sMidX = format(Calc.length2cm(Calc.multiply(0.5F, Calc.add(sLeft, sRight))))+"cm";
+			String sMidY = format(Calc.length2cm(Calc.multiply(0.5F, Calc.add(sTop, sBottom))))+"cm";
 			ba.add("\\path[rotate around={"+format(dAngle)+":("+sMidX+","+sMidY+")}] ("
 					+format(dAnchorX)+","+format(dAnchorY)+") node["+options.toString()+"] {","};");			
 		}
@@ -420,7 +444,8 @@ abstract class ShapeConverterHelper extends ConverterHelper {
         	}
     		// Set the width
         	s = getGraphicProperty(style,XMLString.SVG_STROKE_WIDTH);
-        	if (s!=null) {
+        	if (s!=null && !Calc.isZero(s)) {
+        		// If there is no or zero line width we will use the default TikZ line width 
         		props.addValue("line width", s);
         	}
         	// Set the color
@@ -456,7 +481,7 @@ abstract class ShapeConverterHelper extends ConverterHelper {
 	}
 	
 	// Get a graphic style property, using the default graphic style if a property is not set
-	private String getGraphicProperty(StyleWithProperties style, String sProperty) {
+	String getGraphicProperty(StyleWithProperties style, String sProperty) {
 		String s = style.getGraphicProperty(sProperty, true);
 		return s!=null ? s : ofr.getDefaultFrameStyle().getGraphicProperty(sProperty, false);
 	}
