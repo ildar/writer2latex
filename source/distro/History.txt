@@ -1,7 +1,7 @@
 Version history for Writer2LaTeX
 ================================
 
-Version 1.6.1 (August 2018)
+Version 1.6.1 (October 2018)
   - Writer2LaTeX:
        - Fix bug with string replace
   - Writer2xhtml:
