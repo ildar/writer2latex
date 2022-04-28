@@ -2,7 +2,7 @@
  *
  *  Context.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-26) 
+ *  Version 2.0 (2022-04-27) 
  *
  */
 
@@ -68,9 +68,6 @@ public class Context {
     // within a list of this level
     private int nListLevel = 0;
     
-    // within a list that continues numbering
-    private boolean bInContinuedList = false;
-	
     // within a section command
     private boolean bInSection = false;
 	
@@ -183,10 +180,6 @@ public class Context {
     public void incListLevel() { nListLevel++; }
 
     public int getListLevel() { return nListLevel; }
-    
-    public void setInContinuedList(boolean bInContinuedList) { this.bInContinuedList=bInContinuedList; }
-    
-    public boolean isInContinuedList() { return this.bInContinuedList; }
     
     public void setInSection(boolean bInSection) { this.bInSection = bInSection; }
 	
@@ -312,7 +305,6 @@ public class Context {
         newContext.setInSimpleTable(bInSimpleTable);
         newContext.setInMulticols(bInMulticols);
         newContext.setListLevel(nListLevel);
-        newContext.setInContinuedList(bInContinuedList);
         newContext.setInSection(bInSection);
         newContext.setInCaption(bInCaption);
         newContext.setInZoteroJabRefText(bInZoteroJabRefText);

@@ -2,7 +2,7 @@
  *
  *  DrawConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-05-06)
+ *  Version 2.0 (2022-04-23)
  *
  */
  
@@ -32,7 +32,8 @@ import java.util.Vector;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import javax.xml.bind.DatatypeConverter;
+//import javax.xml.bind.DatatypeConverter;
+import java.util.Base64;
 
 import org.xml.sax.SAXException;
 
@@ -414,8 +415,10 @@ public class DrawConverter extends ConverterHelper {
         	}
         	else {
         		StringBuilder buf = new StringBuilder();
+        		//buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
+        		//	.append(DatatypeConverter.printBase64Binary(bgd.getData()));
         		buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
-        			.append(DatatypeConverter.printBase64Binary(bgd.getData()));
+        			.append(Base64.getEncoder().encodeToString(bgd.getData()));
         		image.setAttribute("src", buf.toString());
         	}
         	// Add alternative text, using either alt.text, name or file name

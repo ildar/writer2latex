@@ -2,6 +2,17 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] No longer export \textsubscript (O.k. because it has been standard in LaTeX 2e since 2015)
+
+[w2l] When exporting character styles, styles with empty definition are now ignored
+
+[w2l] Now avoids strange xx's in exported names (caused by spaces in e.g. style names)
+
+[w2l] Reworked export of numbered and unnumbered lists: Use enumitem.sty rather than low
+  level commands. The export is controlled by three new boolean options use_enumitem,
+  list_layout (export indentations and label width), list_styles (export list styles using
+  \newlist from enumitem.sty). The option formatting no longer affects list export.
+
 ---------- version 1.9.3 ---------
 
 [w2l] The script option no longer supports the value auto; western is the new default. Also the

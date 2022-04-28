@@ -2,7 +2,7 @@
  *
  *  ExportNameCollection.java
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,20 +19,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 2.0 (2022-04-26)
  *
  */
 
 package writer2latex.util;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 
 /** Maintain a collection of export names. 
  *  This is used to map named collections to simpler names (only A-Z, a-z and 0-9, and possibly additional characters)
  */
 public class ExportNameCollection{
-    private Hashtable<String, String> exportNames = new Hashtable<String, String>();
+    private Map<String, String> exportNames = new HashMap<String, String>();
     private String sPrefix;
     private String sAdditionalChars;
     private boolean bAcceptNumbers;
@@ -52,13 +54,14 @@ public class ExportNameCollection{
     }
 	
     public Enumeration<String> keys() {
-        return exportNames.keys();
+        return Collections.enumeration(exportNames.keySet());
     }
     
     public void addName(String sName){
         if (containsName(sName)) { return; }
         StringBuilder outbuf=new StringBuilder();
-        SimpleInputBuffer inbuf=new SimpleInputBuffer(sName);
+        // _20_ will usually represent a space in ODF-documents created by LibreOffice; we get rid of that
+        SimpleInputBuffer inbuf=new SimpleInputBuffer(sName.replaceAll("_20_", ""));
 		
         // Don't start with a digit
         if (bAcceptNumbers && inbuf.peekChar()>='0' && inbuf.peekChar()<='9') {

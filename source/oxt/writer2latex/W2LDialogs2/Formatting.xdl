@@ -30,6 +30,6 @@
     <dlg:menuitem dlg:value="Convert most"/>
     <dlg:menuitem dlg:value="Convert all"/>
    </dlg:menupopup>
-  </dlg:menulist>
+  </dlg:menulist>  
  </dlg:bulletinboard>
 </dlg:window>

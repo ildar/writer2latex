@@ -2,7 +2,7 @@
  *
  *  CharStyleConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-07)
+ *  Version 2.0 (2022-04-27)
  *
  */
 
@@ -49,9 +49,8 @@ public class CharStyleConverter extends StyleConverter {
     private boolean bIgnoreFont;
     private boolean bIgnoreAll;
     private boolean bUseUlem;
-    // Do we need actually use ulem.sty or \textsubscript?
+    // Do we need actually use ulem.sty?
     private boolean bNeedUlem = false;
-    private boolean bNeedSubscript = false;
     
     /** <p>Constructs a new <code>CharStyleConverter</code>.</p>
      */
@@ -73,9 +72,6 @@ public class CharStyleConverter extends StyleConverter {
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
         if (bNeedUlem) {
         	pacman.usepackage("normalem", "ulem");
-        }
-        if (bNeedSubscript && !config.getTextAttributeStyleMap().containsKey("subscript")) {
-            decl.append("\\providecommand\\textsubscript[1]{\\ensuremath{{}_{\\text{#1}}}}").nl();
         }
         if (!styleNames.isEmpty()) {
             decl.append("% Text styles").nl().append(declarations);
@@ -145,13 +141,17 @@ public class CharStyleConverter extends StyleConverter {
         palette.getI18n().applyLanguage(style,false,true,baText);
         applyFont(style,false,true,baText,new Context());
         applyFontEffects(style,true,baText);
-        // declare the text style (\newcommand)
-        String sTeXName = styleNames.getExportName(ofr.getTextStyles().getDisplayName(sName));
-        styleMap.put(sName,new StyleMapItem(sName,"\\textstyle"+sTeXName+"{","}"));
-        declarations.append("\\newcommand\\textstyle")
-            .append(sTeXName).append("[1]{")
-            .append(baText.getBefore()).append("#1").append(baText.getAfter())
-            .append("}").nl();
+        if (!baText.isEmpty()) { // Declare the text style (\newcommand)
+	        String sTeXName = styleNames.getExportName(ofr.getTextStyles().getDisplayName(sName));
+	        styleMap.put(sName,new StyleMapItem(sName,"\\textstyle"+sTeXName+"{","}"));
+	        declarations.append("\\newcommand\\textstyle")
+	            .append(sTeXName).append("[1]{")
+	            .append(baText.getBefore()).append("#1").append(baText.getAfter())
+	            .append("}").nl();
+        }
+        else { // Empty definition, ignore
+        	styleMap.put(sName, new StyleMapItem(sName,"",""));        	
+        }
         applyTextStyle(sName,ba,context);
     }
 	
@@ -448,7 +448,6 @@ public class CharStyleConverter extends StyleConverter {
     			// Only export if font size is unspecified or different from 100%
 		        if (sArguments[0].equals("sub") || sArguments[0].startsWith("-")) {
 		        	// sub or any negative percentage implies subscript
-		            bNeedSubscript = true;
 		            return "\\textsubscript";
 		        }
 		        else if (sArguments[0].equals("super") || !sArguments[0].equals("0%")) {

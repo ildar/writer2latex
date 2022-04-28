@@ -2,7 +2,7 @@
  *
  *  BeforeAfter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2022-04-25)
  *
  */
 
@@ -49,29 +49,30 @@ public class BeforeAfter {
      *  <li><code>add("\textit{","}");</code></ul>
      *  <p>will create the pair <code>\textsf{\textit{</code>, <code>}}</code></p>
      *
-     *  @param sBefore1 LaTeX code to put before
-     *  @param sAfter1 LaTeX code to put after  
+     *  @param sBefore1 LaTeX code to put before (null is allowed and ignored)
+     *  @param sAfter1 LaTeX code to put after (null is allowed and ignored)
      */
     public void add(String sBefore1, String sAfter1) {
-        sBefore+=sBefore1; sAfter=sAfter1+sAfter;
+    	if (sBefore1!=null) { sBefore+=sBefore1; }
+    	if (sAfter1!=null) { sAfter=sAfter1+sAfter; }
     }
     
     /** Add data to the <code>BeforeAfter</code>. The new data will be added "inside", and no data
      *  will be added to the "after" part
      * 
-     * @param sBefore1 LaTeX code to put before
+     * @param sBefore1 LaTeX code to put before (null is allowed and ignored)
      */
     public void addBefore(String sBefore1) {
-        sBefore+=sBefore1;    	
+        if (sBefore1!=null) { sBefore+=sBefore1; }    	
     }
     
     /** Add data to the <code>BeforeAfter</code>. The new data will be added "inside", and no data
      *  will be added to the "before" part
      * 
-     * @param sAfter1 LaTeX code to put after
+     * @param sAfter1 LaTeX code to put after (null is allowed and ignored)
      */
     public void addAfter(String sAfter1) {
-        sAfter=sAfter1+sAfter;    	
+        if (sAfter1!=null) { sAfter=sAfter1+sAfter; }
     }
     
     /** <p>Add data to the <code>BeforeAfter</code></p>
@@ -80,11 +81,12 @@ public class BeforeAfter {
      *  <li><code>enclose("\textit{","}");</code></ul>
      *  <p>will create the pair <code>\textit{\textsf{</code>, <code>}}</code></p>
      *
-     *  @param sBefore1 LaTeX code to put before
-     *  @param sAfter1 LaTeX code to put after  
+     *  @param sBefore1 LaTeX code to put before (null is allowed and ignored)
+     *  @param sAfter1 LaTeX code to put after   (null is allowed and ignored)
      */
     public void enclose(String sBefore1, String sAfter1) {
-        sBefore=sBefore1+sBefore; sAfter+=sAfter1;
+    	if (sBefore1!=null) { sBefore=sBefore1+sBefore; }
+    	if (sAfter1!=null) { sAfter+=sAfter1; }
     }
     
     /** <p>Add the content of another <code>BeforeAfter</code> to this <code>BeforeAfter</code></p>

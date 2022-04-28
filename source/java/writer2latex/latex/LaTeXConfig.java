@@ -2,7 +2,7 @@
  *
  *  LaTeXConfig.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-14)
+ *  Version 2.0 (2022-04-24)
  *
  */
 
@@ -186,6 +186,9 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_tikz","true"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
+        addOption(new BooleanOption("use_enumitem","false"));
+        addOption(new BooleanOption("list_layout","false"));
+        addOption(new BooleanOption("list_styles","false"));
         addOption(new BooleanOption("use_hyperref","true"));
         addOption(new BooleanOption("use_microtype","false"));
         addOption(new BooleanOption("use_letterspace","false"));
@@ -671,6 +674,9 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useTikz() { return ((BooleanOption) options.get("use_tikz")).getValue(); }
     public boolean useLongfbox() { return ((BooleanOption) options.get("use_longfbox")).getValue(); }
     public boolean useTitlesec() { return ((BooleanOption) options.get("use_titlesec")).getValue(); }
+    public boolean useEnumitem() { return ((BooleanOption) options.get("use_enumitem")).getValue(); }
+    public boolean listLayout() { return ((BooleanOption) options.get("list_layout")).getValue(); }
+    public boolean listStyles() { return ((BooleanOption) options.get("list_styles")).getValue(); }
     public boolean useHyperref() { return ((BooleanOption) options.get("use_hyperref")).getValue(); }
     public boolean useMicrotype() { return ((BooleanOption) options.get("use_microtype")).getValue(); }
     public boolean useLetterspace() { return ((BooleanOption) options.get("use_letterspace")).getValue(); }
