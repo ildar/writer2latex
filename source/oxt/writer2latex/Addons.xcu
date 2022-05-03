@@ -18,9 +18,6 @@
 	            <prop oor:name="URL" oor:type="xs:string">
 	                <value>org.openoffice.da.writer2latex:InsertBibTeX</value>
 	            </prop>
-	            <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                <value>%origin%/icons/bibtex</value>
-	            </prop>
 	  		</node>
 	  		<node oor:name="button2" oor:op="replace">
 	            <prop oor:name="Context" oor:type="xs:string">
@@ -35,9 +32,6 @@
 	            </prop>
 	            <prop oor:name="URL" oor:type="xs:string">
 	                <value>org.openoffice.da.writer2latex:ProcessDocument</value>
-	            </prop>
-	            <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                <value>%origin%/icons/latex</value>
 	            </prop>
 	  		</node>
 	  		<node oor:name="button3" oor:op="replace">
@@ -54,9 +48,6 @@
 	            <prop oor:name="URL" oor:type="xs:string">
 	                <value>org.openoffice.da.writer2latex:ViewLog</value>
 	            </prop>
-	            <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                <value>%origin%/icons/log</value>
-	            </prop>
 	  		</node>
 	  		<node oor:name="button4" oor:op="replace">
 	            <prop oor:name="Context" oor:type="xs:string">
@@ -71,9 +62,6 @@
 	            </prop>
 	            <prop oor:name="URL" oor:type="xs:string">
 	                <value>.uno:OptionsTreeDialog?OptionsPageURL:string=%origin%/W2LDialogs2/Documentclass.xdl</value>
-	            </prop>
-	            <prop oor:name="ImageIdentifier" oor:type="xs:string">
-	                <value>%origin%/icons/custom</value>
 	            </prop>
 	  		</node>
 	  		<node oor:name="button5" oor:op="replace">
@@ -118,7 +106,61 @@
                 </prop>
       		</node>
  		</node>
-	</node>    
+	</node>   
+	<node oor:name="Images">
+		<node oor:name="org.openoffice.writer2latex.bibtexbutton1" oor:op="replace">
+			<prop oor:name="URL" oor:type="xs:string">
+				<value>org.openoffice.da.writer2latex:InsertBibTeX</value>
+			</prop>
+			<node oor:name="UserDefinedImages">
+				<prop oor:name="ImageSmallURL" oor:type="xs:string">
+					<value>%origin%/icons/bibtex_16.png</value>
+				</prop>
+				<prop oor:name="ImageBigURL" oor:type="xs:string">
+					<value>%origin%/icons/bibtex_26.png</value>
+				</prop>
+			</node>
+		</node>
+		<node oor:name="org.openoffice.writer2latex.latexbutton2" oor:op="replace">
+			<prop oor:name="URL" oor:type="xs:string">
+				<value>org.openoffice.da.writer2latex:ProcessDocument</value>
+			</prop>
+			<node oor:name="UserDefinedImages">
+				<prop oor:name="ImageSmallURL" oor:type="xs:string">
+					<value>%origin%/icons/latex_16.png</value>
+				</prop>
+				<prop oor:name="ImageBigURL" oor:type="xs:string">
+					<value>%origin%/icons/latex_26.png</value>
+				</prop>
+			</node>
+		</node>
+		<node oor:name="org.openoffice.writer2latex.logbutton3" oor:op="replace">
+			<prop oor:name="URL" oor:type="xs:string">
+				<value>org.openoffice.da.writer2latex:ViewLog</value>
+			</prop>
+			<node oor:name="UserDefinedImages">
+				<prop oor:name="ImageSmallURL" oor:type="xs:string">
+					<value>%origin%/icons/log_16.png</value>
+				</prop>
+				<prop oor:name="ImageBigURL" oor:type="xs:string">
+					<value>%origin%/icons/log_26.png</value>
+				</prop>
+			</node>
+		</node>
+		<node oor:name="org.openoffice.writer2latex.configbutton4" oor:op="replace">
+			<prop oor:name="URL" oor:type="xs:string">
+				<value>.uno:OptionsTreeDialog?OptionsPageURL:string=%origin%/W2LDialogs2/Documentclass.xdl</value>
+			</prop>
+			<node oor:name="UserDefinedImages">
+				<prop oor:name="ImageSmallURL" oor:type="xs:string">
+					<value>%origin%/icons/custom_16.png</value>
+				</prop>
+				<prop oor:name="ImageBigURL" oor:type="xs:string">
+					<value>%origin%/icons/custom_26.png</value>
+				</prop>
+			</node>
+		</node>
+	</node> 
 </node>
 
 </oor:component-data>

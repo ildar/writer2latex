@@ -2,7 +2,7 @@
  *
  *  ConfigurationDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2022-05-03)
  *
  */ 
  
@@ -81,6 +81,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	
     	pageHandlers.put("Formatting", new FormattingHandler());
     	pageHandlers.put("Formatting2", new Formatting2Handler());
+    	pageHandlers.put("HeadingsLists", new HeadingsListsHandler());
     	pageHandlers.put("Documentclass", new DocumentclassHandler());
     	pageHandlers.put("Styles", new StylesHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
@@ -95,6 +96,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         String[] sNames = {
         		"UseLongfboxChange", // Formatting
         		"UseMulticolChange", "FormattingAttributeChange", "CustomAttributeChange", // Formatting 2
+        		"UseEnumitemChange", // Headings and lists
         		"NoPreambleChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
@@ -120,9 +122,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		checkBoxFromConfig(dlg,"UseMicrotype","use_microtype");
     		checkBoxFromConfig(dlg,"UseLetterspace","use_letterspace");
     		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
-    		// Headings
-        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
-        	checkBoxFromConfig(dlg,"OutlineNumbering","outline_numbering");
         	// Text, paragraph and list
     		switch(config.getOption("formatting")) {
     		case "ignore_all": dlg.setListBoxSelectedItem("Formatting", (short)0); break;
@@ -144,9 +143,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		checkBoxToConfig(dlg,"UseMicrotype","use_microtype");
     		checkBoxToConfig(dlg,"UseLetterspace","use_letterspace");
     		checkBoxToConfig(dlg,"UseUlem","use_ulem");
-    		// Headings
-    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
-        	checkBoxToConfig(dlg,"OutlineNumbering","outline_numbering");
         	// Text, paragraph and list
         	switch (dlg.getListBoxSelectedItem("Formatting")) {
         	case 0: config.setOption("formatting", "ignore_all"); break;
@@ -242,6 +238,47 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	private void useMulticolChange(DialogAccess dlg) {
         	dlg.setControlEnabled("MulticolsFormat", dlg.getCheckBoxStateAsBoolean("UseMulticol"));
     	}
+
+    }
+
+    // The page "Headings and lists"
+    // This page handles the the options use_titlesec, outline_numbering, use_enumitem, list_layout, list_styles
+    private class HeadingsListsHandler extends PageHandler {
+        
+    	@Override protected void setControls(DialogAccess dlg) {
+    		// Headings
+        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
+        	checkBoxFromConfig(dlg,"OutlineNumbering","outline_numbering");
+    		// Lists
+        	checkBoxFromConfig(dlg,"UseEnumitem","use_enumitem");
+        	checkBoxFromConfig(dlg,"ListLayout","list_layout");
+        	checkBoxFromConfig(dlg,"ListStyles","list_styles");
+        	useEnumitemChange(dlg);
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		// Headings
+    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
+        	checkBoxToConfig(dlg,"OutlineNumbering","outline_numbering");
+        	// Lists
+        	checkBoxToConfig(dlg,"UseEnumitem","use_enumitem");
+        	checkBoxToConfig(dlg,"ListLayout","list_layout");
+        	checkBoxToConfig(dlg,"ListStyles","list_styles");
+    	}
+    	
+    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
+    		if (sMethod.equals("UseEnumitemChange")) {
+    			useEnumitemChange(dlg);
+    			return true;
+    		}
+    		return false;
+    	}
+
+       	private void useEnumitemChange(DialogAccess dlg) {
+       		boolean bUseEnumitem = dlg.getCheckBoxStateAsBoolean("UseEnumitem");
+       		dlg.setControlEnabled("ListLayout", bUseEnumitem);
+       		dlg.setControlEnabled("ListStyles", bUseEnumitem);
+    	} 
 
     }
 

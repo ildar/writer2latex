@@ -15,4 +15,5 @@
  <library:element library:name="Applications"/>
  <library:element library:name="Bibliography"/>
  <library:element library:name="AutoConfigInfo"/>
+ <library:element library:name="HeadingsLists"/>
 </library:library>

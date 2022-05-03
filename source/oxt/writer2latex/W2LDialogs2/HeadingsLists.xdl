@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="HeadingsLists" dlg:left="118" dlg:top="67" dlg:width="260" dlg:height="185" dlg:closeable="true" dlg:moveable="true" dlg:title="HeadingsLists" dlg:withtitlebar="false">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:style-id="0" dlg:id="HeadingsLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="245" dlg:height="12" dlg:value="Headings"/>
+  <dlg:checkbox dlg:id="UseTitlesec" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" dlg:value="Export formatting of headings (using titlesec.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="OutlineNumbering" dlg:tab-index="2" dlg:left="10" dlg:top="35" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering" dlg:value="Export outline numbering" dlg:checked="false"/>
+  <dlg:text dlg:style-id="0" dlg:id="ListsLabel" dlg:tab-index="3" dlg:left="5" dlg:top="49" dlg:width="245" dlg:height="12" dlg:value="Lists"/>
+  <dlg:checkbox dlg:id="UseEnumitem" dlg:tab-index="4" dlg:left="10" dlg:top="63" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" dlg:value="Export list labels (using enumitem.sty)" dlg:checked="false">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseEnumitemChange" script:language="UNO"/>
+  </dlg:checkbox>
+  <dlg:checkbox dlg:id="ListLayout" dlg:tab-index="5" dlg:left="10" dlg:top="76" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" dlg:value="Export list layout" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="ListStyles" dlg:tab-index="6" dlg:left="10" dlg:top="89" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" dlg:value="Export list styles" dlg:checked="false"/>
+ </dlg:bulletinboard>
+</dlg:window>

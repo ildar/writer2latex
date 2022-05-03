@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] New png-icons in toolbar
+
 [w2l] No longer export \textsubscript (O.k. because it has been standard in LaTeX 2e since 2015)
 
 [w2l] When exporting character styles, styles with empty definition are now ignored
