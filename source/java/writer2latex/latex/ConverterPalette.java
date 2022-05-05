@@ -2,7 +2,7 @@
  *
  *  ConverterPalette.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2022-04-05)
  *
  */
 
@@ -217,7 +217,9 @@ public final class ConverterPalette extends ConverterBase {
         Element content = ofr.getContent();
         blockCv.traverseBlockText(content,body,mainContext);
         noteCv.insertEndnotes(body);
-
+        
+        // Always use calc.sty
+        packages.usepackage("calc");
         // Add declarations from our helpers
         i18n.appendDeclarations(packages,declarations);
         	// common: usepackage tipa, tipx, bbding, ifsym, pifont, eurosym, amsmath, wasysym, amssymb, amsfonts
@@ -239,13 +241,13 @@ public final class ConverterPalette extends ConverterBase {
         bibCv.appendDeclarations(packages,declarations); // no packages
         sectionCv.appendDeclarations(packages,declarations); // no packages
         tableCv.appendDeclarations(packages,declarations); // usepackage array, longtable, supertabular, tabulary, hhline, colortbl
-        listCv.appendDeclarations(packages,declarations); // no packages
+        listCv.appendDeclarations(packages,declarations); // usepackage enumitem
         captionCv.appendDeclarations(packages,declarations); // usepackage caption
         inlineCv.appendDeclarations(packages,declarations); // no packages
         fieldCv.appendDeclarations(packages,declarations); // usepackage natbib, lastpage, titleref, hyperref 
         drawCv.appendDeclarations(packages,declarations); // usepackage graphicx 
         tikZCv.appendDeclarations(packages,declarations); // usepakcage tikz
-        mathCv.appendDeclarations(packages,declarations); // usepackage calc
+        mathCv.appendDeclarations(packages,declarations); // 
 
         // Add custom preamble
         String sCustomPreamble = config.getCustomPreamble();

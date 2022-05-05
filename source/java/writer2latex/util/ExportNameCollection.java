@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-04-26)
+ *  Version 2.0 (2022-05-04)
  *
  */
 
@@ -28,13 +28,14 @@ package writer2latex.util;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Set;
 import java.util.HashMap;
 
 /** Maintain a collection of export names. 
  *  This is used to map named collections to simpler names (only A-Z, a-z and 0-9, and possibly additional characters)
  */
 public class ExportNameCollection{
-    private Map<String, String> exportNames = new HashMap<String, String>();
+    private Map<String, String> exportNames = new HashMap<>();
     private String sPrefix;
     private String sAdditionalChars;
     private boolean bAcceptNumbers;
@@ -53,8 +54,12 @@ public class ExportNameCollection{
         this("",bAcceptNumbers,"");
     }
 	
-    public Enumeration<String> keys() {
+    @Deprecated public Enumeration<String> keys() {
         return Collections.enumeration(exportNames.keySet());
+    }
+    
+    public Set<String> keySet() {
+    	return exportNames.keySet();
     }
     
     public void addName(String sName){

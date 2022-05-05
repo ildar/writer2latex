@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-04-24)
+ *  Version 2.0 (2022-05-05)
  *
  */
 
@@ -186,7 +186,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_tikz","true"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
-        addOption(new BooleanOption("use_enumitem","false"));
+        addOption(new BooleanOption("use_enumitem","true"));
         addOption(new BooleanOption("list_layout","false"));
         addOption(new BooleanOption("list_styles","false"));
         addOption(new BooleanOption("use_hyperref","true"));

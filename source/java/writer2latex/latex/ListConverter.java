@@ -19,12 +19,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-03)
+ *  Version 2.0 (2022-05-04)
  *
  */
 package writer2latex.latex;
 
-import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -41,6 +42,7 @@ import writer2latex.util.Misc;
  */
 public class ListConverter extends StyleConverter {
 	private boolean bHasListStyles = false;
+	private Map<String,Integer> maxLevel = new HashMap<>();
 	
     /** Construct a new <code>ListConverter</code>
      */
@@ -50,27 +52,29 @@ public class ListConverter extends StyleConverter {
 
 	@Override public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
 		if (config.useEnumitem()) {
-			pacman.usepackage("calc"); // TODO move elsewhere
 			pacman.usepackage("enumitem");
 		}
-		if (bHasListStyles) {
+		if (bHasListStyles) { // Export list styles
 			decl.append("% List styles").nl();
-			Enumeration<String> keys = styleNames.keys();
-			while (keys.hasMoreElements()) {
-				String sStyleName = keys.nextElement();
+			for (String sStyleName : styleNames.keySet()) {
 				ListStyle style = ofr.getListStyle(sStyleName);
 				if (style!=null && !style.isAutomatic()) {
+					// Step 1. Define the list with \newlist
+					boolean bEnumerate = false;
+					for (int nLevel=1; nLevel<maxLevel.get(sStyleName)+1; nLevel++) {
+						bEnumerate|=style.isNumber(nLevel);
+					}
 					decl.append("\\newlist{list").append(styleNames.getExportName(sStyleName)).append("}{")
-						.append("enumerate") // TODO: itemize if no enumerated levels
-						.append("}{4}").nl();
+						.append(bEnumerate?"enumerate":"itemize").append("}{").append(maxLevel.get(sStyleName)).append("}").nl();
+					// Step 2. Define list labels with \setlist (only used levels)
 					Context oc = new Context();
 					oc.setListStyleName(sStyleName);
-					for (int nLevel=1; nLevel<5; nLevel++) {
+					for (int nLevel=1; nLevel<maxLevel.get(sStyleName)+1; nLevel++) {
 						oc.setListLevel(nLevel);
 						CSVList props = new CSVList(",","=");
-						createLabel(props, oc);
-						createStyledStartValue(props, oc);
-						createLayout(props, oc);
+						applyLabel(props, oc);
+						applyStartValue(props, oc);
+						applyLayout(props, oc);
 						decl.append("\\setlist[list").append(styleNames.getExportName(sStyleName)).append(",")
 							.append(nLevel).append("]{").append(props.toString()).append("}").nl();
 					}
@@ -128,9 +132,7 @@ public class ListConverter extends StyleConverter {
     	while (child!=null) {
 	        if (child.getNodeType() == Node.ELEMENT_NODE) {
 	            String nodeName = child.getNodeName();
-				
 	            palette.getInfo().addDebugInfo((Element)child,ldp);
-	            
 	            if (nodeName.equals(XMLString.TEXT_LIST_ITEM)) {
 	                handleListItem((Element)child,ldp,oc);
 	            }
@@ -199,22 +201,34 @@ public class ListConverter extends StyleConverter {
     
 	private void applyListStyle(String sItemStartValue, boolean bContinue, BeforeAfter ba, Context oc) {
         String sDisplayName = ofr.getListStyles().getDisplayName(oc.getListStyleName());
+        ListStyle style = ofr.getListStyle(oc.getListStyleName());
 		// Step 1. We may have a style map, this always takes precedence
 		if (config.getListStyleMap().containsKey(sDisplayName)) {
 			ba.add(config.getListStyleMap().get(sDisplayName).getBefore(),
-					config.getListStyleMap().get(sDisplayName).getAfter()); 
+				config.getListStyleMap().get(sDisplayName).getAfter()); 
 		}
-		else if (oc.getListLevel()<=4) {
+		else if (oc.getListLevel()<=4 || (config.useEnumitem() && config.listStyles() && style!=null && !style.isAutomatic())) {
+			// We can convert up to 4 levels of standard lists and any number of levels for list styles
+			boolean bLevelIsKnown = maxLevel.containsKey(oc.getListStyleName()) && maxLevel.get(oc.getListStyleName())>=oc.getListLevel(); 
+			if (!bLevelIsKnown) {
+				maxLevel.put(oc.getListStyleName(), oc.getListLevel());
+			}
 			// Step 2. Create list environments
-	        ListStyle style = ofr.getListStyle(oc.getListStyleName());
-	        if (style!=null && config.useEnumitem() && config.listStyles() && !style.isAutomatic()) { // Convert list styles
+	        if (style!=null && config.useEnumitem() && config.listStyles() && !style.isAutomatic()) { // Convert list style
 	        	ba.add("\\begin{","}");
 	        	ba.add("list"+styleNames.getExportName(oc.getListStyleName()),"list"+styleNames.getExportName(oc.getListStyleName()));
 	        	ba.add("}","\\end{");
 	        	bHasListStyles = true;
-	        	// TODO: Restart if required
+	        	CSVList props = new CSVList(",","=");
+	    		if (bContinue) {
+	    			props.addValue("resume");
+	    		}
+	    		applyHardStartValue(sItemStartValue,props,oc);
+	        	if (!props.isEmpty()) {
+	        		ba.addBefore("["+props.toString()+"]");
+	        	}
 	        }
-	        else { // Otherwise create default lists
+	        else { // Otherwise create default list
 				if (style!=null && style.isNumber(oc.getListLevel())) {
 					ba.add("\\begin{enumerate}","\\end{enumerate}");
 				}
@@ -224,10 +238,16 @@ public class ListConverter extends StyleConverter {
 				// Step 3: Use enumitem.sty to add formatting
 				if (config.useEnumitem()) {
 					CSVList props = new CSVList(",","=");
-					createLabel(props, oc);
-					createStyledStartValue(props, oc); // which the following may override
-					createHardStartValue(sItemStartValue, bContinue, props, oc);
-					createLayout(props, oc);
+					if (bLevelIsKnown) { // We have seen this list on this level before
+						applyResume(sItemStartValue, bContinue, props, oc);
+					}
+					else { // First occurrence, set series name and define all properties
+						props.addValue("series", "list"+styleNames.getExportName(oc.getListStyleName()));
+						applyLabel(props, oc);
+						applyStartValue(props, oc); // which the following may override
+						applyHardStartValue(sItemStartValue, props, oc);
+						applyLayout(props, oc);
+					}
 					if (!props.isEmpty()) {
 						ba.add("["+props.toString()+"]","");
 					}
@@ -236,14 +256,13 @@ public class ListConverter extends StyleConverter {
 		}
 	}
 	
-	// Create label and ref options
-	private void createLabel(CSVList props, Context oc) {
+	//Apply label and ref options
+	private void applyLabel(CSVList props, Context oc) {
 		ListStyle style = ofr.getListStyle(oc.getListStyleName());
 		if (style!=null) {
 			// Apply text style
 			BeforeAfter baText = new BeforeAfter();
-			palette.getCharSc().applyTextStyle(style.getLevelProperty(oc.getListLevel(),XMLString.TEXT_STYLE_NAME),
-					baText,new Context()); // TODO: Probably oc?
+			palette.getCharSc().applyTextStyle(style.getLevelProperty(oc.getListLevel(),XMLString.TEXT_STYLE_NAME), baText, oc);
 			// Create label
 			if (style.isNumber(oc.getListLevel())) {
 				// Add prefix and suffix. Note: It is not customary in LaTeX to include the prefix and suffix in reference, so we don't.
@@ -307,21 +326,8 @@ public class ListConverter extends StyleConverter {
 		else { return null; }
 	}
 	
-	// Create start, resume and series options
-	private void createHardStartValue(String sItemStartValue, boolean bContinue, CSVList props, Context oc) {
-		if (bContinue) { // For at continued list we only need resume
-			props.addValue("resume", "list"+styleNames.getExportName(oc.getListStyleName()));
-		}
-		else { // Otherwise we need series and optionally start
-			props.addValue("series", "list"+styleNames.getExportName(oc.getListStyleName()));						
-			if (sItemStartValue!=null) { // Start value on list item overrides the value from the style
-				props.addValue("start", Integer.toString(Misc.getPosInteger(sItemStartValue, 1)));
-			}
-		}
-	}
-
-	// Create start value from style
-	private void createStyledStartValue(CSVList props, Context oc) {
+	// Apply start value as defined in the style
+	private void applyStartValue(CSVList props, Context oc) {
 		ListStyle style = ofr.getListStyle(oc.getListStyleName());
 		if (style!=null) {
 			String sStartValue = style.getLevelProperty(oc.getListLevel(), XMLString.TEXT_START_VALUE);
@@ -331,8 +337,25 @@ public class ListConverter extends StyleConverter {
 		}			
 	}
 	
-	// Create leftmargin, itemindent, labelwidth, labelsep and align options
-	private void createLayout(CSVList props, Context oc) {
+	// Apply hard start value
+	private void applyHardStartValue(String sItemStartValue, CSVList props, Context oc) {
+		if (sItemStartValue!=null) {
+			props.addValue("start", Integer.toString(Misc.getPosInteger(sItemStartValue, 1)));
+		}
+	}
+
+	// Apply hard start and resume* options
+	private void applyResume(String sItemStartValue, boolean bContinue, CSVList props, Context oc) {
+		props.addValue("resume*", "list"+styleNames.getExportName(oc.getListStyleName()));
+		if (!bContinue) { // We always need a start value in this case, even if not set explicitly in the document
+			props.addValue("start","1"); // default value
+			applyStartValue(props, oc);
+			applyHardStartValue(sItemStartValue, props,oc);
+		}
+	}
+
+	// Apply leftmargin, itemindent, labelwidth, labelsep and align options
+	private void applyLayout(CSVList props, Context oc) {
 		ListStyle style = ofr.getListStyle(oc.getListStyleName());
 		int nLevel = oc.getListLevel();
 		if (config.listLayout() && style!=null && style.isNewType(nLevel)) {
@@ -380,8 +403,7 @@ public class ListConverter extends StyleConverter {
 			}
 			else {
 				if ("space".contentEquals(sFormat)) { // The width of a space is 0.33em
-					props.addValue("itemindent", Calc.sub(sTextIndent, sMarginLeft)+"+0.33em"); // This one needs calc.sty
-					// TODO: Load calc.sty (currently handled by StarMathConverter.java; should be moved elsewhere)
+					props.addValue("itemindent", Calc.sub(sTextIndent, sMarginLeft)+"+0.33em"); // Needs calc.sty
 					props.addValue("labelsep", "0.33em");
 				}
 				else { // "nothing"
@@ -416,13 +438,9 @@ public class ListConverter extends StyleConverter {
 					config.getListItemStyleMap().get(sDisplayName).getAfter()); 
 			return;
 		}
-		else {
-			// Otherwise create a standard \item
-			// TODO: May support higher levels for list styles if list_styles is true
-			if (oc.getListLevel()<=4) {
-				if (bHeader) { ba.addBefore("\\item[] "); }
-				else { ba.addBefore("\\item "); }
-			}
+		else if (oc.getListLevel()<=maxLevel.get(oc.getListStyleName())) { // Otherwise create a standard \item
+			if (bHeader) { ba.addBefore("\\item[] "); }
+			else { ba.addBefore("\\item "); }
 		}
 	}
 

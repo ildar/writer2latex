@@ -2,7 +2,7 @@
  *
  *  StarMathConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *  
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2022-05-04)
  */
 
 package writer2latex.latex;
@@ -789,9 +789,6 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
     }
 
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-        if (bMultiscripts || bMathoverstrike) {
-        	pacman.usepackage("calc");
-        }
         if (bDefeq) {
             decl.append("\\newcommand\\defeq{\\stackrel{\\mathrm{def}}{=}}").nl();
         }
@@ -868,6 +865,9 @@ public final class StarMathConverter implements writer2latex.api.StarMathConvert
         LaTeXPacman pacman = new LaTeXPacman(false);
         LaTeXDocumentPortion decl = new LaTeXDocumentPortion(false);
         i18n.appendDeclarations(pacman,decl);
+        if (bMultiscripts || bMathoverstrike) {
+        	pacman.usepackage("calc"); // calc.sty is always loaded by ConverterPalette, but we need to be explicit here
+        }
         appendDeclarations(pacman,decl);
         return pacman.toString()+decl.toString();
     }
