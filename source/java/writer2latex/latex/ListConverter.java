@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-04)
+ *  Version 2.0 (2022-05-06)
  *
  */
 package writer2latex.latex;
@@ -387,27 +387,27 @@ public class ListConverter extends StyleConverter {
 
 			// We are now ready to set up options for enumitem.sty
 			// The left margin is straightforward
-			props.addValue("leftmargin",sMarginLeft);
+			props.addValue("leftmargin",Calc.round(sMarginLeft));
 			if ("listtab".contentEquals(sFormat)) {
-				props.addValue("itemindent", Calc.sub(sTabPos, sMarginLeft));
+				props.addValue("itemindent", Calc.round(Calc.sub(sTabPos, sMarginLeft)));
 				if (bLeft) { // The label is positioned from the margin to the alignment position (sTextIndent)
 					props.addValue("labelsep", "0mm");
-					props.addValue("labelwidth", Calc.sub(sTabPos, sTextIndent));
+					props.addValue("labelwidth", Calc.round(Calc.sub(sTabPos, sTextIndent)));
 					props.addValue("align", "left");				
 				}
 				else { // The label is positioned from the alignment position (sTextIndent) to the text body
-					props.addValue("labelsep", Calc.sub(sTabPos, sTextIndent));
-					props.addValue("labelwidth", sTextIndent);
+					props.addValue("labelsep", Calc.round(Calc.sub(sTabPos, sTextIndent)));
+					props.addValue("labelwidth", Calc.round(sTextIndent));
 					props.addValue("align", "right");
 				}
 			}
 			else {
 				if ("space".contentEquals(sFormat)) { // The width of a space is 0.33em
-					props.addValue("itemindent", Calc.sub(sTextIndent, sMarginLeft)+"+0.33em"); // Needs calc.sty
+					props.addValue("itemindent", Calc.round(Calc.sub(sTextIndent, sMarginLeft))+"+0.33em"); // Needs calc.sty
 					props.addValue("labelsep", "0.33em");
 				}
 				else { // "nothing"
-					props.addValue("itemindent", Calc.sub(sTextIndent, sMarginLeft));
+					props.addValue("itemindent", Calc.round(Calc.sub(sTextIndent, sMarginLeft)));
 					props.addValue("labelsep", "0mm");
 				}
 				if (bLeft) { // The label has zero width, and the label extends into the text body
@@ -415,7 +415,7 @@ public class ListConverter extends StyleConverter {
 					props.addValue("align", "left");
 				}
 				else { // The label is positioned from the margin to the alignment position (sTextIndent)
-					props.addValue("labelwidth", sTextIndent);
+					props.addValue("labelwidth", Calc.round(sTextIndent));
 					props.addValue("align", "right");				
 				}
 			}

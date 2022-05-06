@@ -2,7 +2,7 @@
  *
  *  Calc.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-22)
+ *  Version 2.0 (2022-05-06)
  *
  */
 package writer2latex.util;
@@ -229,6 +229,30 @@ public class Calc {
 	    return add(sLength1,multiply("-100%",sLength2));
 	}
 	
+	/** Round a length to two decimal places
+	 * 
+	 * @param sLength the length to reound
+	 * @return the rounded length
+	 */
+	public static String round(String sLength) {
+		// Add 0.05; this implies that we can simply truncate
+		String s = Float.toString(getFloat(sLength.substring(0,sLength.length()-2),1)+0.005F);
+		int nPoint = s.indexOf(".");
+		if (nPoint>-1) {
+			s = s.substring(0,Math.min(nPoint+3,s.length()));
+			while (s.charAt(s.length()-1)=='0') { s = s.substring(0,s.length()-1); }
+			if (s.charAt(s.length()-1)=='.') { s = s.substring(0,s.length()-1); }
+			if (s.length()==0) { s="0"; }
+		}
+		return s+sLength.substring(sLength.length()-2);
+	}
+	
+	/** Test if two lengths are equal (within a tolerance of 0.001
+	 * 
+	 * @param sThis one length
+	 * @param sThat another length
+	 * @return true if the lengths can be considered equal
+	 */
 	public static boolean isEqual(String sThis, String sThat) {
 		return isZero(sub(sThis,sThat));
 	}

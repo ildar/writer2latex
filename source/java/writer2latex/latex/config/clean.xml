@@ -21,6 +21,9 @@
   <option name="use_ulem" value="false" />
   <option name="use_titlesec" value="false" />
   <option name="outline_numbering" value="false" />
+  <option name="use_enumitem" value="false" />
+  <option name="list_layout" value="false" />
+  <option name="list_styles" value="false" />
   <option name="formatting" value="ignore_most" />
   <option name="use_multicol" value="false" />
   <option name="multicols_format" value="false" />

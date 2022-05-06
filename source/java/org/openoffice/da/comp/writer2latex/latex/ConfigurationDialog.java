@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-03)
+ *  Version 2.0 (2022-05-05)
  *
  */ 
  
@@ -110,7 +110,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     }
     
     // The page "Formatting"
-    // This page handles the the options use_xcolor, use_ulem, use_titlesec, formatting
+    // This page handles the the options use_xcolor, use_ulem, formatting
     private class FormattingHandler extends PageHandler {
         
     	@Override protected void setControls(DialogAccess dlg) {
@@ -247,8 +247,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         
     	@Override protected void setControls(DialogAccess dlg) {
     		// Headings
-        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
         	checkBoxFromConfig(dlg,"OutlineNumbering","outline_numbering");
+        	checkBoxFromConfig(dlg,"UseTitlesec","use_titlesec");
     		// Lists
         	checkBoxFromConfig(dlg,"UseEnumitem","use_enumitem");
         	checkBoxFromConfig(dlg,"ListLayout","list_layout");
@@ -258,8 +258,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		// Headings
-    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
         	checkBoxToConfig(dlg,"OutlineNumbering","outline_numbering");
+    		checkBoxToConfig(dlg,"UseTitlesec","use_titlesec");    	
         	// Lists
         	checkBoxToConfig(dlg,"UseEnumitem","use_enumitem");
         	checkBoxToConfig(dlg,"ListLayout","list_layout");

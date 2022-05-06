@@ -59,18 +59,6 @@
         package ulem.sty. Note that this does not work well for longer passages of text. Writer2LaTeX will never export
         underline and strike out for entire paragraphs.</paragraph>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Headings</paragraph>
-        
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" id="bm_configusetitlesec"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Export formatting of headings (using titlesec.sty)</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the formatting of headings using
-        the LaTeX package titlesec.sty. Otherwise you will get the default formatting of the LaTeX document class.</paragraph>
-        
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering" id="bm_configoutlinenumbering"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Export outline numbering</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the outline numbering.
-        Otherwise the default numbering of the LaTeX document class will be used.</paragraph>
-
         <paragraph role="heading" level="2" xml-lang="en-US">Text, paragraphs and lists</paragraph>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFormatting" id="bm_configformatting"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Formatting export</paragraph>

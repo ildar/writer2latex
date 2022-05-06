@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpdocument version="1.0">
+	<meta>
+        <topic id="writer2latex-export" indexer="include">
+            <title xml-lang="en-US">Headings and Lists</title>
+            <filename>org.openoffice.da.writer2latex.oxt/Configuration/HeadingsLists.xhp</filename>
+        </topic>
+    </meta>
+    <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:HeadingsLists" id="bm_options"/>
+
+        <paragraph role="heading" level="1" xml-lang="en-US">Headings and Lists</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define the conversion of headings and lists in the document</paragraph>
+
+        <section id="howtoget" xml-lang="en-US">
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Headings and Lists</emph>
+        </section>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">Headings</paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering" id="bm_configoutlinenumbering"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export outline numbering</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the outline numbering.
+        Otherwise the default numbering defined by the LaTeX document class will be used for all headings.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" id="bm_configusetitlesec"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export formatting of headings (using titlesec.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the formatting of headings using
+        the LaTeX package titlesec.sty. Otherwise you will get the default formatting of the LaTeX document class.</paragraph>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">Lists</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseEnumitem" id="bm_configuseenumitem"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export list labels (using enumitem.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the labels of numbered and unnumbered lists.
+        Otherwise all labels will be the standard labels defined in the LaTeX document class.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigListLayout" id="bm_configlistlayout"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export list layout</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export layout of lists, that is indentations of
+        text and label and alignment of labels. Otherwise the default layout defined by the LaTeX document class will be used</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigListStyles" id="bm_configliststyles"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export list styles</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this, lists using a list style will create new list environments
+        rather than using the standard LaTeX list environment. This has no visible effect with one exception: Standard lists in LaTeX
+        can only have four nesting levels. But new list environments can have any number of nesting levels.</paragraph>
+
+
+    </body>
+</helpdocument>
