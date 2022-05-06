@@ -2,6 +2,13 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] All pages in the configuration now has a help button in the upper right corner. This
+  is a workaround because the "official" help button now points to online help.
+
+[w2l] Rearranged all dialogs to avoid overlapping elements on some platforms
+
+[w2l] Removed the compound option "Support additional symbols" from the filter dialog to save space
+
 [w2l] New png-icons in toolbar
 
 [w2l] No longer export \textsubscript (O.k. because it has been standard in LaTeX 2e since 2015)

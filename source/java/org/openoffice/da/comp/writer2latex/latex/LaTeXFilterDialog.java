@@ -2,7 +2,7 @@
  *
  *  LaTeXFilterDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-09-14)
+ *  Version 2.0 (2022-05-06)
  *  
  */
 
@@ -115,7 +115,6 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         loadListBoxOption(xProps,"Font");
         loadListBoxOption(xProps,"Fontspec");
         loadCheckBoxOption(xProps,"GreekMath");
-        loadCheckBoxOption(xProps,"AdditionalSymbols");
 		
         // Bibliography
         loadCheckBoxOption(xProps,"UseBibtex");
@@ -162,12 +161,6 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         saveListBoxOption(xProps, filterData, "Font", "font", FONT_VALUES);
         saveListBoxOption(xProps, filterData, "Fontspec", "fontspec", FONTSPEC_VALUES);
         saveCheckBoxOption(xProps, filterData, "GreekMath", "greek_math");
-        // AdditionalSymbols sets 5 different w2l options...
-        saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_pifont");
-        saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_ifsym");
-        saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_wasysym");
-        saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_eurosym");
-        saveCheckBoxOption(xProps, filterData, "AdditionalSymbols", "use_tipa");
 		
         // Bibliography
         saveCheckBoxOption(xProps, filterData, "UseBibtex", "use_bibtex");
@@ -281,24 +274,6 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         else if ("greek_math".equals(sOptionName)) {
         	return super.isLocked(sOptionName);
         }
-        else if ("additional_symbols".equals(sOptionName)) {
-            return super.isLocked(sOptionName);
-        }
-        else if ("use_pifont".equals(sOptionName)) {
-            return isLocked("additional_symbols");
-        }
-        else if ("use_ifsym".equals(sOptionName)) {
-            return isLocked("additional_symbols");
-        }
-        else if ("use_wasysym".equals(sOptionName)) {
-            return isLocked("additional_symbols");
-        }
-        else if ("use_eurosym".equals(sOptionName)) {
-            return isLocked("additional_symbols");
-        }
-        else if ("use_tipa".equals(sOptionName)) {
-            return isLocked("additional_symbols");
-        }
         else {
             return super.isLocked(sOptionName); 
         }
@@ -317,7 +292,6 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         setControlEnabled("Font",!isLocked("font"));
         setControlEnabled("Fontspec",!isLocked("fontspec"));
         setControlEnabled("GreekMath",!isLocked("greek_math"));
-        setControlEnabled("AdditionalSymbols",!isLocked("additional_symbols"));
 
         // Bibliography
         setControlEnabled("UseBibtex",!isLocked("use_bibtex"));

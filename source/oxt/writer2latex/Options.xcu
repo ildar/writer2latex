@@ -133,9 +133,6 @@
                 </prop>
             </node>
             <node oor:name="07w2l-custom" oor:op="replace">
-                <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value>additional_symbols</value>
-                </prop>
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Custom</value>
                     <value xml:lang="da-DK">Brugerdefineret</value>
@@ -540,9 +537,6 @@
         </prop>
         <prop oor:name="GreekMath" oor:type="xs:boolean">
             <value>true</value>
-        </prop>
-        <prop oor:name="AdditionalSymbols" oor:type="xs:boolean">
-            <value>false</value>
         </prop>
         <prop oor:name="UseBibtex" oor:type="xs:boolean">
             <value>true</value>
