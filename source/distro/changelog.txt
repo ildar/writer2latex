@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] Removed the configurations pdfscreen.pdf (pdfscreen.sty is a very old package) and pdfprint.pdf
+  (replaced by formatted.pdf)
+
 [w2l] The option documentclass can now be parametrized, and furthermore has three special "magic"
   values article*, report* and book*. These select the standard documentclasses, but also determines
   the heading map. This is used in the extension to offer a selection of article, report or book for

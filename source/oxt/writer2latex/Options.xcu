@@ -94,44 +94,6 @@
                     <value>*formatted.xml</value>
                 </prop>
             </node>
-            <node oor:name="05w2l-pdfprint" oor:op="replace">
-                <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value />
-                </prop>
-                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Article with full formatting</value>
-                    <value xml:lang="da-DK">Artikel med fuld formatering</value>
-                </prop>
-                <prop oor:name="ConfigURL" oor:type="xs:string">
-                    <value>*pdfprint.xml</value>
-                </prop>
-            </node>
-            <node oor:name="06w2l-pdfscreen" oor:op="replace">
-                <prop oor:name="LockedOptions" oor:type="xs:string">
-                    <value>backend</value>
-                </prop>
-                <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Screen optimized (pdf)</value>
-                    <value xml:lang="da-DK">Skærmoptimeret (pdf)</value>
-                    <value xml:lang="ca">Optimitzat per pantalla (pdf)</value>
-                    <value xml:lang="de-DE">Monitor optimiert (pdf)</value>
-                    <value xml:lang="es-ES">Optimizado para pantalla (pdf)</value>
-                    <value xml:lang="fa-IR">بهینه شده برای نمایش</value>
-                    <value xml:lang="fi-FI">Näytölle optimoitu (pdf)</value>
-                    <value xml:lang="fr-FR">Adapté pour un écran (pdf)</value>
-                    <value xml:lang="it-IT">Ottimizzato per schermo (pdf)</value>
-                    <value xml:lang="nl-NL">Voor beeldscherm geoptimaliseerd (PDF)</value>
-                    <value xml:lang="nn-NO">Optimalisert for skjerm (pdf)</value>
-                    <value xml:lang="pl-PL">Optymalizowany dla ekranu (pdf)</value>
-                    <value xml:lang="pt-BR">Optimizado para tela (pdf)</value>
-                    <value xml:lang="ru-RU">Оптимизированный для экрана (pdf)</value>
-                    <value xml:lang="tr-TR">Ekran İçin (pdf)</value>
-                    <value xml:lang="uk-UA">Оптимізований для екрану (pdf)</value>
-                </prop>
-                <prop oor:name="ConfigURL" oor:type="xs:string">
-                    <value>*pdfscreen.xml</value>
-                </prop>
-            </node>
             <node oor:name="07w2l-custom" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Custom</value>

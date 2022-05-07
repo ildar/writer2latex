@@ -2,7 +2,7 @@
  *
  *  Application.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-23) 
+ *  Version 2.0 (2022-05-07) 
  *
  */
  
@@ -48,8 +48,8 @@ import writer2latex.util.Misc;
  * <p>Where the available options are
  * <ul>
  * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>,
- * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-formatting</code>,
- * <code>-pdfscreen</code>, <code>-pdfprint</code>, <code>-cleanxhtml</code>
+ * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-formatted</code>,
+ * <code>-cleanxhtml</code>
  * <li><code>-config[=]filename</code>
  * <li><code>-template[=]filename</code>
  * <li><code>-option[=]value</code>
@@ -248,8 +248,6 @@ public final class Application {
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
                 else if ("-clean".equals(sArg)) { configFileNames.add("*clean.xml"); }
                 else if ("-formatted".equals(sArg)) { configFileNames.add("*formatted.xml"); }
-                else if ("-pdfprint".equals(sArg)) { configFileNames.add("*pdfprint.xml"); }
-                else if ("-pdfscreen".equals(sArg)) { configFileNames.add("*pdfscreen.xml"); }
                 else if ("-cleanxhtml".equals(sArg)) { configFileNames.add("*cleanxhtml.xml"); }
                 else { // option with argument
                     int j=sArg.indexOf("=");
@@ -330,8 +328,6 @@ public final class Application {
         System.out.println("   -ultraclean");
         System.out.println("   -clean");
         System.out.println("   -formatted");
-        System.out.println("   -pdfprint");
-        System.out.println("   -pdfscreen");
         System.out.println("   -cleanxhtml");
         System.out.println("   -config[=]<configuration file>");
         System.out.println("   -<configuration option>[=]<value>");

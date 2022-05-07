@@ -51,27 +51,11 @@
 				as much formatting as possible with standard LaTeX packages. This will produce good results if the %PRODUCTNAME
 				Writer document is well structured.</paragraph>
 			</listitem>
-			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Article with full formatting</emph> creates
-				a LaTeX article preserving as much formatting as possible, even if this means to deviate from LaTeX
-				standards. The result will thus look slightly different from a standard LaTeX article (and the LaTeX code will be
-				less readable).
-				The result will however resemble the %PRODUCTNAME Writer document, but use this only for documents that are well structured
-				using styles.</paragraph>
-			</listitem>
         </list>
 		<paragraph role="paragraph" xml-lang="en-US">When you select one of the basic formats you should also select a
 		standard LaTeX documentclass, <emph>Article</emph>, <emph>Report</emph> or <emph>Book</emph>.
 		They are suitable for short, medium sized and large documents respectively.</paragraph>
         
-        <paragraph role="heading" level="4" xml-lang="en-US">Format for screen reading</paragraph>
-        <list type="unordered">			
-			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Screen optimized (pdf)</emph> creates a LaTeX article preserving
-				most of the formatting, but optimized for screen viewing (using the package pdfscreen).</paragraph>
-			</listitem>
-        </list>
-
         <paragraph role="heading" level="4" xml-lang="en-US">Custom format</paragraph>
         <list type="unordered">			
 			<listitem>
