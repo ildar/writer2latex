@@ -5,12 +5,12 @@
   <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:text dlg:id="DocumentclassLabel" dlg:tab-index="0" dlg:left="10" dlg:top="22" dlg:width="100" dlg:height="12" dlg:value="Documentclass"/>
-  <dlg:textfield dlg:id="Documentclass" dlg:tab-index="1" dlg:left="30" dlg:top="36" dlg:width="150" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigDocumentclass"/>
-  <dlg:text dlg:id="GlobalOptionsLabel" dlg:tab-index="2" dlg:left="10" dlg:top="54" dlg:width="100" dlg:height="12" dlg:value="Global options"/>
-  <dlg:textfield dlg:id="GlobalOptions" dlg:tab-index="3" dlg:left="30" dlg:top="68" dlg:width="150" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigGlobalOptions"/>
-  <dlg:text dlg:id="MaxLevelLabel" dlg:tab-index="4" dlg:left="10" dlg:top="104" dlg:width="120" dlg:height="12" dlg:value="Heading levels to export"/>
-  <dlg:menulist dlg:id="MaxLevel" dlg:tab-index="5" dlg:left="140" dlg:top="102" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigMaxLevel" dlg:spin="true" dlg:linecount="11">
+  <dlg:text dlg:id="DocumentclassLabel" dlg:tab-index="0" dlg:left="10" dlg:top="22" dlg:width="80" dlg:height="12" dlg:value="Documentclass"/>
+  <dlg:textfield dlg:id="Documentclass" dlg:tab-index="2" dlg:left="100" dlg:top="40" dlg:width="150" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigDocumentclass"/>
+  <dlg:text dlg:id="GlobalOptionsLabel" dlg:tab-index="3" dlg:left="10" dlg:top="56" dlg:width="80" dlg:height="12" dlg:value="Global options"/>
+  <dlg:textfield dlg:id="GlobalOptions" dlg:tab-index="4" dlg:left="100" dlg:top="58" dlg:width="150" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigGlobalOptions"/>
+  <dlg:text dlg:id="MaxLevelLabel" dlg:tab-index="5" dlg:left="10" dlg:top="88" dlg:width="120" dlg:height="12" dlg:value="Heading levels to export"/>
+  <dlg:menulist dlg:id="MaxLevel" dlg:tab-index="7" dlg:left="140" dlg:top="86" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigMaxLevel" dlg:spin="true" dlg:linecount="11">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="0"/>
     <dlg:menuitem dlg:value="1"/>
@@ -26,8 +26,8 @@
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:MaxLevelChange" script:language="UNO"/>
   </dlg:menulist>
-  <dlg:text dlg:id="WriterLevelLabel" dlg:tab-index="6" dlg:left="10" dlg:top="124" dlg:width="100" dlg:height="12" dlg:value="Writer level"/>
-  <dlg:menulist dlg:id="WriterLevel" dlg:tab-index="7" dlg:left="140" dlg:top="122" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigWriterLevel" dlg:spin="true" dlg:linecount="10">
+  <dlg:text dlg:id="WriterLevelLabel" dlg:tab-index="8" dlg:left="10" dlg:top="106" dlg:width="100" dlg:height="12" dlg:value="Writer level"/>
+  <dlg:menulist dlg:id="WriterLevel" dlg:tab-index="9" dlg:left="140" dlg:top="104" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigWriterLevel" dlg:spin="true" dlg:linecount="10">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="1"/>
     <dlg:menuitem dlg:value="2"/>
@@ -42,8 +42,8 @@
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:WriterLevelChange" script:language="UNO"/>
   </dlg:menulist>
-  <dlg:text dlg:id="LaTeXLevelLabel" dlg:tab-index="8" dlg:left="15" dlg:top="144" dlg:width="95" dlg:height="12" dlg:value="LaTeX level"/>
-  <dlg:combobox dlg:id="LaTeXLevel" dlg:tab-index="9" dlg:left="140" dlg:top="142" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigLaTeXLevel" dlg:spin="true" dlg:linecount="7">
+  <dlg:text dlg:id="LaTeXLevelLabel" dlg:tab-index="10" dlg:left="15" dlg:top="124" dlg:width="95" dlg:height="12" dlg:value="LaTeX level"/>
+  <dlg:combobox dlg:id="LaTeXLevel" dlg:tab-index="11" dlg:left="140" dlg:top="122" dlg:width="40" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigLaTeXLevel" dlg:spin="true" dlg:linecount="7">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="-1"/>
     <dlg:menuitem dlg:value="0"/>
@@ -54,8 +54,8 @@
     <dlg:menuitem dlg:value="5"/>
    </dlg:menupopup>
   </dlg:combobox>
-  <dlg:text dlg:id="LaTeXNameLabel" dlg:tab-index="10" dlg:left="15" dlg:top="164" dlg:width="95" dlg:height="12" dlg:value="LaTeX heading name"/>
-  <dlg:combobox dlg:id="LaTeXName" dlg:tab-index="11" dlg:left="140" dlg:top="162" dlg:width="100" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigLaTeXName" dlg:spin="true" dlg:linecount="7">
+  <dlg:text dlg:id="LaTeXNameLabel" dlg:tab-index="12" dlg:left="15" dlg:top="142" dlg:width="95" dlg:height="12" dlg:value="LaTeX heading name"/>
+  <dlg:combobox dlg:id="LaTeXName" dlg:tab-index="13" dlg:left="140" dlg:top="140" dlg:width="100" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigLaTeXName" dlg:spin="true" dlg:linecount="7">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="part"/>
     <dlg:menuitem dlg:value="chapter"/>
@@ -66,8 +66,17 @@
     <dlg:menuitem dlg:value="subparagraph"/>
    </dlg:menupopup>
   </dlg:combobox>
-  <dlg:text dlg:style-id="0" dlg:id="DocumentClassLabel" dlg:tab-index="12" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Documentclass"/>
-  <dlg:text dlg:style-id="0" dlg:id="HeadingsLabel" dlg:tab-index="13" dlg:left="5" dlg:top="88" dlg:width="240" dlg:height="12" dlg:value="Headings"/>
-  <dlg:button dlg:id="HelpButton" dlg:tab-index="4" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Documentclass" dlg:value="Help" dlg:button-type="help"/>
+  <dlg:text dlg:style-id="0" dlg:id="DocumentClassLabel" dlg:tab-index="14" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Documentclass"/>
+  <dlg:text dlg:style-id="0" dlg:id="HeadingsLabel" dlg:tab-index="15" dlg:left="5" dlg:top="74" dlg:width="240" dlg:height="12" dlg:value="Headings"/>
+  <dlg:button dlg:id="HelpButton" dlg:tab-index="6" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Documentclass" dlg:value="Help" dlg:button-type="help"/>
+  <dlg:menulist dlg:id="DocumentclassSelection" dlg:tab-index="1" dlg:left="100" dlg:top="20" dlg:width="80" dlg:height="12" dlg:spin="true">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="Article"/>
+    <dlg:menuitem dlg:value="Report"/>
+    <dlg:menuitem dlg:value="Book"/>
+    <dlg:menuitem dlg:value="Custom"/>
+   </dlg:menupopup>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:DocumentclassChange" script:language="UNO"/>
+  </dlg:menulist>
  </dlg:bulletinboard>
 </dlg:window>

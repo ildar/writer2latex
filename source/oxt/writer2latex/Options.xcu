@@ -9,10 +9,10 @@
                     <value />
                 </prop>
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Ultra-clean article</value>
-                    <value xml:lang="da-DK">Ekstra ren artikel</value>
+                    <value xml:lang="en-US">Ultra-clean document</value>
+                    <value xml:lang="da-DK">Ekstra rent dokument</value>
                     <value xml:lang="ca">Súper-net</value>
-                    <value xml:lang="de-DE">Sehr aufgeräumter Artikel</value>
+                    <value xml:lang="de-DE">Sehr aufgeräumter Dokument</value>
                     <value xml:lang="es-ES">Artículo muy simple</value>
                     <value xml:lang="fa-IR">مقاله کاملا پاک</value>
                     <value xml:lang="fi-FI">Ultra-clean artikkeli</value>
@@ -35,10 +35,10 @@
                     <value />
                 </prop>
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Clean article</value>
-                    <value xml:lang="da-DK">Ren artikel</value>
+                    <value xml:lang="en-US">Clean document</value>
+                    <value xml:lang="da-DK">Rent dokument</value>
                     <value xml:lang="ca">Net</value>
-                    <value xml:lang="de-DE">Aufgeräumter Artikel</value>
+                    <value xml:lang="de-DE">Aufgeräumter Dokument</value>
                     <value xml:lang="es-ES">Artículo simple</value>
                     <value xml:lang="fa-IR">مقاله پاک</value>
                     <value xml:lang="fi-FI">Clean artikkeli</value>
@@ -87,8 +87,8 @@
                     <value />
                 </prop>
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
-                    <value xml:lang="en-US">Article with formatting</value>
-                    <value xml:lang="da-DK">Artikel med formatering</value>
+                    <value xml:lang="en-US">Document with formatting</value>
+                    <value xml:lang="da-DK">Dokument med formatering</value>
                 </prop>
                 <prop oor:name="ConfigURL" oor:type="xs:string">
                     <value>*formatted.xml</value>
@@ -203,12 +203,33 @@
         
         <!-- Declare display names for parameters (Note that names and values share the same name space) -->
         <node oor:name="ParameterStrings">
+            <!-- translations for the standard configurations -->
+            <node oor:name="documentclazz" oor:op="replace">
+                <prop oor:localized="false" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">Documentclass</value>
+                </prop>
+            </node>
+            <node oor:name="article*" oor:op="replace">
+                <prop oor:localized="false" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">article</value>
+                </prop>
+            </node>
+            <node oor:name="report*" oor:op="replace">
+                <prop oor:localized="false" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">report</value>
+                </prop>
+            </node>
+            <node oor:name="book*" oor:op="replace">
+                <prop oor:localized="false" oor:name="DisplayName" oor:type="xs:string">
+                    <value xml:lang="en-US">book</value>
+                </prop>
+            </node>
             <!-- translation for article.xml -->
             <node oor:name="typesize" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">
                     <value xml:lang="en-US">Type size</value>
                     <value xml:lang="da-DK">Skriftstørrelse</value>
-                <value xml:lang="de-DE">Type size</value></prop>
+                	<value xml:lang="de-DE">Type size</value></prop>
             </node>
             <node oor:name="10pt" oor:op="replace">
                 <prop oor:localized="true" oor:name="DisplayName" oor:type="xs:string">

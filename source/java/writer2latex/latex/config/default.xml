@@ -4,5 +4,7 @@
      It sets no options, thus using defaults everywhere
  -->
 
-<config/>
-
+<config>
+  <parameter name="documentclazz" values="article*,report*,book*"/>
+  <option name="documentclass" value="{%documentclazz%}" />
+</config>

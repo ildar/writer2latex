@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-05)
+ *  Version 2.0 (2022-05-07)
  *
  */
 
@@ -290,27 +290,27 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
 
         // Complex options - heading map
         headingMap = addComplexOption("heading-map");
-        Map<String,String> attr = new HashMap<String,String>();
+        Map<String,String> attr = new HashMap<>();
         attr.put("name", "section");
         attr.put("level", "1");
         headingMap.put("1", attr);
         
-        attr = new HashMap<String,String>();
+        attr = new HashMap<>();
         attr.put("name", "subsection");
         attr.put("level", "2");
         headingMap.put("2", attr);
         
-        attr = new HashMap<String,String>();
+        attr = new HashMap<>();
         attr.put("name", "subsubsection");
         attr.put("level", "3");
         headingMap.put("3", attr);
         
-        attr = new HashMap<String,String>();
+        attr = new HashMap<>();
         attr.put("name", "paragraph");
         attr.put("level", "4");
         headingMap.put("4", attr);
         
-        attr = new HashMap<String,String>();
+        attr = new HashMap<>();
         attr.put("name", "subparagraph");
         attr.put("level", "5");
         headingMap.put("5", attr);
@@ -548,18 +548,41 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     // VII. Convenience accessor methods
     
     public HeadingMap getHeadingMap() {
-    	int nMaxLevel = 0;
-    	while (nMaxLevel<10 && headingMap.get(Integer.toString(nMaxLevel+1))!=null) { nMaxLevel++; }
+    	String s = replaceParameters(options.get("documentclass").getString());
+    	if (s.equals("article*")) {
+        	// Magic documentclass: Use a HeadingMap suitable for articles
+    		HeadingMap map = new HeadingMap(5);
+    		map.setLevelData(1, "section", 1);
+    		map.setLevelData(2, "subsection", 2);
+    		map.setLevelData(3, "subsubsection", 3);
+    		map.setLevelData(4, "paragraph", 4);
+    		map.setLevelData(5, "subparagraph", 5);
+    		return map;
+    	} else if (s.equals("report*") || s.equals("book*")) {
+        	// Magic documentclass: Use a HeadingMap suitable for reports and books
+    		HeadingMap map = new HeadingMap(6);
+    		map.setLevelData(1, "chapter", 0);
+    		map.setLevelData(2, "section", 1);
+    		map.setLevelData(3, "subsection", 2);
+    		map.setLevelData(4, "subsubsection", 3);
+    		map.setLevelData(5, "paragraph", 4);
+    		map.setLevelData(6, "subparagraph", 5);
+    		return map;    		
+    	} else {
+        	// Repackage the heading-map option as a HeadingMap
+        	int nMaxLevel = 0;
+        	while (nMaxLevel<10 && headingMap.get(Integer.toString(nMaxLevel+1))!=null) { nMaxLevel++; }
 
-    	HeadingMap map = new HeadingMap(nMaxLevel);
-        for (int i=1; i<=nMaxLevel; i++) {
-            String sWriterLevel = Integer.toString(i);
-            Map<String,String> attr = headingMap.get(sWriterLevel);
-            String sName = attr.get("name");
-            int nLevel = Misc.getPosInteger(attr.get("level"),0);
-            map.setLevelData(i, sName, nLevel);
-        }
-        return map;
+        	HeadingMap map = new HeadingMap(nMaxLevel);
+            for (int i=1; i<=nMaxLevel; i++) {
+                String sWriterLevel = Integer.toString(i);
+                Map<String,String> attr = headingMap.get(sWriterLevel);
+                String sName = attr.get("name");
+                int nLevel = Misc.getPosInteger(attr.get("level"),0);
+                map.setLevelData(i, sName, nLevel);
+            }
+            return map;	
+    	}    	
     }
     
     // Get style maps
@@ -649,7 +672,17 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean debug() { return ((BooleanOption) options.get("debug")).getValue(); }
 
     // General options
-    public String documentclass() { return options.get("documentclass").getString(); }
+    public String documentclass() { // Replace parameters and check for magic values
+    	String s = replaceParameters(options.get("documentclass").getString());
+    	if (s.equals("article*")) {
+    		s = "article";
+    	} else if (s.equals("report*")) {
+    		s = "report";
+    	} else if (s.equals("book*")) {
+    		s = "book";
+    	}
+    	return s;
+    }
     public String globalOptions() { return replaceParameters(options.get("global_options").getString()); }
     public int backend() { return ((IntegerOption) options.get("backend")).getValue(); }
     public int inputencoding() { return ((IntegerOption) options.get("inputencoding")).getValue(); }

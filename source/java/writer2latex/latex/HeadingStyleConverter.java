@@ -2,7 +2,7 @@
  *
  *  HeadingConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2022-05-07)
  *
  */
 
@@ -79,7 +79,7 @@ class HeadingStyleConverter extends ConverterHelper {
 
         // Collect numbering styles and set the counter secnumdepth
         int nSecnumdepth = nMaxLevel;
-        String[] sNumFormat = new String[6];
+        String[] sNumFormat = new String[nMaxLevel+1];
         for (int i=nMaxLevel; i>=1; i--) {
             sNumFormat[i] = ListConverter.numFormat(outline.getLevelProperty(i,XMLString.STYLE_NUM_FORMAT));
             if (sNumFormat[i]==null || "".equals(sNumFormat[i])) {

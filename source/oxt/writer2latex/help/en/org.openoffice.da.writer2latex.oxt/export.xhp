@@ -22,7 +22,8 @@
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX format</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsConfig" visibility="hidden">Select the general format for the LaTeX document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Conceptually, %PRODUCTNAME Writer and LaTeX are quite different.
-        A LaTeX document is usually based on a certain "document class", that determines the general layout and formatting of the document.
+        A LaTeX document is based on a certain "documentclass", which determines the general
+        layout and formatting of the document.
         In addition the use of several LaTeX packages may change various aspects of the LaTeX document.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The result of a conversion into LaTeX will thus depend very much on which
         LaTeX packages are used and how much formatting it is desired to preserve.</paragraph>
@@ -31,22 +32,22 @@
         
         <paragraph role="heading" level="4" xml-lang="en-US">General purpose formats</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">These are intended for arbitrary Writer documents, and are all based on the
-        standard LaTeX document class "article".</paragraph>
+        standard LaTeX documentclasses.</paragraph>
         <list type="unordered">
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Ultra-clean article</emph> will create a very basic LaTeX article,
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Ultra-clean document</emph> will create a very basic LaTeX document,
 				with almost no formatting preserved. Use this for documents with inconsistent formatting.</paragraph>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Clean article</emph> will also create a default LaTeX article,
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Clean document</emph> will also create a default LaTeX document,
 				but does preserve some basic formatting from the %PRODUCTNAME Writer document, such as boldface, color and hyperlinks.</paragraph>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Default</emph> creates a LaTeX article preserving as much formatting
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Default</emph> creates a LaTeX document preserving as much formatting
 				as it is possible without any significant deviations from LaTeX standards.</paragraph>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Article with formatting</emph> creates a LaTeX article preserving
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Document with formatting</emph> creates a LaTeX document preserving
 				as much formatting as possible with standard LaTeX packages. This will produce good results if the %PRODUCTNAME
 				Writer document is well structured.</paragraph>
 			</listitem>
@@ -59,6 +60,9 @@
 				using styles.</paragraph>
 			</listitem>
         </list>
+		<paragraph role="paragraph" xml-lang="en-US">When you select one of the basic formats you should also select a
+		standard LaTeX documentclass, <emph>Article</emph>, <emph>Report</emph> or <emph>Book</emph>.
+		They are suitable for short, medium sized and large documents respectively.</paragraph>
         
         <paragraph role="heading" level="4" xml-lang="en-US">Format for screen reading</paragraph>
         <list type="unordered">			
@@ -89,7 +93,7 @@
         <list type="unordered">			
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX article template</emph> is for the LaTeX-article template.
-				The article document class has several options which can be set here:
+				The article documentclass has several options which can be set here:
 				</paragraph>
 				<list type="unordered">
 					<listitem>

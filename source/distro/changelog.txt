@@ -2,6 +2,11 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] The option documentclass can now be parametrized, and furthermore has three special "magic"
+  values article*, report* and book*. These select the standard documentclasses, but also determines
+  the heading map. This is used in the extension to offer a selection of article, report or book for
+  the standard configurations.
+
 [w2l] All pages in the configuration now has a help button in the upper right corner. This
   is a workaround because the "official" help button now points to online help.
 

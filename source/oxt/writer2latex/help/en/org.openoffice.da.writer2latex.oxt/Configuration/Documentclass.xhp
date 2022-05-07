@@ -20,12 +20,17 @@
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDocumentclass" id="bm_configdocumentclass"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Documentclass</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Type the name of the LaTeX documentclass to use (e.g.
-        <emph>article</emph>, <emph>book</emph>).</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">A LaTeX document is based on a certain "documentclass", which determines the general
+        layout and formatting of the document.
+        Select one of the standard document classes <emph>Article</emph>, <emph>Report</emph> or <emph>Book</emph>.
+        They are suitable for short, medium sized and large documents respectively. You can also select <emph>Custom</emph> and enter
+        the name of a documentclass below. In this case you should also define a mapping from headings in %PRODUCTNAME Writer to
+        sectioning commands in LaTeX.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigGlobalOptions" id="bm_configglobaloptions"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Global options</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Type a list of global options to add to the documentclass, e.g. <emph>landscape</emph>
+        <paragraph role="paragraph" xml-lang="en-US">A documentclass usually provides a number of options, which you can enter in this field.
+        Type a commma separated list of global options to add to the documentclass, e.g. <emph>landscape</emph>
         to get \documentclass[landscape]{article}.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Headings</paragraph>

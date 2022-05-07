@@ -8,7 +8,8 @@
  
 
 <config>
-  <option name="documentclass" value="article" />
+  <parameter name="documentclazz" values="article*,report*,book*"/>
+  <option name="documentclass" value="{%documentclazz%}" />
   <option name="backend" value="generic" />
   <option name="inputencoding" value="ascii" />
   <option name="multilingual" value="false" />

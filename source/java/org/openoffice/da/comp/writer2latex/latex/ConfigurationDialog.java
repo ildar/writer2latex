@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-06)
+ *  Version 2.0 (2022-05-07)
  *
  */ 
  
@@ -95,7 +95,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     // Implement remaining method from XContainerWindowEventHandler
     public String[] getSupportedMethodNames() {
         String[] sNames = {
-        		"MaxLevelChange", "WriterLevelChange", // Documentclass
+        		"DocumentclassChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"UseLongfboxChange", // Formatting
         		"UseMulticolChange", "FormattingAttributeChange", "CustomAttributeChange", // Formatting 2
         		"UseEnumitemChange", // Headings and lists
@@ -119,6 +119,20 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 
         @Override protected void setControls(DialogAccess dlg) {
         	textFieldFromConfig(dlg,"Documentclass","documentclass");
+        	String s = dlg.getTextFieldText("Documentclass");
+        	if (s.equals("article*")) {
+        		dlg.setListBoxSelectedItem("DocumentclassSelection", (short) 0); 
+        		dlg.setTextFieldText("Documentclass", "");
+        	} else if (s.equals("report*")) {
+        		dlg.setListBoxSelectedItem("DocumentclassSelection", (short) 1);         		
+        		dlg.setTextFieldText("Documentclass", "");
+        	} else if (s.equals("book*")) {
+        		dlg.setListBoxSelectedItem("DocumentclassSelection", (short) 2); 
+        		dlg.setTextFieldText("Documentclass", "");
+        	} else {
+        		dlg.setListBoxSelectedItem("DocumentclassSelection", (short) 3);
+        	}
+        	 
         	textFieldFromConfig(dlg,"GlobalOptions","global_options");
 
     		// Load heading map from config
@@ -134,10 +148,15 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	dlg.setListBoxSelectedItem("MaxLevel", nMaxLevel);
         	
         	maxLevelChange(dlg);
-        	
+        	documentclassChange(dlg);        	
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
+    		switch (dlg.getListBoxSelectedItem("DocumentclassSelection")) {
+    		case (short)0: dlg.setTextFieldText("Documentclass", "article*"); break;
+    		case (short)1: dlg.setTextFieldText("Documentclass", "report*"); break;
+    		case (short)2: dlg.setTextFieldText("Documentclass", "book*"); break;
+    		}
     		textFieldToConfig(dlg,"Documentclass","documentclass");
     		textFieldToConfig(dlg,"GlobalOptions","global_options");
 
@@ -153,7 +172,11 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
-    		if (sMethod.equals("MaxLevelChange")) {
+    		if (sMethod.equals("DocumentclassChange")) {
+    			documentclassChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("MaxLevelChange")) {
     			maxLevelChange(dlg);
     			return true;
     		}
@@ -162,6 +185,21 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     			return true;
     		}
     		return false;
+    	}
+    	
+    	private void documentclassChange(DialogAccess dlg) {
+    		short nDocumentclass = dlg.getListBoxSelectedItem("DocumentclassSelection");
+    		boolean bCustom = nDocumentclass == 3;
+    		dlg.setControlEnabled("Documentclass", bCustom);
+        	dlg.setControlEnabled("MaxLevelLabel", bCustom);
+        	dlg.setControlEnabled("MaxLevel", bCustom);
+        	dlg.setControlEnabled("HeadingsLabel", bCustom);
+        	dlg.setControlEnabled("WriterLevelLabel", bCustom);
+        	dlg.setControlEnabled("WriterLevel", bCustom);
+        	dlg.setControlEnabled("LaTeXLevelLabel", bCustom);
+        	dlg.setControlEnabled("LaTeXLevel", bCustom);
+        	dlg.setControlEnabled("LaTeXNameLabel", bCustom);
+        	dlg.setControlEnabled("LaTeXName", bCustom);
     	}
 
     	private void maxLevelChange(DialogAccess dlg) {
@@ -204,9 +242,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	dlg.setControlEnabled("LaTeXLevel", bUpdate);
         	dlg.setControlEnabled("LaTeXNameLabel", bUpdate);
         	dlg.setControlEnabled("LaTeXName", bUpdate);
-        	// Until implemented:
-        	dlg.setControlEnabled("UseTitlesec", false);
-        	//dlg.setControlEnabled("UseTitlesec", bUpdate);
     	}
     	
     	private void writerLevelChange(DialogAccess dlg) {
