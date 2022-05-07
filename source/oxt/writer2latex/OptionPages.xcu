@@ -18,7 +18,7 @@
   </node>
   
   <node oor:name="Nodes">
-    <!-- First root node is toolbar configuration -->
+    <!-- First root node is toolbar configuration (which is actually not used in LO anymore) -->
     <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse"> 
       <prop oor:name="Id">
         <value>org.openoffice.da.writer2latex.toolbar.configuration</value>
@@ -119,6 +119,28 @@
       </prop>
 
       <node oor:name="Leaves">
+        <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2latex.configuration.documentclass</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2latex.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>0</value>
+          </prop>
+          <prop oor:localized="true" oor:name="Label">
+            <value xml:lang="en-US">Documentclass</value>
+            <value xml:lang="da-DK">Documentclass</value>
+          <value xml:lang="de-DE">Documentclass</value></prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2LDialogs2/Documentclass.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
+          </prop>
+        </node>
+
         <node oor:name="org.openoffice.da.writer2latex.configuration.formatting" oor:op="fuse">
           <prop oor:name="Id">
             <value>org.openoffice.da.writer2latex.configuration.formatting</value>
@@ -127,7 +149,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>0</value>
+            <value>1</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Formatting</value>
@@ -149,7 +171,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>1</value>
+            <value>2</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Formatting 2</value>
@@ -171,7 +193,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>2</value>
+            <value>3</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Headings and lists</value>
@@ -193,7 +215,7 @@
             <value>org.openoffice.da.writer2latex.configuration</value>
           </prop>
           <prop oor:name="GroupIndex">
-            <value>3</value>
+            <value>4</value>
           </prop>
           <prop oor:localized="true" oor:name="Label">
             <value xml:lang="en-US">Pages and notes</value>
@@ -201,28 +223,6 @@
           <value xml:lang="de-DE">Pages and notes</value></prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/Pages.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2latex.configuration.documentclass" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2latex.configuration.documentclass</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2latex.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>4</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Documentclass</value>
-            <value xml:lang="da-DK">Documentclass</value>
-          <value xml:lang="de-DE">Documentclass</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2LDialogs2/Documentclass.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
              <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
@@ -333,6 +333,28 @@
           <value xml:lang="de-DE">Text and math</value></prop>
           <prop oor:name="OptionsPage">
             <value>%origin%/W2LDialogs2/TextAndMath.xdl</value>
+          </prop>
+          <prop oor:name="EventHandlerService">
+             <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>
+          </prop>
+        </node>
+
+        <node oor:name="org.openoffice.da.writer2latex.configuration.preamble" oor:op="fuse">
+          <prop oor:name="Id">
+            <value>org.openoffice.da.writer2latex.configuration.preamble</value>
+          </prop>
+          <prop oor:name="GroupId">
+            <value>org.openoffice.da.writer2latex.configuration</value>
+          </prop>
+          <prop oor:name="GroupIndex">
+            <value>10</value>
+          </prop>
+          <prop oor:localized="true" oor:name="Label">
+            <value xml:lang="en-US">Preamble</value>
+            <value xml:lang="da-DK">Preamble</value>
+          <value xml:lang="de-DE">Preamble</value></prop>
+          <prop oor:name="OptionsPage">
+            <value>%origin%/W2LDialogs2/Preamble.xdl</value>
           </prop>
           <prop oor:name="EventHandlerService">
              <value>org.openoffice.da.writer2latex.ConfigurationDialog</value>

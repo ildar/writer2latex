@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
 <dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Fonts" dlg:left="139" dlg:top="84" dlg:width="260" dlg:height="185" dlg:closeable="true" dlg:moveable="true" dlg:title="Fonts" dlg:withtitlebar="false">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
+ </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:text dlg:id="OtherLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="245" dlg:height="12" dlg:value="Font packages (not used for XeTeX)"/>
-  <dlg:checkbox dlg:id="UsePifont" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUsePifont" dlg:value="Use pifont.sty (dingbats)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseTipa" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTipa" dlg:value="Use tipa.sty and tipax.sty (phonetic symbols)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseEurosym" dlg:tab-index="3" dlg:left="10" dlg:top="50" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseEurosym" dlg:value="Use eurosym.sty (euro currency symbol)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseWasysym" dlg:tab-index="4" dlg:left="10" dlg:top="64" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseWasysym" dlg:value="Use wasysym.sty (various symbols)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseIfsym" dlg:tab-index="5" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseIfsym" dlg:value="Use ifsym.sty (geometric shapes)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseBbding" dlg:tab-index="6" dlg:left="10" dlg:top="92" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseBbding" dlg:value="Use bbding.sty (metafont dingbats)" dlg:checked="false"/>
-  <dlg:text dlg:id="XeTeXLabel" dlg:tab-index="7" dlg:visible="false" dlg:left="5" dlg:top="106" dlg:width="245" dlg:height="12" dlg:value="XeTeX"/>
-  <dlg:checkbox dlg:id="UseFontspec" dlg:tab-index="8" dlg:visible="false" dlg:left="10" dlg:top="120" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseFontspec" dlg:value="Use original fonts (fontspec.sty)" dlg:checked="false"/>
+  <dlg:text dlg:style-id="0" dlg:id="OtherLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Font packages (not used for XeTeX)"/>
+  <dlg:checkbox dlg:id="UsePifont" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="185" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUsePifont" dlg:value="Use dingabts from pifont.sty" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseTipa" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTipa" dlg:value="Use phonetic symbols from tipa.sty and tipax.sty" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseEurosym" dlg:tab-index="3" dlg:left="10" dlg:top="50" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseEurosym" dlg:value="Use euro currency symbol from eurosym.sty" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseWasysym" dlg:tab-index="4" dlg:left="10" dlg:top="64" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseWasysym" dlg:value="Use various symbols from wasysym.sty" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseIfsym" dlg:tab-index="5" dlg:left="10" dlg:top="78" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseIfsym" dlg:value="Use geometric shapes from ifsym.sty" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseBbding" dlg:tab-index="6" dlg:left="10" dlg:top="92" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseBbding" dlg:value="Use metafont dingbats from bbding.sty" dlg:checked="false"/>
+  <dlg:text dlg:style-id="0" dlg:id="XeTeXLabel" dlg:tab-index="7" dlg:visible="false" dlg:left="5" dlg:top="106" dlg:width="245" dlg:height="12" dlg:value="XeTeX"/>
+  <dlg:checkbox dlg:id="UseFontspec" dlg:tab-index="8" dlg:visible="false" dlg:left="10" dlg:top="120" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseFontspec" dlg:value="Use original fonts (using fontspec.sty)" dlg:checked="false"/>
+  <dlg:button dlg:id="HelpButton" dlg:tab-index="9" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Fonts" dlg:value="Help" dlg:button-type="help"/>
  </dlg:bulletinboard>
 </dlg:window>

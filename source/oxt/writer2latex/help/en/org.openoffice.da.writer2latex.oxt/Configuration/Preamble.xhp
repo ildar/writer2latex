@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpdocument version="1.0">
+	<meta>
+        <topic id="writer2latex-preamble" indexer="include">
+            <title xml-lang="en-US">Preamble</title>
+            <filename>org.openoffice.da.writer2latex.oxt/Configuration/Preamble.xhp</filename>
+        </topic>
+    </meta>
+    <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Preamble" id="bm_preamble"/>
+        <paragraph role="heading" level="1" xml-lang="en-US">Preamble</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define additional content for the LaTeX document preamble.</paragraph>
+
+        <section id="howtoget" xml-lang="en-US">
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Preamble</emph>
+        </section>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">Preamble</paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNoPreamble" id="bm_confignopreamble"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Do not include preamble</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will not create the a LaTeX preamble,
+        nor include \begin{document} and \end{document}. This is useful if the document is to be included in another LaTeX document.
+        Note that in this case you will have to make sure that all packages/definitions needed are available in the master
+        LaTeX document.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigCustomPreamble" id="bm_configcustompreamble"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Custom preamble</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">The text you type here will be copied verbatim into the LaTeX preamble.
+        For example <emph>\usepackage{palatino}</emph> to typeset your document using the postscript font Palatino.</paragraph>        
+    </body>
+</helpdocument>

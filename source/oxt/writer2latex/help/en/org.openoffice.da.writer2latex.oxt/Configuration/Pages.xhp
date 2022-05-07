@@ -7,11 +7,12 @@
         </topic>
     </meta>
     <body>
-        <paragraph role="heading" level="1" xml-lang="en-US">Pages</paragraph>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Pages" id="bm_pages"/>    
+        <paragraph role="heading" level="1" xml-lang="en-US">Pages and notes</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Define how to export page formatting and other page related content.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Pages</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Pages and notes</emph>
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Pages</paragraph>

@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Figures" id="bm_figures"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Figures</paragraph>
         
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert figures</paragraph>
@@ -18,7 +19,7 @@
         <paragraph role="heading" level="2" xml-lang="en-US">General</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseCaption" id="bm_configusecaption"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use caption.sty to format captions (also for tables)</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Caption support for figures and tables (using caption.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to take advantage of the LaTeX package caption.sty.
         Currently Writer2LaTeX only uses the support for non-floating captions from this package.
         This applies to all captions (figure and table captions).</paragraph>

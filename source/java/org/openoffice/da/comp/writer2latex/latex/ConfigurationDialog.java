@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-05)
+ *  Version 2.0 (2022-05-06)
  *
  */ 
  
@@ -79,34 +79,169 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     public ConfigurationDialog(XComponentContext xContext) {
     	super(xContext);
     	
+    	pageHandlers.put("Documentclass", new DocumentclassHandler());
     	pageHandlers.put("Formatting", new FormattingHandler());
     	pageHandlers.put("Formatting2", new Formatting2Handler());
     	pageHandlers.put("HeadingsLists", new HeadingsListsHandler());
-    	pageHandlers.put("Documentclass", new DocumentclassHandler());
     	pageHandlers.put("Styles", new StylesHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
     	pageHandlers.put("Pages", new PagesHandler());
     	pageHandlers.put("Tables", new TablesHandler());
     	pageHandlers.put("Figures", new FiguresHandler());
     	pageHandlers.put("TextAndMath", new TextAndMathHandler());
+    	pageHandlers.put("Preamble", new PreambleHandler());
     }
     
     // Implement remaining method from XContainerWindowEventHandler
     public String[] getSupportedMethodNames() {
         String[] sNames = {
+        		"MaxLevelChange", "WriterLevelChange", // Documentclass
         		"UseLongfboxChange", // Formatting
         		"UseMulticolChange", "FormattingAttributeChange", "CustomAttributeChange", // Formatting 2
         		"UseEnumitemChange", // Headings and lists
-        		"NoPreambleChange", "MaxLevelChange", "WriterLevelChange", // Documentclass
         		"StyleFamilyChange", "StyleNameChange", "NewStyleClick", "DeleteStyleClick", "AddNextClick",
         			"RemoveNextClick", "LoadDefaultsClick", // Styles
         		"UseEndnotesChange", "NotesNumberingChange", // Pages
         		"NoTablesChange", "UseSupertabularChange", "UseLongtableChange", // Tables
         		"NoImagesChange", // Figures
         		"MathSymbolNameChange", "NewSymbolClick", "DeleteSymbolClick",
-        		"TextInputChange", "NewTextClick", "DeleteTextClick" // Text and Math
+        		"TextInputChange", "NewTextClick", "DeleteTextClick", // Text and Math
+        		"NoPreambleChange" // Preamble
         };
         return sNames;
+    }
+    
+    // The page "Documentclass"
+    // This page handles the options documentclass, global_options and the heading map
+    private class DocumentclassHandler extends PageHandler {
+        ComplexOption headingMap = new ComplexOption(); // Cached heading map
+        short nCurrentWriterLevel = -1; // Currently displayed level
+
+        @Override protected void setControls(DialogAccess dlg) {
+        	textFieldFromConfig(dlg,"Documentclass","documentclass");
+        	textFieldFromConfig(dlg,"GlobalOptions","global_options");
+
+    		// Load heading map from config
+    		headingMap.clear();
+    		headingMap.copyAll(config.getComplexOption("heading-map"));
+    		nCurrentWriterLevel = -1;
+    		
+        	// Determine and set the max level (from 0 to 10)
+        	short nMaxLevel = 0;
+        	while(nMaxLevel<10 && headingMap.containsKey(Integer.toString(nMaxLevel+1))) {
+        		nMaxLevel++;
+        	}
+        	dlg.setListBoxSelectedItem("MaxLevel", nMaxLevel);
+        	
+        	maxLevelChange(dlg);
+        	
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		textFieldToConfig(dlg,"Documentclass","documentclass");
+    		textFieldToConfig(dlg,"GlobalOptions","global_options");
+
+        	updateHeadingMap(dlg);
+        	
+        	// Save heading map to config
+        	config.getComplexOption("heading-map").clear();
+        	int nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
+    		for (int i=1; i<=nMaxLevel; i++) {
+    			String sLevel = Integer.toString(i);
+    			config.getComplexOption("heading-map").copy(sLevel,headingMap.get(sLevel));
+    		}
+    	}
+    	
+    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
+    		if (sMethod.equals("MaxLevelChange")) {
+    			maxLevelChange(dlg);
+    			return true;
+    		}
+    		else if (sMethod.equals("WriterLevelChange")) {
+    			writerLevelChange(dlg);
+    			return true;
+    		}
+    		return false;
+    	}
+
+    	private void maxLevelChange(DialogAccess dlg) {
+    		// Remember current writer level and clear it
+    		short nPreviousWriterLevel = nCurrentWriterLevel;
+    		dlg.setListBoxSelectedItem("WriterLevel", (short) -1);
+    		
+        	// Adjust the presented writer levels to the max level
+        	short nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
+        	String[] sWriterLevels = new String[nMaxLevel];
+        	for (int i=0; i<nMaxLevel; i++) {
+        		sWriterLevels[i]=Integer.toString(i+1);
+        	}
+        	dlg.setListBoxStringItemList("WriterLevel", sWriterLevels);
+        	
+        	if (nMaxLevel>0) {
+        		short nNewWriterLevel;
+        		if (nPreviousWriterLevel+1>nMaxLevel) {
+                	// If we lower the max level, we may have to change the displayed Writer level
+        			nNewWriterLevel = (short)(nMaxLevel-1);
+        		}
+        		else if (nPreviousWriterLevel>-1){
+        			// Otherwise reselect the current level, if any
+        			nNewWriterLevel = nPreviousWriterLevel;
+        		}
+        		else {
+        			// Or select the top level
+        			nNewWriterLevel = (short) 0;
+        		}
+        		dlg.setListBoxSelectedItem("WriterLevel", nNewWriterLevel);
+        	}
+        	
+        	writerLevelChange(dlg);
+
+        	// All controls should be disabled if the maximum level is zero
+        	boolean bUpdate = dlg.getListBoxSelectedItem("MaxLevel")>0;
+        	dlg.setControlEnabled("WriterLevelLabel", bUpdate);
+        	dlg.setControlEnabled("WriterLevel", bUpdate);
+        	dlg.setControlEnabled("LaTeXLevelLabel", bUpdate);
+        	dlg.setControlEnabled("LaTeXLevel", bUpdate);
+        	dlg.setControlEnabled("LaTeXNameLabel", bUpdate);
+        	dlg.setControlEnabled("LaTeXName", bUpdate);
+        	// Until implemented:
+        	dlg.setControlEnabled("UseTitlesec", false);
+        	//dlg.setControlEnabled("UseTitlesec", bUpdate);
+    	}
+    	
+    	private void writerLevelChange(DialogAccess dlg) {
+    		updateHeadingMap(dlg);
+    		
+        	// Load the values for the new level
+    		nCurrentWriterLevel = dlg.getListBoxSelectedItem("WriterLevel");    		
+        	if (nCurrentWriterLevel>-1) {
+        		String sLevel = Integer.toString(nCurrentWriterLevel+1);
+        		if (headingMap.containsKey(sLevel)) {
+        			Map<String,String> attr = headingMap.get(sLevel);
+        			dlg.setComboBoxText("LaTeXLevel", attr.containsKey("level") ? attr.get("level") : "");
+        			dlg.setComboBoxText("LaTeXName", attr.containsKey("name") ? attr.get("name") : "");
+        		}
+        		else {
+        			dlg.setListBoxSelectedItem("LaTeXLevel", (short)2);
+        			dlg.setComboBoxText("LaTeXName", "");
+        		}
+        	}
+        	else {
+    			dlg.setComboBoxText("LaTeXLevel", "");
+    			dlg.setComboBoxText("LaTeXName", "");
+        	}
+    	}
+
+        private void updateHeadingMap(DialogAccess dlg) {
+        	// Save the current writer level in our cache
+        	if (nCurrentWriterLevel>-1) {
+        		Map<String,String> attr = new HashMap<String,String>();
+        		attr.put("name", dlg.getComboBoxText("LaTeXName"));
+        		attr.put("level", dlg.getComboBoxText("LaTeXLevel"));
+        		headingMap.put(Integer.toString(nCurrentWriterLevel+1), attr);
+        	}
+        }
+    
     }
     
     // The page "Formatting"
@@ -282,158 +417,6 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 
     }
 
-    // The page "Documentclass"
-    // This page handles the options no_preamble, documentclass, global_options, the custom-preamble and the heading map
-    private class DocumentclassHandler extends PageHandler {
-        ComplexOption headingMap = new ComplexOption(); // Cached heading map
-        short nCurrentWriterLevel = -1; // Currently displayed level
-
-        @Override protected void setControls(DialogAccess dlg) {
-        	checkBoxFromConfig(dlg,"NoPreamble","no_preamble");
-        	textFieldFromConfig(dlg,"Documentclass","documentclass");
-        	textFieldFromConfig(dlg,"GlobalOptions","global_options");
-        	textFieldFromConfig(dlg,"CustomPreamble","custom-preamble");
-    		noPreambleChange(dlg);
-
-    		// Load heading map from config
-    		headingMap.clear();
-    		headingMap.copyAll(config.getComplexOption("heading-map"));
-    		nCurrentWriterLevel = -1;
-    		
-        	// Determine and set the max level (from 0 to 10)
-        	short nMaxLevel = 0;
-        	while(nMaxLevel<10 && headingMap.containsKey(Integer.toString(nMaxLevel+1))) {
-        		nMaxLevel++;
-        	}
-        	dlg.setListBoxSelectedItem("MaxLevel", nMaxLevel);
-        	
-        	maxLevelChange(dlg);
-        	
-    	}
-    	
-    	@Override protected void getControls(DialogAccess dlg) {
-    		checkBoxToConfig(dlg,"NoPreamble", "no_preamble");
-    		textFieldToConfig(dlg,"Documentclass","documentclass");
-    		textFieldToConfig(dlg,"GlobalOptions","global_options");
-    		textFieldToConfig(dlg,"CustomPreamble","custom-preamble");
-
-        	updateHeadingMap(dlg);
-        	
-        	// Save heading map to config
-        	config.getComplexOption("heading-map").clear();
-        	int nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
-    		for (int i=1; i<=nMaxLevel; i++) {
-    			String sLevel = Integer.toString(i);
-    			config.getComplexOption("heading-map").copy(sLevel,headingMap.get(sLevel));
-    		}
-    	}
-    	
-    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
-    		if (sMethod.equals("NoPreambleChange")) {
-    			noPreambleChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("MaxLevelChange")) {
-    			maxLevelChange(dlg);
-    			return true;
-    		}
-    		else if (sMethod.equals("WriterLevelChange")) {
-    			writerLevelChange(dlg);
-    			return true;
-    		}
-    		return false;
-    	}
-
-    	private void noPreambleChange(DialogAccess dlg) {
-        	boolean bPreamble = !dlg.getCheckBoxStateAsBoolean("NoPreamble");
-        	dlg.setControlEnabled("DocumentclassLabel",bPreamble);
-        	dlg.setControlEnabled("Documentclass",bPreamble);
-        	dlg.setControlEnabled("GlobalOptionsLabel",bPreamble);
-        	dlg.setControlEnabled("GlobalOptions",bPreamble);
-        	dlg.setControlEnabled("CustomPreambleLabel",bPreamble);
-        	dlg.setControlEnabled("CustomPreamble",bPreamble);
-    	}    	
-
-    	private void maxLevelChange(DialogAccess dlg) {
-    		// Remember current writer level and clear it
-    		short nPreviousWriterLevel = nCurrentWriterLevel;
-    		dlg.setListBoxSelectedItem("WriterLevel", (short) -1);
-    		
-        	// Adjust the presented writer levels to the max level
-        	short nMaxLevel = dlg.getListBoxSelectedItem("MaxLevel");
-        	String[] sWriterLevels = new String[nMaxLevel];
-        	for (int i=0; i<nMaxLevel; i++) {
-        		sWriterLevels[i]=Integer.toString(i+1);
-        	}
-        	dlg.setListBoxStringItemList("WriterLevel", sWriterLevels);
-        	
-        	if (nMaxLevel>0) {
-        		short nNewWriterLevel;
-        		if (nPreviousWriterLevel+1>nMaxLevel) {
-                	// If we lower the max level, we may have to change the displayed Writer level
-        			nNewWriterLevel = (short)(nMaxLevel-1);
-        		}
-        		else if (nPreviousWriterLevel>-1){
-        			// Otherwise reselect the current level, if any
-        			nNewWriterLevel = nPreviousWriterLevel;
-        		}
-        		else {
-        			// Or select the top level
-        			nNewWriterLevel = (short) 0;
-        		}
-        		dlg.setListBoxSelectedItem("WriterLevel", nNewWriterLevel);
-        	}
-        	
-        	writerLevelChange(dlg);
-
-        	// All controls should be disabled if the maximum level is zero
-        	boolean bUpdate = dlg.getListBoxSelectedItem("MaxLevel")>0;
-        	dlg.setControlEnabled("WriterLevelLabel", bUpdate);
-        	dlg.setControlEnabled("WriterLevel", bUpdate);
-        	dlg.setControlEnabled("LaTeXLevelLabel", bUpdate);
-        	dlg.setControlEnabled("LaTeXLevel", bUpdate);
-        	dlg.setControlEnabled("LaTeXNameLabel", bUpdate);
-        	dlg.setControlEnabled("LaTeXName", bUpdate);
-        	// Until implemented:
-        	dlg.setControlEnabled("UseTitlesec", false);
-        	//dlg.setControlEnabled("UseTitlesec", bUpdate);
-    	}
-    	
-    	private void writerLevelChange(DialogAccess dlg) {
-    		updateHeadingMap(dlg);
-    		
-        	// Load the values for the new level
-    		nCurrentWriterLevel = dlg.getListBoxSelectedItem("WriterLevel");    		
-        	if (nCurrentWriterLevel>-1) {
-        		String sLevel = Integer.toString(nCurrentWriterLevel+1);
-        		if (headingMap.containsKey(sLevel)) {
-        			Map<String,String> attr = headingMap.get(sLevel);
-        			dlg.setComboBoxText("LaTeXLevel", attr.containsKey("level") ? attr.get("level") : "");
-        			dlg.setComboBoxText("LaTeXName", attr.containsKey("name") ? attr.get("name") : "");
-        		}
-        		else {
-        			dlg.setListBoxSelectedItem("LaTeXLevel", (short)2);
-        			dlg.setComboBoxText("LaTeXName", "");
-        		}
-        	}
-        	else {
-    			dlg.setComboBoxText("LaTeXLevel", "");
-    			dlg.setComboBoxText("LaTeXName", "");
-        	}
-    	}
-
-        private void updateHeadingMap(DialogAccess dlg) {
-        	// Save the current writer level in our cache
-        	if (nCurrentWriterLevel>-1) {
-        		Map<String,String> attr = new HashMap<String,String>();
-        		attr.put("name", dlg.getComboBoxText("LaTeXName"));
-        		attr.put("level", dlg.getComboBoxText("LaTeXLevel"));
-        		headingMap.put(Integer.toString(nCurrentWriterLevel+1), attr);
-        	}
-        }
-    
-    }
-    
     // The page "Styles"
     // This page handles the various style maps as well as the options other_styles and formatting
 	// Limitation: Cannot handle the values "error" and "warning" for other_styles
@@ -1042,5 +1025,38 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
         	}
     	}
     }
-    
+
+    // The page "Preamble"
+    // This page handles the option no_preamble and the custom-preamble
+    private class PreambleHandler extends PageHandler {
+
+    	@Override protected void setControls(DialogAccess dlg) {
+    		System.out.println("Get controls");
+        	checkBoxFromConfig(dlg,"NoPreamble","no_preamble");
+        	textFieldFromConfig(dlg,"CustomPreamble","custom-preamble");
+    		noPreambleChange(dlg);
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		System.out.println("Set controls");
+    		checkBoxToConfig(dlg,"NoPreamble", "no_preamble");
+    		textFieldToConfig(dlg,"CustomPreamble","custom-preamble");
+    	}
+    	
+    	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
+    		System.out.println("Event "+sMethod);
+    		if (sMethod.equals("NoPreambleChange")) {
+    			noPreambleChange(dlg);
+    			return true;
+    		}
+    		return false;
+    	}
+
+    	private void noPreambleChange(DialogAccess dlg) {
+        	boolean bPreamble = !dlg.getCheckBoxStateAsBoolean("NoPreamble");
+        	dlg.setControlEnabled("CustomPreambleLabel",bPreamble);
+        	dlg.setControlEnabled("CustomPreamble",bPreamble);
+    	}    	
+    }
+
 }

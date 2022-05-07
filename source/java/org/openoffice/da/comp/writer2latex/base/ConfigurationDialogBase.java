@@ -144,6 +144,7 @@ public abstract class ConfigurationDialogBase extends WeakBase implements XConta
 		throws com.sun.star.lang.WrappedTargetException {
 		XDialog xDialog = (XDialog)UnoRuntime.queryInterface(XDialog.class, xWindow);
 		String sTitle = xDialog.getTitle();
+		System.out.println("Event til "+sTitle);
 		if (!pageHandlers.containsKey(sTitle)) {
 			throw new com.sun.star.lang.WrappedTargetException("Unknown dialog "+sTitle);
 		}

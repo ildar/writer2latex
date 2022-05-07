@@ -16,16 +16,17 @@
       </node>
       <node id="w2l01_writer_configuration" title="Custom LaTeX style">
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Introduction.xhp">Introduction</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Documentclass.xhp">Documentclass</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Formatting.xhp">Formatting</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Formatting2.xhp">Formatting 2</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/HeadingsLists.xhp">Headings and Lists</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Pages.xhp">Pages</topic>
-      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Documentclass.xhp">Documentclass</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Styles.xhp">Styles</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Fonts.xhp">Fonts</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Tables.xhp">Tables</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Figures.xhp">Figures</topic>
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Textandmath.xhp">Text and math</topic>
+      	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Configuration/Preamble.xhp">Preamble</topic>
       </node>
       <node id="w2x01_configuration" title="Custom HTML5 style">
       	<topic id="writer2latex/org.openoffice.da.writer2latex.oxt/Html5Configuration/Introduction.xhp">Introduction</topic>
