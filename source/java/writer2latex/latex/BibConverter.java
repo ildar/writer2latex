@@ -2,7 +2,7 @@
  *
  *  BibConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-09-09)
+ *  Version 2.0 (2022-05-10)
  *
  */
 
@@ -39,6 +39,7 @@ import writer2latex.latex.util.Context;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.CSVList;
 import writer2latex.util.Misc;
 
 /** This class handles bibliographic citations and the bibliography. The result depends on these
@@ -54,15 +55,11 @@ import writer2latex.util.Misc;
  *  a thebibliography environment
  *  <li><code>bibtex_style</code> If BibTeX is used, this style will be applied
  *  </ul>
- *  The citations will always be exported as \cite commands.
+ *  The citations will always be exported as \autocite commands
  */
 class BibConverter extends ConverterHelper {
 
     private BibTeXDocument bibDoc = null;
-    private boolean bUseBibTeX;
-    private String sBibTeXEncoding = null;
-    private String sDocumentEncoding = null;
-    
     /** Construct a new BibConverter.
      * 
      * @param config the configuration to use 
@@ -72,22 +69,9 @@ class BibConverter extends ConverterHelper {
         super(ofr,config,palette);
         
         // We need to create a BibTeX document except if we are using external BibTeX files
-        if (!(config.useBibtex() && config.externalBibtexFiles().length()>0)) {
+        if (!(config.useBiblatex() && config.externalBibtexFiles().length()>0)) {
         	bibDoc = new BibTeXDocument(palette.getOutFileName(),false,ofr);
-        }
-        
-        // We need to use a different encoding for the BibTeX files
-        if (config.externalBibtexFiles().length()>0) {
-        	int nBibTeXEncoding = config.bibtexEncoding();
-        	int nDocumentEncoding = config.inputencoding();
-        	if (config.backend()!=LaTeXConfig.XETEX && nBibTeXEncoding>-1 && nBibTeXEncoding!=nDocumentEncoding) {
-        		sBibTeXEncoding = ClassicI18n.writeInputenc(nBibTeXEncoding);
-            	sDocumentEncoding = ClassicI18n.writeInputenc(nDocumentEncoding);
-        	}
-        }
-        
-        // We need to export it 
-        bUseBibTeX = config.useBibtex();
+        }        
     }
 
     /** Export the bibliography directly as a thebibliography environment (as an alternative to using BibTeX) 
@@ -182,7 +166,36 @@ class BibConverter extends ConverterHelper {
      * @param decl the LaTeXDocumentPortion to which other declarations should be added.
      */
     public void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
-    	// Currently nothing
+    	CSVList options = new CSVList(",","=");
+    	if (config.biblatexOptions().length()>0) {
+    		options.addValue(config.biblatexOptions());
+    	}
+        // We may need to use a different encoding for the BibTeX files
+        if (config.externalBibtexFiles().length()>0) {
+        	int nBibTeXEncoding = config.bibtexEncoding();
+        	if (nBibTeXEncoding>-1 && nBibTeXEncoding!=config.inputencoding()) {
+           		options.addValue("bibencoding", ClassicI18n.writeInputenc(nBibTeXEncoding));
+        	}
+        }
+        options.addValue("backend", "biber");
+
+    	pack.usepackage(options.toString(), "biblatex");
+    	BibTeXDocument doc = getBibTeXDocument();
+    	if (doc!=null) {
+            decl.append("\\addbibresource{").append(bibDoc.getName()).append(".bib}").nl();
+
+    	}
+    	addBibresources(config.zoteroBibtexFiles(), decl);
+    	addBibresources(config.jabrefBibtexFiles(), decl);
+    }
+    
+    private void addBibresources(String sFiles, LaTeXDocumentPortion ldp) {
+    	if (sFiles.length()>0) {
+	    	String[] sItems = sFiles.split(",");
+	    	for (String s : sItems) {
+	    		ldp.append("\\addbibresource{").append(s).append(".bib}").nl();
+	    	}
+    	}
     }
 
     /** Process a bibliography
@@ -205,7 +218,7 @@ class BibConverter extends ConverterHelper {
             	}
             }
         	
-	        if (config.useBibtex()) { // Export using BibTeX
+	        if (config.useBiblatex()) { // Export using BibTeX
 	        	handleBibliographyAsBibTeX(ldp);
 	        }
 	        else { // Export as thebibliography environment
@@ -216,29 +229,7 @@ class BibConverter extends ConverterHelper {
     }
     
     private void handleBibliographyAsBibTeX(LaTeXDocumentPortion ldp) {
-        // Use the style given in the configuration
-        ldp.append("\\bibliographystyle{")
-           .append(config.bibtexStyle())
-           .append("}").nl();
-
-        // Use BibTeX file from configuration, or exported BibTeX file
-        // TODO: For XeTeX, probably use \XeTeXdefaultencoding?
-        if (config.externalBibtexFiles().length()>0) {
-        	if (sBibTeXEncoding!=null) {
-        		ldp.append("\\inputencoding{").append(sBibTeXEncoding).append("}").nl();
-        	}
-    		ldp.append("\\bibliography{")
-               .append(config.externalBibtexFiles())
-               .append("}").nl();
-        	if (sBibTeXEncoding!=null) {
-        		ldp.append("\\inputencoding{").append(sDocumentEncoding).append("}").nl();
-        	}
-        }
-        else {
-            ldp.append("\\bibliography{")
-               .append(bibDoc.getName())
-               .append("}").nl();
-        }
+    	ldp.append("\\printbibliography").nl();
     }
 	
     /** Process a Bibliography Mark
@@ -250,7 +241,7 @@ class BibConverter extends ConverterHelper {
         String sIdentifier = node.getAttribute(XMLString.TEXT_IDENTIFIER);
         if (sIdentifier!=null) {
             // Use original citation if using external files; stripped if exporting BibTeX
-            ldp.append("\\cite{")
+            ldp.append("\\autocite{")
                .append(config.externalBibtexFiles().length()==0 ? bibDoc.getExportName(sIdentifier) : sIdentifier)
                .append("}");
         }
@@ -262,7 +253,7 @@ class BibConverter extends ConverterHelper {
      * @return the BiBTeXDocument, or null if no BibTeX file is needed
      */
     BibTeXDocument getBibTeXDocument() {
-    	if (bUseBibTeX && bibDoc!=null && !bibDoc.isEmpty()) {
+    	if (config.useBiblatex() && bibDoc!=null && !bibDoc.isEmpty()) {
     		return bibDoc;
     	}
     	return null;

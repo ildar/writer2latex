@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-07)
+ *  Version 2.0 (2022-05-09)
  *
  */
 
@@ -156,7 +156,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
                 else if ("xetex".equals(sValue)) nValue = XETEX;
             }
         });
-        addOption(new IntegerOption("inputencoding",ClassicI18n.writeInputenc(ClassicI18n.ASCII)) {
+        addOption(new IntegerOption("inputencoding",ClassicI18n.writeInputenc(ClassicI18n.UTF8)) {
             public void setString(String sValue) {
                 super.setString(sValue);
                 nValue = ClassicI18n.readInputenc(sValue);
@@ -205,8 +205,8 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("page_color","false"));
         addOption(new BooleanOption("use_lastpage","false"));
         addOption(new BooleanOption("use_titleref","false"));
-        addOption(new BooleanOption("use_bibtex","false"));
-        addOption(new Option("bibtex_style","plain"));
+        addOption(new BooleanOption("use_biblatex","false"));
+        addOption(new Option("biblatex_options",""));
         addOption(new Option("external_bibtex_files",""));
         addOption(new IntegerOption("bibtex_encoding","document") {
             public void setString(String sValue) {
@@ -218,8 +218,6 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new Option("zotero_bibtex_files",""));
         addOption(new Option("jabref_bibtex_files",""));
         addOption(new BooleanOption("include_original_citations","false"));
-        addOption(new BooleanOption("use_natbib","false"));
-        addOption(new Option("natbib_options",""));
         addOption(new Option("font","default"));
         addOption(new Option("fontspec","default"));
         addOption(new IntegerOption("formatting","convert_basic") {
@@ -726,15 +724,13 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean pageColor() { return ((BooleanOption) options.get("page_color")).getValue(); }
     public boolean useLastpage() { return ((BooleanOption) options.get("use_lastpage")).getValue(); }
     public boolean useTitleref() { return ((BooleanOption) options.get("use_titleref")).getValue(); }
-    public boolean useBibtex() { return ((BooleanOption) options.get("use_bibtex")).getValue(); }
-    public String bibtexStyle() { return options.get("bibtex_style").getString(); }
+    public boolean useBiblatex() { return ((BooleanOption) options.get("use_biblatex")).getValue(); }
+    public String biblatexOptions() { return options.get("biblatex_options").getString(); }
     public String externalBibtexFiles() { return options.get("external_bibtex_files").getString(); }
     public int bibtexEncoding() { return ((IntegerOption) options.get("bibtex_encoding")).getValue(); }
     public String zoteroBibtexFiles() { return options.get("zotero_bibtex_files").getString(); }
     public String jabrefBibtexFiles() { return options.get("jabref_bibtex_files").getString(); }
     public boolean includeOriginalCitations() { return ((BooleanOption) options.get("include_original_citations")).getValue(); }
-    public boolean useNatbib() { return ((BooleanOption) options.get("use_natbib")).getValue(); }
-    public String natbibOptions() { return options.get("natbib_options").getString(); }
 	
     // Formatting options
     public String font() { return options.get("font").getString(); }

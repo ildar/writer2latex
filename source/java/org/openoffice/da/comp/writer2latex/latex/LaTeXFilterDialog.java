@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2022-05-06)
+ *  Version 2.0 (2022-05-11)
  *  
  */
 
@@ -51,7 +51,6 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         { "ignore", "comment", "marginpar", "pdfannotation" };
     private static final String[] FLOATOPTIONS_VALUES =
         { "", "tp", "bp", "htp", "hbp" };
-    
     // UI names and configuration option values for fonts
     private static final String[] FONT_VALUES = 
     	{ "default", "cmbright", "ccfonts", "ccfonts-euler",
@@ -71,6 +70,14 @@ public class LaTeXFilterDialog extends FilterDialogBase {
     		"Bitstream Charter + Math Design", "Utopia + Math Design", "Utopia + Fourier Math" };
     private static final String[] FONTSPEC_VALUES =
     	{ "original", "original+math", "default" };
+    private static final String[] BIBLATEX_STYLE_NAMES =
+    	{ "numeric", "numeric-comp", "numeric-verb", "alphabetic", "alphabetic-verb",
+    		"authoryear", "authoryear-comp", "authoryear-ibid", "authoryear-icomp",
+    		"authortitle", "authortitle-comp", "authortitle-ibid", "authortitle-icomp",
+    		"authortitle-terse", "authortitle-tcomp", "authortitle-ticomp",
+    		"verbose", "verbose-ibid", "verbose-note", "verbose-inote",
+    		"verbose-trad1", "verbose-trad2", "verbose-trad3", 
+    		"reading", "draft", "debug", "Custom"};
     
     /** The component will be registered under this name.
      */
@@ -115,10 +122,14 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         loadListBoxOption(xProps,"Font");
         loadListBoxOption(xProps,"Fontspec");
         loadCheckBoxOption(xProps,"GreekMath");
+        
+        // Populate the bibliography list
+        setListBoxStringItemList("BiblatexStyle",BIBLATEX_STYLE_NAMES);
+        adjustListBoxVisibleItems("BiblatexStyle");
 		
         // Bibliography
-        loadCheckBoxOption(xProps,"UseBibtex");
-        loadComboBoxOption(xProps,"BibtexStyle");
+        loadCheckBoxOption(xProps,"UseBiblatex");
+        loadListBoxOption(xProps,"BiblatexStyle");
 		
         // Files
         loadCheckBoxOption(xProps,"WrapLines");
@@ -163,9 +174,15 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         saveCheckBoxOption(xProps, filterData, "GreekMath", "greek_math");
 		
         // Bibliography
-        saveCheckBoxOption(xProps, filterData, "UseBibtex", "use_bibtex");
-        saveComboBoxOption(xProps, filterData, "BibtexStyle", "bibtex_style");
-		
+        saveCheckBoxOption(xProps, filterData, "UseBiblatex", "use_biblatex");
+        saveListBoxOption(xProps, "BiblatexStyle");
+        if (getListBoxSelectedItem("BiblatexStyle")<BIBLATEX_STYLE_NAMES.length-1) { // specific style name
+        	filterData.put("biblatex_options", "style="+BIBLATEX_STYLE_NAMES[getListBoxSelectedItem("BiblatexStyle")]);
+        }
+        else { // Custom style, to be set on export
+        	filterData.put("biblatex_options", "");
+        }
+        
         // Files
         boolean bWrapLines = saveCheckBoxOption(xProps, "WrapLines");
         int nWrapLinesAfter = saveNumericOption(xProps, "WrapLinesAfter");
@@ -230,8 +247,8 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         else if (sMethod.equals("ScriptChange")) {
         	enableMultilingual();
         }
-        else if (sMethod.equals("UseBibtexChange")) {
-            enableBibtexStyle();
+        else if (sMethod.equals("UseBiblatexChange")) {
+            enableBiblatexStyle();
         }
         else if (sMethod.equals("WrapLinesChange")) {
             enableWrapLinesAfter();
@@ -250,7 +267,7 @@ public class LaTeXFilterDialog extends FilterDialogBase {
 	
     public String[] getSupportedMethodNames() {
         String[] sNames = { "ConfigChange", "ParameterNameChange", "ParameterValueChange",
-        		"ScriptChange", "UseBibtexChange", "WrapLinesChange",
+        		"ScriptChange", "UseBiblatexChange", "WrapLinesChange",
         		"OptimizeSimpleTablesChange", "FloatTablesChange", "FloatFiguresChange" };
         return sNames;
     }
@@ -294,10 +311,10 @@ public class LaTeXFilterDialog extends FilterDialogBase {
         setControlEnabled("GreekMath",!isLocked("greek_math"));
 
         // Bibliography
-        setControlEnabled("UseBibtex",!isLocked("use_bibtex"));
-        boolean bUseBibtex = getCheckBoxStateAsBoolean("UseBibtex");
-        setControlEnabled("BibtexStyleLabel",!isLocked("bibtex_style") && bUseBibtex);
-        setControlEnabled("BibtexStyle",!isLocked("bibtex_style") && bUseBibtex);
+        setControlEnabled("UseBiblatex",!isLocked("use_biblatex"));
+        boolean bUseBiblatex = getCheckBoxStateAsBoolean("UseBiblatex");
+        setControlEnabled("BiblatexStyleLabel",!isLocked("biblatex_style") && bUseBiblatex);
+        setControlEnabled("BiblatexStyle",!isLocked("biblatex_style") && bUseBiblatex);
 
         // Files
         setControlEnabled("WrapLines",!isLocked("wrap_lines_after"));
@@ -351,11 +368,11 @@ public class LaTeXFilterDialog extends FilterDialogBase {
     	}
     }
 	
-    private void enableBibtexStyle() {
-        if (!isLocked("bibtex_style")) {
-            boolean bState = getCheckBoxStateAsBoolean("UseBibtex");
-            setControlEnabled("BibtexStyleLabel",bState);
-            setControlEnabled("BibtexStyle",bState);
+    private void enableBiblatexStyle() {
+        if (!isLocked("biblatex_style")) {
+            boolean bState = getCheckBoxStateAsBoolean("UseBiblatex");
+            setControlEnabled("BiblatexStyleLabel",bState);
+            setControlEnabled("BiblatexStyle",bState);
         }
     }
 

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+bib<?xml version='1.0' encoding='UTF-8'?>
 <oor:component-schema oor:name="Options"
   oor:package="org.openoffice.da.Writer2LaTeX"
   xml:lang="en-US"
@@ -39,8 +39,8 @@
             <prop oor:name="Fontspec" oor:type="xs:short" />
             <prop oor:name="GreekMath" oor:type="xs:boolean" />
             <!-- Bibliography -->
-            <prop oor:name="UseBibtex" oor:type="xs:boolean" />
-            <prop oor:name="BibtexStyle" oor:type="xs:string" />
+            <prop oor:name="UseBiblatex" oor:type="xs:boolean" />
+            <prop oor:name="BiblatexStyle" oor:type="xs:short" />
             <!-- Files -->
             <prop oor:name="WrapLines" oor:type="xs:boolean" />
             <prop oor:name="WrapLinesAfter" oor:type="xs:int" />
@@ -113,7 +113,7 @@
             <node-ref oor:name="LaTeX" oor:node-type="Application" />
             <node-ref oor:name="PdfLaTeX" oor:node-type="Application" />
             <node-ref oor:name="XeLaTeX" oor:node-type="Application" />
-            <node-ref oor:name="BibTeX" oor:node-type="Application" />
+            <node-ref oor:name="Biber" oor:node-type="Application" />
             <node-ref oor:name="Makeindex" oor:node-type="Application" />
             <node-ref oor:name="Mk4ht" oor:node-type="Application" />
             <node-ref oor:name="Dvips" oor:node-type="Application" />

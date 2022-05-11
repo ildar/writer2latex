@@ -2,6 +2,19 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] Bugfix: External applications were not saved to registry
+
+[w2l] Bibliographic content is now handled by BibLaTeX rather than BibTeX. Accordingly the options use_bibtex
+  and bibtex_style have been replaced by use_biblatex and biblatex_options. Also the options use_natbib
+  and natbib_options have been removed.
+
+[w2l] The export of Zotero reference marks to citations now rely on citation keys created by Better BibTeX
+  (which the user must install in Zotero). The file BibTeX-Writer2LaTeX.js is thus obsolete an has been removed.
+
+[w2l] Changed default encoding to UTF-8 (this has been standard in LaTeX for a while)
+
+[w2l] No longer loads textcomp explicitly (this has been standard in LaTeX for a while)
+
 [w2l] Removed the configurations pdfscreen.pdf (pdfscreen.sty is a very old package) and pdfprint.pdf
   (replaced by formatted.pdf)
 

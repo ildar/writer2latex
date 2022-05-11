@@ -2,7 +2,7 @@
  *
  *  SectionConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-25)
+ *  Version 2.0 (2022-05-09)
  *
  */
 
@@ -62,7 +62,7 @@ public class SectionConverter extends ConverterHelper {
     // Handle a section as a Zotero bibliography
     private boolean handleZoteroBibliography(Element node, LaTeXDocumentPortion ldp, Context oc) {
     	String sName = node.getAttribute(XMLString.TEXT_NAME);
-    	if (config.useBibtex() && config.zoteroBibtexFiles().length()>0	&& sName.startsWith("ZOTERO_BIBL")) {
+    	if (config.useBiblatex() && config.zoteroBibtexFiles().length()>0	&& sName.startsWith("ZOTERO_BIBL")) {
     		// This section is a Zotero bibliography, and the user wishes to handle it as such
         	// A Zotero bibliography name has the form ZOTERO_BIBL <json object> <identifier> with a single space separating the items
         	// The identifier is a unique identifier for the bibliography and is not used here
@@ -110,9 +110,9 @@ public class SectionConverter extends ConverterHelper {
         			}
         		}
 
-    			// Use the BibTeX style and files given in the configuration
-    			ldp.append("\\bibliographystyle{").append(config.bibtexStyle()).append("}").nl()
-    			.append("\\bibliography{").append(config.zoteroBibtexFiles()).append("}").nl();
+    			// Print the bibliography
+        		// TODO: Title?
+        		ldp.append("\\printbibliography").nl();
     		}
     		return true;
     	}
@@ -124,12 +124,13 @@ public class SectionConverter extends ConverterHelper {
     // Handle a section as a JabRef bibliography
     private boolean handleJabRefBibliography(Element node, LaTeXDocumentPortion ldp, Context oc) {
     	String sName = node.getAttribute(XMLString.TEXT_NAME);
-    	if (config.useBibtex() && config.jabrefBibtexFiles().length()>0	&& sName.equals("JR_bib")) {
+    	if (config.useBiblatex() && config.jabrefBibtexFiles().length()>0	&& sName.equals("JR_bib")) {
     		// This section is a JabRef bibliography, and the user wishes to handle it as such
         	// A JabRef bibliography is identified by the name JR_bib
+			// Print the bibliography
+    		// TODO: Title?
+    		ldp.append("\\printbibliography").nl();
 			// Use the BibTeX style and files given in the configuration
-			ldp.append("\\bibliographystyle{").append(config.bibtexStyle()).append("}").nl()
-			   .append("\\bibliography{").append(config.jabrefBibtexFiles()).append("}").nl();
 			return true;
     	}
     	return false;

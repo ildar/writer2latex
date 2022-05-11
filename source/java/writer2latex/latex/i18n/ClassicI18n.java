@@ -2,7 +2,7 @@
  *
  *  ClassicI18n.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18) 
+ *  Version 2.0 (2022-05-07) 
  * 
  */
 
@@ -54,7 +54,7 @@ import writer2latex.office.XMLString;
  *    <li>font-specific symbols, eg. for 8-bit fonts/private use area</li>
  *  </ul>
  *  The class uses the packages inputenc, fontenc, babel, tipa, bbding, 
- *  ifsym, pifont, eurosym, amsmath, wasysym, amssymb, amsfonts and textcomp
+ *  ifsym, pifont, eurosym, amsmath, wasysym, amssymb, amsfonts and (implicitly) textcomp
  *  in various combinations depending on the configuration.
  */
 public class ClassicI18n extends I18n {
@@ -265,13 +265,14 @@ public class ClassicI18n extends I18n {
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
     	useInputenc(pacman);
     	useSymbolFonts(pacman);
-    	useTextcomp(pacman);
     	useTextFonts(pacman);
     	useBabel(pacman);
     }
     
     private void useInputenc(LaTeXPacman pacman) {
-    	pacman.usepackage(writeInputenc(config.inputencoding()), "inputenc");
+    	 if (config.inputencoding()!=UTF8) { // UTF-8 is the default encoding in LaTeX
+    		pacman.usepackage(writeInputenc(config.inputencoding()), "inputenc");
+    	}
     }
     
     private void useBabel(LaTeXPacman pacman) {
@@ -323,11 +324,6 @@ public class ClassicI18n extends I18n {
         }	
     }
     
-    private void useTextcomp(LaTeXPacman pacman) {
-	    // Always use textcomp
-	    pacman.usepackage("textcomp");    	
-    }
-
     private void useTextFonts(LaTeXPacman pacman) {
         // usepackage fontenc
         CSVList fontencs = new CSVList(',');

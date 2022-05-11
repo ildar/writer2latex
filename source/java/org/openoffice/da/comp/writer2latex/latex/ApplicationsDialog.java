@@ -2,7 +2,7 @@
  *
  *  ApplicationsDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2022-05-09)
  *
  */ 
  
@@ -267,7 +267,7 @@ public final class ApplicationsDialog
             case 1: return ExternalApps.PDFLATEX;
             case 2: return ExternalApps.XELATEX;
             case 3: return ExternalApps.DVIPS;
-            case 4: return ExternalApps.BIBTEX;
+            case 4: return ExternalApps.BIBER;
             case 5: return ExternalApps.MAKEINDEX;
             //case 6: return ExternalApps.MK4HT;
             case 6: return ExternalApps.DVIVIEWER;
@@ -290,7 +290,7 @@ public final class ApplicationsDialog
 			configureMikTeX(sMikTeXPath, ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			configureMikTeX(sMikTeXPath, ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			configureMikTeX(sMikTeXPath, ExternalApps.DVIPS, "dvips", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
-			configureMikTeX(sMikTeXPath, ExternalApps.BIBTEX, "bibtex", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
+			configureMikTeX(sMikTeXPath, ExternalApps.BIBER, "biber", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			configureMikTeX(sMikTeXPath, ExternalApps.MAKEINDEX, "makeindex", "%s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
 			//configureMikTeX(sMikTeXPath, ExternalApps.MK4HT, "mk4ht", "%c %s", info, true);
 			configureMikTeX(sMikTeXPath, ExternalApps.DVIVIEWER, "yap", "--single-instance %s", info, true); //$NON-NLS-1$ //$NON-NLS-2$
@@ -305,7 +305,7 @@ public final class ApplicationsDialog
 			externalApps.setApplication(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s"); //$NON-NLS-1$ //$NON-NLS-2$
 			externalApps.setApplication(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s"); //$NON-NLS-1$ //$NON-NLS-2$
 			externalApps.setApplication(ExternalApps.DVIPS, "dvips", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
-			externalApps.setApplication(ExternalApps.BIBTEX, "bibtex", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
+			externalApps.setApplication(ExternalApps.BIBER, "biber", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
 			externalApps.setApplication(ExternalApps.MAKEINDEX, "makeindex", "%s"); //$NON-NLS-1$ //$NON-NLS-2$
 			//externalApps.setApplication(ExternalApps.MK4HT, "mk4ht", "%c %s");
 			externalApps.setUseDefaultApplication(ExternalApps.DVIVIEWER, true);
@@ -392,7 +392,7 @@ public final class ApplicationsDialog
 		configureApp(ExternalApps.PDFLATEX, "pdflatex", "--interaction=batchmode %s",info); //$NON-NLS-1$ //$NON-NLS-2$
 		configureApp(ExternalApps.XELATEX, "xelatex", "--interaction=batchmode %s",info); //$NON-NLS-1$ //$NON-NLS-2$
 		configureApp(ExternalApps.DVIPS, "dvips", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
-		configureApp(ExternalApps.BIBTEX, "bibtex", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
+		configureApp(ExternalApps.BIBER, "biber", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
 		configureApp(ExternalApps.MAKEINDEX, "makeindex", "%s",info); //$NON-NLS-1$ //$NON-NLS-2$
 		//configureApp(ExternalApps.MK4HT, "mk4ht", "%c %s",info);    		
 		// We have several possible viewers

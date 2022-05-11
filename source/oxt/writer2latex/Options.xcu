@@ -504,7 +504,7 @@
             <value>1</value> <!-- pdftex -->
         </prop>
         <prop oor:name="Inputencoding" oor:type="xs:short">
-            <value>1</value> <!-- latin1 -->
+            <value>7</value> <!-- UTF-8 -->
         </prop>
         <prop oor:name="Script" oor:type="xs:short">
             <value>0</value> <!-- auto -->
@@ -521,11 +521,11 @@
         <prop oor:name="GreekMath" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <prop oor:name="UseBibtex" oor:type="xs:boolean">
+        <prop oor:name="UseBiblatex" oor:type="xs:boolean">
             <value>true</value>
         </prop>
-        <prop oor:name="BibtexStyle" oor:type="xs:string">
-            <value>plain</value>
+        <prop oor:name="BiblatexStyle" oor:type="xs:short">
+            <value>0</value><!-- numeric -->
         </prop>
         <prop oor:name="WrapLines" oor:type="xs:boolean">
             <value>true</value>
@@ -773,12 +773,12 @@
                 <value>--interaction=batchmode %s</value>
             </prop>
         </node>
-        <node oor:name="BibTeX" oor:type="xs:string">
+        <node oor:name="Biber" oor:type="xs:string">
             <prop oor:name="UseDefault">
                 <value>false</value>
             </prop>
             <prop oor:name="Executable">
-                <value>bibtex8</value>
+                <value>biber</value>
             </prop>
             <prop oor:name="Options">
                 <value>%s</value>

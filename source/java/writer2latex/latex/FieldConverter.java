@@ -2,7 +2,7 @@
  *
  *  FieldConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-27)
+ *  Version 2.0 (2022-05-11)
  *
  */
 
@@ -85,16 +85,14 @@ public class FieldConverter extends ConverterHelper {
     private boolean bConvertZotero = false;
     private boolean bConvertJabRef = false;
     private boolean bIncludeOriginalCitations = false;
-    private boolean bUseNatbib = false;
 	
     public FieldConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
         // hyperref.sty is not compatible with titleref.sty:
         bUseHyperref = config.useHyperref() && !config.useTitleref();
-        bConvertZotero = config.useBibtex() && config.zoteroBibtexFiles().length()>0;
-        bConvertJabRef = config.useBibtex() && config.jabrefBibtexFiles().length()>0;
+        bConvertZotero = config.useBiblatex() && config.zoteroBibtexFiles().length()>0;
+        bConvertJabRef = config.useBiblatex() && config.jabrefBibtexFiles().length()>0;
         bIncludeOriginalCitations = config.includeOriginalCitations();
-        bUseNatbib = config.useBibtex() && config.useNatbib();
     }
 	
     /** <p>Append declarations needed by the <code>FieldConverter</code> to
@@ -105,10 +103,6 @@ public class FieldConverter extends ConverterHelper {
      * other declarations should be added.
      */
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
-        // Use natbib
-        if (config.useBibtex() && config.useNatbib()) {
-        	pacman.usepackage(config.natbibOptions(), "natbib");
-        }
         // use lastpage.sty
         if (bUsesPageCount) {
         	pacman.usepackage("lastpage");
@@ -464,14 +458,7 @@ public class FieldConverter extends ConverterHelper {
     			// Successfully parsed the reference, now generate the code
     			// (we don't expect any errors and ignore them, if they happen anyway)
 
-    			// Sort key (purpose? currently ignored)
-    			/*boolean bSort = true;
-    			try {
-    				bSort = jo.getBoolean("sort");
-    			}
-    			catch (JSONException e) {
-    			}*/
-
+    			// The object has four keys: citationID, properties, citationItems and schema, of which we only need citationItems
     			JSONArray citationItemsArray = null;
     			try { // The value is an array of objects, one for each source in this citation
     				citationItemsArray = jo.getJSONArray("citationItems");
@@ -482,162 +469,86 @@ public class FieldConverter extends ConverterHelper {
     			if (citationItemsArray!=null) {
     				int nCitationCount = citationItemsArray.length();
     				
-    				if (bUseNatbib) {
-    					if (nCitationCount>1) {
-    						// For multiple citations, use \citetext, otherwise we cannot add individual prefixes and suffixes
-    						// TODO: If no prefixes or suffixes exist, it's safe to combine the citations
-    						ldp.append("\\citetext{");
-    					}
+					// TODO: Combine citations if nCitationCount>1
+					for (int nIndex=0; nIndex<nCitationCount; nIndex++) {
+						/* Each citation is represented as an object, this is a sample:
+					  	{	"id":1,
+							"uris":["http://zotero.org/users/local/hwPOD4lw/items/8ASX6FUP"],
+							"itemData":
+							{	"id":1,
+								"type":"book",
+								"title":"The elements",
+								"author":[{"family":"Euclid","given":"John"}],
+								"citation-key":"euklidElements"
+							},
+							"locator":"7",
+							"label":"page",
+							"prefix":"see",
+							"suffix":"!"
+						}
+						*/
+						JSONObject citationItems = null;
+						JSONObject itemData = null;
+						try {
+							citationItems = citationItemsArray.getJSONObject(nIndex);
+							itemData = citationItems.getJSONObject("itemData");
+						}
+						catch (JSONException e) {
+						}
 
-    					for (int nIndex=0; nIndex<nCitationCount; nIndex++) {
+						if (citationItems!=null && itemData!=null) {
+							if (nIndex>0) {
+								ldp.append("; "); // Separate multiple citations in this reference
+							}
+							String sCitationKey = getJSONString(itemData,"citation-key");
+							String sPrefix = getJSONString(citationItems,"prefix");
+							String sSuffix = getJSONString(citationItems,"suffix");
+							String sLocator = getJSONString(citationItems,"locator"); // e.g. a page number
+							String sLabel = getJSONString(citationItems,"label"); // e.g. book, verse, page (default is page)
+							boolean bSuppressAuthor = getJSONBoolean(citationItems,"suppressAuthor");
 
-    						JSONObject citationItems = null;
-    						try { // Each citation is represented as an object
-    							citationItems = citationItemsArray.getJSONObject(nIndex);
-    						}
-    						catch (JSONException e) {
-    						}
+							// Adjust locator type (empty locator type means "page")
+							// TODO: Handle other locator types (localize and abbreviate): Currently the internal name (e.g. book) is used.
+							if (sLocator.length()>0 && (sLabel.length()==0 || sLabel.equals("page"))) {
+								// A locator of the form <number><other characters><number> is interpreted as several pages
+								if (Pattern.compile("[0-9]+[^0-9]+[0-9]+").matcher(sLocator).find()) {
+									sLabel = "pp.";
+								} 
+								else {
+									sLabel = "p.";
+								}
+							}
 
-    						if (citationItems!=null) {
-    							if (nIndex>0) {
-    								ldp.append("; "); // Separate multiple citations in this reference
-    							}
+							// Insert command (Zotero always add parentheses if not in footnotes)
+							if (oc.isInFootnote()) {
+								if (bSuppressAuthor) { ldp.append("\\cite*"); }
+								else { ldp.append("\\cite"); }								
+							}
+							else {
+								if (bSuppressAuthor) { ldp.append("\\autocite*"); }
+								else { ldp.append("\\autocite"); }
+							}
 
-    							// Citation items
-    							String sURI = "";
-    							boolean bSuppressAuthor = false;
-    							String sPrefix = "";
-    							String sSuffix = "";
-    							String sLocator = "";
-    							String sLocatorType = "";
+							if (sPrefix.length()>0) {
+								ldp.append("[").append(palette.getI18n().convert(sPrefix,true,oc.getLang())).append("]");
+							}
 
-    							try { // The URI seems to be an array with a single string value(?)
-    								sURI = citationItems.getJSONArray("uri").getString(0);
-    							}
-    							catch (JSONException e) {	
-    							}
+							if (sPrefix.length()>0 || sSuffix.length()>0 || sLabel.length()>0 || sLocator.length()>0) {
+								// Note that we need to include an empty suffix if there's a prefix!
+								ldp.append("[")
+								   .append(palette.getI18n().convert(sLabel,true,oc.getLang()));
+								if (sLabel.length()>0 && sLocator.length()>0) {
+									ldp.append("~");
+								}
+								ldp.append(palette.getI18n().convert(sLocator,true,oc.getLang()))
+								   .append(palette.getI18n().convert(sSuffix,true,oc.getLang()))
+								   .append("]");
+							}
 
-    							try { // SuppressAuthor is a boolean value
-    								bSuppressAuthor = citationItems.getBoolean("suppressAuthor");
-    							}
-    							catch (JSONException e) {	
-    							}
+							ldp.append("{").append(sCitationKey).append("}");
+						}
+					}
 
-    							try { // Prefix is a string value
-    								sPrefix = citationItems.getString("prefix");
-    							}
-    							catch (JSONException e) {	
-    							}
-
-    							try { // Suffix is a string value
-    								sSuffix = citationItems.getString("suffix");
-    							}
-    							catch (JSONException e) {	
-    							}
-
-    							try { // Locator is a string value, e.g. a page number
-    								sLocator = citationItems.getString("locator");
-    							}
-    							catch (JSONException e) {	
-    							}
-
-    							try {
-    								// LocatorType is a string value, e.g. book, verse, page (missing locatorType means page)
-    								sLocatorType = citationItems.getString("locatorType");
-    							}
-    							catch (JSONException e) {	
-    							}
-
-    							// Adjust locator type (empty locator type means "page")
-    							// TODO: Handle other locator types (localize and abbreviate): Currently the internal name (e.g. book) is used.
-    							if (sLocator.length()>0 && sLocatorType.length()==0) {
-    								// A locator of the form <number><other characters><number> is interpreted as several pages
-    								if (Pattern.compile("[0-9]+[^0-9]+[0-9]+").matcher(sLocator).find()) {
-    									sLocatorType = "pp.";
-    								}
-    								else {
-    									sLocatorType = "p.";
-    								}
-    							}
-
-    							// Insert command. TODO: Evaluate this
-    							if (nCitationCount>1) { // Use commands without parentheses
-    								if (bSuppressAuthor) { ldp.append("\\citeyear"); }
-    								else { ldp.append("\\citet"); }
-    							}
-    							else {
-    								if (bSuppressAuthor) { ldp.append("\\citeyearpar"); }
-    								else { ldp.append("\\citep"); }
-    							}
-
-    							if (sPrefix.length()>0) {
-    								ldp.append("[").append(palette.getI18n().convert(sPrefix,true,oc.getLang())).append("]");
-    							}
-
-    							if (sPrefix.length()>0 || sSuffix.length()>0 || sLocatorType.length()>0 || sLocator.length()>0) {
-    								// Note that we need to include an empty suffix if there's a prefix!
-    								ldp.append("[")
-    								.append(palette.getI18n().convert(sSuffix,true,oc.getLang()))
-    								.append(palette.getI18n().convert(sLocatorType,true,oc.getLang()));
-    								if (sLocatorType.length()>0 && sLocator.length()>0) {
-    									ldp.append("~");
-    								}
-    								ldp.append(palette.getI18n().convert(sLocator,true,oc.getLang()))
-    								.append("]");
-    							}
-
-    							ldp.append("{");
-    							int nSlash = sURI.lastIndexOf('/');
-    							if (nSlash>0) {
-    								ldp.append(sURI.substring(nSlash+1));
-    							}
-    							else {
-    								ldp.append(sURI);
-    							}
-    							ldp.append("}");
-    						}
-    					}
-
-    					if (nCitationCount>1) { // End the \citetext command
-    						ldp.append("}");
-    					}
-    				}
-    				else { // natbib is not available, use simple \cite command
-    					ldp.append("\\cite{");
-    					for (int nIndex=0; nIndex<nCitationCount; nIndex++) {
-    						JSONObject citationItems = null;
-    						try { // Each citation is represented as an object
-    							citationItems = citationItemsArray.getJSONObject(nIndex);
-    						}
-    						catch (JSONException e) {
-    						}
-
-    						if (citationItems!=null) {
-    							if (nIndex>0) {
-    								ldp.append(","); // Separate multiple citations in this reference
-    							}
-
-    							// Citation items
-    							String sURI = "";
-
-    							try { // The URI seems to be an array with a single string value(?)
-    								sURI = citationItems.getJSONArray("uri").getString(0);
-    							}
-    							catch (JSONException e) {	
-    							}
-
-    							int nSlash = sURI.lastIndexOf('/');
-    							if (nSlash>0) {
-    								ldp.append(sURI.substring(nSlash+1));
-    							}
-    							else {
-    								ldp.append(sURI);
-    							}
-    						}
-    					}
-						ldp.append("}");
-    				}
-    				
     				oc.setInZoteroJabRefText(true);
     				
     				return true;
@@ -654,25 +565,14 @@ public class FieldConverter extends ConverterHelper {
     	//   m is a sequence number to ensure unique citations (may be empty)
     	//   n=1 for (Author date) and n=2 for Author (date) citations
     	//   identifiers is a comma separated list of BibTeX keys
+    	// TODO: Update to BibLaTeX
     	if (sName.startsWith(JABREF_ITEM)) {
     		String sRemains = sName.substring(JABREF_ITEM.length());
     		int nUnderscore = sRemains.indexOf('_');
     		if (nUnderscore>-1) {
     			sRemains = sRemains.substring(nUnderscore+1);
     			if (sRemains.length()>2) {
-    				String sCommand;
-    				if (bUseNatbib) {
-    					if (sRemains.charAt(0)=='1') { 
-    						sCommand = "\\citep";
-    					}
-    					else {
-    						sCommand = "\\citet";    						
-    					}
-    				}
-    				else {
-    					sCommand = "\\cite";
-    				}
-    				ldp.append(sCommand).append("{").append(sRemains.substring(2)).append("}");
+    				ldp.append("\\cite").append("{").append(sRemains.substring(2)).append("}");
     			}
     		}
 			oc.setInZoteroJabRefText(true);			
@@ -681,6 +581,21 @@ public class FieldConverter extends ConverterHelper {
     	return false;
     }
     
+    private String getJSONString(JSONObject obj, String sKey) {
+    	try {
+    		return obj.getString(sKey);
+    	} catch (JSONException e) {
+    		return ""; // Fail silently, we don't expect any errors
+    	}
+    }
+    
+    private boolean getJSONBoolean(JSONObject obj, String sKey) {
+    	try {
+    		return obj.getBoolean(sKey);
+    	} catch (JSONException e) {
+    		return false; // Fail silently, we don't expect any errors
+    	}
+    }
     private String shortenRefname(String s) {
     	// For Zotero items, use the trailing unique identifier
     	if (s.startsWith(ZOTERO_ITEM)) {

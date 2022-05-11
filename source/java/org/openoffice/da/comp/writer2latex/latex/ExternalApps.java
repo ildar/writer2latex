@@ -2,7 +2,7 @@
  *
  *  ExternalApps.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-03-30)
+ *  Version 2.0 (2022-05-09)
  *
  */ 
  
@@ -61,7 +61,7 @@ public class ExternalApps {
     public final static String LATEX = "LaTeX"; //$NON-NLS-1$
     public final static String PDFLATEX = "PdfLaTeX"; //$NON-NLS-1$
     public final static String XELATEX = "XeLaTeX"; //$NON-NLS-1$
-    public final static String BIBTEX = "BibTeX"; //$NON-NLS-1$
+    public final static String BIBER = "Biber"; //$NON-NLS-1$
     public final static String MAKEINDEX = "Makeindex"; //$NON-NLS-1$
     public final static String MK4HT = "Mk4ht"; //$NON-NLS-1$
     public final static String DVIPS = "Dvips"; //$NON-NLS-1$
@@ -69,7 +69,7 @@ public class ExternalApps {
     public final static String POSTSCRIPTVIEWER = "PostscriptViewer"; //$NON-NLS-1$
     public final static String PDFVIEWER = "PdfViewer"; //$NON-NLS-1$
 	
-    private final static String[] sApps = { LATEX, PDFLATEX, XELATEX, BIBTEX, MAKEINDEX, MK4HT, DVIPS, DVIVIEWER, POSTSCRIPTVIEWER, PDFVIEWER };
+    private final static String[] sApps = { LATEX, PDFLATEX, XELATEX, BIBER, MAKEINDEX, MK4HT, DVIPS, DVIVIEWER, POSTSCRIPTVIEWER, PDFVIEWER };
 	
     private XComponentContext xContext;
 
@@ -298,7 +298,7 @@ public class ExternalApps {
     	RegistryHelper registry = new RegistryHelper(xContext);
         Object view;
         try {
-    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.toolbar.ToolbarOptions/Applications",true); //$NON-NLS-1$
+    		view = registry.getRegistryView("/org.openoffice.da.Writer2LaTeX.Options/Applications",true); //$NON-NLS-1$
         }
         catch (com.sun.star.uno.Exception e) {
             // Give up...
@@ -308,7 +308,7 @@ public class ExternalApps {
 		XPropertySet xSimpleProps = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class,view);
 		XPropertySetHelper.setPropertyValue(xSimpleProps, "AfterExport", nLevel); //$NON-NLS-1$
 
-        XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
+		XMultiHierarchicalPropertySet xProps = (XMultiHierarchicalPropertySet)
             UnoRuntime.queryInterface(XMultiHierarchicalPropertySet.class, view);
         for (int i=0; i<sApps.length; i++) {
             String[] sNames = new String[3];

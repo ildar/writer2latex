@@ -36,18 +36,6 @@
   </dlg:menulist>
   <dlg:checkbox dlg:id="Multilingual" dlg:tab-index="13" dlg:left="12" dlg:top="98" dlg:width="149" dlg:height="12" dlg:help-text="&amp;33.LaTeXOptions.Multilingual.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsMultilingual" dlg:value="&amp;34.LaTeXOptions.Multilingual.Label" dlg:checked="true"/>
   <dlg:checkbox dlg:id="GreekMath" dlg:tab-index="16" dlg:left="12" dlg:top="130" dlg:width="149" dlg:height="12" dlg:help-text="&amp;35.LaTeXOptions.GreekMath.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsGreekMath" dlg:value="&amp;36.LaTeXOptions.GreekMath.Label" dlg:checked="true"/>
-  <dlg:checkbox dlg:id="UseBibtex" dlg:tab-index="17" dlg:left="12" dlg:top="143" dlg:width="149" dlg:height="12" dlg:help-text="&amp;41.LaTeXOptions.UseBibtex.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsUseBibtex" dlg:value="&amp;42.LaTeXOptions.UseBibtex.Label" dlg:checked="true">
-   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseBibtexChange" script:language="UNO"/>
-  </dlg:checkbox>
-  <dlg:text dlg:id="BibtexStyleLabel" dlg:tab-index="18" dlg:left="22" dlg:top="159" dlg:width="50" dlg:height="12" dlg:help-text="&amp;43.LaTeXOptions.BibtexStyleLabel.HelpText" dlg:value="&amp;44.LaTeXOptions.BibtexStyleLabel.Label"/>
-  <dlg:combobox dlg:id="BibtexStyle" dlg:tab-index="19" dlg:left="75" dlg:top="157" dlg:width="86" dlg:height="12" dlg:help-text="&amp;45.LaTeXOptions.BibtexStyle.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsBibtexStyle" dlg:value="&amp;50.LaTeXOptions.BibtexStyle.Text" dlg:spin="true">
-   <dlg:menupopup>
-    <dlg:menuitem dlg:value="&amp;46.BibtexStyle.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;47.BibtexStyle.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;48.BibtexStyle.StringItemList"/>
-    <dlg:menuitem dlg:value="&amp;49.BibtexStyle.StringItemList"/>
-   </dlg:menupopup>
-  </dlg:combobox>
   <dlg:text dlg:style-id="0" dlg:id="FilesLabel" dlg:tab-index="20" dlg:left="5" dlg:top="173" dlg:width="156" dlg:height="12" dlg:help-text="&amp;51.LaTeXOptions.FilesLabel.HelpText" dlg:value="&amp;52.LaTeXOptions.FilesLabel.Label"/>
   <dlg:checkbox dlg:id="WrapLines" dlg:tab-index="21" dlg:left="12" dlg:top="187" dlg:width="149" dlg:height="12" dlg:help-text="&amp;53.LaTeXOptions.WrapLines.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsWrapLines" dlg:value="&amp;54.LaTeXOptions.WrapLines.Label" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:WrapLinesChange" script:language="UNO"/>
@@ -125,5 +113,10 @@
     <dlg:menuitem dlg:value="&amp;196.Fontspec.StringItemList"/>
    </dlg:menupopup>
   </dlg:menulist>
+  <dlg:text dlg:id="BiblatexStyleLabel" dlg:tab-index="18" dlg:left="22" dlg:top="159" dlg:width="50" dlg:height="12" dlg:help-text="&amp;245.LaTeXOptions.BiblatexStyleLabel.HelpText" dlg:value="&amp;246.LaTeXOptions.BiblatexStyleLabel.Label"/>
+  <dlg:menulist dlg:id="BiblatexStyle" dlg:tab-index="19" dlg:left="75" dlg:top="157" dlg:width="86" dlg:height="12" dlg:help-text="&amp;248.LaTeXOptions.BiblatexStyle.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsBiblatexStyle" dlg:spin="true"/>
+  <dlg:checkbox dlg:id="UseBiblatex" dlg:tab-index="17" dlg:left="12" dlg:top="143" dlg:width="149" dlg:height="12" dlg:help-text="&amp;249.LaTeXOptions.UseBiblatex.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:OptionsUseBiblatex" dlg:value="&amp;250.LaTeXOptions.UseBiblatex.Label" dlg:checked="true">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseBiblatexChange" script:language="UNO"/>
+  </dlg:checkbox>
  </dlg:bulletinboard>
 </dlg:window>

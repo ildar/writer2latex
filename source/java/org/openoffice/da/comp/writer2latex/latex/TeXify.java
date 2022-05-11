@@ -2,7 +2,7 @@
  *
  *  TeXify.java
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 1.6 (2015-05-29)
+ *  Version 2.0 (2022-05-09)
  *
  */ 
  
@@ -54,17 +54,17 @@ public final class TeXify {
 
     // Define the applications to run for each backend
     private static final String[] genericTexify = {
-        ExternalApps.LATEX, ExternalApps.BIBTEX, ExternalApps.MAKEINDEX,
+        ExternalApps.LATEX, ExternalApps.BIBER, ExternalApps.MAKEINDEX,
         ExternalApps.LATEX, ExternalApps.MAKEINDEX, ExternalApps.LATEX };
     private static final String[] pdfTexify = {
-        ExternalApps.PDFLATEX, ExternalApps.BIBTEX, ExternalApps.MAKEINDEX,
+        ExternalApps.PDFLATEX, ExternalApps.BIBER, ExternalApps.MAKEINDEX,
         ExternalApps.PDFLATEX, ExternalApps.MAKEINDEX, ExternalApps.PDFLATEX };
     private static final String[] dvipsTexify = {
-        ExternalApps.LATEX, ExternalApps.BIBTEX, ExternalApps.MAKEINDEX,
+        ExternalApps.LATEX, ExternalApps.BIBER, ExternalApps.MAKEINDEX,
         ExternalApps.LATEX, ExternalApps.MAKEINDEX, ExternalApps.LATEX,
         ExternalApps.DVIPS };
     private static final String[] xeTexify = {
-        ExternalApps.XELATEX, ExternalApps.BIBTEX, ExternalApps.MAKEINDEX,
+        ExternalApps.XELATEX, ExternalApps.BIBER, ExternalApps.MAKEINDEX,
         ExternalApps.XELATEX, ExternalApps.MAKEINDEX, ExternalApps.XELATEX };
 
     // Global objects
@@ -90,7 +90,6 @@ public final class TeXify {
             file = new File(file.getParentFile(),
                    file.getName().substring(0,file.getName().length()-4));
         }
-        
         // Update external apps from registry
         externalApps.load();
 
@@ -146,7 +145,7 @@ public final class TeXify {
         for (int i=0; i<sAppList.length; i++) {
             // Execute external application
         	Map<String,String> env =null;
-        	if (ExternalApps.BIBTEX.equals(sAppList[i]) && sBibinputs!=null) {
+        	if (ExternalApps.BIBER.equals(sAppList[i]) && sBibinputs!=null) {
         		env = new HashMap<String,String>();
         		env.put("BIBINPUTS", sBibinputs); //$NON-NLS-1$
         	}
