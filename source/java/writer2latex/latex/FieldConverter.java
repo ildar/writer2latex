@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-11)
+ *  Version 2.0 (2022-05-13)
  *
  */
 
@@ -55,6 +55,9 @@ import writer2latex.util.SimpleInputBuffer;
 
  */
 public class FieldConverter extends ConverterHelper {
+	
+	// Identify Writer2LaTeX extended citations
+	private static final String WRITER2LATEX_CITE = "Writer2LaTeX_cite";
 	
 	// Identify Zotero items
 	private static final String ZOTERO_ITEM = "ZOTERO_ITEM";
@@ -439,6 +442,33 @@ public class FieldConverter extends ConverterHelper {
         }
     }
     
+    // Try to handle this reference name as a Writer2LaTeX extended citation, return true on success
+    private boolean handleWriter2LaTeXReferenceName(String sName, LaTeXDocumentPortion ldp, Context oc) {
+    	if (sName.startsWith(WRITER2LATEX_CITE)) {
+    		int nObjectStart = sName.indexOf('{');
+    		int nObjectEnd = sName.lastIndexOf('}');
+    		if (nObjectStart>-1 && nObjectEnd>-1 && nObjectStart<nObjectEnd) {
+    			String sJsonObject = sName.substring(nObjectStart, nObjectEnd+1);
+    			JSONObject citation = null;
+    			try {
+    				citation = new JSONObject(sJsonObject);
+    			} catch (JSONException e) {
+    				return false;
+    			}
+    			// Successfully parsed the reference, now generate the code
+    			// (we don't expect any errors and ignore them, if they happen anyway)
+    			String sKey = getJSONString(citation,"key");
+    			String sType = getJSONString(citation,"type");
+    			String sPrefix = getJSONString(citation,"prefix");
+    			String sSuffix = getJSONString(citation,"suffix");
+    			oc.setInRefMarkCiteText(true);
+    			oc.setRefMarkData(sKey, sType, sPrefix, sSuffix);
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     // Try to handle this reference name as a Zotero reference, return true on success
     private boolean handleZoteroReferenceName(String sName, LaTeXDocumentPortion ldp, Context oc) {
     	// First parse the reference name:
@@ -549,7 +579,7 @@ public class FieldConverter extends ConverterHelper {
 						}
 					}
 
-    				oc.setInZoteroJabRefText(true);
+    				oc.setInRefMarkCiteText(true);
     				
     				return true;
     			}
@@ -575,7 +605,7 @@ public class FieldConverter extends ConverterHelper {
     				ldp.append("\\cite").append("{").append(sRemains.substring(2)).append("}");
     			}
     		}
-			oc.setInZoteroJabRefText(true);			
+			oc.setInRefMarkCiteText(true);			
     		return true;
     	}
     	return false;
@@ -614,8 +644,8 @@ public class FieldConverter extends ConverterHelper {
      * @param oc the current context
      */
     public void handleReferenceMarkEnd(Element node, LaTeXDocumentPortion ldp, Context oc) {
-    	// Nothing to do, except to mark that this ends any Zotero/JabRef citation
-    	oc.setInZoteroJabRefText(false);
+    	// Nothing to do, except to mark that this ends any Zotero/JabRef/Writer2LaTeX citation
+    	oc.setInRefMarkCiteText(false);
     	if (bIncludeOriginalCitations) { // Protect space after comment
     		ldp.append("{}");
     	}
@@ -630,8 +660,9 @@ public class FieldConverter extends ConverterHelper {
     public void handleReferenceMark(Element node, LaTeXDocumentPortion ldp, Context oc) {
         if (!oc.isInSection() && !oc.isInCaption() && !oc.isVerbatim()) {
             String sName = node.getAttribute(XMLString.TEXT_NAME);
-            // Zotero and JabRef (mis)uses reference marks to store citations, so check this first
-            if (sName!=null && (!bConvertZotero || !handleZoteroReferenceName(sName, ldp, oc))
+            // Zotero, JabRef and Writer2LaTeX (mis)uses reference marks to store citations, so check this first
+            if (sName!=null && (!handleWriter2LaTeXReferenceName(sName, ldp, oc))
+            				&& (!bConvertZotero || !handleZoteroReferenceName(sName, ldp, oc))
             				&& (!bConvertJabRef || !handleJabRefReferenceName(sName, ldp, oc))) {
             	// Plain reference mark
             	// Note: Always include \label here, even when it's not used

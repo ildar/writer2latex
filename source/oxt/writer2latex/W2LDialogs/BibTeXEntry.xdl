@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="BibTeXEntry" dlg:left="117" dlg:top="53" dlg:width="275" dlg:height="130" dlg:help-text="&amp;213..HelpText" dlg:closeable="true" dlg:moveable="true" dlg:title="&amp;214..Title">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="BibTeXEntry" dlg:left="117" dlg:top="53" dlg:width="275" dlg:height="205" dlg:help-text="&amp;213..HelpText" dlg:closeable="true" dlg:moveable="true" dlg:title="&amp;214..Title">
  <dlg:bulletinboard>
   <dlg:text dlg:id="FileLabel" dlg:tab-index="0" dlg:left="10" dlg:top="10" dlg:width="60" dlg:height="12" dlg:help-text="&amp;215..FileLabel.HelpText" dlg:value="&amp;216..FileLabel.Label"/>
   <dlg:menulist dlg:id="File" dlg:tab-index="1" dlg:left="75" dlg:top="10" dlg:width="120" dlg:height="12" dlg:help-text="&amp;217..File.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXFile" dlg:spin="true">
@@ -20,14 +20,32 @@
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Reload" script:language="UNO"/>
   </dlg:button>
   <dlg:text dlg:id="EntryInformation" dlg:tab-index="11" dlg:left="10" dlg:top="50" dlg:width="185" dlg:height="36" dlg:help-text="&amp;227..EntryInformation.HelpText" dlg:value="&amp;228..EntryInformation.Label"/>
-  <dlg:button dlg:id="Insert" dlg:tab-index="6" dlg:left="10" dlg:top="90" dlg:width="60" dlg:height="12" dlg:help-text="&amp;229..Insert.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="&amp;230..Insert.Label" dlg:button-type="ok">
+  <dlg:text dlg:id="TypeLabel" dlg:tab-index="13" dlg:left="10" dlg:top="94" dlg:width="60" dlg:height="12" dlg:help-text="&amp;255.BibTeXEntry.TypeLabel.HelpText" dlg:value="&amp;256.BibTeXEntry.TypeLabel.Label"/>
+  <dlg:menulist dlg:id="Type" dlg:tab-index="6" dlg:left="75" dlg:top="92" dlg:width="120" dlg:height="12" dlg:help-text="&amp;277.BibTeXEntry.Type.HelpText" dlg:spin="true" dlg:linecount="9">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="&amp;410.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;411.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;412.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;413.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;414.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;415.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;416.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;417.Type.StringItemList"/>
+    <dlg:menuitem dlg:value="&amp;418.Type.StringItemList"/>
+   </dlg:menupopup>
+  </dlg:menulist>
+  <dlg:text dlg:id="PrefixLabel" dlg:tab-index="14" dlg:left="10" dlg:top="114" dlg:width="60" dlg:height="12" dlg:help-text="&amp;259.BibTeXEntry.PrefixLabel.HelpText" dlg:value="&amp;260.BibTeXEntry.PrefixLabel.Label"/>
+  <dlg:textfield dlg:id="Prefix" dlg:tab-index="7" dlg:left="75" dlg:top="112" dlg:width="120" dlg:height="12" dlg:help-text="&amp;289.BibTeXEntry.Prefix.HelpText" dlg:value=""/>
+  <dlg:text dlg:id="SuffixLabel" dlg:tab-index="15" dlg:left="10" dlg:top="134" dlg:width="60" dlg:height="12" dlg:help-text="&amp;263.BibTeXEntry.SuffixLabel.HelpText" dlg:value="&amp;264.BibTeXEntry.SuffixLabel.Label"/>
+  <dlg:textfield dlg:id="Suffix" dlg:tab-index="8" dlg:left="75" dlg:top="132" dlg:width="120" dlg:height="12" dlg:help-text="&amp;291.BibTeXEntry.Suffix.HelpText" dlg:value=""/>
+  <dlg:button dlg:id="Insert" dlg:tab-index="9" dlg:left="10" dlg:top="155" dlg:width="60" dlg:height="12" dlg:help-text="&amp;229..Insert.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="&amp;230..Insert.Label" dlg:button-type="ok">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:InsertReference" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Update" dlg:tab-index="7" dlg:left="75" dlg:top="90" dlg:width="60" dlg:height="12" dlg:help-text="&amp;231..Update.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" dlg:value="&amp;232..Update.Label">
+  <dlg:button dlg:id="Update" dlg:tab-index="10" dlg:left="75" dlg:top="155" dlg:width="60" dlg:height="12" dlg:help-text="&amp;231..Update.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" dlg:value="&amp;232..Update.Label">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Update" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Close" dlg:tab-index="8" dlg:left="140" dlg:top="90" dlg:width="60" dlg:height="12" dlg:help-text="&amp;233..Close.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="&amp;234..Close.Label" dlg:button-type="cancel"/>
-  <dlg:button dlg:id="Help" dlg:tab-index="10" dlg:left="205" dlg:top="90" dlg:width="60" dlg:height="12" dlg:help-text="&amp;235..Help.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="&amp;236..Help.Label" dlg:button-type="help"/>
-  <dlg:text dlg:id="UpdateLabel" dlg:tab-index="12" dlg:left="10" dlg:top="106" dlg:width="253" dlg:height="20" dlg:help-text="&amp;237..UpdateLabel.HelpText" dlg:value="&amp;238..UpdateLabel.Label"/>
+  <dlg:button dlg:id="Close" dlg:tab-index="11" dlg:left="140" dlg:top="155" dlg:width="60" dlg:height="12" dlg:help-text="&amp;233..Close.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="&amp;234..Close.Label" dlg:button-type="cancel"/>
+  <dlg:button dlg:id="Help" dlg:tab-index="12" dlg:left="205" dlg:top="155" dlg:width="60" dlg:height="12" dlg:help-text="&amp;235..Help.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="&amp;236..Help.Label" dlg:button-type="help"/>
+  <dlg:text dlg:id="UpdateLabel" dlg:tab-index="12" dlg:left="10" dlg:top="177" dlg:width="253" dlg:height="20" dlg:help-text="&amp;237..UpdateLabel.HelpText" dlg:value="&amp;238..UpdateLabel.Label"/>
  </dlg:bulletinboard>
 </dlg:window>

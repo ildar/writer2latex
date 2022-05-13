@@ -43,12 +43,11 @@
   <option name="align_frames" value="true" />
   
   <option name="use_pifont" value="true" />
-  <option name="use_ifsym" value="true" />
   <option name="use_wasysym" value="true" />
   <option name="use_eurosym" value="true" />
   
-  <option name="use_bibtex" value="true" />
-  <option name="bibtex_style" value="plain" />
+  <option name="use_biblatex" value="true" />
+  <option name="biblatex_style" value="alphabetic" />
   
   <option name="ignore_empty_paragraphs" value="true" />
   <option name="ignore_hard_page_breaks" value="false" />
@@ -56,13 +55,6 @@
   <option name="ignore_double_spaces" value="true" />
   <option name="display_hidden_text" value="false" />
   <option name="debug" value="false" />
-  <heading-map max-level="5">
-    <heading-level-map writer-level="1" name="section" level="1" />
-    <heading-level-map writer-level="2" name="subsection" level="2" />
-    <heading-level-map writer-level="3" name="subsubsection" level="3" />
-    <heading-level-map writer-level="4" name="paragraph" level="4" />
-    <heading-level-map writer-level="5" name="subparagraph" level="5" />
-  </heading-map>
   <custom-preamble />
 
   <!-- Style maps: These rules defines how styles in OOo are mapped to LaTeX code.

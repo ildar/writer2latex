@@ -2,7 +2,7 @@
  *
  *  BibTeXDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2022-05-13)
  *
  */ 
  
@@ -29,37 +29,14 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialogProvider2;
-import com.sun.star.beans.PropertyValue;
-import com.sun.star.beans.PropertyVetoException;
-import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
-import com.sun.star.container.NoSuchElementException;
-import com.sun.star.container.XEnumeration;
-import com.sun.star.container.XEnumerationAccess;
-import com.sun.star.container.XIndexAccess;
 import com.sun.star.frame.XFrame;
-import com.sun.star.lang.IllegalArgumentException;
-import com.sun.star.lang.IndexOutOfBoundsException;
-import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XMultiComponentFactory;
-import com.sun.star.lang.XMultiServiceFactory;
-import com.sun.star.lang.XServiceInfo;
-import com.sun.star.text.XDependentTextField;
-import com.sun.star.text.XDocumentIndex;
-import com.sun.star.text.XDocumentIndexesSupplier;
-import com.sun.star.text.XText;
-import com.sun.star.text.XTextDocument;
-import com.sun.star.text.XTextField;
-import com.sun.star.text.XTextFieldsSupplier;
-import com.sun.star.text.XTextViewCursor;
-import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.ExecutableDialogResults;
-import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -82,6 +59,9 @@ import writer2latex.util.Misc;
 public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XInitialization {
 	private final static String W2LDIALOGSCOMMON = "W2LDialogsCommon";
 	
+	private final static String[] CITATION_TYPES = { "autocite", "textcite", "citeauthor", "citeauthor*", "citetitle", "citetitle*",
+			"citeyear", "citedate", "citeurl" };
+	
 	// **** Data used for component registration
 
     /** The component will be registered under this service name
@@ -93,6 +73,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     public static String __implementationName = BibTeXDialog.class.getName();
 
     // **** Member variables
+    
+    // The Writer manager
+    WriterBibTeXManager wbm = null;
     
     // The current frame (passed at initialization)
     XFrame xFrame = null;
@@ -116,7 +99,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         throws com.sun.star.uno.Exception {
         for (Object object : objects) {
         	if (object instanceof XFrame) {
-        		xFrame = UnoRuntime.queryInterface(XFrame.class, object);
+        		xFrame = (XFrame) UnoRuntime.queryInterface(XFrame.class, object);
         	}
             if (object instanceof String) {
                 bibTeXDirectory = new File((String) object);
@@ -160,7 +143,16 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     }
 	
     @Override public void initialize() {
+        wbm = new WriterBibTeXManager(xFrame);
     	reload(null);
+    	int nTypes = CITATION_TYPES.length;
+    	String[] sTypes = new String[nTypes];
+    	for (int i=0; i<nTypes; i++) {
+    		sTypes[i] = Messages.getString("BibTeXDialog."+CITATION_TYPES[i]);
+    	}
+    	setListBoxStringItemList("Type", sTypes);
+        setListBoxSelectedItem("Type",(short)0); // TODO: Should we remember the last setting? (Maybe not)
+        setTextFieldText("Prefix",wbm.getSelectedText()); // We cannot know why the user has selected a text, but it might be useful as a prefix
     }
 	
     @Override public void endDialog() {
@@ -192,11 +184,24 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	}
     	else if (sMethod.equals("InsertReference")) { //$NON-NLS-1$
     		// Insert a reference to the current BibTeX entry
+    		System.out.println("Insert reference");
     		insertReference();
+    		System.out.println("Done inserting reference");
     	}
     	else if (sMethod.equals("Update")) { //$NON-NLS-1$
     		// Update all reference in the document
-    		update();
+    		Set<String> notUpdated = wbm.update(parseAllBibTeXFiles());
+    		
+			// Inform the user about the result
+            if (notUpdated.isEmpty()) {
+    			setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
+            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else {
+            	setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
     	}
         return true;
     }
@@ -357,7 +362,8 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     
     // Insert the currently selected entry as a reference in the text document
     private void insertReference() {
-    	insertReference(getCurrentEntry());
+    	wbm.insertReference(getCurrentEntry(),
+    		CITATION_TYPES[getListBoxSelectedItem("Type")],getTextFieldText("Prefix"),getTextFieldText("Suffix"));
     }
     
     // Create a new BibTeX file
@@ -408,7 +414,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 	   	try {
 	   		Object provider = xMCF.createInstanceWithContext("com.sun.star.awt.DialogProvider2", xContext); //$NON-NLS-1$
 	   		XDialogProvider2 xDialogProvider = (XDialogProvider2)
-	   		UnoRuntime.queryInterface(XDialogProvider2.class, provider);
+	   				UnoRuntime.queryInterface(XDialogProvider2.class, provider);
 	   		String sDialogUrl = "vnd.sun.star.script:"+W2LDIALOGSCOMMON+".NewDialog?location=application"; //$NON-NLS-1$ //$NON-NLS-2$
 	   		return xDialogProvider.createDialog(sDialogUrl);
 	   	}
@@ -439,7 +445,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	return bibMark;
     }
     
-    // **** Implement core functions
+    // Helper function to access BibTeX files
         
     // Edit a BibTeX files using the systems default application, if any
     private void edit(File file) {
@@ -460,74 +466,7 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         }
     }
     
-    // Update all bibliographic fields in the document
-    private void update() {
-    	if (xFrame!=null) {
-	    	BibTeXReader[] readers = parseAllBibTeXFiles();
-	    	
-	    	// Collect identifiers of fields that were not updated (to inform the user)
-	    	Set<String> notUpdated = new HashSet<String>();
-	    	
-	    	// Traverse all text fields and update all bibliography fields
-			XTextFieldsSupplier xSupplier = (XTextFieldsSupplier) UnoRuntime.queryInterface(
-					XTextFieldsSupplier.class, xFrame.getController().getModel());
-			XEnumerationAccess fields = xSupplier.getTextFields();
-			XEnumeration enumeration = fields.createEnumeration();
-			while (enumeration.hasMoreElements()) {
-				try {
-					Object elm = enumeration.nextElement();
-					if (AnyConverter.isObject(elm)) {
-						XTextField xTextField = (XTextField) AnyConverter.toObject(XTextField.class, elm);
-						if (xTextField!=null) {
-							XServiceInfo xInfo = UnoRuntime.queryInterface(XServiceInfo.class, xTextField);
-							if (xInfo.supportsService("com.sun.star.text.TextField.Bibliography")) { //$NON-NLS-1$
-								String sId = updateBibField(xTextField, readers);
-								if (sId!=null) {
-									notUpdated.add(sId);
-								}
-							}
-						}
-					}
-				} catch (NoSuchElementException e) {
-				} catch (WrappedTargetException e) {
-				}
-			}
-			
-			// Traverse all indexes and update bibliographies
-			XDocumentIndexesSupplier xIndexSupplier = (XDocumentIndexesSupplier) UnoRuntime.queryInterface(
-					XDocumentIndexesSupplier.class, xFrame.getController().getModel());
-			XIndexAccess xIndexAccess = xIndexSupplier.getDocumentIndexes();
-			
-			int nIndexCount = xIndexAccess.getCount();
-			for (int i=0; i<nIndexCount; i++) {
-				try {
-					Object indexElm = xIndexAccess.getByIndex(i);
-					if (AnyConverter.isObject(indexElm)) {
-						XDocumentIndex xDocumentIndex = (XDocumentIndex) AnyConverter.toObject(XDocumentIndex.class, indexElm);
-						if (xDocumentIndex!=null) {
-							if ("com.sun.star.text.Bibliography".equals(xDocumentIndex.getServiceName())) { //$NON-NLS-1$
-								xDocumentIndex.update();
-							}
-						}
-					}
-				} catch (IndexOutOfBoundsException e) {
-				} catch (WrappedTargetException e) {
-				}
-			}
-	
-			// Inform the user about the result
-            //MessageBox msgBox = new MessageBox(xContext, xFrame);
-            if (notUpdated.isEmpty()) {
-    			setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
-            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            else {
-            	setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
-            	//msgBox.showMessage("Writer2LaTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-    	}
-    }
-    
+    // Load and parse all available BibTeX files
     private BibTeXReader[] parseAllBibTeXFiles() {
     	int nFiles = files.length;
     	BibTeXReader[] readers = new BibTeXReader[nFiles];
@@ -544,217 +483,5 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	}
     	return readers;
     }
-    
-    // Update a bibliography field, returning the identifier on failure and null on success(!)
-    private String updateBibField(XTextField xTextField, BibTeXReader[] readers) {
-        XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xTextField);
-        if (xPropSet!=null) {
-			try {
-				Object fieldsObj = xPropSet.getPropertyValue("Fields"); 
-				if (fieldsObj!=null && fieldsObj instanceof PropertyValue[]) {
-					PropertyValue[] props = (PropertyValue[]) fieldsObj;
-					for (PropertyValue prop : props) {
-						if ("Identifier".equals(prop.Name)) { 
-							if (prop.Value instanceof String) {
-								String sIdentifier = (String)prop.Value;
-								for (BibTeXReader reader : readers) {
-									if (reader.getEntries().keySet().contains(sIdentifier)) {
-										BibMark bibMark = reader.getEntries().get(sIdentifier);
-										try {
-											xPropSet.setPropertyValue("Fields", createBibliographyFields(bibMark)); 
-											return null;
-										} catch (IllegalArgumentException e) {
-										} catch (PropertyVetoException e) {
-										}
-									}
-								}
-								return sIdentifier;
-							}
-						}
-					}
-				}
-			} catch (UnknownPropertyException e) {
-				System.err.println(e.getMessage());
-			} catch (WrappedTargetException e) {
-				System.err.println(e.getMessage());
-			}
-        }
-        return null;
-    }
-    
-    // Insert a bibliographic reference from a BibMark
-    private void insertReference(BibMark bibMark) {
-    	if (xFrame!=null) {
-	        try {
-	        	// To be able to manipulate the text we need to get the XText interface of the model
-	        	XTextDocument xTextDoc = UnoRuntime.queryInterface(
-	        			XTextDocument.class, xFrame.getController().getModel());
-	        	XText xText = xTextDoc.getText();
-	
-	            // To locate the current position, we need to get the XTextViewCursor from the controller
-	            XTextViewCursorSupplier xViewCursorSupplier = UnoRuntime.queryInterface(
-	                    XTextViewCursorSupplier.class, xFrame.getController());
-	            XTextViewCursor xViewCursor = xViewCursorSupplier.getViewCursor();
-	            
-	        	// To create a new bibliographic field, we need to get the document service factory
-	        	XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
-	        			XMultiServiceFactory.class, xFrame.getController().getModel());
-	   
-	            // Use the service factory to create a bibliography field
-	            XDependentTextField xBibField = UnoRuntime.queryInterface (
-	                XDependentTextField.class, xDocFactory.createInstance("com.sun.star.text.textfield.Bibliography")); 
-	            
-	            // Create a field master for the field
-	            XPropertySet xMasterPropSet = UnoRuntime.queryInterface(
-	                XPropertySet.class, xDocFactory.createInstance("com.sun.star.text.fieldmaster.Bibliography")); 
-	            
-	            // Populate the bibliography field
-	            XPropertySet xPropSet = UnoRuntime.queryInterface(
-	                    XPropertySet.class, xBibField);
-	            PropertyValue[] fields = createBibliographyFields(bibMark);
-	            xPropSet.setPropertyValue("Fields", fields); 
-	            
-	            // Attach the field master to the bibliography field
-	            xBibField.attachTextFieldMaster(xMasterPropSet);
-	   
-	         	// Finally, insert the field at the end of the cursor
-	            xText.insertTextContent(xViewCursor.getEnd(), xBibField, false);
-	        } catch (Exception e) {
-	        }
-    	}
-    }
-
-    // Create fields from a BibMark
-    private PropertyValue[] createBibliographyFields(BibMark bibMark) {
-        EntryType[] entryTypes = EntryType.values();
-        PropertyValue[] fields = new PropertyValue[entryTypes.length+2];
-        
-        fields[0] = new PropertyValue();
-        fields[0].Name="Identifier"; 
-        fields[0].Value=bibMark.getIdentifier();
-        fields[1] = new PropertyValue();
-        fields[1].Name="BibiliographicType"; // sic! (API typo) 
-        fields[1].Value=new Short(getBibliographicType(bibMark.getEntryType()));
-        
-        int i=1;
-        for (EntryType entryType : entryTypes) {
-        	fields[++i] = new PropertyValue();
-        	fields[i].Name = getFieldName(entryType);
-        	String sValue = bibMark.getField(entryType);
-        	fields[i].Value = sValue!=null ? bibMark.getField(entryType) : ""; 
-        }
-        
-        return fields;
-    }
-    
-    // Translate entry type to field name
-    private String getFieldName(EntryType entryType) {
-    	switch(entryType) {
-    	case address: return "Address"; 
-    	case annote: return "Annote"; 
-    	case author: return "Author"; 
-    	case booktitle: return "Booktitle"; 
-    	case chapter : return "Chapter"; 
-    	case edition: return "Edition"; 
-    	case editor: return "Editor"; 
-    	case howpublished: return "Howpublished"; 
-    	case institution: return "Institution"; 
-		case journal: return "Journal"; 
-    	case month: return "Month"; 
-    	case note: return "Note"; 
-    	case number: return "Number"; 
-    	case organizations: return "Organizations"; 
-    	case pages: return "Pages"; 
-    	case publisher: return "Publisher"; 
-    	case school: return "School"; 
-    	case series: return "Series"; 
-    	case title: return "Title"; 
-    	case report_type: return "Report_Type"; 
-    	case volume: return "Volume"; 
-    	case year: return "Year"; 
-    	case url: return "URL"; 
-    	case custom1: return "Custom1"; 
-    	case custom2: return "Custom2"; 
-    	case custom3: return "Custom3"; 
-    	case custom4: return "Custom4"; 
-    	case custom5: return "Custom5"; 
-    	case isbn: return "ISBN"; 
-    	default: return null;
-    	}
-    }
-    
-    // Translate bibliographic type to internal code
-    private short getBibliographicType(String sBibType) {
-    	String s = sBibType.toUpperCase();
-    	if ("ARTICLE".equals(s)) { 
-    		return (short)0;
-    	}
-    	else if ("BOOK".equals(s)) { 
-    		return (short)1;
-    	}
-    	else if ("BOOKLET".equals(s)) { 
-    		return (short)2;
-    	}
-    	else if ("CONFERENCE".equals(s)) { 
-    		return (short)3;
-    	}
-    	else if ("INBOOK".equals(s)) { 
-    		return (short)4;
-    	}
-    	else if ("INCOLLECTION".equals(s)) { 
-    		return (short)5;
-    	}
-    	else if ("INPROCEEDINGS".equals(s)) { 
-    		return (short)6;
-    	}
-    	else if ("JOURNAL".equals(s)) { 
-    		return (short)7;
-    	}
-    	else if ("MANUAL".equals(s)) { 
-    		return (short)8;
-    	}
-    	else if ("MASTERSTHESIS".equals(s)) { 
-    		return (short)9;
-    	}
-    	else if ("MISC".equals(s)) { 
-    		return (short)10;
-    	}
-    	else if ("PHDTHESIS".equals(s)) { 
-    		return (short)11;
-    	}
-    	else if ("PROCEEDINGS".equals(s)) { 
-    		return (short)12;
-    	}
-    	else if ("TECHREPORT".equals(s)) { 
-    		return (short)13;
-    	}
-    	else if ("UNPUBLISHED".equals(s)) { 
-    		return (short)14;
-    	}
-    	else if ("EMAIL".equals(s)) { 
-    		return (short)15;
-    	}
-    	else if ("WWW".equals(s)) { 
-    		return (short)16;
-    	}
-    	else if ("CUSTOM1".equals(s)) { 
-    		return (short)17;
-    	}
-    	else if ("CUSTOM2".equals(s)) { 
-    		return (short)18;
-    	}
-    	else if ("CUSTOM3".equals(s)) { 
-    		return (short)19;
-    	}
-    	else if ("CUSTOM4".equals(s)) { 
-    		return (short)20;
-    	}
-    	else if ("CUSTOM5".equals(s)) { 
-    		return (short)21;
-    	}
-    	else {
-    		return (short)10; // Use misc for unknown types
-    	}
-    }
-    
+ 
 }

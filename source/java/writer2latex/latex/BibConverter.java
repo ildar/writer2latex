@@ -19,13 +19,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-10)
+ *  Version 2.0 (2022-05-13)
  *
  */
 
 package writer2latex.latex;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.w3c.dom.Element;
 
@@ -60,6 +63,9 @@ import writer2latex.util.Misc;
 class BibConverter extends ConverterHelper {
 
     private BibTeXDocument bibDoc = null;
+    
+    private Set<String> validCommands = null;
+    
     /** Construct a new BibConverter.
      * 
      * @param config the configuration to use 
@@ -71,7 +77,13 @@ class BibConverter extends ConverterHelper {
         // We need to create a BibTeX document except if we are using external BibTeX files
         if (!(config.useBiblatex() && config.externalBibtexFiles().length()>0)) {
         	bibDoc = new BibTeXDocument(palette.getOutFileName(),false,ofr);
-        }        
+        }
+        
+        // TODO: Repeated from BibTeXDialog; what is the obvious place to put the definitions?
+    	String[] sCitationTypes = { "autocite", "textcite", "citeauthor", "citeauthor*", "citetitle", "citetitle*",
+    			"citeyear", "citedate", "citeurl" };
+    	validCommands = new HashSet<>(Arrays.asList(sCitationTypes));
+
     }
 
     /** Export the bibliography directly as a thebibliography environment (as an alternative to using BibTeX) 
@@ -205,31 +217,35 @@ class BibConverter extends ConverterHelper {
      * @param oc the current context
      */
     void handleBibliography(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        if (!config.noIndex()) {
+        if (!config.noIndex()) {        	
             Element source = Misc.getChildByTagName(node,XMLString.TEXT_BIBLIOGRAPHY_SOURCE);
-            if (source!=null) {
-            	// Unfortunately the index name depends on the documentclass
-            	// For now we only handle the standard classes article, report and book
-            	if ("article".equals(config.documentclass())) {
-            		palette.getIndexCv().convertIndexName(source, "\\refname", ldp, oc);
-            	}
-            	else if ("book".equals(config.documentclass()) || "report".equals(config.documentclass())) {
-            		palette.getIndexCv().convertIndexName(source, "\\bibname", ldp, oc);
-            	}
-            }
-        	
-	        if (config.useBiblatex()) { // Export using BibTeX
-	        	handleBibliographyAsBibTeX(ldp);
+	        if (config.useBiblatex()) { // Export using BibLaTeX
+	        	ldp.append("\\printbibliography");
+	            if (source!=null) {
+	    	        Element title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+	    	        if (title!=null && config.convertIndexNames()) {
+	    	            ldp.append("[title={"); // Actually {} is only needed if the title contains , or =
+	    	            palette.getInlineCv().traversePCDATA(title,ldp,oc); 
+	    	            ldp.append("}]");
+	    	        }
+	            }
+	        	ldp.nl();
 	        }
 	        else { // Export as thebibliography environment
+	            if (source!=null) {
+	            	// Unfortunately the index name depends on the documentclass
+	            	// For now we only handle the standard classes article, report and book
+	            	if ("article".equals(config.documentclass())) {
+	            		palette.getIndexCv().convertIndexName(source, "\\refname", ldp, oc);
+	            	}
+	            	else if ("book".equals(config.documentclass()) || "report".equals(config.documentclass())) {
+	            		palette.getIndexCv().convertIndexName(source, "\\bibname", ldp, oc);
+	            	}
+	            }
 	        	ThebibliographyGenerator bibCv = new ThebibliographyGenerator(ofr);
 	        	bibCv.handleBibliography(source, ldp, oc);
 	        }
         }
-    }
-    
-    private void handleBibliographyAsBibTeX(LaTeXDocumentPortion ldp) {
-    	ldp.append("\\printbibliography").nl();
     }
 	
     /** Process a Bibliography Mark
@@ -240,10 +256,25 @@ class BibConverter extends ConverterHelper {
     void handleBibliographyMark(Element node, LaTeXDocumentPortion ldp, Context oc) {
         String sIdentifier = node.getAttribute(XMLString.TEXT_IDENTIFIER);
         if (sIdentifier!=null) {
-            // Use original citation if using external files; stripped if exporting BibTeX
-            ldp.append("\\autocite{")
-               .append(config.externalBibtexFiles().length()==0 ? bibDoc.getExportName(sIdentifier) : sIdentifier)
-               .append("}");
+        	if (oc.getKey().length()>0) { // Writer2LaTeX extended citation
+        		if (validCommands.contains(oc.getType())) {
+        			ldp.append("\\").append(oc.getType());
+        		} else { // In case someone has created a fake w2l cite entry...
+        			ldp.append("\\autocite");
+        		}
+        		if (oc.getPrefix().length()>0) {
+        			ldp.append("[").append(oc.getPrefix()).append("]");
+        		}
+        		if (oc.getPrefix().length()>0 || oc.getSuffix().length()>0) { // One optional arguments means suffix
+        			ldp.append("[").append(oc.getSuffix()).append("]");
+        		}
+        		ldp.append("{").append(sIdentifier).append("}"); // TODO: Check sIdentifier==oc.getKey() and do what if not??
+        	} else {
+                // Use original citation if using external files; stripped if exporting BibTeX
+	            ldp.append("\\autocite{")
+	               .append(config.externalBibtexFiles().length()==0 ? bibDoc.getExportName(sIdentifier) : sIdentifier)
+	               .append("}");
+        	}
         }
     }
 	

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-04-27) 
+ *  Version 2.0 (2022-05-13) 
  *
  */
 
@@ -34,7 +34,7 @@ import writer2latex.office.StyleWithProperties;
  */
 public class Context {
 
-    // *** Formatting Info (current values in the source OOo document) ***
+    // *** Formatting Info (current values in the source ODF document) ***
 	
     // Current list style
     private String sListStyleName = null;
@@ -74,8 +74,14 @@ public class Context {
     // within a caption
     private boolean bInCaption = false;
     
-    // within a Zotero/JabRef citation
-    private boolean bInZoteroJabRefText = false;
+    // within a reference mark used as citation (Zotero/JabRef/Writer2LaTeX)
+    private boolean bInRefMarkCiteText = false;
+    
+    // data for a Writer2LaTeX extended citation
+    private String sKey = "";
+    private String sType = "";
+    private String sPrefix = "";
+    private String sSuffix = "";
 	
     // within a floating figure (figure environment)
     private boolean bInFigureFloat = false;
@@ -189,10 +195,28 @@ public class Context {
 	
     public boolean isInCaption() { return bInCaption; }
     
-    public void setInZoteroJabRefText(boolean bInZoteroJabRefText) { this.bInZoteroJabRefText = bInZoteroJabRefText; }
+    public void setInRefMarkCiteText(boolean bInRefMarkCiteText) {
+    	this.bInRefMarkCiteText = bInRefMarkCiteText;
+  		setRefMarkData("","","",""); // Also clear additional data
+    }
     
-    public boolean isInZoteroJabRefText() { return bInZoteroJabRefText; }
+    public boolean isInRefMarkCiteText() { return bInRefMarkCiteText; }
 
+    public void setRefMarkData(String sKey, String sType, String sPrefix, String sSuffix ) {
+    	this.sKey = sKey;
+    	this.sType = sType;
+    	this.sPrefix = sPrefix;
+    	this.sSuffix = sSuffix;
+    }
+    
+    public String getKey() { return sKey; }
+    
+    public String getType() { return sType; }
+    
+    public String getPrefix() { return sPrefix; }
+    
+    public String getSuffix() { return sSuffix; }
+    
     public void setInFigureFloat(boolean bInFigureFloat) { this.bInFigureFloat = bInFigureFloat; }
 	
     public boolean isInFigureFloat() { return bInFigureFloat; }
@@ -307,7 +331,7 @@ public class Context {
         newContext.setListLevel(nListLevel);
         newContext.setInSection(bInSection);
         newContext.setInCaption(bInCaption);
-        newContext.setInZoteroJabRefText(bInZoteroJabRefText);
+        newContext.setInRefMarkCiteText(bInRefMarkCiteText);
         newContext.setInFigureFloat(bInFigureFloat);
         newContext.setInTableFloat(bInTableFloat);
         newContext.setInFrame(bInFrame);
