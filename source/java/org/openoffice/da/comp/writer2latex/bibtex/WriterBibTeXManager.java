@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-13)
+ *  Version 2.0 (2022-05-14)
  *
  */ 
  
@@ -231,7 +231,11 @@ public class WriterBibTeXManager {
 	            String sDisplayType = Messages.getString("BibTeXDialog."+sType);
 	            String sFinalPrefix = sPrefix.length()>0 ? sPrefix+" " : "";
 	            String sFinalSuffix = sSuffix.length()>0 ? ", "+sSuffix : "";
-	            if (sType.equals("autocite")) { // Normal citation
+	            if (sType.equals("nocite")) { // No affix for nocite
+	            	sFinalPrefix = "";
+	            	sFinalSuffix = "";
+	            	
+	            } else if (sType.equals("autocite")) { // Normal citation
 	            	if (sFinalPrefix.length()>0 || sFinalSuffix.length()>0) {
 		            	sFinalPrefix="["+sFinalPrefix;
 		            	sFinalSuffix= sFinalSuffix+"]";
@@ -243,7 +247,7 @@ public class WriterBibTeXManager {
 	            	} else {
 	            		sFinalPrefix = sDisplayType + " ";
 	            	}
-	            } else { // Author, title, year, date or URL (deliberately no space after)
+	            } else { // Author, title, year, date, URL and nocite (deliberately no space after)
 	            	sFinalPrefix = sFinalPrefix + sDisplayType;
 	            }
 	            // Insert reference in document

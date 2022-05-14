@@ -33,6 +33,7 @@
     <dlg:menuitem dlg:value="&amp;417.Type.StringItemList"/>
     <dlg:menuitem dlg:value="&amp;418.Type.StringItemList"/>
    </dlg:menupopup>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:TypeChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:text dlg:id="PrefixLabel" dlg:tab-index="14" dlg:left="10" dlg:top="114" dlg:width="60" dlg:height="12" dlg:help-text="&amp;259.BibTeXEntry.PrefixLabel.HelpText" dlg:value="&amp;260.BibTeXEntry.PrefixLabel.Label"/>
   <dlg:textfield dlg:id="Prefix" dlg:tab-index="7" dlg:left="75" dlg:top="112" dlg:width="120" dlg:height="12" dlg:help-text="&amp;289.BibTeXEntry.Prefix.HelpText" dlg:value=""/>

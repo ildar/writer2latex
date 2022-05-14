@@ -81,7 +81,7 @@ class BibConverter extends ConverterHelper {
         
         // TODO: Repeated from BibTeXDialog; what is the obvious place to put the definitions?
     	String[] sCitationTypes = { "autocite", "textcite", "citeauthor", "citeauthor*", "citetitle", "citetitle*",
-    			"citeyear", "citedate", "citeurl" };
+    			"citeyear", "citedate", "citeurl", "nocite" };
     	validCommands = new HashSet<>(Arrays.asList(sCitationTypes));
 
     }
