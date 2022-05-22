@@ -2,7 +2,7 @@
  *
  *  LogViewerDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2022-05-20)
  *
  */ 
  
@@ -60,7 +60,7 @@ public class LogViewerDialog extends DialogBase
     private String sBaseUrl = null;
     private String sLaTeXLog = null;
     private String sLaTeXErrors = null;
-    private String sBibTeXLog = null;
+    private String sBiberLog = null;
     private String sMakeindexLog = null;
 
     /** Return the name of the dialog within the library
@@ -73,7 +73,7 @@ public class LogViewerDialog extends DialogBase
         if (sBaseUrl!=null) {
             sLaTeXLog = readTextFile(sBaseUrl+".log");
             sLaTeXErrors = errorFilter(sLaTeXLog);
-            sBibTeXLog = readTextFile(sBaseUrl+".blg");
+            sBiberLog = readTextFile(sBaseUrl+".blg");
             sMakeindexLog = readTextFile(sBaseUrl+".ilg");
             setComboBoxText("LogContents",sLaTeXLog);
         }
@@ -104,8 +104,8 @@ public class LogViewerDialog extends DialogBase
             	getCheckBoxState("ErrorFilter")==DialogAccess.CHECKBOX_CHECKED ? sLaTeXErrors : sLaTeXLog);
             setControlEnabled("ErrorFilter",true);
         }
-        else if (sMethod.equals("ViewBibTeXLog")) {
-            setComboBoxText("LogContents", sBibTeXLog);
+        else if (sMethod.equals("ViewBiberLog")) {
+            setComboBoxText("LogContents", sBiberLog);
             setControlEnabled("ErrorFilter",false);
         }
         else if (sMethod.equals("ViewMakeindexLog")) {
@@ -120,7 +120,7 @@ public class LogViewerDialog extends DialogBase
     }
 	
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "ViewLaTeXLog", "ViewBibTeXLog", "ViewMakeindexLog", "ErrorFilterChange" };
+        String[] sNames = { "ViewLaTeXLog", "ViewBiberLog", "ViewMakeindexLog", "ErrorFilterChange" };
         return sNames;
     }
 	

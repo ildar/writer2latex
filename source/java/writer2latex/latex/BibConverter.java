@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-13)
+ *  Version 2.0 (2022-05-22)
  *
  */
 
@@ -28,10 +28,10 @@ package writer2latex.latex;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.w3c.dom.Element;
-
 import writer2latex.base.BibliographyGenerator;
 import writer2latex.bibtex.BibTeXDocument;
 
@@ -178,34 +178,41 @@ class BibConverter extends ConverterHelper {
      * @param decl the LaTeXDocumentPortion to which other declarations should be added.
      */
     public void appendDeclarations(LaTeXPacman pack, LaTeXDocumentPortion decl) {
-    	CSVList options = new CSVList(",","=");
-    	if (config.biblatexOptions().length()>0) {
-    		options.addValue(config.biblatexOptions());
+    	if (config.useBiblatex()) {
+	    	CSVList options = new CSVList(",","=");
+	    	if (config.biblatexOptions().length()>0) {
+	    		options.addValue(config.biblatexOptions());
+	    	}
+	        // We may need to use a different encoding for the BibTeX files
+	        if (config.externalBibtexFiles().length()>0) {
+	        	int nBibTeXEncoding = config.bibtexEncoding();
+	        	if (nBibTeXEncoding>-1 && nBibTeXEncoding!=config.inputencoding()) {
+	           		options.addValue("bibencoding", ClassicI18n.writeInputenc(nBibTeXEncoding));
+	        	}
+	        }
+	        options.addValue("backend", "biber");
+	
+	    	pack.usepackage(options.toString(), "biblatex");
+	    	BibTeXDocument doc = getBibTeXDocument();
+	    	if (doc!=null) {
+	            decl.append("\\addbibresource{").append(bibDoc.getName()).append(".bib}").nl();
+	
+	    	}
+	    	Set<String> bibNames = new HashSet<>();
+	    	addBibresources(config.zoteroBibtexFiles(), bibNames, decl);
+	    	addBibresources(config.jabrefBibtexFiles(), bibNames, decl);
     	}
-        // We may need to use a different encoding for the BibTeX files
-        if (config.externalBibtexFiles().length()>0) {
-        	int nBibTeXEncoding = config.bibtexEncoding();
-        	if (nBibTeXEncoding>-1 && nBibTeXEncoding!=config.inputencoding()) {
-           		options.addValue("bibencoding", ClassicI18n.writeInputenc(nBibTeXEncoding));
-        	}
-        }
-        options.addValue("backend", "biber");
-
-    	pack.usepackage(options.toString(), "biblatex");
-    	BibTeXDocument doc = getBibTeXDocument();
-    	if (doc!=null) {
-            decl.append("\\addbibresource{").append(bibDoc.getName()).append(".bib}").nl();
-
-    	}
-    	addBibresources(config.zoteroBibtexFiles(), decl);
-    	addBibresources(config.jabrefBibtexFiles(), decl);
     }
     
-    private void addBibresources(String sFiles, LaTeXDocumentPortion ldp) {
+    private void addBibresources(String sFiles, Set<String> bibNames, LaTeXDocumentPortion ldp) {
     	if (sFiles.length()>0) {
 	    	String[] sItems = sFiles.split(",");
 	    	for (String s : sItems) {
-	    		ldp.append("\\addbibresource{").append(s).append(".bib}").nl();
+	    		String s1 = s.trim();
+	    		if (!bibNames.contains(s1)) {
+	    			ldp.append("\\addbibresource{").append(s1).append(".bib}").nl();
+	    			bibNames.add(s1);
+	    		}
 	    	}
     	}
     }
@@ -249,14 +256,24 @@ class BibConverter extends ConverterHelper {
     }
 	
     /** Process a Bibliography Mark
-     * @param node a text:bibliography-mark element
+     * @param marks list of text:bibliography-mark elements
      * @param ldp the LaTeXDocumentPortion to which LaTeX code should be added
      * @param oc the current context
      */
-    void handleBibliographyMark(Element node, LaTeXDocumentPortion ldp, Context oc) {
-        String sIdentifier = node.getAttribute(XMLString.TEXT_IDENTIFIER);
-        if (sIdentifier!=null) {
-        	if (oc.getKey().length()>0) { // Writer2LaTeX extended citation
+    void handleBibliographyMark(List<Element> marks, LaTeXDocumentPortion ldp, Context oc) {
+    	CSVList identifiers = new CSVList(",");
+    	for (Element mark : marks) {
+    		String sIdentifier = mark.getAttribute(XMLString.TEXT_IDENTIFIER);
+    		if (sIdentifier.length()>0) {
+    			if (config.externalBibtexFiles().length()>0) { // External BibTeX files; use original identifier
+    				identifiers.addValue(sIdentifier);
+    			} else { // Converting fields to BibTeX; strip identifier of illegal characters
+    				identifiers.addValue(bibDoc.getExportName(sIdentifier));
+    			}
+    		}
+    	}
+        if (!identifiers.isEmpty()) {
+        	if (oc.getType().length()>0) { // Writer2LaTeX extended citation
         		if (validCommands.contains(oc.getType())) {
         			ldp.append("\\").append(oc.getType());
         		} else { // In case someone has created a fake w2l cite entry...
@@ -268,12 +285,9 @@ class BibConverter extends ConverterHelper {
         		if (oc.getPrefix().length()>0 || oc.getSuffix().length()>0) { // One optional arguments means suffix
         			ldp.append("[").append(oc.getSuffix()).append("]");
         		}
-        		ldp.append("{").append(sIdentifier).append("}"); // TODO: Check sIdentifier==oc.getKey() and do what if not??
+        		ldp.append("{").append(identifiers.toString()).append("}"); // TODO: Check sIdentifier in the list oc.getKey() and do what if not??
         	} else {
-                // Use original citation if using external files; stripped if exporting BibTeX
-	            ldp.append("\\autocite{")
-	               .append(config.externalBibtexFiles().length()==0 ? bibDoc.getExportName(sIdentifier) : sIdentifier)
-	               .append("}");
+	            ldp.append("\\autocite{").append(identifiers.toString()).append("}");
         	}
         }
     }

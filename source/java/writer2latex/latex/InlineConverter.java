@@ -19,12 +19,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-13)
+ *  Version 2.0 (2022-05-22)
  *
  */
 
 package writer2latex.latex;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.w3c.dom.Element;
@@ -386,7 +388,16 @@ public class InlineConverter extends ConverterHelper {
                             palette.getFieldCv().handleBookmarkRef(child,ldp,oc);
                         }
                         else if (sName.equals(XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
-                            palette.getBibCv().handleBibliographyMark(child,ldp,oc);
+                        	// Adjacent bibliography marks are handled as a single reference
+                        	List<Element> marks = new ArrayList<>();
+                        	marks.add(child);
+                        	Node sibling = child.getNextSibling();
+                        	while (sibling!=null && Misc.isElement(sibling,XMLString.TEXT_BIBLIOGRAPHY_MARK)) {
+                        		marks.add((Element)sibling);
+                        		childNode = sibling;
+                        		sibling = sibling.getNextSibling();
+                        	}
+                            palette.getBibCv().handleBibliographyMark(marks,ldp,oc);
                         }
                         else if (sName.equals(XMLString.TEXT_ALPHABETICAL_INDEX_MARK)) {
                             palette.getIndexCv().handleAlphabeticalIndexMark(child,ldp,oc);

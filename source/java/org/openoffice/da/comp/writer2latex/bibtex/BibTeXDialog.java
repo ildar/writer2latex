@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-14)
+ *  Version 2.0 (2022-05-22)
  *
  */ 
  
@@ -29,8 +29,9 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialogProvider2;
 import com.sun.star.beans.XPropertySet;
@@ -91,6 +92,9 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     
     // Cache of the current BibTeX file
     BibTeXReader currentFile = null;
+    
+    // Currently added sources
+    List<BibMark> sources = new ArrayList<>();
     
     // **** Implement com.sun.star.lang.XInitialization
     
@@ -157,7 +161,6 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
         setListBoxSelectedItem("Type",(short)0); // We don't remember the previous selection as normal is (supposedly) the most common type
         setTextFieldText("Prefix",wbm.getSelectedText()); // We cannot know why the user has selected a text, but it might be useful as a prefix
         reload(null);
-    	typeChange();
     }
 	
     @Override public void endDialog() {
@@ -166,7 +169,6 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
    // **** Implement XDialogEventHandler
     
     @Override public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
-    	setLabelText("UpdateLabel","");
     	if (sMethod.equals("FileChange")) { // The user has selected another BibTeX file
     		fileChange();
     	}
@@ -185,6 +187,12 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	else if (sMethod.equals("TypeChange")) { // The user has changed the citation type
     		typeChange();
     	}
+    	else if (sMethod.equals("AddSource")) { // 
+    		addSource();
+    	}
+    	else if (sMethod.equals("RemoveSource")) { //
+    		removeSource();
+    	}
     	else if (sMethod.equals("InsertReference")) { // Insert a reference to the current BibTeX entry
     		insertReference();
     	}
@@ -192,17 +200,18 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     		Set<String> notUpdated = wbm.update(parseAllBibTeXFiles());
 			// Inform the user about the result
             if (notUpdated.isEmpty()) {
-    			setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); 
+    			setLabelText("SourcesLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); 
             }
             else {
-            	setLabelText("UpdateLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); 
+            	setLabelText("SourcesLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); 
             }
     	}
         return true;
     }
 	
     @Override public String[] getSupportedMethodNames() {
-        String[] sNames = { "FileChange", "EntryChange", "New", "Edit", "Reload", "TypeChange", "InsertReference", "Update" };
+        String[] sNames
+        	= { "FileChange", "EntryChange", "New", "Edit", "Reload", "TypeChange", "AddSource", "RemoveSource", "InsertReference", "Update" };
         return sNames;
     }
     
@@ -246,41 +255,47 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 			    		}
 					}
 					setListBoxSelectedItem("Entry",nEntry);
-					enableEntrySelection(true);
 					entryChange();
 				}
 				else { // No entries, disable controls
-					enableEntrySelection(false);
 		    		setLabelText("EntryInformation",Messages.getString("BibTeXDialog.noentries")); 
 				}
 				setControlEnabled("Edit",true); 
 			}
 			else { // Failed to parse, disable controls
 				setListBoxStringItemList("Entry", new String[0]);
-				enableEntrySelection(false);
 				setControlEnabled("Edit",false); 
 				setLabelText("EntryInformation",Messages.getString("BibTeXDialog.errorreadingfile")); 
 		    }
     	}
+    	enableEntrySelection();
     }
     
 	// Update the entry information based on the current selection in the entry list 
     private void entryChange() {
     	BibMark bibMark = getCurrentEntry();
     	if (bibMark!=null) {
-    		String sAuthor = bibMark.getField(EntryType.author);
-    		if (sAuthor==null) { sAuthor = ""; } 
-    		String sTitle = bibMark.getField(EntryType.title);
-    		if (sTitle==null) { sTitle = ""; } 
-    		String sPublisher = bibMark.getField(EntryType.publisher);
-    		if (sPublisher==null) { sPublisher = ""; } 
-    		String sYear = bibMark.getField(EntryType.year);
-    		if (sYear==null) { sYear = ""; } 
-    		setLabelText("EntryInformation", sAuthor+"\n"+sTitle+"\n"+sPublisher+"\n"+sYear);   
+    		StringBuffer info = new StringBuffer();
+    		if (!addInfo(bibMark,EntryType.author,info)) { addInfo(bibMark,EntryType.editor,info); }
+    		addInfo(bibMark,EntryType.title,info);
+    		addInfo(bibMark,EntryType.publisher,info);
+    		addInfo(bibMark,EntryType.year,info);
+    		setLabelText("EntryInformation", info.toString());
     	}
     	else {
     		setLabelText("EntryInformation", Messages.getString("BibTeXDialog.noinformation"));    		 
     	}
+    	enableEntrySelection();
+    }
+    
+    private boolean addInfo(BibMark bibMark, EntryType key, StringBuffer info) {
+    	String s = bibMark.getField(key);
+    	if (s!=null) {
+    		if (info.length()>0) { info.append('\n'); }
+    		info.append(s);
+    		return true;
+    	}
+    	return false;
     }
     
     // Create a new BibTeX file
@@ -365,10 +380,51 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	enableAffix(!CITATION_TYPES[getListBoxSelectedItem("Type")].equals("nocite"));
     }
     
+    // Add currently selected entry as a source for the reference
+    private void addSource() {
+    	BibMark currentBibMark = getCurrentEntry();
+    	if (currentBibMark!=null && !hasSource(currentBibMark)) {
+	   		sources.add(currentBibMark);
+	   		showSources();
+	   		enableEntrySelection();
+    	}
+    }
+    
+    private boolean hasSource(BibMark mark) {
+    	if (mark!=null) {
+	    	for (BibMark bibMark : sources) { // A Map would be nicer here...
+	    		if (mark.getIdentifier().equals(bibMark.getIdentifier())) {
+	    			return true;
+	    		}
+	    	}
+    	}
+    	return false;
+    }
+    
+    // Remove last entry from list of sources
+    private void removeSource() {
+    	if (!sources.isEmpty()) { // A stack would be nicer here...
+    		sources.remove(sources.get(sources.size()-1));
+    		showSources();
+    	}
+    	enableEntrySelection();
+    }
+    
     // Insert the currently selected entry as a reference in the text document
     private void insertReference() {
-    	wbm.insertReference(getCurrentEntry(),
+    	addSource();
+    	wbm.insertReference(sources,
     		CITATION_TYPES[getListBoxSelectedItem("Type")],getTextFieldText("Prefix"),getTextFieldText("Suffix"));
+    }
+    
+    // Helper to update the list of currently selected sources
+    private void showSources() {
+    	StringBuffer info = new StringBuffer();
+    	for (BibMark bibMark : sources) {
+    		if (info.length()>0) { info.append(", "); }
+    		info.append('[').append(bibMark.getIdentifier()).append(']');
+    	}
+    	setLabelText("SourcesLabel",info.toString());
     }
     
     // Helpers to enable or disable UI controls
@@ -378,23 +434,27 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
 		setControlEnabled("File",bEnabled); 
 		setControlEnabled("Edit",bEnabled); 
 		setControlEnabled("Update",bEnabled);
-		enableEntrySelection(bEnabled);
+		enableEntrySelection();
     }
     
-    private void enableEntrySelection(boolean bEnabled) { // Can we select an entry in the BibTeX file?
+    private void enableEntrySelection() { // Can we select an entry in the BibTeX file?
+    	BibMark mark = getCurrentEntry();
+    	boolean bEnabled = mark!=null;
 		setControlEnabled("EntryLabel",bEnabled); 
 		setControlEnabled("Entry",bEnabled); 
-		setControlEnabled("Insert",bEnabled);
+		setControlEnabled("Insert",bEnabled || !sources.isEmpty());
 		setControlEnabled("TypeLabel",bEnabled);
 		setControlEnabled("Type",bEnabled);
 		if (bEnabled) { typeChange(); } else  { enableAffix(false); }
+		setControlEnabled("AddSource",bEnabled && !hasSource(mark));
+		setControlEnabled("RemoveSource",!sources.isEmpty());
     }
     
     private void enableAffix(boolean bEnabled) { // Can we enter affixes to the citation?
     	setControlEnabled("PrefixLabel",bEnabled);
     	setControlEnabled("Prefix",bEnabled);
     	setControlEnabled("SuffixLabel",bEnabled);
-    	setControlEnabled("Suffix",bEnabled);    	
+    	setControlEnabled("Suffix",bEnabled);
     }
 
     // Get a BibTeX file name from the user (possibly modified to a TeX friendly name)

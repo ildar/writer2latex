@@ -19,13 +19,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-14)
+ *  Version 2.0 (2022-05-20)
  *
  */ 
  
 package org.openoffice.da.comp.writer2latex.bibtex;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
+import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNamed;
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.IllegalArgumentException;
@@ -49,6 +51,7 @@ import com.sun.star.lang.XServiceInfo;
 import com.sun.star.text.XDependentTextField;
 import com.sun.star.text.XDocumentIndex;
 import com.sun.star.text.XDocumentIndexesSupplier;
+import com.sun.star.text.XReferenceMarksSupplier;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
@@ -181,7 +184,7 @@ public class WriterBibTeXManager {
     }
     
     // Insert a bibliographic reference from a BibMark
-    public void insertReference(BibMark bibMark, String sType, String sPrefix, String sSuffix) {
+    public void insertReference(List<BibMark> bibMarks, String sType, String sPrefix, String sSuffix) {
     	if (xFrame!=null) {
 	        try {
 	        	// To be able to manipulate the text we need to get the XText interface of the model
@@ -194,47 +197,17 @@ public class WriterBibTeXManager {
 	                    XTextViewCursorSupplier.class, xFrame.getController());
 	            XTextViewCursor xViewCursor = xViewCursorSupplier.getViewCursor();
 	            
-	        	// To create a new bibliographic field, we need to get the document service factory
+	        	// To create new bibliographic fields, we need to get the document service factory
 	        	XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
 	        			XMultiServiceFactory.class, xFrame.getController().getModel());
-	   
-	            // Use the service factory to create a bibliography field
-	            XDependentTextField xBibField = UnoRuntime.queryInterface (
-	                XDependentTextField.class, xDocFactory.createInstance("com.sun.star.text.textfield.Bibliography")); 
-	            
-	            // Create a field master for the field
-	            XPropertySet xMasterPropSet = UnoRuntime.queryInterface(
-	                XPropertySet.class, xDocFactory.createInstance("com.sun.star.text.fieldmaster.Bibliography")); 
-	            
-	            // Populate the bibliography field
-	            XPropertySet xPropSet = UnoRuntime.queryInterface(
-	                    XPropertySet.class, xBibField);
-	            PropertyValue[] fields = createBibliographyFields(bibMark);
-	            xPropSet.setPropertyValue("Fields", fields); 
-	            
-	            // Attach the field master to the bibliography field
-	            xBibField.attachTextFieldMaster(xMasterPropSet);
-	   
-	            // Use the service factory to create a reference mark
-	            XNamed xRefMark = (XNamed) UnoRuntime.queryInterface(XNamed.class, 
-	            		xDocFactory.createInstance("com.sun.star.text.ReferenceMark"));
-	            JSONObject obj = new JSONObject();
-	            obj.put("key", bibMark.getIdentifier());
-	            obj.put("type", sType);
-	            obj.put("prefix", sPrefix);
-	            obj.put("suffix", sSuffix);
-	            // TODO: Add unique number to avoid two identical reference marks names
-                xRefMark.setName("Writer2LaTeX_cite "+obj.toString());
-	            XTextContent xRefMarkContent = (XTextContent) UnoRuntime.queryInterface(XTextContent.class, xRefMark);
-
+	        	
 	            // Decorate the prefix and the suffix depending on the citation type
 	            String sDisplayType = Messages.getString("BibTeXDialog."+sType);
 	            String sFinalPrefix = sPrefix.length()>0 ? sPrefix+" " : "";
 	            String sFinalSuffix = sSuffix.length()>0 ? ", "+sSuffix : "";
 	            if (sType.equals("nocite")) { // No affix for nocite
-	            	sFinalPrefix = "";
-	            	sFinalSuffix = "";
-	            	
+	            	sFinalPrefix = sDisplayType;
+	            	sFinalSuffix = "";	            	
 	            } else if (sType.equals("autocite")) { // Normal citation
 	            	if (sFinalPrefix.length()>0 || sFinalSuffix.length()>0) {
 		            	sFinalPrefix="["+sFinalPrefix;
@@ -250,19 +223,81 @@ public class WriterBibTeXManager {
 	            } else { // Author, title, year, date, URL and nocite (deliberately no space after)
 	            	sFinalPrefix = sFinalPrefix + sDisplayType;
 	            }
-	            // Insert reference in document
-	            xViewCursor.setString(""); // Delete selection
-	            xText.insertString(xViewCursor.getEnd(), sFinalPrefix, false); // Insert prefix
-	            xText.insertTextContent(xViewCursor.getEnd(), xBibField, false); // Insert Bibliography field
-	            xText.insertString(xViewCursor.getEnd(), sFinalSuffix, false); // Insert suffix
-	            int nLength = sFinalPrefix.length()+1+sFinalSuffix.length();
-	            if (nLength>1) { // Insert reference mark if we have any text surrounding the bibliography field 
+	            
+	            // Delete current selection and insert prefix in document
+	            xViewCursor.setString("");
+	            xText.insertString(xViewCursor.getEnd(), sFinalPrefix, false);
+
+	            // Insert reference for each source
+	            for (BibMark bibMark : bibMarks) {
+		            // Use the service factory to create a bibliography field
+		            XDependentTextField xBibField = UnoRuntime.queryInterface (
+		                XDependentTextField.class, xDocFactory.createInstance("com.sun.star.text.textfield.Bibliography")); 
+		            
+		            // Create a field master for the field
+		            XPropertySet xMasterPropSet = UnoRuntime.queryInterface(
+		                XPropertySet.class, xDocFactory.createInstance("com.sun.star.text.fieldmaster.Bibliography")); 
+		            
+		            // Populate the bibliography field
+		            XPropertySet xPropSet = UnoRuntime.queryInterface(
+		                    XPropertySet.class, xBibField);
+		            PropertyValue[] fields = createBibliographyFields(bibMark);
+		            xPropSet.setPropertyValue("Fields", fields); 
+		            
+		            // Attach the field master to the bibliography field
+		            xBibField.attachTextFieldMaster(xMasterPropSet);
+
+		            // Insert Bibliography field
+		            xText.insertTextContent(xViewCursor.getEnd(), xBibField, false);
+	        	}
+	            // Insert suffix
+	            xText.insertString(xViewCursor.getEnd(), sFinalSuffix, false);
+	            
+	            // If the prefix or the suffix is non empty, we will wrap the bibliography field in a reference mark
+	            int nLength = sFinalPrefix.length()+sFinalSuffix.length();
+	            if (nLength>0) { 
+	            	nLength+=bibMarks.size();
+		            // First create a unique id to avoid duplicate names (if the same reference is inserted twice)
+		            // We already have the document, but now we need the XReferenceMarksSupplier interface
+		            XReferenceMarksSupplier xRefSupplier = (XReferenceMarksSupplier) UnoRuntime.queryInterface(
+		                XReferenceMarksSupplier.class, xTextDoc);
+		            // ...which in turn provides a method returning an XNameAccess interface
+		            XNameAccess xMarks = (XNameAccess) UnoRuntime.queryInterface(XNameAccess.class,
+		                xRefSupplier.getReferenceMarks());
+		            // ...which in turn provides a method to get all names as a String array
+		            // Our reference marks has a name of the form Writer2LaTeX_cite n { ... }, and we want the integer n to be unique
+		            int nMax = 0;
+		            for (String s : xMarks.getElementNames()) {
+		            	if (s.startsWith("Writer2LaTeX_cite")) {
+		            		int nSpace = s.indexOf(' ', 18);
+		            		if (nSpace>-1) {
+		            			try { nMax = Math.max(nMax,Integer.parseInt(s.substring(18,nSpace))); }
+		            			catch (NumberFormatException e) { }
+		            		}
+		            	}
+		            }
+
+		            // We want to store some information as a JSON array
+		            JSONObject obj = new JSONObject();
+		            for (BibMark bibMark : bibMarks) {
+		            	obj.append("key", bibMark.getIdentifier());
+		            }
+		            obj.put("type", sType);
+		            obj.put("prefix", sPrefix);
+		            obj.put("suffix", sSuffix);
+
+		            // We can now use the service factory to create a new reference mark, and get the XNamed interface to set the name
+		            XNamed xRefMark = (XNamed) UnoRuntime.queryInterface(XNamed.class, 
+		            		xDocFactory.createInstance("com.sun.star.text.ReferenceMark"));
+		            xRefMark.setName("Writer2LaTeX_cite "+(nMax+1)+" "+obj.toString());
+		            // We also need the XRefMarkContent interface to be able to insert the reference mark in the document
+		            XTextContent xRefMarkContent = (XTextContent) UnoRuntime.queryInterface(XTextContent.class, xRefMark);
+
 		            xViewCursor.goLeft((short)nLength, true); // Select the newly inserted text
 		            xText.insertTextContent(xViewCursor, xRefMarkContent, true); // Insert reference mark, absorbing the text
 		            xViewCursor.goRight((short)nLength, false); // Deselect the text again and place the cursor at the end
 	            }
 	        } catch (Exception e) {
-	        	System.out.println(e.getMessage());
 	        }
     	}
     }
@@ -353,6 +388,5 @@ public class WriterBibTeXManager {
     	else if ("CUSTOM5".equals(s)) { return (short)21; }
     	else { return (short)10; } // Use misc for unknown types
     }
-
 
 }

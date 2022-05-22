@@ -66,6 +66,7 @@ public class UNOConverter {
 	 * @param xComponentContext the component context used to instantiate new UNO services
 	 * @param lArguments arguments providing FilterName, URL, OutputStream (optional), FilterData (optional)
 	 * and FilterOptions (optional, alternative to FilterData)
+	 * Note: FilterOptions is used when converting using soffice --headless --convert-to
 	 */
 	public UNOConverter(PropertyValue[] lArguments, XComponentContext xComponentContext) {
 		this.xComponentContext = xComponentContext;

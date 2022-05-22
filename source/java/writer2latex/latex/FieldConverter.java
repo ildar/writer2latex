@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-13)
+ *  Version 2.0 (2022-05-20)
  *
  */
 
@@ -27,6 +27,7 @@ package writer2latex.latex;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -593,16 +594,24 @@ public class FieldConverter extends ConverterHelper {
     	// First parse the reference name:
     	// A JabRef reference name has the form JR_cite<m>_<n>_<identifiers> where
     	//   m is a sequence number to ensure unique citations (may be empty)
-    	//   n=1 for (Author date) and n=2 for Author (date) citations
+    	//   n=1 for (Author date) citations -> convert to \autocite
+    	//   n=2 for Author (date) citations -> convert to \textcite
+    	//   n=3 for "invisible" citations -> convert to \nocite
     	//   identifiers is a comma separated list of BibTeX keys
-    	// TODO: Update to BibLaTeX
     	if (sName.startsWith(JABREF_ITEM)) {
+    		Map<String,String> usermeta = palette.getMetaData().getUserDefinedMetaData();
+    		String sSuffix = usermeta.containsKey(sName) ? "[" + usermeta.get(sName) + "]" : ""; 
     		String sRemains = sName.substring(JABREF_ITEM.length());
     		int nUnderscore = sRemains.indexOf('_');
-    		if (nUnderscore>-1) {
+    		if (nUnderscore>-1 && nUnderscore<sRemains.length()-3) {
     			sRemains = sRemains.substring(nUnderscore+1);
-    			if (sRemains.length()>2) {
-    				ldp.append("\\cite").append("{").append(sRemains.substring(2)).append("}");
+    			System.out.println("jabref cite: "+sRemains);
+    			if (sRemains.startsWith("1_")) {
+    				ldp.append("\\autocite").append(sSuffix).append("{").append(sRemains.substring(2)).append("}");
+    			} else if (sRemains.startsWith("2_")) {
+    				ldp.append("\\textcite").append(sSuffix).append("{").append(sRemains.substring(2)).append("}");
+    			} else if (sRemains.startsWith("3_")) {
+    				ldp.append("\\nocite").append(sSuffix).append("{").append(sRemains.substring(2)).append("}");
     			}
     		}
 			oc.setInRefMarkCiteText(true);			
