@@ -7,13 +7,18 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 [w2l] The bibliography dialog now supports several BibLaTeX citation types as well of prefix and suffix.
   The extended information is stored in a reference mark containing the citation. In addition the dialog
   inserts text describing the semantics of the reference (e.g. Author[XX] for a reference to the author).
+  Also citations with more than one source is now supported (adjacent bibliography marks are now always 
+  combined to a single citation command).
 
 [w2l] Bibliographic content is now handled by BibLaTeX rather than BibTeX. Accordingly the options use_bibtex
   and bibtex_style have been replaced by use_biblatex and biblatex_options. Also the options use_natbib
   and natbib_options have been removed.
+  
+[w2l] The export of JabRef reference marks to citations has been updated to use BibLaTeX and support nocite
 
 [w2l] The export of Zotero reference marks to citations now rely on citation keys created by Better BibTeX
   (which the user must install in Zotero). The file BibTeX-Writer2LaTeX.js is thus obsolete an has been removed.
+  Also the export has been updated to use BibLaTeX.
 
 [w2l] Changed default encoding to UTF-8 (this has been standard in LaTeX for a while)
 

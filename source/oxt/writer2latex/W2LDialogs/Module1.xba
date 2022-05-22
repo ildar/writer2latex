@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic">REM  *****  BASIC  *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic">REM UI Commands for Writer2LaTeX (for keyboard bindings)
 
-Sub Main
+Sub W2LDispatch(command as string)
+	dim document   as object
+	dim dispatcher as object
+	document = ThisComponent.CurrentController.Frame
+	dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	dispatcher.executeDispatch(document, &quot;org.openoffice.da.writer2latex:&quot;+command, &quot;&quot;, 0, Array())
+End Sub
 
-End Sub</script:module> 
+Sub W2LProcessDocument
+	W2LDispatch(&quot;ProcessDocument&quot;)
+end Sub
+
+Sub W2LInsertBibTeX
+	W2LDispatch(&quot;InsertBibTeX&quot;)
+End Sub
+
+Sub W2LViewLog
+	W2LDispatch(&quot;ViewLog&quot;)
+End Sub
+</script:module>
