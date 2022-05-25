@@ -22,6 +22,10 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 [w2l] Changed default encoding to UTF-8 (this has been standard in LaTeX for a while)
 
+[w2l] Updated symbol tables for UTF-8 inputencoding; now also supports Greek characters
+
+[w2l] Added symbol definitions from uspace.sty for various space characters
+
 [w2l] No longer loads textcomp explicitly (this has been standard in LaTeX for a while)
 
 [w2l] Removed the configurations pdfscreen.pdf (pdfscreen.sty is a very old package) and pdfprint.pdf

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- This is a datafile used by Writer2LaTeX
-     Version 2.0 (2018-04-15)
+     Version 2.0 (2022-02-22)
 
 	 The definitions for greek characters are contributed by interzone, info@interzone.gr
      and extended by Johannis Likos. Additional bugfixes by Alexej Kryukov
@@ -1007,17 +1007,19 @@ PART I: Common symbols, ascii only
 <symbol char="1FFE" text="&lt;" />
 </symbol-subset> <!-- end of polytonic greek -->
 
-<!-- Unicode block: General Punctuation -->
-<symbol char="2000" text="{\enspace}" />
-<symbol char="2001" text="{\quad}" />
-<symbol char="2002" text="{\enspace}" />
-<symbol char="2003" text="{\quad}" />
-<symbol char="2004" text="\hspace{0.333em}" />
-<symbol char="2005" text="\hspace{0.25em}" />
-<symbol char="2006" text="\hspace{0.167em}" />
-<symbol char="2009" text="\hspace{0.2em}" />
-<symbol char="200A" text="{\thinspace}" />
-<symbol char="200C" text="\textcompwordmark" />
+<!-- Unicode block: General Punctuation (some definitions taken from uspace.sty)-->
+<symbol char="2000" text="\enskip{}" />
+<symbol char="2001" text="\quad{}" />
+<symbol char="2002" text="\enskip{}" />
+<symbol char="2003" text="\quad{}" />
+<symbol char="2004" text="\hspace{0.333em}" /> <!-- three-per-em space -->
+<symbol char="2005" text="\hspace{0.25em}" /> <!-- four-per-em space -->
+<symbol char="2006" text="\hspace{0.167em}" /> <!-- six-per-em space -->
+<symbol char="2007" text="\leavevmode\hphantom{0}" /> <!-- figure space -->
+<symbol char="2009" text="\leavevmode\allowbreak\," /> <!-- thin space -->
+<symbol char="200A" text="\hspace{0.083em}" /> <!-- hair space -->
+<symbol char="200B" text="\hspace{0pt}" /> <!--  zero width space -->
+<symbol char="200C" text="\textcompwordmark{}" />
 <symbol char="200D" text="" />
 <symbol char="2010" text="-" protect="-" />
 <symbol char="2011" text="\nobreakdash-" /> <!-- requires ams -->
@@ -1025,30 +1027,34 @@ PART I: Common symbols, ascii only
 <symbol char="2013" text="--" protect="-" />
 <symbol char="2014" text="---" protect="-" />
 <symbol char="2015" text="---" protect="-" />
-<symbol char="2016" text="{\textbardbl}" math="\|" />
+<symbol char="2016" text="\textbardbl{}" math="\|" />
 <symbol char="2018" text="`" protect="`"/> <!-- or \textquoteleft -->
 <symbol char="2019" text="'" protect="'"/> <!-- or \textquoteright -->
-<symbol char="201A" text="{\quotesinglbase}" />
+<symbol char="201A" text="\quotesinglbase{}" />
 <symbol char="201C" text="``" protect="`"/> <!--  or \textquotedblleft -->
 <symbol char="201D" text="''" protect="'"/> <!-- or \textquotedblright -->
-<symbol char="201E" text="{\quotedblbase}" />
-<symbol char="2020" text="{\dag}" math="{\dag}" />
-<symbol char="2021" text="{\ddag}" math="{\ddag}" />
-<symbol char="2022" text="{\textbullet}" math="{\bullet}" />
+<symbol char="201E" text="\quotedblbase{}" />
+<symbol char="2020" text="\dag{}" math="\dag{}" />
+<symbol char="2021" text="\ddag{}" math="\ddag{}" />
+<symbol char="2022" text="\textbullet{}" math="\bullet{}" />
 <symbol char="2024" text="." />
 <symbol char="2025" text=".." />
-<symbol char="2026" text="{\dots}" math="{\dots}" />
+<symbol char="2026" text="\dots{}" math="\dots{}" />
 <symbol char="2027" text="\-" /> <!-- wrong?? -->
-<symbol char="2030" text="{\textperthousand}" />
-<symbol char="2031" text="{\textpertenthousand}" />
-<symbol char="2039" text="{\guilsinglleft}" />
-<symbol char="203A" text="{\guilsinglright}" />
-<symbol char="203B" text="{\textreferencemark}" />
+<symbol char="2028" text="\newline{}" /> <!-- line separator -->
+<symbol char="2029" text="\par{}" /> <!-- line separator -->
+<symbol char="202F" text="\leavevmode\," /> <!-- narrow no-break space -->
+<symbol char="2030" text="\textperthousand{}" />
+<symbol char="2031" text="\textpertenthousand{}" />
+<symbol char="2039" text="\guilsinglleft{}" />
+<symbol char="203A" text="\guilsinglright{}" />
+<symbol char="203B" text="\textreferencemark{}" />
 <symbol char="203C" text="!!" />
-<symbol char="203D" text="{\textinterrobang}" />
+<symbol char="203D" text="\textinterrobang{}" />
 <symbol char="2044" text="/" math="/" />
 <symbol char="2048" text="?!" />
 <symbol char="2049" text="!?" />
+<symbol char="205F" text="\hspace{0.222em}" /> <!-- medium math space -->
 
 <!-- Unicode block: Currency symbols -->
 <symbol char="20A1" text="{\textcolonmonetary}" />
@@ -1948,54 +1954,49 @@ takes care of the mapping from unicode to 8 bit encoding
 
 <!-- utf8 input encoding -->
 <symbol-set name="utf8" fontenc="any">
-<!-- preserve symbols defined in utf8enc.dfu -->
-<preserve-symbols first-char="00A1" last-char="00AC" mode="text" />
-<preserve-symbols first-char="00AE" last-char="00FF" mode="text" />
-<preserve-symbols first-char="0102" last-char="0107" mode="text" />
-<preserve-symbols first-char="010C" last-char="0111" mode="text" />
-<preserve-symbols first-char="0118" last-char="011B" mode="text" />
-<preserve-symbols first-char="011E" last-char="011F" mode="text" />
-<preserve-symbols first-char="0130" last-char="0133" mode="text" />
-<preserve-symbols first-char="0139" last-char="013A" mode="text" />
-<preserve-symbols first-char="013D" last-char="013E" mode="text" />
-<preserve-symbols first-char="0141" last-char="0144" mode="text" />
-<preserve-symbols first-char="0147" last-char="0148" mode="text" />
-<preserve-symbols first-char="014A" last-char="014B" mode="text" />
-<preserve-symbols first-char="0150" last-char="0155" mode="text" />
-<preserve-symbols first-char="0158" last-char="015B" mode="text" />
-<preserve-symbols first-char="015E" last-char="0165" mode="text" />
-<preserve-symbols first-char="016E" last-char="0171" mode="text" />
-<preserve-symbols first-char="0178" last-char="017E" mode="text" />
-<preserve-symbol char="0192" mode="text" />
-<preserve-symbols first-char="02C6" last-char="02C7" mode="text" />
-<preserve-symbol char="02D8" mode="text" />
-<preserve-symbols first-char="02DC" last-char="02DD" mode="text" />
+<!-- preserve symbols defined in utf8enc.dfu. They appear here in the same order as utf8enc.dfu.
+The file includes cyrillic characters, and these are included in a symbol-subset.
+Greek characters are from the file lgrenc.dfu and are included in another symbol-subset -->
+<preserve-symbols first-char="A0" last-char="125" mode="text" />
+<preserve-symbols first-char="128" last-char="137" mode="text" />
+<preserve-symbols first-char="139" last-char="13E" mode="text" />
+<preserve-symbols first-char="141" last-char="148" mode="text" />
+<preserve-symbols first-char="14A" last-char="165" mode="text" />
+<preserve-symbols first-char="168" last-char="17E" mode="text" />
+<preserve-symbol char="192" mode="text" />
+<preserve-symbols first-char="1CD" last-char="1D4" mode="text" />
+<preserve-symbol char="1E3" mode="text" />
+<preserve-symbols first-char="1E6" last-char="1EB" mode="text" />
+<preserve-symbol char="1F0" mode="text" />
+<preserve-symbol char="1F5" mode="text" />
+<preserve-symbols first-char="218" last-char="21B" mode="text" />
+<preserve-symbol char="233" mode="text" />
+<preserve-symbol char="237" mode="text" />
+<preserve-symbol char="2C7" mode="text" />
+<preserve-symbol char="2DC" mode="text" />
+<preserve-symbol char="2D9" mode="text" />
+<preserve-symbol char="2DB" mode="text" />
+<preserve-symbol char="2DD" mode="text" />
 <symbol-subset fontenc="T2A">
-<preserve-symbols first-char="0401" last-char="0402" mode="text" />
-<preserve-symbols first-char="0404" last-char="040B" mode="text" />
-<preserve-symbols first-char="040E" last-char="0452" mode="text" />
-<preserve-symbols first-char="0454" last-char="045B" mode="text" />
-<preserve-symbols first-char="045E" last-char="045F" mode="text" />
-<preserve-symbols first-char="0462" last-char="0463" mode="text" />
-<preserve-symbols first-char="046A" last-char="046B" mode="text" />
-<preserve-symbols first-char="0472" last-char="0475" mode="text" />
-<preserve-symbols first-char="048C" last-char="04C0" mode="text" />
-<preserve-symbols first-char="04C3" last-char="04C8" mode="text" />
-<preserve-symbols first-char="04CB" last-char="04CE" mode="text" />
-<preserve-symbols first-char="04D4" last-char="04D5" mode="text" />
-<preserve-symbols first-char="04D8" last-char="04D9" mode="text" />
-<preserve-symbols first-char="04E0" last-char="04E1" mode="text" />
-<preserve-symbols first-char="04E8" last-char="04E9" mode="text" />
+<preserve-symbols first-char="400" last-char="45F" mode="text" />
+<preserve-symbol char="463" mode="text" />
+<preserve-symbol char="46B" mode="text" />
+<preserve-symbols first-char="472" last-char="477" mode="text" />
+<preserve-symbols first-char="48C" last-char="4C8" mode="text" />
+<preserve-symbols first-char="4CB" last-char="4CE" mode="text" />
+<preserve-symbols first-char="4D0" last-char="4E9" mode="text" />
+<preserve-symbols first-char="4EC" last-char="4FF" mode="text" />
 </symbol-subset>
-<preserve-symbol char="0E3F" mode="text" />
+<preserve-symbol char="E3F" mode="text" />
+<preserve-symbol char="1E03" mode="text" />
+<preserve-symbol char="1E9E" mode="text" />
 <preserve-symbol char="200C" mode="text" />
-<preserve-symbols first-char="2013" last-char="2014" mode="text" />
-<preserve-symbol char="2016" mode="text" />
+<preserve-symbols first-char="2010" last-char="2016" mode="text" />
 <preserve-symbols first-char="2018" last-char="201A" mode="text" />
 <preserve-symbols first-char="201C" last-char="201E" mode="text" />
 <preserve-symbols first-char="2020" last-char="2022" mode="text" />
 <preserve-symbol char="2026" mode="text" />
-<preserve-symbols first-char="2030" last-char="2031" mode="text" />
+<preserve-symbol char="2031" mode="text" />
 <preserve-symbols first-char="2039" last-char="203B" mode="text" />
 <preserve-symbol char="203D" mode="text" />
 <preserve-symbol char="2044" mode="text" />
@@ -2005,21 +2006,70 @@ takes care of the mapping from unicode to 8 bit encoding
 <preserve-symbol char="20A4" mode="text" />
 <preserve-symbol char="20A6" mode="text" />
 <preserve-symbol char="20A9" mode="text" />
-<preserve-symbols first-char="20AB" last-char="20AC" mode="text" />
+<preserve-symbol char="20AC" mode="text" />
 <preserve-symbol char="20B1" mode="text" />
 <preserve-symbol char="2103" mode="text" />
-<preserve-symbols first-char="2116" last-char="2117" mode="text" />
+<preserve-symbol char="2117" mode="text" />
 <preserve-symbol char="211E" mode="text" />
 <preserve-symbol char="2120" mode="text" />
 <preserve-symbol char="2122" mode="text" />
-<preserve-symbols first-char="2126" last-char="2127" mode="text" />
+<preserve-symbol char="2127" mode="text" />
 <preserve-symbol char="212E" mode="text" />
 <preserve-symbols first-char="2190" last-char="2193" mode="text" />
-<preserve-symbols first-char="2329" last-char="232A" mode="text" />
-<preserve-symbols first-char="2422" last-char="2423" mode="text" />
+<preserve-symbol char="232A" mode="text" />
+<preserve-symbol char="2423" mode="text" />
 <preserve-symbol char="25E6" mode="text" />
 <preserve-symbol char="25EF" mode="text" />
 <preserve-symbol char="266A" mode="text" />
+<preserve-symbol char="27E9" mode="text" />
+<preserve-symbol char="1E21" mode="text" />
+<preserve-symbols first-char="FB00" last-char="FB06" mode="text" />
+<symbol-subset fontenc="LGR"> <!-- Note these definitions are from lgrenc.dfu -->
+<preserve-symbol char="A8" mode="text" />
+<preserve-symbol char="AB" mode="text" />
+<preserve-symbol char="AF" mode="text" />
+<preserve-symbol char="B4" mode="text" />
+<preserve-symbol char="B7" mode="text" />
+<preserve-symbol char="BB" mode="text" />
+<preserve-symbol char="259" mode="text" />
+<!-- Greek and coptic -->
+<preserve-symbol char="375" mode="text" />
+<preserve-symbol char="37A" mode="text" />
+<preserve-symbol char="37E" mode="text" />
+<preserve-symbols first-char="384" last-char="38A" mode="text" />
+<preserve-symbol char="38C" mode="text" />
+<preserve-symbols first-char="38E" last-char="3A1" mode="text" />
+<preserve-symbols first-char="3A3" last-char="3CE" mode="text" />
+<preserve-symbol char="3D1" mode="text" />
+<preserve-symbol char="3D6" mode="text" />
+<preserve-symbols first-char="3D8" last-char="3DD" mode="text" />
+<preserve-symbols first-char="3DF" last-char="3E1" mode="text" />
+<preserve-symbol char="3F1" mode="text" />
+<preserve-symbol char="3F5" mode="text" />
+<!-- Greek extended -->
+<preserve-symbols first-char="1F00" last-char="1F15" mode="text" />
+<preserve-symbols first-char="1F18" last-char="1F1D" mode="text" />
+<preserve-symbols first-char="1F20" last-char="1F45" mode="text" />
+<preserve-symbols first-char="1F48" last-char="1F4D" mode="text" />
+<preserve-symbols first-char="1F50" last-char="1F57" mode="text" />
+<preserve-symbol char="1F59" mode="text" />
+<preserve-symbol char="1F5B" mode="text" />
+<preserve-symbol char="1F5D" mode="text" />
+<preserve-symbols first-char="1F5F" last-char="1F7D" mode="text" />
+<preserve-symbols first-char="1F80" last-char="1FB4" mode="text" />
+<preserve-symbols first-char="1FB6" last-char="1FC4" mode="text" />
+<preserve-symbols first-char="1FC6" last-char="1FD3" mode="text" />
+<preserve-symbols first-char="1FD6" last-char="1FDB" mode="text" />
+<preserve-symbols first-char="1FDD" last-char="1FEF" mode="text" />
+<preserve-symbols first-char="1FF2" last-char="1FF4" mode="text" />
+<preserve-symbols first-char="1FF6" last-char="1FFE" mode="text" />
+<preserve-symbol char="2014" mode="text" />
+<preserve-symbols first-char="2018" last-char="201A" mode="text" />
+<preserve-symbol char="2030" mode="text" />
+<preserve-symbol char="203A" mode="text" />
+<preserve-symbol char="20AC" mode="text" />
+<preserve-symbol char="2126" mode="text" />
+</symbol-subset>
 </symbol-set>
 <!-- end of utf8 input encoding -->
 
