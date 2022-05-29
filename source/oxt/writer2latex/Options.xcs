@@ -130,8 +130,7 @@ bib<?xml version='1.0' encoding='UTF-8'?>
             <prop oor:name="BibTeXLocation" oor:type="xs:short" />
             <prop oor:name="BibTeXDir" oor:type="xs:string" />
             <prop oor:name="BibTeXEncoding" oor:type="xs:short" />
-            <prop oor:name="UseNatbib" oor:type="xs:boolean" />
-            <prop oor:name="NatbibOptions" oor:type="xs:string" />
+            <prop oor:name="BibLaTeXOptions" oor:type="xs:string" />
         </group>
         
         <group oor:name="Html5Settings">

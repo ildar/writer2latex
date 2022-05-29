@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-22)
+ *  Version 2.0 (2022-05-25)
  *
  */ 
  
@@ -199,11 +199,11 @@ public class BibTeXDialog extends DialogBase implements com.sun.star.lang.XIniti
     	else if (sMethod.equals("Update")) { // Update all reference in the document
     		Set<String> notUpdated = wbm.update(parseAllBibTeXFiles());
 			// Inform the user about the result
+    		MessageBox msgBox = new MessageBox(xContext);
             if (notUpdated.isEmpty()) {
-    			setLabelText("SourcesLabel",Messages.getString("BibTeXDialog.allbibfieldsupdated")); 
-            }
-            else {
-            	setLabelText("SourcesLabel",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); 
+    			msgBox.showMessage("BibTeX",Messages.getString("BibTeXDialog.allbibfieldsupdated")); 
+            } else {
+            	msgBox.showMessage("BibTeX",Messages.getString("BibTeXDialog.bibfieldsnotupdated")+":\n"+notUpdated.toString()); 
             }
     	}
         return true;

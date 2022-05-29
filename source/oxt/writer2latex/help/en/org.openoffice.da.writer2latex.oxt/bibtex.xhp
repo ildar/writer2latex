@@ -2,13 +2,13 @@
 <helpdocument version="1.0">
 	<meta>
         <topic id="writer2latex-bibtex" indexer="include">
-            <title xml-lang="en-US">Insert BibTeX references</title>
+            <title xml-lang="en-US">Edit BibTeX references</title>
             <filename>org.openoffice.da.writer2latex.oxt/bibtex.xhp</filename>
         </topic>
     </meta>
     <body>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXDialog" id="bm_bibtexdialog"/>
-        <paragraph role="heading" level="1" xml-lang="en-US">Manage BibTeX reference</paragraph>
+        <paragraph role="heading" level="1" xml-lang="en-US">Manage BibTeX references</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">BibTeX is the standard database format for bibliographic references
         in LaTeX.
         This dialog is used to insert bibliographic references in %PRODUCTNAME Writer from BibTeX files.
@@ -37,27 +37,8 @@
         Basic information about the entry is displayed in the field below the list.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXEntry" visibility="hidden">Select the entry to use</ahelp></paragraph>
         
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXInsert" id="bm_bibtexinsert"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Insert reference</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to insert a bibliographic reference to
-        the currently selected entry.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXInsert" visibility="hidden">Click to insert a reference to the current entry</ahelp></paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXUpdate" id="bm_bibtexupdate"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Update references</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this to update all bibliographic references in the document.
-        You should do this if you have edited a BibTeX file. This will ensure that
-        the content of all references is in sync with the current content of the BibTeX files.
-        Writer2LaTeX will display a message to confirm the result.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" visibility="hidden">Click to update the content of all references</ahelp></paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXClose" id="bm_bibtexclose"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Close</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to close the dialog.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXClose" visibility="hidden">Click to close the dialog</ahelp></paragraph>
-        
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXNew" id="bm_bibtexnew"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">New</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">New...</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Click this button create a new BibTeX file in the configured
         directory. Enter a name for the file in the dialog.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXNew" visibility="hidden">Click to create a new BibTeX file</ahelp></paragraph>
@@ -74,5 +55,56 @@
         <paragraph role="paragraph" xml-lang="en-US">Click this button to reload the BibTeX files in the dialog.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXReload" visibility="hidden">Click to reload the BibTeX files</ahelp></paragraph>
 
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXType" id="bm_bibtextype"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Type</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select the type of the reference. Writer2LaTeX supports 10 different refrence types:
+        Normal (ordinary citation), Text (citation as part of the text, usually as subject in a sentence), Author (the author of the source),
+        First author (the first author of the source; if there is more than one author), Title (the, possible abbreviated, title of the source),
+        Full title (the full title of the source), Year (the year of publication of the source), Date (the date of publication of the source),
+        URL (the internet address of the source), Invisible (a reference to the source that is not visible in the text, but still appears in the
+        bibliography). Writer2LaTeX inserts a descriptive text such as "[see [XX], page 17]" or "Author[XX]". The final reference depends
+        on the BibLaTeX style. For example with author-year style is might become "(see Doe, 1999, page 17)" and "Doe". With alphabetic style
+        it might become "[see Doe99, page 17]" and "Doe".</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXType" visibility="hidden">Select the type of reference to use</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXPrefix" id="bm_bibtexprefix"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Prefix</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter a prefix to add before the citation.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXPrefix" visibility="hidden">Enter a text to appear before your reference</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXSuffix" id="bm_bibtexsuffix"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Suffix</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter a suffix to add after the citation.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXSuffix" visibility="hidden">Enter a text to appear after your reference</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXAddSource" id="bm_bibtexaddsource"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Add source</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button if you want to add several sources to the same citation.
+        The current source will be added to the list in the field in the lower part of the dialog.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXAddSource" visibility="hidden">Click this to add the current entry to the list of sources in your reference</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXRemoveSource" id="bm_bibtexremovesource"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Remove source</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button if you want to remove a source from the list.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXRemoveSource" visibility="hidden">Click this to remove the last entry from the list of sources in your reference</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXInsert" id="bm_bibtexinsert"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Insert reference</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to insert a bibliographic reference to
+        the currently selected entry as well as previously added sources.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXInsert" visibility="hidden">Click to insert a reference to the current entry and/or the previously selected sources</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXUpdate" id="bm_bibtexupdate"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Update references</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this to update all bibliographic references in the document.
+        You should do this if you have edited a BibTeX file. This will ensure that
+        the content of all references is in sync with the current content of the BibTeX files.
+        Writer2LaTeX will display a message to confirm the result.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" visibility="hidden">Click to update the content of all references</ahelp></paragraph>
+
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibTeXClose" id="bm_bibtexclose"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Close</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to close the dialog.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibTeXClose" visibility="hidden">Click to close the dialog</ahelp></paragraph>
     </body>      
 </helpdocument>

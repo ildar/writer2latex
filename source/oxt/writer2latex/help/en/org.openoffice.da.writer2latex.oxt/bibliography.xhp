@@ -29,18 +29,34 @@
 		<paragraph role="heading" level="2" xml-lang="en-US">Using the standard bibliography database</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">If you want to use the standard tools in %PRODUCTNAME Writer
 		to manage and create citations, you should not make any settings to this page.
-		Upon export, Writer2LaTeX can convert to and format your citations with BibTeX.
+		Upon export, Writer2LaTeX can convert to and format your citations with the package BibLaTeX.
 		You can enable this in the export dialog.
 		</paragraph>
 		
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" id="bm_useexternalbibtexfiles"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Use BibTeX as bibliography database</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseExternalBibTeXFiles" visibility="hidden">Check this to enable the insertion of citations from BibTeX file(s)</ahelp></paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Check this to enable the use of BibTeX as bibliograhy database.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Check this to enable the use of BibTeX as bibliograhy database.
+		If you do this you will need an external program to manage your database. Recommended programs are:</paragraph>
+		<list type="unordered">
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><link href="https://www.jabref.org/" name="Link to the JabRef Website">JabRef</link>
+				provides an efficient way to collect, organize and discover litterature. JabRef uses BibTeX as file format.
+				</paragraph>
+			</listitem>
+			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><link href="https://www.zotero.org/" name="Link to the Zotero Website">Zotero</link>
+				is a free, easy-to-use tool to help you collect, organize, cite, and share research.
+				To use Zotero with Writer2LaTeX you will need to install the Zotero extension
+				<link href="https://retorque.re/zotero-better-bibtex/" name="Link to the Better BibTeX Website">Better BibTeX</link>.
+				Better BibTeX can create BibTeX files from Zotero with automatic syncronization and key generation.
+				</paragraph>
+			</listitem>
+		</list>
 		<paragraph role="paragraph" xml-lang="en-US">You can then use the 
 		<link href="org.openoffice.da.writer2latex.oxt/bibtex.xhp"
           name="Writer2LaTeX toolbar">Writer2LaTeX toolbar</link> to insert citations from BibTeX files.
-		Upon export, Writer2LaTeX can format your citations with BibTeX using the original BibTeX files.
+		Upon export, Writer2LaTeX can format your citations with the package BibLaTeX using the original BibTeX files.
 		You can enable this in the export dialog.</paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXLocation" id="bm_bibtexlocation"/>
@@ -75,69 +91,45 @@
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibTeXEncoding" id="bm_bibtexencoding"/>
 		<paragraph role="heading" level="3" xml-lang="en-US">File encoding</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Select the encoding of the BibTeX files (this will depend on your
-		BibTeX editor). If you use XeTeX as a backend, you should always use UTF-8.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Select the encoding of the BibTeX files. The recommended default is UTF-8, but
+		Writer2LaTeX supports a number of legacy encodings as well. Make sure that your BibTeX editor uses the same encoding.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibTeXEncoding" visibility="hidden">Select the character encoding to use in the BibTeX files (UTF-8 is recommended)</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" id="bm_convertzoterocitations"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Convert Zotero citations</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><link href="http://www.zotero.org" name="Link to the Zotero Website">Zotero</link>
-			is a free, easy-to-use tool to help you collect, organize, cite, and share your research sources.
-			Zotero provides a plugin for %PRODUCTNAME which permits you to insert citations from Zotero in your
-			%PRODUCTNAME Writer document using a selection of citation schemes.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Zotero provides a plugin for %PRODUCTNAME which permits you to insert citations
+		from Zotero in your %PRODUCTNAME Writer document using a selection of citation schemes.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if you want to convert Zotero citations to LaTeX.
-		This enables you to format the citations using a BibTeX style of your choice.
-		Also, the bibliography created by Zotero will be replaced with a BibTeX-generated bibliography.
+		This enables you to format the citations using a BibLaTeX style of your choice.
+		Also, the bibliography created by Zotero will be replaced with a BibLaTeX-generated bibliography.
 		If you do not check this option, the original
 		citation text inserted by Zotero will be used.</paragraph>
-
-		<paragraph role="heading" level="3" xml-lang="en-US">Exporting your Zotero database to BibTeX</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">To use this feature you must export your Zotero database to the specified
-		folder.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">The Writer2LaTeX distribution contains a folder named <emph>Zotero</emph>,
-		which contains a file called <emph>BibTeX-Writer2LaTeX.js</emph>. This file must be added to Zotero to provide a suitable
-		BibTeX export: In Zotero, choose <emph>Edit</emph> - <emph>Preferences</emph> - <emph>Advanced</emph> and click <emph>Show Data Directory</emph>.
-		Open the subfolder <emph>Translators</emph>, and copy <emph>BibTeX-Writer2LaTeX.js</emph> to this location.
-		Finally restart Zotero.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">You can now export your Zotero database: In Zotero, select
-		<emph>File</emph> - <emph>Export Library</emph>, and choose <emph>BibTeX (Writer2LaTeX)</emph> (not <emph>BibTeX</emph>).
-		Save the file in the folder, you have defined.</paragraph>		
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyConvertZoteroCitations" visibility="hidden">Check this to convert Zotero citations to LaTeX</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyConvertJabRefCitations" id="bm_convertjabrefcitations"/>
 		<paragraph role="heading" level="2" xml-lang="en-US">Convert JabRef citations</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><link href="http://jabref.sourceforge.net/" name="Link to the JabRef Website">JabRef</link>
-			is an open source bibliography reference manager using BibTeX as native file format.
-			
-			You can use JabRef to edit your BibTeX files.
-			In addition JabRef permits you to insert citations directly from JabRef in your %PRODUCTNAME Writer document
+		<paragraph role="paragraph" xml-lang="en-US">JabRef permits you to insert citations directly from JabRef in your %PRODUCTNAME Writer document
 			using a selection of citation schemes.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if you want to convert JabRef citations to LaTeX.
-		This enables you to format the citations using a BibTeX style of your choice.
-		Also, the bibliography created by JabRef will be replaced with a BibTeX-generated bibliography.
+		This enables you to format the citations using a BibLaTeX style of your choice.
+		Also, the bibliography created by JabRef will be replaced with a BibLaTeX-generated bibliography.
 		If you do not check this option, the original
 		citation text inserted by JabRef will be used.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyConvertJabRefCitations" visibility="hidden">Check this to convert JabRef citations to LaTeX</ahelp></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyIncludeOriginalCitations" id="bm_includeoriginalcitations"/>
-		<paragraph role="heading" level="3" xml-lang="en-US">Include original citations as comments</paragraph>
+		<paragraph role="heading" level="2" xml-lang="en-US">Include original citations as comments</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">Check this if you want to include the original citations produced by Zotero or
 		JabRef as comments in the LaTeX source. This has no effect on the final result but might be helpful if you edit the LaTeX source.</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyIncludeOriginalCitations" visibility="hidden">Check this to include the citations inserted by Zotero or JabRef as comments in the LaTeX source.</ahelp></paragraph>
 		
 
-		<paragraph role="heading" level="2" xml-lang="en-US">Natbib</paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyUseNatbib" id="bm_usenatbib"/>
-		<paragraph role="heading" level="3" xml-lang="en-US">Use natbib.sty</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">To fully support the citations inserted by Zotero or JabRef you will need
-		the package natbib.sty. Check this if you want to take advantage of this package (the BibTeX style you use must be compatible
-		with natbib.sty).</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyUseNatbib" visibility="hidden">Check this to use the package natbib.sty for your citations</ahelp></paragraph>
-
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions" id="bm_natbiboptions"/>
-		<paragraph role="heading" level="3" xml-lang="en-US">Options</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US">Enter any options to the package natbib.sty here.</paragraph>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyNatbibOptions" visibility="hidden">Enter any options to the package natbib.sty here</ahelp></paragraph>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:BibliographyBibLaTeXOptions" id="bm_biblatexoptions"/>
+		<paragraph role="heading" level="2" xml-lang="en-US">BibTeX custom style</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">In the export dialog, you can choose from the standard BibLaTeX styles.
+		If you wish to use another style or set additional options, you can choose <emph>Custom</emph>. This will use the BibLaTeX
+		options entered here.</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:BibliographyBibLaTeXOptions" visibility="hidden">Enter custom options for BibLaTeX here</ahelp></paragraph>
 
 	</body>
 </helpdocument>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2022-05-10)
+ *  Version 2.0 (2022-05-28)
  *  
  */
 package org.openoffice.da.comp.writer2latex.latex;
@@ -152,13 +152,13 @@ public class LaTeXUNOPublisher extends UNOPublisher {
         			sBibinputs = sBibTeXDir+File.pathSeparatorChar;
         		}
         		
-    			filterHelper.put("use_natbib", Boolean.toString(XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseNatbib"))); //$NON-NLS-1$ //$NON-NLS-2$
+        		// TODO: This should be handled by the filter dialog
     			String sBibLaTeX = null;
                 Object biblatex = filterHelper.get("biblatex_options"); //$NON-NLS-1$
                 if (biblatex instanceof String) {
                     sBibLaTeX = (String) biblatex;
                     if (sBibLaTeX.length()==0) {
-            			filterHelper.put("biblatex_options", XPropertySetHelper.getPropertyValueAsString(xProps, "NatbibOptions")); //$NON-NLS-1$ //$NON-NLS-2$
+            			filterHelper.put("biblatex_options", XPropertySetHelper.getPropertyValueAsString(xProps, "BibLaTeXOptions")); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
                 

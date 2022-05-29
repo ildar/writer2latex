@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-04-05)
+ *  Version 2.0 (2022-05-28)
  *
  */
 
@@ -244,7 +244,7 @@ public final class ConverterPalette extends ConverterBase {
         listCv.appendDeclarations(packages,declarations); // usepackage enumitem
         captionCv.appendDeclarations(packages,declarations); // usepackage caption
         inlineCv.appendDeclarations(packages,declarations); // no packages
-        fieldCv.appendDeclarations(packages,declarations); // usepackage natbib, lastpage, titleref, hyperref 
+        fieldCv.appendDeclarations(packages,declarations); // lastpage, titleref, hyperref 
         drawCv.appendDeclarations(packages,declarations); // usepackage graphicx 
         tikZCv.appendDeclarations(packages,declarations); // usepakcage tikz
         mathCv.appendDeclarations(packages,declarations); // 

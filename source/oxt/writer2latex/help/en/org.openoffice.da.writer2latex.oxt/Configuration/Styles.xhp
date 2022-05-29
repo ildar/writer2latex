@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Styles" id="bm_styles"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Styles</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">On this page you can define mappings from styles in %PRODUCTNAME Writer
         to your own LaTeX styles.</paragraph>

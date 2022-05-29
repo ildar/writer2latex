@@ -26,15 +26,15 @@
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ViewLaTeXLog" visibility="hidden">Select this to view the log of the latest LaTeX run</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Select this to view the log of the latest LaTeX run.
         The log file can become quite long and difficult to read. If you only want to view error messages in the
-        log, you can check <emph>Only errors</emph> at the bottom of the dialog.</paragraph>
+        log, you can check <emph>Only errors</emph>.</paragraph>
         
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ErrorFilter" id="bm_errorfilter"/>
         <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ErrorFilter" visibility="hidden">Check this if you only want to see error messages in the log file</ahelp></paragraph>
         
-		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ViewBibTeXLog" id="bm_viewbibtexlog"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">View BibTeX log</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ViewBibTeXLog" visibility="hidden">Select this to view the log of the latest BibTeX run</ahelp></paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select this to view the log of the latest BibTeX run.</paragraph>
+		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ViewBiberLog" id="bm_viewbiberlog"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">View Biber log</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:ViewBiberLog" visibility="hidden">Select this to view the log of the latest Biber run</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select this to view the log of the latest Biber run.</paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ViewMakeindexLog" id="bm_viewmakeindexlog"/>
         <paragraph role="heading" level="3" xml-lang="en-US">View Makeindex log</paragraph>

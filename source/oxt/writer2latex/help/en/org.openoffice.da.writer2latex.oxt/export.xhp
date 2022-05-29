@@ -340,7 +340,7 @@
 		all data will be taken directly from your BibTeX files.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsBibtexStyle" id="bm_options_bibtexstyle"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">BibTeX style</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">BibLaTeX style</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsBiblatexStyle" visibility="hidden">Enter the name of a BibLaTeX style to format the citations and the bibliography</ahelp></paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">If you use BibLaTeX, you should also select a BibLaTeX style to be used when
 		generating the citations and the bibliography. Select one of the predefined styles or choose <emph>Custom</emph> which you can define in

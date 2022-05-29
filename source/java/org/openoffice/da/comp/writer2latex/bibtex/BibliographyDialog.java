@@ -2,7 +2,7 @@
  *
  *  BibliographyDialog.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-17)
+ *  Version 2.0 (2018-05-28)
  *
  */ 
  
@@ -99,9 +99,6 @@ public final class BibliographyDialog
             else if (sMethod.equals("UseExternalBibTeXFilesChange")) { //$NON-NLS-1$
                 return useExternalBibTeXFilesChange(dlg);
             }
-            else if (sMethod.equals("UseNatbibChange")) { //$NON-NLS-1$
-                return useNatbibChange(dlg);
-            }
             else if (sMethod.equals("BibTeXLocationChange")) { //$NON-NLS-1$
                 return bibTeXLocationChange(dlg);
             }
@@ -120,7 +117,7 @@ public final class BibliographyDialog
 	
 	public String[] getSupportedMethodNames() {
         String[] sNames = { "external_event", "UseExternalBibTeXFilesChange", "ConvertZoteroCitationsChange", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        		"ConvertJabRefCitationsChange", "UseNatbibChange", "BibTeXLocationChange", "ExternalBibTeXDirClick" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        		"ConvertJabRefCitationsChange", "BibTeXLocationChange", "ExternalBibTeXDirClick" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         return sNames;
     }
     
@@ -150,7 +147,6 @@ public final class BibliographyDialog
             } else if (sMethod.equals("back") || sMethod.equals("initialize")) { //$NON-NLS-1$ //$NON-NLS-2$
                 loadConfiguration(dlg);
                 enableBibTeXSettings(dlg);
-                useNatbibChange(dlg);
                 return true;
             }
         }
@@ -181,10 +177,8 @@ public final class BibliographyDialog
         			XPropertySetHelper.getPropertyValueAsString(xProps, "BibTeXDir")); //$NON-NLS-1$
         	dlg.setListBoxSelectedItem("BibTeXEncoding", //$NON-NLS-1$
         			XPropertySetHelper.getPropertyValueAsShort(xProps, "BibTeXEncoding")); //$NON-NLS-1$
-    		dlg.setCheckBoxStateAsBoolean("UseNatbib", //$NON-NLS-1$
-    				XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseNatbib")); //$NON-NLS-1$
-    		dlg.setTextFieldText("NatbibOptions", //$NON-NLS-1$
-        			XPropertySetHelper.getPropertyValueAsString(xProps, "NatbibOptions")); //$NON-NLS-1$
+    		dlg.setTextFieldText("BibLaTeXOptions", //$NON-NLS-1$
+        			XPropertySetHelper.getPropertyValueAsString(xProps, "BibLaTeXOptions")); //$NON-NLS-1$
         	registry.disposeRegistryView(view);
     	}
     	catch (Exception e) {
@@ -209,8 +203,7 @@ public final class BibliographyDialog
    			XPropertySetHelper.setPropertyValue(xProps, "BibTeXLocation", dlg.getListBoxSelectedItem("BibTeXLocation")); //$NON-NLS-1$ //$NON-NLS-2$
    			XPropertySetHelper.setPropertyValue(xProps, "BibTeXDir", dlg.getTextFieldText("BibTeXDir")); //$NON-NLS-1$ //$NON-NLS-2$
    			XPropertySetHelper.setPropertyValue(xProps, "BibTeXEncoding", dlg.getListBoxSelectedItem("BibTeXEncoding")); //$NON-NLS-1$ //$NON-NLS-2$
-    		XPropertySetHelper.setPropertyValue(xProps, "UseNatbib", dlg.getCheckBoxStateAsBoolean("UseNatbib")); //$NON-NLS-1$ //$NON-NLS-2$
-   			XPropertySetHelper.setPropertyValue(xProps, "NatbibOptions", dlg.getTextFieldText("NatbibOptions")); //$NON-NLS-1$ //$NON-NLS-2$
+   			XPropertySetHelper.setPropertyValue(xProps, "BibLaTeXOptions", dlg.getTextFieldText("BibLaTeXOptions")); //$NON-NLS-1$ //$NON-NLS-2$
    			
             // Commit registry changes
             XChangesBatch  xUpdateContext = (XChangesBatch)
@@ -244,13 +237,6 @@ public final class BibliographyDialog
 		return true;
 	}
 	
-	private boolean useNatbibChange(DialogAccess dlg) {
-		boolean bUseNatbib = dlg.getCheckBoxStateAsBoolean("UseNatbib"); //$NON-NLS-1$
-		dlg.setControlEnabled("NatbibOptionsLabel", bUseNatbib); //$NON-NLS-1$
-		dlg.setControlEnabled("NatbibOptions", bUseNatbib); //$NON-NLS-1$
-		return true;
-	}
-		
 	private boolean bibTeXLocationChange(DialogAccess dlg) {
 		enableBibTeXSettings(dlg);
 		return true;

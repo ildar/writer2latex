@@ -25,7 +25,7 @@
   </dlg:button>
   <dlg:text dlg:style-id="0" dlg:id="EntryInformation" dlg:tab-index="16" dlg:left="10" dlg:top="62" dlg:width="185" dlg:height="36" dlg:help-text="&amp;227..EntryInformation.HelpText" dlg:value="&amp;228..EntryInformation.Label"/>
   <dlg:text dlg:id="TypeLabel" dlg:tab-index="18" dlg:left="10" dlg:top="120" dlg:width="60" dlg:height="12" dlg:help-text="&amp;255.BibTeXEntry.TypeLabel.HelpText" dlg:value="&amp;256.BibTeXEntry.TypeLabel.Label"/>
-  <dlg:menulist dlg:id="Type" dlg:tab-index="6" dlg:left="75" dlg:top="118" dlg:width="120" dlg:height="12" dlg:help-text="&amp;277.BibTeXEntry.Type.HelpText" dlg:spin="true" dlg:linecount="9">
+  <dlg:menulist dlg:id="Type" dlg:tab-index="6" dlg:left="75" dlg:top="118" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXType" dlg:spin="true" dlg:linecount="9">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="&amp;410.Type.StringItemList"/>
     <dlg:menuitem dlg:value="&amp;411.Type.StringItemList"/>
@@ -40,24 +40,24 @@
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:TypeChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:text dlg:id="PrefixLabel" dlg:tab-index="19" dlg:left="10" dlg:top="140" dlg:width="60" dlg:height="12" dlg:help-text="&amp;259.BibTeXEntry.PrefixLabel.HelpText" dlg:value="&amp;260.BibTeXEntry.PrefixLabel.Label"/>
-  <dlg:textfield dlg:id="Prefix" dlg:tab-index="7" dlg:left="75" dlg:top="138" dlg:width="120" dlg:height="12" dlg:help-text="&amp;289.BibTeXEntry.Prefix.HelpText"/>
+  <dlg:textfield dlg:id="Prefix" dlg:tab-index="7" dlg:left="75" dlg:top="138" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXPrefix"/>
   <dlg:text dlg:id="SuffixLabel" dlg:tab-index="20" dlg:left="10" dlg:top="160" dlg:width="60" dlg:height="12" dlg:help-text="&amp;263.BibTeXEntry.SuffixLabel.HelpText" dlg:value="&amp;264.BibTeXEntry.SuffixLabel.Label"/>
-  <dlg:textfield dlg:id="Suffix" dlg:tab-index="8" dlg:left="75" dlg:top="158" dlg:width="120" dlg:height="12" dlg:help-text="&amp;291.BibTeXEntry.Suffix.HelpText"/>
-  <dlg:button dlg:id="Insert" dlg:tab-index="14" dlg:left="205" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-text="&amp;229..Insert.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="&amp;230..Insert.Label" dlg:button-type="ok">
+  <dlg:textfield dlg:id="Suffix" dlg:tab-index="8" dlg:left="75" dlg:top="158" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXSuffix"/>
+  <dlg:button dlg:id="Insert" dlg:tab-index="14" dlg:left="205" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXInsert" dlg:value="&amp;230..Insert.Label" dlg:button-type="ok">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:InsertReference" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Update" dlg:tab-index="13" dlg:left="140" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-text="&amp;231..Update.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" dlg:value="&amp;232..Update.Label">
+  <dlg:button dlg:id="Update" dlg:tab-index="13" dlg:left="140" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXUpdate" dlg:value="&amp;232..Update.Label">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:Update" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="Close" dlg:tab-index="12" dlg:left="75" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-text="&amp;233..Close.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="&amp;234..Close.Label" dlg:button-type="cancel"/>
-  <dlg:button dlg:id="Help" dlg:tab-index="11" dlg:left="10" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-text="&amp;235..Help.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="&amp;236..Help.Label" dlg:button-type="help"/>
+  <dlg:button dlg:id="Close" dlg:tab-index="12" dlg:left="75" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXClose" dlg:value="&amp;234..Close.Label" dlg:button-type="cancel"/>
+  <dlg:button dlg:id="Help" dlg:tab-index="11" dlg:left="10" dlg:top="210" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXDialog" dlg:value="&amp;236..Help.Label" dlg:button-type="help"/>
   <dlg:text dlg:style-id="1" dlg:id="ReferencesLabel" dlg:tab-index="21" dlg:left="5" dlg:top="106" dlg:width="260" dlg:height="12" dlg:help-text="&amp;425.BibTeXEntry.ReferencesLabel.HelpText" dlg:value="&amp;426.BibTeXEntry.ReferencesLabel.Label"/>
   <dlg:text dlg:style-id="1" dlg:id="FilesLabel" dlg:tab-index="22" dlg:left="5" dlg:top="8" dlg:width="260" dlg:height="11" dlg:help-text="&amp;429.BibTeXEntry.FilesLabel.HelpText" dlg:value="&amp;430.BibTeXEntry.FilesLabel.Label"/>
   <dlg:text dlg:style-id="0" dlg:id="SourcesLabel" dlg:tab-index="17" dlg:left="10" dlg:top="177" dlg:width="185" dlg:height="20" dlg:help-text="&amp;441.BibTeXEntry.SourcesLabel.HelpText" dlg:value="&amp;442.BibTeXEntry.SourcesLabel.Label" dlg:multiline="true"/>
-  <dlg:button dlg:id="AddSource" dlg:tab-index="9" dlg:left="205" dlg:top="118" dlg:width="60" dlg:height="12" dlg:help-text="&amp;445.BibTeXEntry.AddSource.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:AddSource" dlg:value="&amp;446.BibTeXEntry.AddSource.Label">
+  <dlg:button dlg:id="AddSource" dlg:tab-index="9" dlg:left="205" dlg:top="118" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXAddSource" dlg:value="&amp;446.BibTeXEntry.AddSource.Label">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:AddSource" script:language="UNO"/>
   </dlg:button>
-  <dlg:button dlg:id="RemoveSource" dlg:tab-index="10" dlg:left="205" dlg:top="134" dlg:width="60" dlg:height="12" dlg:help-text="&amp;447.BibTeXEntry.RemoveSource.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:RemoveSource" dlg:value="&amp;448.BibTeXEntry.RemoveSource.Label">
+  <dlg:button dlg:id="RemoveSource" dlg:tab-index="10" dlg:left="205" dlg:top="134" dlg:width="60" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:BibTeXRemoveSource" dlg:value="&amp;448.BibTeXEntry.RemoveSource.Label">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:RemoveSource" script:language="UNO"/>
   </dlg:button>
  </dlg:bulletinboard>

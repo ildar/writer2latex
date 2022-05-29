@@ -873,10 +873,7 @@
         <prop oor:name="BibTeXEncoding" oor:type="xs:short">
             <value>0</value><!-- US ASCII -->
         </prop>
-        <prop oor:name="UseNatbib" oor:type="xs:boolean">
-            <value>false</value>
-        </prop>
-        <prop oor:name="NatbibOptions" oor:type="xs:string">
+        <prop oor:name="BibLaTeXOptions" oor:type="xs:string">
             <value />
         </prop>
     </node>

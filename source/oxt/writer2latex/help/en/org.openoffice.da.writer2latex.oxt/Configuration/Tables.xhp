@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTables" id="bm_configtables"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Tables</paragraph>
 
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert tables</paragraph>
@@ -41,24 +42,24 @@
         across pages.</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTableFirstHeadStyle" id="bm_configtablefirstheadstyle"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Style for first head</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">First head</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This option is used to produce advanced tables, that are not supported in
         %PRODUCTNAME Writer. Enter the name of a paragraph style, or select a style in the list.
         If the first paragraph of the first cell in a row is formatted
         with this paragraph style, the row in question will be used for the first head in a multipage table.</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTableHeadStyle" id="bm_configtableheadstyle"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Style for head</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Head</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Likewise this option specifies a paragraph style that identifies a
         repeating head in a multipage table (like a normal table head in %PRODUCTNAME Writer).</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTableFootStyle" id="bm_configtablefootstyle"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Style for foot</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Foot</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This option specifies a paragraph style that identifies a repeating foot in a
         multipage table.</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTableLastFootStyle" id="bm_configtablelastfootstyle"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Style for last foot</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Last foot</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This option specifies a paragraph style that identifies the last foot in a
         multipage table.</paragraph>
         

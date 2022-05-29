@@ -5,7 +5,7 @@
   <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:text dlg:style-id="0" dlg:id="OtherLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Font packages (not used for XeTeX)"/>
+  <dlg:text dlg:style-id="0" dlg:id="OtherLabel" dlg:tab-index="0" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Font packages"/>
   <dlg:checkbox dlg:id="UsePifont" dlg:tab-index="1" dlg:left="10" dlg:top="22" dlg:width="185" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUsePifont" dlg:value="Use dingabts from pifont.sty" dlg:checked="false"/>
   <dlg:checkbox dlg:id="UseTipa" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTipa" dlg:value="Use phonetic symbols from tipa.sty and tipax.sty" dlg:checked="false"/>
   <dlg:checkbox dlg:id="UseEurosym" dlg:tab-index="3" dlg:left="10" dlg:top="50" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseEurosym" dlg:value="Use euro currency symbol from eurosym.sty" dlg:checked="false"/>
