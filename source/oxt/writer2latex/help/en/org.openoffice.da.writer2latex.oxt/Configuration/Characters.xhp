@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpdocument version="1.0">
+	<meta>
+        <topic id="writer2latex-export" indexer="include">
+            <title xml-lang="en-US">Character</title>
+            <filename>org.openoffice.da.writer2latex.oxt/Configuration/Characters.xhp</filename>
+        </topic>
+    </meta>
+    <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Characters" id="bm_characters"/>
+        <paragraph role="heading" level="1" xml-lang="en-US">Characters</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define the formatting of characters in the document</paragraph>
+
+        <section id="howtoget" xml-lang="en-US">
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Characters</emph>
+        </section>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">Character formatting</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseUlem" id="bm_configuseulem"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export underline and strike out (using ulem.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to support underlined and striked out text using the LaTeX
+        package ulem.sty. Note that this does not work well for longer passages of text. Writer2LaTeX will never export
+        underline and strike out for entire paragraphs.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseMicrotype" id="bm_configusemicrotype"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Use character protusion and font expansion (using microtype.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to enable enhanced typesetting features.
+        This uses the package microtype.sty to support the micro-typographic features character protusion/margin kerning (adjust characters 
+        at margins to achieve a better visual alignment) and font expansion (slightly expand or shrink the font to achieve better line breaks). 
+        Protusion is only supported by PdfTeX and XeTeX, and expansion is only supported by PdfTeX. This option has no effect if you use
+        other backends.</paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseLetterspace" id="bm_configuseletterspace"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export letter spacing (using microtype.sty or letterspace.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this to support letter spacing using the LaTeX package letterspace.sty.
+        If you also select micro-typograhy above, the package microtype.sty (which provides the same functionality) is used.
+        Letter spacing is only supported by PdfTeX, and this option has no effect if you use other backends.
+        Also, it only works for scalable fonts. This implies that you may get an error message if you use the fonts Computer Modern,
+        CM Bright or Concrete. If this happens, you should install the package cm-super in your TeX installation.
+        </paragraph>
+        
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFormatting" id="bm_configformatting"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Formatting export</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select how you want to export character formatting.</paragraph>
+        <list type="unordered">
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Ignore all</emph>: Ignore all character 
+        		formatting contained in the document.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Ignore most</emph>: Convert basic character
+        		formatting.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert basic</emph>: Convert basic character formatting.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert most</emph>: Convert all supported character formatting.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert all</emph>: Convert all supported character formatting.</paragraph>
+        	</listitem>
+        </list>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFormattingAttribute" id="bm_configformattingattribute"/>
+        <paragraph role="heading" level="2" xml-lang="en-US">Formatting attributes</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">For some formatting attributes you can directly control the generated LaTeX
+        code.</paragraph>
+
+        <paragraph role="heading" level="3" xml-lang="en-US">Formatting attribute</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select the formatting attribute:</paragraph>
+        <list type="unordered">
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Bold</emph>: Boldface text</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Italics</emph>: Italics text</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Small caps</emph>: Text formatted as small caps.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Superscript</emph>: Text formatted as superscript.</paragraph>
+        	</listitem>
+        	<listitem>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Subscript</emph>: Text formatted as subscript.</paragraph>
+        	</listitem>
+        </list>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigCustomAttribute" id="bm_configcustomattribute"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Apply custom LaTeX code</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define custom LaTeX code for the currently selected
+        attribute. Otherwise Writer2LaTeX will use default code, e.g. \textbf for boldface text.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigAttributeBefore" id="bm_configattributebefore"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code before</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the LaTeX code to add before the text, e.g. <emph>\emph{</emph></paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigAttributeAfter" id="bm_configattributeafter"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code after</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the LaTeX code to add after the text, e.g. <emph>}</emph></paragraph>
+        
+    </body>
+</helpdocument>

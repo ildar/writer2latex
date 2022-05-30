@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTextAndMath" id="bm_configtextandmath"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Text and math</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Define how to convert text strings and math content.</paragraph>
 
@@ -14,28 +15,12 @@
         	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Text and math</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Math symbols</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME Math you can add user-defined symbols. Writer2LaTeX already
-        understands the predefined symbols such as %alpha. If you define your own symbols, you can define corresponding LaTeX
-        code here.</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Tab stops</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMathSymbolName" id="bm_configmathsymbolname"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Name</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select the name of the user-defined symbol.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNewSymbol" id="bm_configdeletesymbol"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">New...</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to add a new symbol to the list. Select a symbol from the list
-        or type the name.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDeleteSymbol" id="bm_configdeletesymbol"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Delete...</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to delete the current symbol from the list.</paragraph>
-
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMathLaTeX" id="bm_configmathlatex"/>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTabStopLaTeX" id="bm_configtabstoplatex"/>
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Enter the LaTeX code corresponding to this symbol, e.g.
-        <emph>\Downarrow</emph>.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Normally tab stops are converted to spaces, but in this field you can enter any
+        LaTeX code, that should be used instead. For example <emph>\quad{}</emph> or <emph>\hspace{2em}</emph>.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Text replace</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Often LaTeX requires special care to typeset certain constructions. For example
@@ -62,11 +47,27 @@
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Enter the LaTeX code to export for this text string.</paragraph>
 
-        <paragraph role="heading" level="2" xml-lang="en-US">Tab stops</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Math symbols</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">In %PRODUCTNAME Math you can add user-defined symbols. Writer2LaTeX already
+        understands the predefined symbols such as %alpha. If you define your own symbols, you can define corresponding LaTeX
+        code here.</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTabStopLaTeX" id="bm_configtabstoplatex"/>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMathSymbolName" id="bm_configmathsymbolname"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Name</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Select the name of the user-defined symbol.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigNewSymbol" id="bm_configdeletesymbol"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">New...</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to add a new symbol to the list. Select a symbol from the list
+        or type the name.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDeleteSymbol" id="bm_configdeletesymbol"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Delete...</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to delete the current symbol from the list.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigMathLaTeX" id="bm_configmathlatex"/>
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Normally tab stops are converted to spaces, but in this field you can enter any
-        LaTeX code, that should be used instead. For example <emph>\quad{}</emph> or <emph>\hspace{2em}</emph>.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the LaTeX code corresponding to this symbol, e.g.
+        <emph>\Downarrow</emph>.</paragraph>
     </body>
 </helpdocument>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="Characters" dlg:left="84" dlg:top="32" dlg:width="260" dlg:height="225" dlg:closeable="true" dlg:moveable="true" dlg:title="Characters" dlg:withtitlebar="false">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-weight="150"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:style-id="0" dlg:id="CharactersLabel" dlg:tab-index="9" dlg:left="5" dlg:top="8" dlg:width="185" dlg:height="12" dlg:value="Character formatting"/>
+  <dlg:button dlg:id="HelpButton" dlg:tab-index="8" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Characters" dlg:value="Help" dlg:button-type="help"/>
+  <dlg:checkbox dlg:id="UseMicrotype" dlg:tab-index="1" dlg:left="10" dlg:top="35" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseMicrotype" dlg:value="Use character protusion and font expansion (using microtype.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseLetterspace" dlg:tab-index="2" dlg:left="10" dlg:top="48" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLetterspace" dlg:value="Export letter spacing (using microtype.sty or letterspace.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseUlem" dlg:tab-index="0" dlg:left="10" dlg:top="22" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseUlem" dlg:value="Export underline and strike out (using ulem.sty)" dlg:checked="false"/>
+  <dlg:text dlg:id="Label1" dlg:tab-index="10" dlg:left="10" dlg:top="66" dlg:width="65" dlg:height="12" dlg:value="Formatting export"/>
+  <dlg:menulist dlg:id="Formatting" dlg:tab-index="3" dlg:left="80" dlg:top="64" dlg:width="170" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFormatting" dlg:spin="true">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="Ignore all"/>
+    <dlg:menuitem dlg:value="Ignore most"/>
+    <dlg:menuitem dlg:value="Convert basic"/>
+    <dlg:menuitem dlg:value="Convert most"/>
+    <dlg:menuitem dlg:value="Convert all"/>
+   </dlg:menupopup>
+  </dlg:menulist>
+  <dlg:text dlg:style-id="0" dlg:id="AttributeHeadingLabel" dlg:tab-index="11" dlg:left="8" dlg:top="80" dlg:width="245" dlg:height="12" dlg:value="Formatting attributes"/>
+  <dlg:menulist dlg:id="FormattingAttribute" dlg:tab-index="4" dlg:left="120" dlg:top="96" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigFormattingAttribute" dlg:spin="true">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="Bold"/>
+    <dlg:menuitem dlg:value="Italics"/>
+    <dlg:menuitem dlg:value="Small caps"/>
+    <dlg:menuitem dlg:value="Superscript"/>
+    <dlg:menuitem dlg:value="Subscript"/>
+   </dlg:menupopup>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:FormattingAttributeChange" script:language="UNO"/>
+  </dlg:menulist>
+  <dlg:text dlg:id="FormattingAttributeLabel" dlg:tab-index="12" dlg:left="10" dlg:top="98" dlg:width="100" dlg:height="12" dlg:value="Formatting attribute"/>
+  <dlg:checkbox dlg:id="CustomAttribute" dlg:tab-index="5" dlg:left="12" dlg:top="112" dlg:width="235" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigCustomAttribute" dlg:value="Apply custom LaTeX code" dlg:checked="false">
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:CustomAttributeChange" script:language="UNO"/>
+  </dlg:checkbox>
+  <dlg:textfield dlg:id="Before" dlg:tab-index="6" dlg:left="120" dlg:top="128" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigAttributeBefore"/>
+  <dlg:text dlg:id="BeforeLabel" dlg:tab-index="13" dlg:left="15" dlg:top="130" dlg:width="95" dlg:height="12" dlg:value="LaTeX code before"/>
+  <dlg:textfield dlg:id="After" dlg:tab-index="7" dlg:left="120" dlg:top="148" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigAttributeAfter"/>
+  <dlg:text dlg:id="AfterLabel" dlg:tab-index="14" dlg:left="15" dlg:top="150" dlg:width="95" dlg:height="12" dlg:value="LaTeX code after"/>
+ </dlg:bulletinboard>
+</dlg:window>

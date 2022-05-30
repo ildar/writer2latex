@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpdocument version="1.0">
+	<meta>
+        <topic id="writer2latex-export" indexer="include">
+            <title xml-lang="en-US">General</title>
+            <filename>org.openoffice.da.writer2latex.oxt/Configuration/General.xhp</filename>
+        </topic>
+    </meta>
+    <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigGeneral" id="bm_configgeneral"/>
+        <paragraph role="heading" level="1" xml-lang="en-US">General</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Define general features of formatting export</paragraph>
+
+        <section id="howtoget" xml-lang="en-US">
+        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - General</emph>
+        </section>
+        
+        <paragraph role="heading" level="2" xml-lang="en-US">General formatting</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseXcolor" id="bm_configusexcolor"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export colors (using xcolor.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export colors using the
+        LaTeX package xcolor.sty. Otherwise you will get a black and white document.</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseLongfbox" id="bm_configuselongfbox"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export borders and backgrounds (using longfbox.sty)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export margins, borders and backgrounds using the
+        LaTeX package longfbox.sty. Otherwise these formatting properties will not be exported.</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigBorderRadius" id="bm_configborderradius"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Border radius</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">LibreOffice does not support rounded corners for borders.
+        You can however use this option to add rounded corners for borders in the LaTeX document.
+        The value is a percentage, and the radius of the corner is calculated as this percentage of the padding 
+        (distance between content and border). The default value 100% is recommended, but you can use any percentage. 
+        If you do not want rounded corners, set the value to 0%. </paragraph>
+
+        <paragraph role="heading" level="2" xml-lang="en-US">Hyperlinks</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseHyperref" id="bm_configusehyperref"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Use hyperref.sty (support for hyperlinks)</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export hyperlinks using the LaTeX package
+        hyperref.sty. As a side effect this package will create links for cross references etc.</paragraph>
+        
+        
+    </body>
+</helpdocument>

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-07)
+ *  Version 2.0 (2022-05-30)
  *
  */ 
  
@@ -80,8 +80,9 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	super(xContext);
     	
     	pageHandlers.put("Documentclass", new DocumentclassHandler());
-    	pageHandlers.put("Formatting", new FormattingHandler());
-    	pageHandlers.put("Formatting2", new Formatting2Handler());
+    	pageHandlers.put("Formatting", new GeneralHandler());
+    	pageHandlers.put("Characters", new CharactersHandler());
+    	pageHandlers.put("Formatting2", new ParagraphsAndSectionsHandler());
     	pageHandlers.put("HeadingsLists", new HeadingsListsHandler());
     	pageHandlers.put("Styles", new StylesHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
@@ -279,27 +280,17 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     
     }
     
-    // The page "Formatting"
-    // This page handles the the options use_xcolor, use_ulem, formatting
-    private class FormattingHandler extends PageHandler {
+    // The page "General"
+    // This page handles the the options use_xcolor, use_longfbox and use_hyperref
+    private class GeneralHandler extends PageHandler {
         
     	@Override protected void setControls(DialogAccess dlg) {
     		// General
     		checkBoxFromConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxFromConfig(dlg,"UseLongfbox","use_longfbox");
     		numericFieldFromConfigAsPercentage(dlg,"BorderRadius","border_radius");
-    		// Characters
-    		checkBoxFromConfig(dlg,"UseMicrotype","use_microtype");
-    		checkBoxFromConfig(dlg,"UseLetterspace","use_letterspace");
-    		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
-        	// Text, paragraph and list
-    		switch(config.getOption("formatting")) {
-    		case "ignore_all": dlg.setListBoxSelectedItem("Formatting", (short)0); break;
-    		case "ignore_most": dlg.setListBoxSelectedItem("Formatting", (short)1); break;
-    		case "convert_most": dlg.setListBoxSelectedItem("Formatting", (short)3); break;
-    		case "convert_all": dlg.setListBoxSelectedItem("Formatting", (short)4); break;
-        	default: dlg.setListBoxSelectedItem("Formatting", (short)2);
-        	}
+        	// Hyperlinks
+    		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
         	
         	useLongfboxChange(dlg);
     	}
@@ -309,19 +300,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		checkBoxToConfig(dlg,"UseXcolor","use_xcolor");
     		checkBoxToConfig(dlg,"UseLongfbox","use_longfbox");
     		numericFieldToConfigAsPercentage(dlg,"BorderRadius","border_radius");
-    		// Characters
-    		checkBoxToConfig(dlg,"UseMicrotype","use_microtype");
-    		checkBoxToConfig(dlg,"UseLetterspace","use_letterspace");
-    		checkBoxToConfig(dlg,"UseUlem","use_ulem");
-        	// Text, paragraph and list
-        	switch (dlg.getListBoxSelectedItem("Formatting")) {
-        	case 0: config.setOption("formatting", "ignore_all"); break;
-        	case 1: config.setOption("formatting", "ignore_most"); break;
-        	case 2: config.setOption("formatting", "convert_basic"); break;
-        	case 3: config.setOption("formatting", "convert_most"); break;
-        	case 4: config.setOption("formatting", "convert_all");
-        	}
-
+    		// Hyperlinks
+    		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
@@ -341,39 +321,46 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
 
     }
    
-    // The page "Formatting 2"
-    // This page handles the options use_multicol, multicols_format, no_index and use_hyperref
+    // The page "Characters"
+    // This page handles the the options use_ulem, use_microtype, use_letterspace and formatting
     // In addition it handles style maps for formatting attributes
-    private class Formatting2Handler extends AttributePageHandler {
+    private class CharactersHandler extends AttributePageHandler {
     	private final String[] sLaTeXAttributeNames = { "bold", "italic", "small-caps", "superscript", "subscript" };
         
-        protected Formatting2Handler() {
+        protected CharactersHandler() {
         	super();
         	sAttributeNames = sLaTeXAttributeNames;
         }
         
     	@Override protected void setControls(DialogAccess dlg) {
     		super.setControls(dlg);
-    		// Sections
-    		checkBoxFromConfig(dlg,"UseMulticol","use_multicol");
-    		checkBoxFromConfig(dlg,"MulticolsFormat","multicols_format");
-        	// Indexes
-        	checkBoxFromConfig(dlg,"NoIndex","no_index");
-        	// References
-    		checkBoxFromConfig(dlg,"UseHyperref","use_hyperref");
-    		
-    		useMulticolChange(dlg);
+    		// Character formatting
+    		checkBoxFromConfig(dlg,"UseUlem","use_ulem");
+    		checkBoxFromConfig(dlg,"UseMicrotype","use_microtype");
+    		checkBoxFromConfig(dlg,"UseLetterspace","use_letterspace");
+    		switch(config.getOption("formatting")) {
+    		case "ignore_all": dlg.setListBoxSelectedItem("Formatting", (short)0); break;
+    		case "ignore_most": dlg.setListBoxSelectedItem("Formatting", (short)1); break;
+    		case "convert_most": dlg.setListBoxSelectedItem("Formatting", (short)3); break;
+    		case "convert_all": dlg.setListBoxSelectedItem("Formatting", (short)4); break;
+        	default: dlg.setListBoxSelectedItem("Formatting", (short)2);
+        	}
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
     		super.getControls(dlg);
-    		// Sections
-    		checkBoxToConfig(dlg,"UseMulticol","use_multicol");
-    		checkBoxToConfig(dlg,"MulticolsFormat","multicols_format");
-        	// Indexes
-        	checkBoxToConfig(dlg,"NoIndex","no_index");    	
-    		// References
-    		checkBoxToConfig(dlg,"UseHyperref","use_hyperref");
+    		// Character formatting
+    		checkBoxToConfig(dlg,"UseUlem","use_ulem");
+    		checkBoxToConfig(dlg,"UseMicrotype","use_microtype");
+    		checkBoxToConfig(dlg,"UseLetterspace","use_letterspace");
+        	switch (dlg.getListBoxSelectedItem("Formatting")) {
+        	case 0: config.setOption("formatting", "ignore_all"); break;
+        	case 1: config.setOption("formatting", "ignore_most"); break;
+        	case 2: config.setOption("formatting", "convert_basic"); break;
+        	case 3: config.setOption("formatting", "convert_most"); break;
+        	case 4: config.setOption("formatting", "convert_all");
+        	}
+
     	}
     	
 		@Override protected void setControls(DialogAccess dlg, Map<String, String> attr) {
@@ -395,14 +382,40 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     		dlg.setControlEnabled("After", bEnable);
 		}
 
+		@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) { 
+			return super.handleEvent(dlg, sMethod);
+    	}
+
+    }
+
+    // The page "Paragraphs and sections"
+    // This page handles the options use_multicol, multicols_format and no_index
+    private class ParagraphsAndSectionsHandler extends PageHandler {
+        
+    	@Override protected void setControls(DialogAccess dlg) {
+    		// Sections
+    		checkBoxFromConfig(dlg,"UseMulticol","use_multicol");
+    		checkBoxFromConfig(dlg,"MulticolsFormat","multicols_format");
+        	// Indexes
+        	checkBoxFromConfig(dlg,"NoIndex","no_index");
+    		useMulticolChange(dlg);
+    	}
+    	
+    	@Override protected void getControls(DialogAccess dlg) {
+    		// Sections
+    		checkBoxToConfig(dlg,"UseMulticol","use_multicol");
+    		checkBoxToConfig(dlg,"MulticolsFormat","multicols_format");
+        	// Indexes
+        	checkBoxToConfig(dlg,"NoIndex","no_index");    	
+    	}
+    	
+
 		@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {
     		if (sMethod.equals("UseMulticolChange")) {
     			useMulticolChange(dlg);
     			return true;
     		}
-    		else {
-    			return super.handleEvent(dlg, sMethod);
-    		}
+    		return false;
     	}
     	
     	private void useMulticolChange(DialogAccess dlg) {

@@ -2,8 +2,8 @@
 <!DOCTYPE library:library PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "library.dtd">
 <library:library xmlns:library="http://openoffice.org/2000/library" library:name="W2LDialogs2" library:readonly="false" library:passwordprotected="false">
  <library:element library:name="ConfigurationRoot"/>
- <library:element library:name="Formatting"/>
- <library:element library:name="Formatting2"/>
+ <library:element library:name="General"/>
+ <library:element library:name="ParagraphsAndSections"/>
  <library:element library:name="Documentclass"/>
  <library:element library:name="Styles"/>
  <library:element library:name="Fonts"/>
@@ -17,4 +17,5 @@
  <library:element library:name="AutoConfigInfo"/>
  <library:element library:name="HeadingsLists"/>
  <library:element library:name="Preamble"/>
+ <library:element library:name="Characters"/>
 </library:library>
