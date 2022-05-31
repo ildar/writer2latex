@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- This is a datafile used by Writer2LaTeX
-     Version 2.0 (2022-02-22)
+     Version 2.0 (2022-05-30)
 
 	 The definitions for greek characters are contributed by interzone, info@interzone.gr
      and extended by Johannis Likos. Additional bugfixes by Alexej Kryukov
@@ -2024,6 +2024,7 @@ Greek characters are from the file lgrenc.dfu and are included in another symbol
 <preserve-symbol char="27E9" mode="text" />
 <preserve-symbol char="1E21" mode="text" />
 <preserve-symbols first-char="FB00" last-char="FB06" mode="text" />
+<preserve-symbol char="FEFF" mode="text" />
 <symbol-subset fontenc="LGR"> <!-- Note these definitions are from lgrenc.dfu -->
 <preserve-symbol char="A8" mode="text" />
 <preserve-symbol char="AB" mode="text" />

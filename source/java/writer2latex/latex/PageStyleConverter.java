@@ -2,7 +2,7 @@
  *
  *  PageStyleConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-08-24)
+ *  Version 2.0 (2022-05-31)
  *
  */
 
@@ -555,28 +555,48 @@ public class PageStyleConverter extends StyleConverter {
 		            props.addValue(bTwoside ? "outer" : "right",sMarginRight);
 	            }
             }
-            // Header/footer properties are also optimized to reduce the number of properties
-            if (bIncludeHead && bIncludeFoot) {
-            	props.addValue("includeheadfoot");
-            }
-            else if (bIncludeHead) {
-            	props.addValue("includehead");
-            	props.addValue("nofoot");
-            }
-            else if (bIncludeFoot) {
-            	props.addValue("nohead");
-            	props.addValue("includefoot");
+            if (config.useFancyhdr()) {
+	            // Header/footer properties are also optimized to reduce the number of properties
+	            if (bIncludeHead && bIncludeFoot) {
+	            	props.addValue("includeheadfoot");
+	            }
+	            else if (bIncludeHead) {
+	            	props.addValue("includehead");
+	            	props.addValue("nofoot");
+	            }
+	            else if (bIncludeFoot) {
+	            	props.addValue("nohead");
+	            	props.addValue("includefoot");
+	            }
+	            else {
+	            	props.addValue("noheadfoot");
+	            }
+	            if (bIncludeHead) {
+	                props.addValue("head",sHeadHeight);
+	                props.addValue("headsep",sHeadSep);
+	            }
+	            if (bIncludeFoot) {
+	                props.addValue("foot",sFootHeight);
+	                props.addValue("footskip",sFootSkip);
+	            }
             }
             else {
-            	props.addValue("noheadfoot");
-            }
-            if (bIncludeHead) {
-                props.addValue("head",sHeadHeight);
-                props.addValue("headsep",sHeadSep);
-            }
-            if (bIncludeFoot) {
-                props.addValue("foot",sFootHeight);
-                props.addValue("footskip",sFootSkip);
+            	// If we don't export headers and footers we ignore the layout of these
+            	// We don't really know if we have header and footer, so we use this compromise:
+            	// If we have a large margin, put the header and footer in the margin
+            	// Otherwise include the header and footer in the text
+            	// TODO: Include some option to control this?
+            	bIncludeHead = Calc.isLessThan(sMarginTop, "2cm");
+            	bIncludeFoot = Calc.isLessThan(sMarginBottom, "2cm");
+	            if (bIncludeHead && bIncludeFoot) {
+	            	props.addValue("includeheadfoot");
+	            }
+	            else if (bIncludeHead) {
+	            	props.addValue("includehead");
+	            }
+	            else if (bIncludeFoot) {
+	            	props.addValue("includefoot");
+	            }
             }
             // Use the package
             pacman.usepackage(props.toString(), "geometry");

@@ -2,6 +2,12 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] Bugfix: Always leave room for header/footer if use_geometry=true and use_fancyhdr=false. Otherwise
+  the export might produce overlapping text if the source document does not have a header/footer but the
+  documentclass defines one.
+  
+[w2l] Bugfix: Added definition to fix compatibility issue of longfbox.sty with newer versions of pict2e.sty
+
 [w2l] Bugfix: External applications were not saved to registry
 
 [w2l] The bibliography dialog now supports several BibLaTeX citation types as well of prefix and suffix.
