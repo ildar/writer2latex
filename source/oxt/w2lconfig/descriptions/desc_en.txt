@@ -1,1 +1,0 @@
-Writer2LaTeX configurations installs templates and formats for use together with Writer2LaTeX

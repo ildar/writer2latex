@@ -123,49 +123,8 @@
             description="Create extension package for installation with OOo 2.0.4+">
         <mkdir dir="${target.lib}"/>
         <mkdir dir="${tmp}"/>
-
-        <!-- First extension: writer2latex.oxt -->
 		
-        <!-- Create jar with relevant files  -->
-        <jar jarfile="${tmp}/writer2latex-filter.jar">
-            <fileset dir="${classes}">
-                <patternset>
-                    <exclude name="**/*Test.class"/>
-                    <exclude name="**/AllTests.class"/>
-		    		<include name="**/*.xml"/>
-                	<include name="**/*.class"/>
-		    		<include name="**/*.properties"/>
-                    <exclude name="writer2latex/Application.class"/>
-                    <exclude name="writer2latex/xhtml/**/*"/>
-                	<exclude name="org/openoffice/da/comp/writer2xhtml/**/*"/>
-                </patternset>
-            </fileset>
-        	<!-- include third party libraries -->
-        	<zipgroupfileset dir="${source.lib}" includes="${org.json},${org.jbibtex}" />
-            <!-- also include uno interface as generated from idl -->
-            <fileset dir="${source.idl}/writer2latex">
-                <include name="org/**/*"/>
-            </fileset>
-            <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
-                <!-- OOo needs this to register the filter: -->
-                <attribute name="RegistrationClassName" value="org.openoffice.da.comp.writer2latex.W2LRegistration" />
-                <attribute name="Class-Path" value="jaxp.jar parser.jar"/>
-            </manifest>
-        </jar>
-
-        <!-- Pack extension -->
-        <zip destfile="${target.lib}/writer2latex.oxt">
-            <zipfileset dir="source/oxt/writer2latex" prefix="" />
-            <zipfileset dir="${tmp}" includes="writer2latex-filter.jar" />
-            <zipfileset dir="${source.idl}/writer2latex" includes="writer2latex.rdb"/>
-        </zip>
-		
-        <!-- delete the jar for this extension -->
-        <delete file="${tmp}/writer2latex-filter.jar" />
-		
-		
-        <!-- Second extension: writer2xhtml.oxt -->
+        <!-- Main extension: writer2xhtml.oxt -->
 
         <!-- Create jar with relevant files  -->
         <jar jarfile="${tmp}/writer2xhtml-filter.jar">
@@ -224,12 +183,7 @@
         <!-- delete the jar for this extension -->
         <delete file="${tmp}/writer2xhtml-filter.jar" />
 
-        <!-- Third extension: w2lconfig.oxt -->
-    	
-    	<!-- Pack extension -->
-        <zip destfile="${target.lib}/w2lconfig.oxt" basedir="source/oxt/w2lconfig"/>
-
-        <!-- Fourth extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
+        <!-- Sample extension: xhtml-config-package.oxt (xhtml sample configuration package) -->
 
         <zip destfile="${target.lib}/xhtml-config-sample.oxt" basedir="source/oxt/xhtml-config-sample"/>
             
@@ -245,12 +199,11 @@
             <zipfileset dir="${source.distro}" prefix="${basename}"/>
 		
             <!-- Add default configurations (copied from source tree) -->
-            <zipfileset dir="${src}/writer2latex/latex/config"  prefix="${basename}/config" />
             <zipfileset dir="${src}/writer2latex/xhtml/config"  prefix="${basename}/config" />
 		
             <!-- Add jar and oxt's -->
             <zipfileset dir="${target.lib}" prefix="${basename}"
-             includes="${jarfile}.jar,writer2latex.oxt,writer2xhtml.oxt,w2lconfig.oxt,xhtml-config-sample.oxt"/>
+             includes="${jarfile}.jar,writer2xhtml.oxt,xhtml-config-sample.oxt"/>
         </zip>
 		
         <!-- Pack the source distribution -->
