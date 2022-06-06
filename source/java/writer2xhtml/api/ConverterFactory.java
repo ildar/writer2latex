@@ -51,8 +51,6 @@ public class ConverterFactory {
      *  conversion into the specified MIME type.</p>
      *  <p>Currently supported MIME types are:</p>
      *  <ul>
-     *    <li><code>application/x-latex</code> for LaTeX format</li>
-     *    <li><code>application/x-bibtex</code> for BibTeX format</li>
      *    <li><code>text/html</code> for XHTML 1.0 strict format</li>
      *    <li><code>application/xhtml11</code> for XHTML 1.1 format
      *    Note that this is <em>not</em> the recommended media type for XHTML 1.1
@@ -62,7 +60,7 @@ public class ConverterFactory {
      *    <li><code>text/html5</code> for HTML5 documents
      *    Note that this is <em>not</em> the recommended media type for HTML5
      *    (see http://wiki.whatwg.org/), but it is used internally
-     *    by Writer2xhtml to distinguish from HTML5</li>
+     *    by Writer2xhtml to distinguish XHTML from HTML5</li>
      *    <li><code>application/epub+zip</code></li> for EPUB format</li>
      *    <li><code>epub3</code> for EPUB 3 format</li>
      *  </ul>
@@ -72,32 +70,25 @@ public class ConverterFactory {
      *  the requested MIME type could not be created
      */
     public static Converter createConverter(String sMIME) {
-        Object converter = null;
-        if (MIMETypes.LATEX.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.latex.ConverterPalette");
-        }
-        else if (MIMETypes.BIBTEX.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.bibtex.Converter");
-        }
-        else if (MIMETypes.XHTML.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.xhtml.Xhtml10Converter");
+        if (MIMETypes.XHTML.equals(sMIME)) {
+            return new writer2xhtml.xhtml.Xhtml10Converter();
         }
         else if (MIMETypes.XHTML11.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.xhtml.Xhtml11Converter");
+            return new writer2xhtml.xhtml.Xhtml11Converter();
         }
         else if (MIMETypes.XHTML_MATHML.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.xhtml.XhtmlMathMLConverter");
+            return new writer2xhtml.xhtml.XhtmlMathMLConverter();
         }
         else if (MIMETypes.HTML5.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.xhtml.Html5Converter");
+            return new writer2xhtml.xhtml.Html5Converter();
         }
         else if (MIMETypes.EPUB3.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.epub.EPUB3Converter");
+            return new writer2xhtml.epub.EPUB3Converter();
         }
         else if (MIMETypes.EPUB.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.epub.EPUBConverter");
+            return new writer2xhtml.epub.EPUBConverter();
         }
-        return converter instanceof Converter ? (Converter) converter : null;
+        return null;
     }
 	
     /** <p>Create a <code>BatchConverter</code> implementation which supports
@@ -110,35 +101,9 @@ public class ConverterFactory {
      *  for the requested MIME type could not be created
      */
     public static BatchConverter createBatchConverter(String sMIME) {
-        Object converter = null;
         if (MIMETypes.XHTML.equals(sMIME)) {
-            converter = createInstance("writer2xhtml.xhtml.BatchConverterImpl");
+            return new writer2xhtml.xhtml.BatchConverterImpl();
         }
-        return converter instanceof BatchConverter ? (BatchConverter) converter : null;
+        return null;
     }
-	
-    /** Create a <code>StarMathConverter</code> implementation
-     *
-     *  @return the converter
-     */
-    public static StarMathConverter createStarMathConverter() {
-        Object converter = createInstance("writer2xhtml.latex.StarMathConverter");
-        return converter instanceof StarMathConverter ? (StarMathConverter) converter : null;
-    }
-	
-    private static Object createInstance(String sClassName) {
-        try {
-		    return Class.forName(sClassName).newInstance();
-        }
-        catch (java.lang.ClassNotFoundException e) {
-            return null;
-        } 
-        catch (java.lang.InstantiationException e) {
-            return null;
-        }
-        catch (java.lang.IllegalAccessException e) {
-            return null;
-        } 
-    }
-
 }

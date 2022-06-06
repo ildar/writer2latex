@@ -5,7 +5,7 @@
   # version 1.7 beta (2022-06-06)
   ############################################################################
 -->
-<project name="w2l" default="help" basedir=".">
+<project name="writer2xhtml" default="help" basedir=".">
 
     <!-- set this property to the location of your SO/OOo installation -->
 	<property name="OFFICE_CLASSES" location="C:\Program Files\LibreOffice\program\classes" />
