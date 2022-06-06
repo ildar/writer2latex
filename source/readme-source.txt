@@ -1,7 +1,7 @@
-Writer2LaTeX source version 1.6.1
-=================================
+Writer2xhtml source version 1.7 beta
+====================================
 
-Writer2LaTeX is (c) 2002-2018 by Henrik Just.
+Writer2xhtml is (c) 2002-2022 by Henrik Just.
 The source is available under the terms and conditions of the
 GNU LESSER GENERAL PUBLIC LICENSE, version 2.1.
 Please see the file COPYING.TXT for details.
@@ -10,7 +10,7 @@ Please see the file COPYING.TXT for details.
 Overview
 --------
 
-The source of Writer2LaTeX consists of three major parts:
+The source of Writer2xhtml consists of three major parts:
 
 * A general purpose java library for converting OpenDocument files into LaTeX,
   BibTeX, XHTML, XHTML+MathML, HTML5 and EPUB
@@ -124,7 +124,7 @@ In addition to oxt, the build file supports the following targets:
     clean
 
 
-Henrik Just, October 2018
+Henrik Just, June 2022
 
 
 Thanks to Michael Niedermair for writing the original ant build file

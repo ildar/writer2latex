@@ -4,7 +4,7 @@
              xmlns:xlink="http://www.w3.org/1999/xlink">
 
   <identifier value="org.openoffice.da.w2lconfig.oxt" />
-  <version value="1.6.1" />
+  <version value="1.7" />
   <dependencies>
     <OpenOffice.org-minimal-version value="3.0" d:name="OpenOffice.org 3.0"/>
   </dependencies>

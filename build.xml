@@ -2,14 +2,14 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.6.1 (2018-08-24)
+  # version 1.7 beta (2022-06-06)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
 
     <!-- set this property to the location of your SO/OOo installation -->
-	<property name="OFFICE_CLASSES" location="/usr/share/java" />
-	<property name="URE_CLASSES" location="/usr/share/java" />
+	<property name="OFFICE_CLASSES" location="C:\Program Files\LibreOffice\program\classes" />
+	<property name="URE_CLASSES" location="C:\Program Files\LibreOffice\program\classes" />
 
     <description>writer2latex - build file</description>
 
@@ -34,8 +34,8 @@
 
     <!-- configure the directories -->
     <property name="jarfile" value="writer2latex"/>
-    <property name="basename" value="writer2latex16"/>
-    <property name="distrofile" value="${basename}1.zip" />
+    <property name="basename" value="writer2latex17"/>
+    <property name="distrofile" value="${basename}.zip" />
     <!--<property name="sourcedistrofile" value="${basename}source.zip" />-->
     <property name="src" location="source/java"/>
     <property name="source.distro" location="source/distro" />

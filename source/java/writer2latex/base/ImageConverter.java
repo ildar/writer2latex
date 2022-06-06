@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2014-11-18)
+ *  Version 1.7 (2022-06-06)
  *
  */
 
@@ -31,10 +31,9 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -255,7 +254,8 @@ public final class ImageConverter {
 	                }
 	            }
 	            //blob = Base64.decode(buf.toString());
-	            blob = DatatypeConverter.parseBase64Binary(buf.toString());
+	            //blob = DatatypeConverter.parseBase64Binary(buf.toString());
+	            blob = Base64.getDecoder().decode(buf.toString());
     			// We may have seen this image before, return the recycled version
 	            String sId1 = createId(blob);
     			if (recycledImages.containsKey(sId1)) {
@@ -348,8 +348,10 @@ public final class ImageConverter {
 			// This would be surprising
 			return null;
 		}
-    	return DatatypeConverter.printHexBinary(md.digest(blob))
-    			+DatatypeConverter.printHexBinary(Arrays.copyOf(blob, 10));
+    	return Base64.getEncoder().encodeToString(md.digest(blob))
+    			+Base64.getEncoder().encodeToString(Arrays.copyOf(blob, 10));
+    	// return DatatypeConverter.printHexBinary(md.digest(blob))
+    	//		+DatatypeConverter.printHexBinary(Arrays.copyOf(blob, 10));
     }
     
 }

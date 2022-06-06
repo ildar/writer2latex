@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-23)
+ *  Version 1.7 (2022-06-06)
  *
  */
  
@@ -40,14 +40,13 @@
   */
 package writer2latex.xhtml;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.xml.sax.SAXException;
 
@@ -531,8 +530,11 @@ public class DrawConverter extends ConverterHelper {
         	}
         	else {
         		StringBuilder buf = new StringBuilder();
+        		//buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
+        		//	.append(DatatypeConverter.printBase64Binary(bgd.getData()));
         		buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
-        			.append(DatatypeConverter.printBase64Binary(bgd.getData()));
+    			.append(Base64.getEncoder().encodeToString(bgd.getData()));
+
         		image.setAttribute("src", buf.toString());
         	}
         	// Add alternative text, using either alt.text, name or file name

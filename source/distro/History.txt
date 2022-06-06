@@ -1,6 +1,8 @@
 Version history for Writer2LaTeX
 ================================
 
+Version 1.7 beta (June 2022)
+
 Version 1.6.1 (October 2018)
   - Writer2LaTeX:
        - Fix bug with string replace
