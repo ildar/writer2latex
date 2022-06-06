@@ -60,7 +60,6 @@
 	        files="${org.json},${org.jbibtex}"/>
         <!-- additional uno interfaces generated from idl -->
         <pathelement path="${source.idl}/writer2xhtml"/>
-        <pathelement path="${source.idl}/writer2xhtml"/>
     </path> 
 
     <target name="all"
