@@ -5,7 +5,7 @@
 
 module org { module openoffice { module da { module writer2xhtml { 
 
-// This interface is an IDL version of the java interface (writer2latex.api.BatchHandler)
+// This interface is an IDL version of the java interface (writer2xhtml.api.BatchHandler)
 interface XBatchHandler : com::sun::star::uno::XInterface  
 { 
 
@@ -32,7 +32,7 @@ interface XBatchHandler : com::sun::star::uno::XInterface
 	
 };
  
-// This interface is an IDL version of the java interface (writer2latex.api.BatchConverter)
+// This interface is an IDL version of the java interface (writer2xhtml.api.BatchConverter)
 interface XBatchConverter : com::sun::star::uno::XInterface  
 { 
 

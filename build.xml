@@ -1,6 +1,6 @@
 <!-- 
   ############################################################################
-  # This is the Ant build file for writer2latex
+  # This is the Ant build file for writer2xhtml
   # Original: Sep 2004 (mgn)
   # version 1.7 beta (2022-06-06)
   ############################################################################
@@ -11,7 +11,7 @@
 	<property name="OFFICE_CLASSES" location="C:\Program Files\LibreOffice\program\classes" />
 	<property name="URE_CLASSES" location="C:\Program Files\LibreOffice\program\classes" />
 
-    <description>writer2latex - build file</description>
+    <description>writer2xhtml - build file</description>
 
     <target name="help" description="Displays usage information">
         <echo>Usage: ant &lt;target&gt;
@@ -33,8 +33,8 @@
     </target>
 
     <!-- configure the directories -->
-    <property name="jarfile" value="writer2latex"/>
-    <property name="basename" value="writer2latex17"/>
+    <property name="jarfile" value="writer2xhtml"/>
+    <property name="basename" value="writer2xhtml17"/>
     <property name="distrofile" value="${basename}.zip" />
     <!--<property name="sourcedistrofile" value="${basename}source.zip" />-->
     <property name="src" location="source/java"/>
@@ -59,7 +59,7 @@
     	<filelist dir="${source.lib}"
 	        files="${org.json},${org.jbibtex}"/>
         <!-- additional uno interfaces generated from idl -->
-        <pathelement path="${source.idl}/writer2latex"/>
+        <pathelement path="${source.idl}/writer2xhtml"/>
         <pathelement path="${source.idl}/writer2xhtml"/>
     </path> 
 
@@ -92,7 +92,7 @@
 
     <target name="jar"
             depends="compile"
-            description="Create writer2latex jar file containing all compiled classes except OOo components and test cases.">
+            description="Create writer2xhtml jar file containing all compiled classes except OOo components and test cases.">
 	    <!-- make a jar from the classes not matching magic testcase identifiers-->
         <mkdir dir="${target.lib}"/>
         <jar jarfile="${target.lib}/${jarfile}.jar">
@@ -111,7 +111,7 @@
         	<zipgroupfileset dir="${source.lib}" includes="${org.json}" />
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
-                <attribute name="Main-Class" value="writer2latex.Application"/>
+                <attribute name="Main-Class" value="writer2xhtml.Application"/>
                 <attribute name="Class-Path" value="jaxp.jar parser.jar"/>
             </manifest>
         </jar>
@@ -135,14 +135,14 @@
                 	<include name="org/openoffice/da/comp/w2lcommon/**/*.class"/>
                 	<include name="org/openoffice/da/comp/w2lcommon/**/*.properties"/>
                 	<include name="org/openoffice/da/comp/writer2xhtml/**/*.class"/>
-                	<include name="writer2latex/api/**/*.class"/>
-                	<include name="writer2latex/base/**/*.class"/>
-                	<include name="writer2latex/epub/**/*.class"/>
-                	<include name="writer2latex/office/**/*.class"/>
-                	<include name="writer2latex/util/**/*.class"/>
-                	<include name="writer2latex/xhtml/**/*.class"/>
-                	<include name="writer2latex/xhtml/**/*.xml"/>
-                	<include name="writer2latex/xhtml/**/*.properties"/>
+                	<include name="writer2xhtml/api/**/*.class"/>
+                	<include name="writer2xhtml/base/**/*.class"/>
+                	<include name="writer2xhtml/epub/**/*.class"/>
+                	<include name="writer2xhtml/office/**/*.class"/>
+                	<include name="writer2xhtml/util/**/*.class"/>
+                	<include name="writer2xhtml/xhtml/**/*.class"/>
+                	<include name="writer2xhtml/xhtml/**/*.xml"/>
+                	<include name="writer2xhtml/xhtml/**/*.properties"/>
                 </patternset>
             </fileset>
             <!-- also include uno interface as generated from idl -->
@@ -175,7 +175,7 @@
 	
     <!-- Create distribution packages -->
     <target name="distro" depends="jar,oxt"
-            description="Create Writer2LaTeX distribution">
+            description="Create Writer2xhtml distribution">
 		
         <zip destfile="${target.lib}/${distrofile}">
 
@@ -183,7 +183,7 @@
             <zipfileset dir="${source.distro}" prefix="${basename}"/>
 		
             <!-- Add default configurations (copied from source tree) -->
-            <zipfileset dir="${src}/writer2latex/xhtml/config"  prefix="${basename}/config" />
+            <zipfileset dir="${src}/writer2xhtml/xhtml/config"  prefix="${basename}/config" />
 		
             <!-- Add jar and oxt's -->
             <zipfileset dir="${target.lib}" prefix="${basename}"

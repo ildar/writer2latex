@@ -14,9 +14,9 @@ The source of Writer2xhtml consists of three major parts:
 
 * A general purpose java library for converting OpenDocument files into LaTeX,
   BibTeX, XHTML, XHTML+MathML, HTML5 and EPUB
-  This is to be found in the packages writer2latex.* and should only be used
-  through the provided api writer2latex.api.*
-* A command line utility writer2latex.Application
+  This is to be found in the packages writer2xhtml.* and should only be used
+  through the provided api writer2xhtml.api.*
+* A command line utility writer2xhtml.Application
 * A collection of components for LibreOffice and Apache OpenOffice
   These are to be found in the packages org.openoffice.da.comp.*
   

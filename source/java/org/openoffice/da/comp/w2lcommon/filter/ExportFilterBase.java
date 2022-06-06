@@ -32,10 +32,12 @@ import com.sun.star.lang.XTypeProvider;
 import com.sun.star.uno.Type;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.xml.sax.XDocumentHandler;
+
+import writer2xhtml.util.SimpleDOMBuilder;
+
 import com.sun.star.xml.XExportFilter;
 
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-import writer2latex.util.SimpleDOMBuilder;
 
 import java.io.IOException;
 

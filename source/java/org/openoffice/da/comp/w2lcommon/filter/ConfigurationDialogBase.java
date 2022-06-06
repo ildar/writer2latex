@@ -53,14 +53,14 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XStringSubstitution;
 
+import writer2xhtml.api.ComplexOption;
+import writer2xhtml.api.Config;
+import writer2xhtml.api.ConverterFactory;
+import writer2xhtml.util.Misc;
+
 import com.sun.star.lib.uno.helper.WeakBase;
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
 import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
-
-import writer2latex.api.ComplexOption;
-import writer2latex.api.Config;
-import writer2latex.api.ConverterFactory;
-import writer2latex.util.Misc;
 
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
 import org.openoffice.da.comp.w2lcommon.helper.FilePicker;

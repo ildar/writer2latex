@@ -54,13 +54,10 @@ import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-//import writer2latex.api.BatchConverter;
-//import writer2latex.api.BatchHandler;
-//import writer2latex.api.Converter;
-import writer2latex.api.ConverterFactory;
-import writer2latex.api.IndexPageEntry;
-import writer2latex.api.MIMETypes;
-import writer2latex.api.OutputFile;
+import writer2xhtml.api.ConverterFactory;
+import writer2xhtml.api.IndexPageEntry;
+import writer2xhtml.api.MIMETypes;
+import writer2xhtml.api.OutputFile;
 
 // Import interfaces as defined in uno idl
 import org.openoffice.da.writer2xhtml.XBatchConverter;
@@ -85,7 +82,7 @@ public class BatchConverter implements
     private XComponentContext xComponentContext = null;
     
     private XSimpleFileAccess2 sfa2 = null;
-    private writer2latex.api.BatchConverter batchConverter = null;
+    private writer2xhtml.api.BatchConverter batchConverter = null;
     
     private XBatchHandler handler;
     

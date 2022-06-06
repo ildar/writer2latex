@@ -32,14 +32,15 @@ import java.util.Map;
 
 import org.openoffice.da.comp.w2lcommon.filter.ConfigurationDialogBase;
 import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
-import writer2latex.api.Converter;
-import writer2latex.api.ConverterFactory;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.ucb.CommandAbortedException;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.XComponentContext;
+
+import writer2xhtml.api.Converter;
+import writer2xhtml.api.ConverterFactory;
 
 public class ConfigurationDialog extends ConfigurationDialogBase implements XServiceInfo {
 	private String sResourceDirName;

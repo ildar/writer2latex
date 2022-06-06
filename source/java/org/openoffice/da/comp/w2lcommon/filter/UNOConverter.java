@@ -33,12 +33,6 @@ import java.util.Iterator;
 
 import org.w3c.dom.Document;
 
-import writer2latex.api.Converter;
-import writer2latex.api.ConverterFactory;
-import writer2latex.api.ConverterResult;
-import writer2latex.api.OutputFile;
-import writer2latex.util.Misc;
-
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
@@ -49,6 +43,12 @@ import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
+
+import writer2xhtml.api.Converter;
+import writer2xhtml.api.ConverterFactory;
+import writer2xhtml.api.ConverterResult;
+import writer2xhtml.api.OutputFile;
+import writer2xhtml.util.Misc;
 
 /** This class provides conversion using UNO:
  *  Graphics conversion is done using appropriate UNO services.

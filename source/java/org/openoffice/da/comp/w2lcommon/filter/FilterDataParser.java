@@ -43,11 +43,12 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XStringSubstitution;
 
+import writer2xhtml.api.Converter;
+
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
 import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
 
 import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
-import writer2latex.api.Converter;
 
 
 /** This class parses the FilterData property passed to the filter and
@@ -91,7 +92,7 @@ public class FilterDataParser {
     /** Apply the given FilterOptions property to the given converter.
      *  The property must be a comma separated list of name=value items.
      * @param options an <code>Any</code> containing the FilterOptions property
-     * @param converter a <code>writer2latex.api.Converter</code> implementation
+     * @param converter a <code>writer2xhtml.api.Converter</code> implementation
      */
     public void applyFilterOptions(Object options, Converter converter) {
     	// Get the string from the data, if possible
@@ -117,7 +118,7 @@ public class FilterDataParser {
     /** Apply the given FilterData property to the given converter.
      *  The property must be an array of PropertyValue objects.
      *  @param data an <code>Any</code> containing the FilterData property
-     *  @param converter a <code>writer2latex.api.Converter</code> implementation
+     *  @param converter a <code>writer2xhtml.api.Converter</code> implementation
      */
     public void applyFilterData(Object data, Converter converter) {
         // Get the array from the data, if possible

@@ -37,13 +37,11 @@ import com.sun.star.graphic.XGraphicProvider;
 //import com.sun.star.io.XOutputStream;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.XComponentContext;
+
+import writer2xhtml.api.GraphicConverter;
+import writer2xhtml.api.MIMETypes;
+
 import com.sun.star.uno.UnoRuntime;
-
-//import java.io.InputStream;
-//import java.io.OutputStream;
-
-import writer2latex.api.GraphicConverter;
-import writer2latex.api.MIMETypes;
 
 /** A GraphicConverter implementation which uses the GraphicProvider service
  *  to convert the graphic. This service does only support simple format

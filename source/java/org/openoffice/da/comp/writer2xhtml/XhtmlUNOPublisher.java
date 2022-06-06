@@ -36,13 +36,13 @@ import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
 import org.openoffice.da.comp.w2lcommon.helper.StreamGobbler;
 import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
-import writer2latex.util.Misc;
-
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
+
+import writer2xhtml.util.Misc;
 
 public class XhtmlUNOPublisher extends UNOPublisher {
 	

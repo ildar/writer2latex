@@ -26,8 +26,9 @@
  
 package org.openoffice.da.comp.writer2xhtml;
 
-import writer2latex.api.BatchHandler;
 import org.openoffice.da.writer2xhtml.XBatchHandler;
+
+import writer2xhtml.api.BatchHandler;
 
 /** The uno interface provides an XBatchHandler implementation, the java
  *  interface requires a BatchHandler implementation. This simple class

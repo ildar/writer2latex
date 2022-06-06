@@ -45,11 +45,11 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.util.XRefreshable;
 
+import writer2xhtml.api.GraphicConverter;
+import writer2xhtml.api.MIMETypes;
+
 import com.sun.star.lib.uno.adapter.ByteArrayToXInputStreamAdapter;
 import com.sun.star.lib.uno.adapter.XOutputStreamToByteArrayAdapter;
-
-import writer2latex.api.GraphicConverter;
-import writer2latex.api.MIMETypes;
 
 /** A GraphicConverter implementation which uses a hidden Draw document to
  *  store the graphic, providing more control over the image than the

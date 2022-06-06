@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-import writer2latex.util.Misc;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertyAccess;
@@ -46,6 +45,8 @@ import com.sun.star.ui.dialogs.XExecutableDialog;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XModifiable;
+
+import writer2xhtml.util.Misc;
 
 /** This class converts an open office document to another format
  */

@@ -37,9 +37,6 @@ import java.util.regex.Pattern;
 import org.openoffice.da.comp.w2lcommon.helper.DialogBase;
 import org.openoffice.da.comp.w2lcommon.helper.SimpleDialog;
 
-import writer2latex.util.CSVList;
-import writer2latex.util.Misc;
-
 import com.sun.star.awt.XDialog;
 import com.sun.star.beans.IllegalTypeException;
 import com.sun.star.beans.NotRemoveableException;
@@ -61,6 +58,9 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.DateTime;
+
+import writer2xhtml.util.CSVList;
+import writer2xhtml.util.Misc;
 
 // TODO: Create the UNO helper class DocumentPropertiesAccess
 

@@ -28,7 +28,7 @@ package org.openoffice.da.comp.w2lcommon.filter;
 
 import com.sun.star.uno.XComponentContext;
 
-import writer2latex.api.GraphicConverter;
+import writer2xhtml.api.GraphicConverter;
 
 public class GraphicConverterImpl implements GraphicConverter {
 
