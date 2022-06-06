@@ -143,22 +143,6 @@
                 	<include name="writer2latex/xhtml/**/*.class"/>
                 	<include name="writer2latex/xhtml/**/*.xml"/>
                 	<include name="writer2latex/xhtml/**/*.properties"/>
-                	<include name="writer2latex/xmerge/**/*.class"/>
-                	<!-- include the portions of w2l necessary to convert formulas -->
-                	<include name="writer2latex/latex/StarMathConverter.class"/>
-                	<include name="writer2latex/latex/CharClasses.class"/>
-                	<include name="writer2latex/latex/Token.class"/>
-                   	<include name="writer2latex/latex/TGroup.class"/>
-                   	<include name="writer2latex/latex/SmTokenTableEntry.class"/>
-                   	<include name="writer2latex/latex/SmTokenTable.class"/>
-                   	<include name="writer2latex/latex/SmToken.class"/>
-                	<include name="writer2latex/latex/LaTeXDocumentPortion.class"/>
-                	<include name="writer2latex/latex/LaTeXConfig*.class"/>
-                	<include name="writer2latex/latex/ContentHandlingOption.class"/>
-                	<include name="writer2latex/latex/util/HeadingMap.class"/>
-                    <include name="writer2latex/latex/util/StyleMap.class"/>
-                	<include name="writer2latex/latex/i18n/*.class"/>
-                	<include name="writer2latex/latex/i18n/symbols.xml"/>
                 </patternset>
             </fileset>
             <!-- also include uno interface as generated from idl -->

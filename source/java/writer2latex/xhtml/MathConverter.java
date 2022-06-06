@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-24)
+ *  Version 1.7 (2022-06-06)
  *
  */
 
@@ -34,17 +34,17 @@ import org.w3c.dom.NamedNodeMap;
 import writer2latex.office.*;
 import writer2latex.util.Misc;
 import writer2latex.base.BinaryGraphicsDocument;
-import writer2latex.latex.StarMathConverter;
+//import writer2latex.latex.StarMathConverter;
 
 /** This class converts formulas: Either as MathML, as an image or as plain text (StarMath or LaTeX format)
  */
 public class MathConverter extends ConverterHelper {
 	
-	private StarMathConverter smc = null;
+	//private StarMathConverter smc = null;
 
     private boolean bSupportMathML;
     private boolean bUseImage;
-    private boolean bUseLaTeX;
+    //private boolean bUseLaTeX;
 	
     /** Create a new <code>MathConverter</code>
      * 
@@ -59,9 +59,9 @@ public class MathConverter extends ConverterHelper {
         super(ofr,config,converter);
         this.bSupportMathML = bSupportMathML;
         this.bUseImage = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.IMAGE_STARMATH;
-        this.bUseLaTeX = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.LATEX;
+        //this.bUseLaTeX = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.LATEX;
         
-        if (bUseLaTeX) { smc = new StarMathConverter(); }
+        //if (bUseLaTeX) { smc = new StarMathConverter(); }
     }
 	
     /** Convert a formula
@@ -144,7 +144,7 @@ public class MathConverter extends ConverterHelper {
     			sAnnotation+=child.getNodeValue();
     			child = child.getNextSibling();
     		}
-    		if (bUseLaTeX) { sAnnotation = smc.convert(sAnnotation); }
+    		//if (bUseLaTeX) { sAnnotation = smc.convert(sAnnotation); }
 
     		// Next insert the image if required and available
     		if (bUseImage) {
