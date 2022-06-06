@@ -23,12 +23,12 @@
  *  Version 1.6 (2018-03-06)
  *  
  */
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
+import org.openoffice.da.comp.w2xcommon.helper.MessageBox;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertyAccess;

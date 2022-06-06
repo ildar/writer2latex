@@ -34,8 +34,8 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openoffice.da.comp.w2lcommon.helper.DialogBase;
-import org.openoffice.da.comp.w2lcommon.helper.SimpleDialog;
+import org.openoffice.da.comp.w2xcommon.helper.DialogBase;
+import org.openoffice.da.comp.w2xcommon.helper.SimpleDialog;
 
 import com.sun.star.awt.XDialog;
 import com.sun.star.beans.IllegalTypeException;

@@ -26,9 +26,9 @@
  
 package org.openoffice.da.comp.writer2xhtml;
 
-import com.sun.star.uno.XComponentContext;
+import org.openoffice.da.comp.w2xcommon.filter.ExportFilterBase;
 
-import org.openoffice.da.comp.w2lcommon.filter.ExportFilterBase;
+import com.sun.star.uno.XComponentContext;
 
 
 /** This class implements the xhtml export filter component

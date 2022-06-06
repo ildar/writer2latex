@@ -30,11 +30,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher;
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
-import org.openoffice.da.comp.w2lcommon.helper.StreamGobbler;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
+import org.openoffice.da.comp.w2xcommon.filter.UNOPublisher;
+import org.openoffice.da.comp.w2xcommon.helper.MessageBox;
+import org.openoffice.da.comp.w2xcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2xcommon.helper.StreamGobbler;
+import org.openoffice.da.comp.w2xcommon.helper.XPropertySetHelper;
 
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.frame.XFrame;

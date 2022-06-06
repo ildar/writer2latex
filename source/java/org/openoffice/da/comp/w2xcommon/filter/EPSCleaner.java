@@ -23,7 +23,7 @@
  *  Version 1.0 (2009-03-09)
  */
  
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 /** This class removes redundant binary information from EPS files created by OOo.
  *  See the issue http://qa.openoffice.org/issues/show_bug.cgi?id=25256

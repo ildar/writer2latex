@@ -59,10 +59,10 @@ import writer2xhtml.api.IndexPageEntry;
 import writer2xhtml.api.MIMETypes;
 import writer2xhtml.api.OutputFile;
 
+import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
 // Import interfaces as defined in uno idl
 import org.openoffice.da.writer2xhtml.XBatchConverter;
 import org.openoffice.da.writer2xhtml.XBatchHandler;
-import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 
 /** This class provides a uno component which implements the interface
  *  org.openoffice.da.writer2xhtml.XBatchConverter

@@ -30,8 +30,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import org.openoffice.da.comp.w2lcommon.filter.ConfigurationDialogBase;
-import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
+import org.openoffice.da.comp.w2xcommon.filter.ConfigurationDialogBase;
+import org.openoffice.da.comp.w2xcommon.helper.DialogAccess;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.lang.XServiceInfo;

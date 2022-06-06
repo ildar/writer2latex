@@ -131,8 +131,8 @@
                 <patternset>
                     <exclude name="**/*Test.class"/>
                     <exclude name="**/AllTests.class"/>
-                	<include name="org/openoffice/da/comp/w2lcommon/**/*.class"/>
-                	<include name="org/openoffice/da/comp/w2lcommon/**/*.properties"/>
+                	<include name="org/openoffice/da/comp/w2xcommon/**/*.class"/>
+                	<include name="org/openoffice/da/comp/w2xcommon/**/*.properties"/>
                 	<include name="org/openoffice/da/comp/writer2xhtml/**/*.class"/>
                 	<include name="writer2xhtml/api/**/*.class"/>
                 	<include name="writer2xhtml/base/**/*.class"/>

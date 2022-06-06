@@ -30,8 +30,8 @@ import com.sun.star.awt.XDialog;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.XComponentContext;
 
-import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
-import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
+import org.openoffice.da.comp.w2xcommon.filter.OptionsDialogBase;
+import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
 
 /** This class provides a uno component which implements a filter ui for the
  *  Xhtml export in Calc

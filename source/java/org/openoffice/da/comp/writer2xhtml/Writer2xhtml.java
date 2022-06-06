@@ -36,9 +36,10 @@ import com.sun.star.ui.dialogs.XExecutableDialog;
 import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
-import org.openoffice.da.comp.w2lcommon.filter.UNOPublisher.TargetFormat;
-import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
+
+import org.openoffice.da.comp.w2xcommon.filter.UNOPublisher.TargetFormat;
+import org.openoffice.da.comp.w2xcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2xcommon.helper.XPropertySetHelper;
        
 /** This class implements the ui (dispatch) commands provided by Writer2xhtml.
  */

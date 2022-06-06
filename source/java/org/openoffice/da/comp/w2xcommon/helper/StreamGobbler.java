@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  Messages.java
+ *  StreamGobbler.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -19,29 +19,37 @@
  *  Copyright: 2002-2015 by Henrik Just
  *
  *  All Rights Reserved.
- *  
- *  Version 1.6 (2015-05-28)
- *  
- */
-package org.openoffice.da.comp.w2lcommon.filter;
+ * 
+ *  Version 1.6 (2015-04-05)
+ *
+ */ 
+ 
+package org.openoffice.da.comp.w2xcommon.helper;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.io.*;
 
-public class Messages {
-	private static final String BUNDLE_NAME = "org.openoffice.da.comp.w2lcommon.filter.messages"; //$NON-NLS-1$
-
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
-
-	private Messages() {
-	}
-
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
+public class StreamGobbler extends Thread {
+    InputStream is;
+    String type;
+    
+    public StreamGobbler(InputStream is, String type) {
+        this.is = is;
+        this.type = type;
+    }
+    
+    public void run() {
+        try  {
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            //String line=null;
+            //while ( (line = br.readLine()) != null) {
+            while ( br.readLine() != null) {
+                // Do nothing...
+            }    
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();  
+        }
+    }
 }
+

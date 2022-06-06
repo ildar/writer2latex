@@ -24,7 +24,7 @@
 *
 */ 
 
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +35,10 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.openoffice.da.comp.w2xcommon.helper.DialogAccess;
+import org.openoffice.da.comp.w2xcommon.helper.FilePicker;
+import org.openoffice.da.comp.w2xcommon.helper.StyleNameProvider;
 
 import com.sun.star.awt.XContainerWindowEventHandler;
 import com.sun.star.awt.XDialog;
@@ -61,10 +65,6 @@ import writer2xhtml.util.Misc;
 import com.sun.star.lib.uno.helper.WeakBase;
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
 import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
-
-import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
-import org.openoffice.da.comp.w2lcommon.helper.FilePicker;
-import org.openoffice.da.comp.w2lcommon.helper.StyleNameProvider;
 
 /** This is a base implementation of a uno component which supports several option pages
  *  with a single <code>XContainerWindowEventHandler</code>. The title of the dialogs

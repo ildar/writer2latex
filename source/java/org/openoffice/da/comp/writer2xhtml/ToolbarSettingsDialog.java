@@ -31,6 +31,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.openoffice.da.comp.w2xcommon.helper.DialogAccess;
+import org.openoffice.da.comp.w2xcommon.helper.FilePicker;
+import org.openoffice.da.comp.w2xcommon.helper.RegistryHelper;
+import org.openoffice.da.comp.w2xcommon.helper.XPropertySetHelper;
+
 import com.sun.star.awt.XContainerWindowEventHandler;
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XWindow;
@@ -43,11 +48,6 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XChangesBatch;
 
 import com.sun.star.lib.uno.helper.WeakBase;
-
-import org.openoffice.da.comp.w2lcommon.helper.DialogAccess;
-import org.openoffice.da.comp.w2lcommon.helper.FilePicker;
-import org.openoffice.da.comp.w2lcommon.helper.RegistryHelper;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
 /** This class provides a uno component which implements the configuration
  *  of the writer2xhtml toolbar

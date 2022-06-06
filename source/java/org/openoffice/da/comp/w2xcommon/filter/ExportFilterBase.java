@@ -24,7 +24,7 @@
  *  
  */
 
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XServiceName;
@@ -37,9 +37,9 @@ import writer2xhtml.util.SimpleDOMBuilder;
 
 import com.sun.star.xml.XExportFilter;
 
-import org.openoffice.da.comp.w2lcommon.helper.MessageBox;
-
 import java.io.IOException;
+
+import org.openoffice.da.comp.w2xcommon.helper.MessageBox;
 
 
 /** This class provides an abstract UNO component which implements an XExportFilter.

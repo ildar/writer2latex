@@ -24,7 +24,7 @@
  *
  */ 
  
-package org.openoffice.da.comp.w2lcommon.helper;
+package org.openoffice.da.comp.w2xcommon.helper;
 
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialogEventHandler;

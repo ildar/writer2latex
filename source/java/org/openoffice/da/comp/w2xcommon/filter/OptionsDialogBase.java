@@ -24,9 +24,14 @@
  *
  */ 
  
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import java.util.HashSet;
+
+import org.openoffice.da.comp.w2xcommon.helper.DialogBase;
+import org.openoffice.da.comp.w2xcommon.helper.MacroExpander;
+import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
+import org.openoffice.da.comp.w2xcommon.helper.XPropertySetHelper;
 
 import com.sun.star.awt.XDialogEventHandler;
 import com.sun.star.beans.PropertyValue;
@@ -45,11 +50,6 @@ import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XChangesBatch;
-
-import org.openoffice.da.comp.w2lcommon.helper.DialogBase;
-import org.openoffice.da.comp.w2lcommon.helper.MacroExpander;
-import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
-import org.openoffice.da.comp.w2lcommon.helper.XPropertySetHelper;
 
 /** This class provides an abstract uno component which implements a filter ui
  */

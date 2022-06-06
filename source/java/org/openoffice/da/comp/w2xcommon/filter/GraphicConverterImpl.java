@@ -24,7 +24,7 @@
  *
  */
  
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import com.sun.star.uno.XComponentContext;
 

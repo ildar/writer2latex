@@ -24,12 +24,14 @@
  *
  */ 
  
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+
+import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.io.NotConnectedException;
@@ -47,8 +49,6 @@ import writer2xhtml.api.Converter;
 
 import com.sun.star.lib.uno.adapter.XInputStreamToInputStreamAdapter;
 import com.sun.star.lib.uno.adapter.XOutputStreamToOutputStreamAdapter;
-
-import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
 
 
 /** This class parses the FilterData property passed to the filter and

@@ -24,7 +24,7 @@
  *
  */
  
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 // This class is based on these java uno adapter classes: 
 //   com.sun.star.lib.uno.adapter.ByteArrayToXInputStreamAdapter;

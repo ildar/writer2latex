@@ -36,8 +36,8 @@ import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
-import org.openoffice.da.comp.w2lcommon.helper.PropertyHelper;
-import org.openoffice.da.comp.w2lcommon.filter.OptionsDialogBase;
+import org.openoffice.da.comp.w2xcommon.filter.OptionsDialogBase;
+import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
 
 /** This class provides a UNO component which implements a filter UI for the
  *  EPUB export

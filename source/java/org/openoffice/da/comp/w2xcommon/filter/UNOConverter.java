@@ -23,7 +23,7 @@
  *  Version 1.6 (2015-05-06)
  *  
  */
-package org.openoffice.da.comp.w2lcommon.filter;
+package org.openoffice.da.comp.w2xcommon.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
