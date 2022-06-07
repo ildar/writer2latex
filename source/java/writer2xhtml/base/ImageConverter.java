@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-06)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
@@ -57,6 +57,7 @@ import writer2xhtml.util.Misc;
 public final class ImageConverter {
 	private OfficeReader ofr;
 	private boolean bDestructive;
+	private boolean bUseBase64 = false;
 
     // Data for file name generation
     private String sBaseFileName = "";
@@ -75,7 +76,7 @@ public final class ImageConverter {
     private HashSet<String> acceptedFormats = new HashSet<String>();
     
     // In the package format, the same image file may be used more than once in the document
-    // Hence we keep information of all documents for potential
+    // Hence we keep information of all documents for potential reuse
     private HashMap<String,BinaryGraphicsDocument> recycledImages = new HashMap<String,BinaryGraphicsDocument>();
 
     /** Construct a new <code>ImageConverter</code> referring to a specific document
@@ -158,9 +159,17 @@ public final class ImageConverter {
     	this.gcv = gcv;
     }
     
-    /** Get an image from a <code>draw:image</code> element. If the converter is destructive, the returned
-     *  <code>BinaryGraphicsDocument</code> will hold the only reference to the image data (the original
-     *  data will be removed).
+    /** Define whether to use Base64 to represent binary data
+     * 
+     * @param b
+     */
+    public void setUseBase64(boolean b) {
+    	this.bUseBase64 = b;
+    }
+    
+    /** Get an image from a <code>draw:image</code> or <code>text:list-level-style-image</code>element.
+     *  If the converter is destructive, the returned <code>BinaryGraphicsDocument</code> will hold the
+     *  only reference to the image data (the original data will be removed).
      * 
      * @param node the image element
      * @return a document containing the (converted) image, or null if it was not possible to read the image
@@ -193,7 +202,7 @@ public final class ImageConverter {
     }
     
     private BinaryGraphicsDocument getImage(Element node, String sName) {
-    	assert(XMLString.DRAW_IMAGE.equals(node.getTagName()));
+    	assert(XMLString.DRAW_IMAGE.equals(node.getTagName()) || XMLString.TEXT_LIST_LEVEL_STYLE_IMAGE.equals(node.getTagName()));
 
     	// Image data
         String sExt = null;
@@ -321,6 +330,7 @@ public final class ImageConverter {
         	String sFileName = sName+sExt;
             BinaryGraphicsDocument bgd = new BinaryGraphicsDocument(sFileName,sMIME);
             bgd.setData(blob,isAcceptedFormat(sMIME));
+            if (bUseBase64) { bgd.convertToBase64(); }
             if (sId!=null) {
         		recycledImages.put(sId, new BinaryGraphicsDocument(bgd));
             }

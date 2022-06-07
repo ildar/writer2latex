@@ -2,6 +2,10 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- Added support for image bullets in lists,
+
+- Bugfix: The converter crashed if embed_img=true and the document contained two identical pictures.
+
 - Removed the redundant attribute type from <script> if producing HTML5.
 
 - Bugfix: Removed the deprecated profile attribute (Dublin Core) from <html> if producing HTML5.
@@ -10,4 +14,5 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 - Bugfix: The <title> must be non-empty. The file name is now used as title if the document has an empty title. 
 
-- Removed LaTeX specific code 
+- Writer2xhtml has been separated from Writer2LaTeX: All LaTeX code has been removed, and packages etc. has
+  been renamed to avoid conflicts if installed together with Writer2LaTeX.

@@ -16,17 +16,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-05-05)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
 package writer2xhtml.base;
 
 import java.io.OutputStream;
+import java.util.Base64;
 
 import writer2xhtml.api.OutputFile;
 
@@ -34,8 +35,9 @@ import java.io.IOException;
 
 
 /** This class is used to represent a binary graphics document to be included in the converter result.
- *  I may also represent a linked image, which should <em>not</em> be included (and will produce an empty file
- *  if it is).
+ *  It may also represent to further types of images,which should <em>not</em> be included (and will produce an empty file
+ *  if it is): 
+ *  An image with the data encoded as base64, and a linked image whose data are not included 
  */
 public class BinaryGraphicsDocument implements OutputFile {
 
@@ -51,6 +53,9 @@ public class BinaryGraphicsDocument implements OutputFile {
     private int nOff = 0;
     private int nLen = 0;
     
+    // Alternative data for base64 encoded data
+    private String sBase64 = null;
+    
     /**Constructs a new graphics document.
      * Until data is added using the <code>read</code> methods, the document is considered a link to
      * the image given by the file name.
@@ -65,7 +70,8 @@ public class BinaryGraphicsDocument implements OutputFile {
     }
     
     /** Construct a new graphics document which is a recycled version of the supplied one.
-     *  This implies that all information is identical, but the recycled version does not contain any data.
+     *  This implies that all information is identical, but the recycled version does not contain any data blob.
+     *  If the data is given by a base64 encoded string, the recycled versions does however contain the data.
      *  This is for images that are used more than once in the document.
      * 
      * @param bgd the source document
@@ -75,6 +81,7 @@ public class BinaryGraphicsDocument implements OutputFile {
     	this.sMimeType = bgd.getMIMEType();
     	this.bAcceptedFormat = bgd.isAcceptedFormat();
     	this.bRecycled = true;
+    	this.sBase64 = bgd.getBase64();
     }
     
     /** Is this graphics document recycled?
@@ -108,12 +115,21 @@ public class BinaryGraphicsDocument implements OutputFile {
         this.bAcceptedFormat = bIsAcceptedFormat;
     }
     
+    /** Convert image contents to a base64 encoded string
+     * 
+     * @param sBase64 the data
+     */
+    public void convertToBase64() {
+    	sBase64 = Base64.getEncoder().encodeToString(this.blob);
+    	this.blob = null;
+    }
+    
     /** Does this <code>BinaryGraphicsDocument</code> represent a linked image?
      * 
      * @return true if so
      */
     public boolean isLinked() {
-    	return blob==null && !bRecycled;
+    	return blob==null && sBase64==null && !bRecycled;
     }
     
     /** Is this image in an acceptable format for the converter?
@@ -130,6 +146,14 @@ public class BinaryGraphicsDocument implements OutputFile {
      */
     public byte[] getData() {
     	return blob;
+    }
+    
+    /** Get the base64 encoded data of the image
+     * 
+     * @return
+     */
+    public String getBase64() {
+    	return sBase64;
     }
     
     // Implement OutputFile

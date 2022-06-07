@@ -40,7 +40,6 @@
   */
 package writer2xhtml.xhtml;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -527,11 +526,7 @@ public class DrawConverter extends ConverterHelper {
         	}
         	else {
         		StringBuilder buf = new StringBuilder();
-        		//buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
-        		//	.append(DatatypeConverter.printBase64Binary(bgd.getData()));
-        		buf.append("data:").append(bgd.getMIMEType()).append(";base64,")
-    			.append(Base64.getEncoder().encodeToString(bgd.getData()));
-
+        		buf.append("data:").append(bgd.getMIMEType()).append(";base64,").append(bgd.getBase64());
         		image.setAttribute("src", buf.toString());
         	}
         	// Add alternative text, using either alt.text, name or file name

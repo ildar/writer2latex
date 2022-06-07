@@ -261,6 +261,8 @@ public class Converter extends ConverterBase {
 
         l10n = new L10n();
         
+        imageConverter.setUseBase64(config.embedImg());
+        
         if (isOPS()) {
         	imageConverter.setBaseFileName("image");
         	imageConverter.setUseSubdir("images");
@@ -276,7 +278,7 @@ public class Converter extends ConverterBase {
         imageConverter.addAcceptedFormat(MIMETypes.JPEG);
         imageConverter.addAcceptedFormat(MIMETypes.GIF);
         
-        if (isHTML5()) { // HTML supports SVG as well
+        if (isHTML5()) { // HTML5 supports SVG as well
         	imageConverter.setDefaultVectorFormat(MIMETypes.SVG);
         }
 

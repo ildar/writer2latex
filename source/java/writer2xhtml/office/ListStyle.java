@@ -16,16 +16,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2010 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2010-05-09)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
 package writer2xhtml.office;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import writer2xhtml.util.Misc;
@@ -38,13 +39,16 @@ public class ListStyle extends OfficeStyle {
     private static final int MAX_LEVEL = 10; 
     private PropertySet[] level;
     private PropertySet[] levelStyle;
+    private Element[] levelImage;
 
     public ListStyle() {
         level = new PropertySet[MAX_LEVEL+1];
         levelStyle = new PropertySet[MAX_LEVEL+1];
+        levelImage = new Element[MAX_LEVEL+1];
         for (int i=1; i<=MAX_LEVEL; i++) {
             level[i] = new PropertySet();
             levelStyle[i] = new PropertySet();
+            levelImage[i] = null;
         }
     }
 	
@@ -68,6 +72,11 @@ public class ListStyle extends OfficeStyle {
 
     public boolean isImage(int i) {
         return XMLString.TEXT_LIST_LEVEL_STYLE_IMAGE.equals(level[i].getName());
+    }
+    
+    // Return image for this level or null if the level is not text:list-level-style-image
+    public Element getImage(int i) {
+    	return levelImage[i];
     }
     
     // Return true if this level is using the new list formatting of ODT 1.2
@@ -104,6 +113,9 @@ public class ListStyle extends OfficeStyle {
                     int nLevel = Misc.getPosInteger(sLevel,1);
                     if (nLevel>=1 && nLevel<=MAX_LEVEL) {
                     	loadLevelPropertiesFromDOM(nLevel,child);
+                    	if (XMLString.TEXT_LIST_LEVEL_STYLE_IMAGE.equals(child.getNodeName())) {
+                    		levelImage[nLevel] = (Element) child;
+                    	}
                     }
                 }
             }

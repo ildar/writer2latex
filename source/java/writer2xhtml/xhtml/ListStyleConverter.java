@@ -16,19 +16,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-03)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
 package writer2xhtml.xhtml;
 
 import java.util.Enumeration;
-//import java.util.Hashtable;
 
+import org.w3c.dom.Element;
+
+import writer2xhtml.base.BinaryGraphicsDocument;
 import writer2xhtml.office.ListStyle;
 import writer2xhtml.office.OfficeReader;
 import writer2xhtml.office.OfficeStyleFamily;
@@ -161,9 +163,23 @@ public class ListStyleConverter extends StyleConverterHelper {
         		}
         	}
         	else if (XMLString.TEXT_LIST_LEVEL_STYLE_IMAGE.equals(sLevelType)) {
-        		// Image. TODO: Handle embedded images
-        		String sHref = style.getLevelProperty(nLevel,XMLString.XLINK_HREF);
-        		if (sHref!=null) { props.addValue("list-style-image","url('"+sHref+"')"); }
+        		String sURL = null;
+        		Element image = style.getImage(nLevel);
+        		if (image!=null) {
+        			BinaryGraphicsDocument bgd = converter.getImageCv().getImage(image);
+        			if (bgd!=null) {
+        				sURL = bgd.getFileName();
+        				if (config.embedImg() && !bgd.isLinked()) {
+        					StringBuilder sb = new StringBuilder();
+        	        		sb.append("data:").append(bgd.getMIMEType()).append(";base64,").append(bgd.getBase64());
+        	        		sURL = sb.toString();
+        				}
+        				else if (!bgd.isRecycled() && !bgd.isLinked()) {
+        	        		converter.addDocument(bgd);
+        	        	}
+        			}
+        		}
+        		if (sURL!=null) { props.addValue("list-style-image","url('"+sURL+"')"); }
         	}
         }
         else {
