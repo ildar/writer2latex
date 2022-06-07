@@ -2,4 +2,12 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- Removed the redundant attribute type from <script> if producing HTML5.
+
+- Bugfix: Removed the deprecated profile attribute (Dublin Core) from <html> if producing HTML5.
+
+- Bugfix: Removed the deprecated type attribute from <style> if producing HTML5.
+
+- Bugfix: The <title> must be non-empty. The file name is now used as title if the document has an empty title. 
+
 - Removed LaTeX specific code 

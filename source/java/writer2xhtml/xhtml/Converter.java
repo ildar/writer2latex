@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-08)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
@@ -373,7 +373,7 @@ public class Converter extends ConverterBase {
         			if (head!=null) {
         				Element script = doc.getContentDOM().createElement("script");
         				head.appendChild(script);
-        				script.setAttribute("type", "text/javascript");
+        				if (!isHTML5()) { script.setAttribute("type", "text/javascript"); }
         				script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML");
         				script.setAttribute("async","async");
         			}
@@ -677,8 +677,8 @@ public class Converter extends ConverterBase {
         Element title = htmlDoc.getTitleNode();
         if (title!=null) {
         	String sTitle = metaData.getTitle();
-        	if (sTitle==null) { // use filename as fallback
-        		sTitle = htmlDoc.getFileName();
+        	if (sTitle==null || sTitle.length()==0) { // use filename as fallback
+        		sTitle = Misc.removeExtension(htmlDoc.getFileName());
         	}
         	title.appendChild( htmlDOM.createTextNode(sTitle) );
         }
@@ -710,7 +710,7 @@ public class Converter extends ConverterBase {
         		// Format as recommended on dublincore.org (http://dublincore.org/documents/dc-html/)
         		// Declare meta data profile
         		if (config.xhtmlUseDublinCore()) {
-        			head.setAttribute("profile","http://dublincore.org/documents/2008/08/04/dc-html/");
+        			if (!isHTML5()) { head.setAttribute("profile","http://dublincore.org/documents/2008/08/04/dc-html/"); }
         			// Add link to declare namespace
         			Element dclink = htmlDOM.createElement("link");
         			dclink.setAttribute("rel","schema.DC");
@@ -739,7 +739,7 @@ public class Converter extends ConverterBase {
         	if (!bOPS && config.xhtmlCustomStylesheet().length()>0) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
-        		htmlStyle.setAttribute("type","text/css");
+        		if (!isHTML5()) { htmlStyle.setAttribute("type","text/css"); }
         		htmlStyle.setAttribute("media","all");
         		htmlStyle.setAttribute("href",config.xhtmlCustomStylesheet());
         		head.appendChild(htmlStyle);
@@ -749,7 +749,7 @@ public class Converter extends ConverterBase {
         	if (!bOPS && config.separateStylesheet() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
-        		htmlStyle.setAttribute("type","text/css");
+        		if (!isHTML5()) { htmlStyle.setAttribute("type","text/css"); }
         		htmlStyle.setAttribute("media","all");
         		htmlStyle.setAttribute("href",sTargetFileName+"-styles.css");
         		head.appendChild(htmlStyle);
@@ -759,7 +759,7 @@ public class Converter extends ConverterBase {
         	if (bOPS && styleSheet!=null) {
         		Element sty = htmlDOM.createElement("link");
         		sty.setAttribute("rel", "stylesheet");
-        		sty.setAttribute("type", "text/css");
+        		if (!isHTML5()) { sty.setAttribute("type", "text/css"); }
         		sty.setAttribute("href", EPUB_CUSTOM_STYLESHEET);
         		head.appendChild(sty);
         	}
@@ -768,7 +768,7 @@ public class Converter extends ConverterBase {
         	if (isOPS() && config.xhtmlFormatting()>XhtmlConfig.IGNORE_STYLES) {
         		Element htmlStyle = htmlDOM.createElement("link");
         		htmlStyle.setAttribute("rel","stylesheet");
-        		htmlStyle.setAttribute("type","text/css");
+        		if (!isHTML5()) { htmlStyle.setAttribute("type","text/css"); }
         		htmlStyle.setAttribute("href",EPUB_STYLESHEET);
         		head.appendChild(htmlStyle);
         	}

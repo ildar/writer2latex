@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-06-15)
+ *  Version 1.7 (2022-06-07)
  *
  */
 
@@ -162,7 +162,7 @@ class StyleConverter extends ConverterHelper {
         if (sStyles.length()>0) {
             Element htmlStyle = htmlDOM.createElement("style");
             htmlStyle.setAttribute("media","all");
-            htmlStyle.setAttribute("type","text/css");
+            if (!converter.isHTML5()) { htmlStyle.setAttribute("type","text/css"); }
             htmlStyle.appendChild(htmlDOM.createTextNode(config.prettyPrint() ? "\n" : " "));
             htmlStyle.appendChild(htmlDOM.createTextNode(sStyles));
             if (config.prettyPrint()) { htmlStyle.appendChild(htmlDOM.createTextNode("    ")); }
