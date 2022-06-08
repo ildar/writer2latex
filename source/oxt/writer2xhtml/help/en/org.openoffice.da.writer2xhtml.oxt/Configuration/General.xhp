@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigurationGeneral" id="bm_configgeneral"/>
         <paragraph role="heading" level="1" xml-lang="en-US">General</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this page to define general technical aspects of the generated
         XHTML documents.</paragraph>
@@ -15,6 +16,7 @@
         	Choose <emph>Tools - Options - Writer2xhtml - General</emph>
         </section>
         
+        <paragraph role="heading" level="2" xml-lang="en-US">General XHTML settings</paragraph>
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:NoDoctype" id="bm_confignodoctype"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Do not include DOCTYPE</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you do not want to not include the !DOCTYPE declaration in
@@ -51,7 +53,7 @@
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:PrettyPrint" id="bm_configprettyprint"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use "pretty printing"</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this to use “pretty print”
+        <paragraph role="paragraph" xml-lang="en-US">Check this to use â€œpretty printâ€�
         (using indentations and line breaks) in the XHTML output.</paragraph>
 
     </body>

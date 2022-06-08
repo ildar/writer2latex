@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigHTMLTemplate" id="bm_confightmltemplate"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Template</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this page to define an XHTML template to use as a basis for the
         generated XHTML documents.</paragraph>
@@ -15,6 +16,7 @@
         	Choose <emph>Tools - Options - Writer2xhtml - Template</emph>
         </section>
         
+        <paragraph role="heading" level="2" xml-lang="en-US">XHTML Template</paragraph>
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" id="bm_configusecustomtemplate"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Use custom XHTML template</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define an XHTML template. Otherwise a default

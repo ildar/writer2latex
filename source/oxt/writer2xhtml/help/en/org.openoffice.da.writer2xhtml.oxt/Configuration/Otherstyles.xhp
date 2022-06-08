@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigOtherStyles" id="bm_configotherstyles"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Other styles</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this page to define various style related features of the export.
         This supplements the settings on the page

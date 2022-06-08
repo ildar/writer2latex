@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigStyleSheets" id="bm_configstylesheets"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Style sheets</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this page to provide your own style sheets for the exported documents.</paragraph>
 

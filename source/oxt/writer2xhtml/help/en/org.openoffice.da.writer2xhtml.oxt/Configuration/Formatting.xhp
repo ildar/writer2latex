@@ -7,6 +7,7 @@
         </topic>
     </meta>
     <body>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigFormattingExport" id="bm_configformattingexport"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Formatting</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this page to define how much formatting to export.</paragraph>
 
@@ -14,7 +15,13 @@
         	Choose <emph>Tools - Options - Writer2xhtml - Formatting</emph>
         </section>
         
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Formatting" id="bm_configformatting"/>
+        <paragraph role="heading" level="2" xml-lang="en-US">Formatting export</paragraph>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SeparateStylesheet" id="bm_configseparatestylesheet"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Create separate style sheet</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to create a separate CSS file in the export.
+        Otherwise the CSS code will be exported embedded in the XHTML document(s).</paragraph>
+
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:CofigFormatting" id="bm_configformatting"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Formatting</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This is used to specify how much text formatting
         (character, paragraph and list formatting) to export.</paragraph>
@@ -88,10 +95,5 @@
         for the exported text, which may enhance the readability. You can use any unit defined in CSS.
         If the browser window is wider than this, the text will be centered with suitable margins. 
         Leave the field blank if you want the text to occupy the full width of the browser window.</paragraph>
-
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SeparateStylesheet" id="bm_configseparatestylesheet"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Create separate style sheet</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to create a separate CSS file in the export.
-        Otherwise the CSS code will be exported embedded in the XHTML document(s).</paragraph>
     </body>
 </helpdocument>

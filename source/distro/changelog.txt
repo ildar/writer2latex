@@ -2,9 +2,13 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
-- Added support for image bullets in lists,
+- Bugfix: The toolbar settings are now also visible in Calc.
 
-- Bugfix: The converter crashed if embed_img=true and the document contained two identical pictures.
+- Added Help button to all configuration dialogs (because the "official" help button leads to online help).
+
+- Added support for image bullets in lists.
+
+- Bugfix: The converter no longer crashes if embed_img=true and the document contains two identical pictures.
 
 - Removed the redundant attribute type from <script> if producing HTML5.
 

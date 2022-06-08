@@ -10,7 +10,7 @@
    </dlg:menupopup>
   </dlg:menulist>
   <dlg:text dlg:id="TypeLabel" dlg:tab-index="0" dlg:left="5" dlg:top="21" dlg:width="60" dlg:height="12" dlg:value="Author type"/>
-  <dlg:menulist dlg:id="Role" dlg:tab-index="3" dlg:left="70" dlg:top="34" dlg:width="80" dlg:height="12" dlg:spin="true" dlg:linecount="10" >
+  <dlg:menulist dlg:id="Role" dlg:tab-index="3" dlg:left="70" dlg:top="34" dlg:width="80" dlg:height="12" dlg:spin="true" dlg:linecount="10">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="N/A"/>
     <dlg:menuitem dlg:value="Adapter [adp]"/>
