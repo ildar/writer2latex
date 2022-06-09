@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-24)
+ *  Version 1.7 (2022-06-09)
  *
  */
 
@@ -190,46 +190,31 @@ public class TableConverter extends ConverterHelper {
     private void traverseTable(TableView view, Element hnode) {
         int nRowCount = view.getRowCount();
         int nColCount = view.getColCount();
-        // Check to see, if the first row contains any colspan
-        boolean bFirstRowColSpan = false;
-        for (int nCol=0; nCol<nColCount; nCol++) {
-            Node cell = view.getCell(0,nCol);
-            if (cell!=null && XMLString.TABLE_TABLE_CELL.equals(cell.getNodeName())) {
-                String sColSpan = Misc.getAttribute(cell,XMLString.TABLE_NUMBER_COLUMNS_SPANNED);
-                if (Misc.getPosInteger(sColSpan,1)>1) {
-                    bFirstRowColSpan = true;
-                }
-            }
-        }
 
-        // Create columns; only for tables with relative width
-        // Otherwise we set the cell width. Reason: IE and Mozilla does not
-        // interpret column width the same way. IE excludes padding and border,
-        // Mozilla (like OOo) includes them.
-        // If the first row contains colspan we have to add <col> anyway
+        // Create columns
         if (config.tableSize()!=XhtmlConfig.NONE) {
-        	if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE || bFirstRowColSpan) {
-        		Element colgroup = hnode;
-        		if (converter.isHTML5()) {
-        			// Polyglot HTML5 documents must use an explicit colgroup
-        			colgroup = converter.createElement("colgroup");
-        			hnode.appendChild(colgroup);
-        		}
-        		if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE) {
-        			for (int nCol=0; nCol<nColCount; nCol++) {
-        				Element col = converter.createElement("col");
-        				colgroup.appendChild(col);
-        				col.setAttribute("style","width:"+view.getRelColumnWidth(nCol));
-        			}
-        		}
-        		else if (bFirstRowColSpan) {
-        			for (int nCol=0; nCol<nColCount; nCol++) {
-        				Element col = converter.createElement("col");
-        				colgroup.appendChild(col);
-        				col.setAttribute("style","width:"+getTableSc().colScale(view.getColumnWidth(nCol)));
-        			}
-        		}
-        	}
+    		Element colgroup = hnode;
+    		if (converter.isHTML5()) {
+    			// Polyglot HTML5 documents must use an explicit colgroup
+    			colgroup = converter.createElement("colgroup");
+    			hnode.appendChild(colgroup);
+    		}
+    		if (view.getRelTableWidth()!=null || config.tableSize()==XhtmlConfig.RELATIVE) {
+    			// Relative column width as required by the source document or the configuration
+    			for (int nCol=0; nCol<nColCount; nCol++) {
+    				Element col = converter.createElement("col");
+    				colgroup.appendChild(col);
+    				col.setAttribute("style","width:"+view.getRelColumnWidth(nCol));
+    			}
+    		}
+    		else {
+    			// Absolute column width
+    			for (int nCol=0; nCol<nColCount; nCol++) {
+    				Element col = converter.createElement("col");
+    				colgroup.appendChild(col);
+    				col.setAttribute("style","width:"+getTableSc().colScale(view.getColumnWidth(nCol)));
+    			}
+    		}
         }
 
         // Indentify head
@@ -304,14 +289,10 @@ public class TableConverter extends ConverterHelper {
 
                 		// Is this a subtable?
                 		Node subTable = Misc.getChildByTagName(cell,XMLString.TABLE_SUB_TABLE);
-                		String sTotalWidth=null;
-                		if (nColSpan==1) {
-                			sTotalWidth = view.getCellWidth(nRow,nCol);
-                		}
                 		String sValueType = ofr.isOpenDocument() ?
                 				Misc.getAttribute(cell,XMLString.OFFICE_VALUE_TYPE) :
                 					Misc.getAttribute(cell,XMLString.TABLE_VALUE_TYPE);
-                				applyCellStyle(view.getCellStyleName(nRow,nCol), view.getRelTableWidth()!=null, sTotalWidth, sValueType, td, subTable!=null);
+                				applyCellStyle(view.getCellStyleName(nRow,nCol), sValueType, td, subTable!=null);
                 	}
                 	else if (XMLString.TABLE_COVERED_TABLE_CELL.equals(cell.getNodeName())) {
                 		// covered table cells are not part of xhtml table model
@@ -363,12 +344,6 @@ public class TableConverter extends ConverterHelper {
             }
         }
 
-        // Writer uses a separating border model, Calc a collapsing:
-        // props.addValue("border-collapse", bCalc ? "collapse" : "separate");
-        // For now always use separating model:
-        info.props.addValue("border-collapse", "separate");
-        info.props.addValue("border-spacing", "0");
-
         info.props.addValue("table-layout","fixed");
 
         //info.props.addValue("empty-cells","show"); use &nbsp; instead...
@@ -404,47 +379,12 @@ public class TableConverter extends ConverterHelper {
         applyStyle(info,row);
     }
 	
-    private void applyCellStyle(String sStyleName, boolean bIsRelative, String sTotalWidth, String sValueType, Element cell, boolean bIsSubTable) {
+    private void applyCellStyle(String sStyleName, String sValueType, Element cell, boolean bIsSubTable) {
         StyleInfo info = new StyleInfo();
         getCellSc().applyStyle(sStyleName,info);
 
         StyleWithProperties style = ofr.getCellStyle(sStyleName);
         if (style!=null) {
-            if (config.tableSize()==XhtmlConfig.ABSOLUTE && !bIsRelative) {
-                String sEdge = "0";
-    
-                // Set the cell width. This is calculated as
-                // "total cell width" - "border" - "padding"
-                String s = style.getProperty(XMLString.FO_PADDING_LEFT);
-                if (s!=null) {
-                    sEdge=Calc.add(sEdge,getTableSc().colScale(s));
-                }
-                s = style.getProperty(XMLString.FO_PADDING_RIGHT);
-                if (s!=null) { 
-                    sEdge=Calc.add(sEdge,getTableSc().colScale(s));
-                }
-                s = style.getProperty(XMLString.FO_PADDING);
-                if (s!=null) {
-                    sEdge=Calc.add(sEdge,Calc.multiply("200%",getTableSc().colScale(s)));
-                }
-                s = style.getProperty(XMLString.FO_BORDER_LEFT);
-                if (s!=null) {
-                    sEdge=Calc.add(sEdge,getTableSc().colScale(borderWidth(s)));
-                }
-                s = style.getProperty(XMLString.FO_BORDER_RIGHT);
-                if (s!=null) { 
-                    sEdge=Calc.add(sEdge,getTableSc().colScale(borderWidth(s)));
-                }
-                s = style.getProperty(XMLString.FO_BORDER);
-                if (s!=null) {
-                    sEdge=Calc.add(sEdge,Calc.multiply("200%",getTableSc().colScale(borderWidth(s))));
-                }
-
-                if (sTotalWidth!=null) {
-                    info.props.addValue("width",Calc.sub(getTableSc().colScale(sTotalWidth),sEdge));
-                }
-            }
-
             // Automatic horizontal alignment (calc only)
             if (ofr.isSpreadsheet() && !"fix".equals(style.getProperty(XMLString.STYLE_TEXT_ALIGN_SOURCE))) {
                 // Strings go left, other types (float, time, date, percentage, currency, boolean) go right
@@ -468,23 +408,5 @@ public class TableConverter extends ConverterHelper {
 
         applyStyle(info,cell);
     }
-	
-    // TODO: Move me to a more logical place!
-    public String borderWidth(String sBorder) {
-        if (sBorder==null || sBorder.equals("none")) { return "0"; }
-        SimpleInputBuffer in = new SimpleInputBuffer(sBorder);
-        while (in.peekChar()!='\0') {
-            // Skip spaces
-            while(in.peekChar()==' ') { in.getChar(); }
-            // If it's a number it must be a unit -> get it
-            if ('0'<=in.peekChar() && in.peekChar()<='9') {
-                return in.getNumber()+in.getIdentifier();
-            }
-            // skip other characters
-            while (in.peekChar()!=' ' && in.peekChar()!='\0') { in.getChar(); } 
-        }
-        return "0";
-    }
-
 	
 }

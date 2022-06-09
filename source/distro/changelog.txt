@@ -2,6 +2,11 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- Simplified export of column widths in tables (the old method set width on table cells rather than table columns.
+  This was due to differences in browsers, and should not be relevant anymore).
+
+- Added support for the ODF attribute table:border-model (collapsing or separating borders)
+
 - Bugfix: The toolbar settings are now also visible in Calc.
 
 - Added Help button to all configuration dialogs (because the "official" help button leads to online help).

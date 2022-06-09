@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-06)
+ *  Version 1.7 (2022-06-08)
  *
  */
  
@@ -61,6 +61,7 @@ import writer2xhtml.office.XMLString;
 import writer2xhtml.util.CSVList;
 import writer2xhtml.util.Calc;
 import writer2xhtml.util.Misc;
+import writer2xhtml.util.SimpleInputBuffer;
 import writer2xhtml.util.SimpleXMLParser;
 
 import org.w3c.dom.Document;
@@ -944,11 +945,11 @@ public class DrawConverter extends ConverterHelper {
     			if (s!=null) sWidth = Calc.sub(sWidth, Calc.multiply("200%", s));
     			// Subtract border
     			s = style.getProperty(XMLString.FO_BORDER_LEFT);
-    			if (s!=null) sWidth = Calc.sub(sWidth, getTableCv().borderWidth(s));
+    			if (s!=null) sWidth = Calc.sub(sWidth, borderWidth(s));
     			s = style.getProperty(XMLString.FO_BORDER_RIGHT);
-    			if (s!=null) sWidth = Calc.sub(sWidth, getTableCv().borderWidth(s));
+    			if (s!=null) sWidth = Calc.sub(sWidth, borderWidth(s));
     			s = style.getProperty(XMLString.FO_BORDER);
-    			if (s!=null) sWidth = Calc.sub(sWidth, Calc.multiply("200%", getTableCv().borderWidth(s)));
+    			if (s!=null) sWidth = Calc.sub(sWidth, Calc.multiply("200%", borderWidth(s)));
     		}
 			return sWidth;
     	}
@@ -969,11 +970,11 @@ public class DrawConverter extends ConverterHelper {
                 if (s!=null) sHeight = Calc.sub(sHeight, Calc.multiply("200%", s));
                 // Subtract border
                 s = style.getProperty(XMLString.FO_BORDER_TOP);
-                if (s!=null) sHeight = Calc.sub(sHeight, getTableCv().borderWidth(s));
+                if (s!=null) sHeight = Calc.sub(sHeight, borderWidth(s));
                 s = style.getProperty(XMLString.FO_BORDER_BOTTOM);
-                if (s!=null) sHeight = Calc.sub(sHeight, getTableCv().borderWidth(s));
+                if (s!=null) sHeight = Calc.sub(sHeight, borderWidth(s));
                 s = style.getProperty(XMLString.FO_BORDER);
-                if (s!=null) sHeight = Calc.sub(sHeight, Calc.multiply("200%", getTableCv().borderWidth(s)));
+                if (s!=null) sHeight = Calc.sub(sHeight, Calc.multiply("200%", borderWidth(s)));
             }
         	return sHeight;
         }
@@ -1160,6 +1161,25 @@ public class DrawConverter extends ConverterHelper {
             return Calc.multiply(sScale,Calc.truncateLength(s));
         }
     }
+    
+    private String borderWidth(String sBorder) {
+        if (sBorder==null || sBorder.equals("none")) { return "0"; }
+        SimpleInputBuffer in = new SimpleInputBuffer(sBorder);
+        while (in.peekChar()!='\0') {
+            // Skip spaces
+            while(in.peekChar()==' ') { in.getChar(); }
+            // If it's a number it must be a unit -> get it
+            if ('0'<=in.peekChar() && in.peekChar()<='9') {
+                return in.getNumber()+in.getIdentifier();
+            }
+            // skip other characters
+            while (in.peekChar()!=' ' && in.peekChar()!='\0') { in.getChar(); } 
+        }
+        return "0";
+    }
+
+	
+
 }
 
 

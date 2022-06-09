@@ -110,7 +110,18 @@ public class TableStyleConverter extends StyleWithPropertiesConverterHelper {
         }
 
         if (sMarginLeft!=null) { props.addValue("margin-left",sMarginLeft); }		
-        if (sMarginRight!=null) { props.addValue("margin-right",sMarginRight); }		
+        if (sMarginRight!=null) { props.addValue("margin-right",sMarginRight); }
+        
+        // Border model
+        String sBorderModel = style.getProperty(XMLString.TABLE_BORDER_MODEL);
+        if ("separating".equals(sBorderModel)) {
+            props.addValue("border-collapse", "separate");
+            props.addValue("border-spacing", "0"); // Not supported by ODF
+        }
+        else { // collapsing is the default (at least in LO)
+            props.addValue("border-collapse", "collapse");        	
+        }
+
     }
 	
 }

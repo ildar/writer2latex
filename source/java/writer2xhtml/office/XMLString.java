@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-10)
+ *  Version 1.7 (2022-06-09)
  *
  */
 
@@ -243,6 +243,7 @@ public class XMLString {
     public static final String TABLE_ALIGN="table:align";
     public static final String TABLE_PRINT="table:print";
     public static final String TABLE_PRINT_RANGES="table:print-ranges";
+    public static final String TABLE_BORDER_MODEL="table:border-model";    
 	
     // text namespace - elements (declarations)
     public static final String TEXT_="text:";
