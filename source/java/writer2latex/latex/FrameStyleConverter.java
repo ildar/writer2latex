@@ -67,7 +67,7 @@ import writer2latex.util.Calc;
 			// longfbox.sty relies on a register that used to be defined in pict2e.sty
 			// We use the workaround from
 			// https://tex.stackexchange.com/questions/571207/error-with-longfbox-package
-			decl.append("\\makeatletter\\newdimen\\@tempdimd\\makeatother");
+			decl.append("\\makeatletter\\newdimen\\@tempdimd\\makeatother").nl();
 		}
 	}
 	

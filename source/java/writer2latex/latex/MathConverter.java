@@ -2,7 +2,7 @@
  *
  *  MathConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-06-18)
+ *  Version 2.0 (2022-06-10)
  *
  */
 
@@ -64,6 +64,8 @@ public final class MathConverter extends ConverterHelper {
     // State of display equation parser
     private Element theEquation = null;
     private Element theSequence = null;
+    private boolean bWhitespace = false;
+    private char cPunctuation = '\u0000';
     private boolean bLeftPar = false;
     private boolean bRightPar = false;
 	
@@ -197,9 +199,11 @@ public final class MathConverter extends ConverterHelper {
     		if (parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 0))) && theEquation!=null && theSequence==null) {
     			// Found equation in first cell
     			Element myEquation = theEquation;
+    			boolean bMyWhitespace = bWhitespace;
+    			char cMyPunctuation = cPunctuation;
     			if (parseDisplayEquation(Misc.getFirstChildElement(table.getCell(0, 1))) && theEquation==null && theSequence!=null) {
     				// Found sequence in second cell
-    				handleDisplayEquation(myEquation, theSequence, ldp);
+    				handleDisplayEquation(myEquation, theSequence, bMyWhitespace, cMyPunctuation, ldp);
     				return true;
     			}
     		}
@@ -218,7 +222,7 @@ public final class MathConverter extends ConverterHelper {
      */
     public boolean handleDisplayEquation(Element node, LaTeXDocumentPortion ldp) {
         if (parseDisplayEquation(node) && theEquation!=null) {
-        	handleDisplayEquation(theEquation, theSequence, ldp);
+        	handleDisplayEquation(theEquation, theSequence, bWhitespace, cPunctuation, ldp);
         	return true;
         }
         else {
@@ -226,7 +230,7 @@ public final class MathConverter extends ConverterHelper {
         }
     }
     
-    private void handleDisplayEquation(Element equation, Element sequence, LaTeXDocumentPortion ldp) {
+    private void handleDisplayEquation(Element equation, Element sequence, boolean bWhitespace, char cPunctuation, LaTeXDocumentPortion ldp) {
     	boolean bTexMaths = equation.getTagName().equals(XMLString.SVG_DESC);
     	TexMathsStyle style = TexMathsStyle.inline;
     	String sLaTeX;
@@ -241,6 +245,11 @@ public final class MathConverter extends ConverterHelper {
     		sLaTeX = convert(equation);
     	}
     	if (sLaTeX!=null && !" ".equals(sLaTeX)) { // ignore empty formulas
+    		// Add punctuation character
+    		if (cPunctuation!='\u0000') {
+    			if (bWhitespace) { sLaTeX+="\\ "; }
+    			sLaTeX+=cPunctuation;
+    		}
     		if (!bTexMaths || style!=TexMathsStyle.latex) {
     			// Unfortunately we can't do numbered equations for TexMaths equations with latex style
     			if (sequence!=null) {
@@ -284,6 +293,8 @@ public final class MathConverter extends ConverterHelper {
 	private boolean parseDisplayEquation(Node node) {
 		theEquation = null;
 		theSequence = null;
+		bWhitespace = false;
+		cPunctuation = '\u0000';
 		bLeftPar = false;
 		bRightPar = false;
 		// If we end up with a left bracket but no right bracket it is not a display after all
@@ -323,14 +334,9 @@ public final class MathConverter extends ConverterHelper {
         				return false;
         			}
         		}
-        		else if (XMLString.TEXT_S.equals(sName)) {
-        			// Spaces are allowed
-        		}
-        		else if (XMLString.TEXT_TAB.equals(sName)) {
-        			// Tab stops are allowed
-        		}
-        		else if (XMLString.TEXT_TAB_STOP.equals(sName)) { // old
-        			// Tab stops are allowed
+        		else if (XMLString.TEXT_S.equals(sName) || XMLString.TEXT_TAB.equals(sName) || XMLString.TEXT_TAB_STOP.equals(sName)) {
+        			// Spaces and tab stops are allowed, register if between equation and punctuation char
+        			if (theEquation!=null && cPunctuation=='\u0000') { bWhitespace = true; }
         		}
         		else if (XMLString.TEXT_SOFT_PAGE_BREAK.equals(sName)) { // since ODF 1.1
         			// Soft page breaks are allowed
@@ -359,13 +365,23 @@ public final class MathConverter extends ConverterHelper {
                     	}
                     	bRightPar = true;
                     }
+                    else if (c=='.' || c==',' ||c==':' || c==';' ||c=='!' || c=='?') {
+                    	// A single punctuation character is allowed after the equation, but not within brackets
+                    	// Perhaps a little too liberal, we accept e.g. "2+2 (7)," and not only "2+2, (7)"
+                    	if (theEquation!=null && cPunctuation=='\u0000' && (!bLeftPar || bRightPar)) {
+                    		cPunctuation=c;
+                    	}
+                    	else {
+                    		return false;
+                    	}
+                    }
                     else if (Character.isLetter(c)) {
                     	// We accept letters within brackets only
                     	if (!bLeftPar || bRightPar) {
                     		return false;
                     	}
                     }
-                    else if (c!=' ' && c!='\u00A0') {
+                    else if (!Character.isWhitespace(c)) {
                         // Other non-whitespace characters are not allowed
                         return false;
                     }
