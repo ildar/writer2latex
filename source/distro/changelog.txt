@@ -2,12 +2,17 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- Removed localizations of export dialogs (only some strings were translated anyway)
+
 - The option formulas (for XHTML 1.0 and 1.1 strict only) no longer supports the values latex and image+latex
 
 - Bugfix: The configuration option formulas=image+starmath now works correctly if embed_img=true
 
 - Simplified export of column widths in tables (the old method set width on table cells rather than table columns.
   This was due to differences in browsers, and should not be relevant anymore).
+  
+- No longer sets absolute table width and the CSS attribute table-layout:fixed. The old behavior was too strict
+  and could lead to overfull table cells. 
 
 - Added support for the ODF attribute table:border-model (collapsing or separating borders)
 

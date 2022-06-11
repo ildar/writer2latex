@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-09)
+ *  Version 1.7 (2022-06-11)
  *
  */
 
@@ -39,8 +39,6 @@ import writer2xhtml.office.TableView;
 import writer2xhtml.office.XMLString;
 import writer2xhtml.util.Calc;
 import writer2xhtml.util.Misc;
-import writer2xhtml.util.SimpleInputBuffer;
-
 import org.w3c.dom.Element;
 
 public class TableConverter extends ConverterHelper {
@@ -330,23 +328,19 @@ public class TableConverter extends ConverterHelper {
                 }
                 else {
                     sWidth = style.getProperty(XMLString.STYLE_WIDTH);
-                    if (sWidth!=null) {
-                        if (config.tableSize()==XhtmlConfig.RELATIVE){
-                        	// Force relative width
-                        	sWidth=Calc.divide(sWidth, converter.getContentWidth(), true);
-                        	info.props.addValue("width",sWidth);
-                        }
-                        else {
-                        	info.props.addValue("width",getTableSc().colScale(sWidth));
-                        }
+                    if (sWidth!=null && config.tableSize()==XhtmlConfig.RELATIVE) { // Force relative width
+                        sWidth=Calc.divide(sWidth, converter.getContentWidth(), true);
+                        info.props.addValue("width",sWidth);
                     }
+                    // Do not export absolute width, which would be
+                    // info.props.addValue("width",getTableSc().colScale(sWidth));
                 }
             }
         }
 
-        info.props.addValue("table-layout","fixed");
+        // info.props.addValue("table-layout","fixed");
 
-        //info.props.addValue("empty-cells","show"); use &nbsp; instead...
+        // info.props.addValue("empty-cells","show"); use &nbsp; instead...
 
         if (ofr.isSpreadsheet()) { info.props.addValue("white-space","nowrap"); }
 
