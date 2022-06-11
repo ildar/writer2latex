@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-06)
+ *  Version 1.7 (2022-06-10)
  *
  */
 
@@ -36,15 +36,12 @@ import writer2xhtml.util.Misc;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
-/** This class converts formulas: Either as MathML, as an image or as plain text (StarMath or LaTeX format)
+/** This class converts formulas: Either as LaTeX (TexMaths), MathML, as an image or as plain text (StarMath format)
  */
 public class MathConverter extends ConverterHelper {
 	
-	//private StarMathConverter smc = null;
-
     private boolean bSupportMathML;
     private boolean bUseImage;
-    //private boolean bUseLaTeX;
 	
     /** Create a new <code>MathConverter</code>
      * 
@@ -58,10 +55,7 @@ public class MathConverter extends ConverterHelper {
 
         super(ofr,config,converter);
         this.bSupportMathML = bSupportMathML;
-        this.bUseImage = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.IMAGE_STARMATH;
-        //this.bUseLaTeX = config.formulas()==XhtmlConfig.IMAGE_LATEX || config.formulas()==XhtmlConfig.LATEX;
-        
-        //if (bUseLaTeX) { smc = new StarMathConverter(); }
+        this.bUseImage = config.formulas()==XhtmlConfig.IMAGE_STARMATH;
     }
 	
     /** Convert a formula
@@ -137,15 +131,14 @@ public class MathConverter extends ConverterHelper {
     		annotationList = ((Element) onode).getElementsByTagName(XMLString.MATH_ANNOTATION);
     	}
     	if (annotationList.getLength()>0 && annotationList.item(0).hasChildNodes()) {
-    		// First create the annotation (either StarMath or LaTeX)
+    		// First create the StarMath annotation
     		String sAnnotation = "";
     		Node child = annotationList.item(0).getFirstChild();
     		while (child!=null) {
     			sAnnotation+=child.getNodeValue();
     			child = child.getNextSibling();
     		}
-    		//if (bUseLaTeX) { sAnnotation = smc.convert(sAnnotation); }
-
+    		
     		// Next insert the image if required and available
     		if (bUseImage) {
     			// Get the image from the ImageLoader
@@ -156,9 +149,15 @@ public class MathConverter extends ConverterHelper {
     					String sMIME = bgd.getMIMEType();
     					if (MIMETypes.PNG.equals(sMIME) || MIMETypes.JPEG.equals(sMIME) || MIMETypes.GIF.equals(sMIME)) {
     						converter.addDocument(bgd);
-    	    				// Create the image and add the StarMath/LaTeX formula as alternative text
+    	    				// Create the image and add the StarMath formula as alternative text
     	    				Element img = converter.createElement("img");
-    	    				img.setAttribute("src",bgd.getFileName());
+    	    				if (bgd.isLinked() || !config.embedImg()) {
+    	    					img.setAttribute("src",bgd.getFileName());
+    	    				}
+    	    				else {
+    	                		img.setAttribute("src",
+    	                				new StringBuilder().append("data:").append(bgd.getMIMEType()).append(";base64,").append(bgd.getBase64()).toString());    	    					
+    	    				}
     	    				img.setAttribute("class", "formula");
     	    				img.setAttribute("alt",sAnnotation);
 
@@ -170,7 +169,7 @@ public class MathConverter extends ConverterHelper {
     			}
     		}
 
-    		// Otherwise insert the StarMath/LaTeX annotation as a kbd element
+    		// Otherwise insert the StarMath annotation as a kbd element
     		Element kbd = converter.createElement("kbd");
     		kbd.setAttribute("class", "formula");
     		hnode.appendChild(kbd);

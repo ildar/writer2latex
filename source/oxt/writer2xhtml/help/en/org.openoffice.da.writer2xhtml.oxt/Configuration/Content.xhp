@@ -26,15 +26,8 @@
 		        with the original StarMath formula in the alt attribute.</paragraph>
 			</listitem>
 			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><emph>Image with LaTeX code</emph>:  Export formulas as images
-		        with LaTeX code in the alt attribute.</paragraph>
-			</listitem>
-			<listitem>
 		        <paragraph role="paragraph" xml-lang="en-US"><emph>StarMath code</emph>: Export the original StarMath code directly
 		        in the text.</paragraph>
-			</listitem>
-			<listitem>
-		        <paragraph role="paragraph" xml-lang="en-US"><emph>LaTeX code</emph>: Export LaTeX code directly in the text.</paragraph>
 			</listitem>
 		</list>
 

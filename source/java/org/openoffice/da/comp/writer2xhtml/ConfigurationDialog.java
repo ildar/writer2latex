@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2015 by Henrik Just
+*  Copyright: 2002-2022 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.6 (2015-06-16)
+*  Version 2.0 (2022-06-10)
 *
 */ 
 
@@ -552,7 +552,7 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     }
 
     private class ContentHandler extends PageHandler {
-    	private final String[] sFormulaValues = { "image+starmath", "image+latex", "starmath", "latex" };
+    	private final String[] sFormulaValues = { "image+starmath", "starmath" };
     	
     	@Override protected void setControls(DialogAccess dlg) {
     		listBoxFromConfig(dlg, "Formulas", "formulas", sFormulaValues, (short) 0);

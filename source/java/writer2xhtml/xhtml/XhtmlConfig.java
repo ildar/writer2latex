@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-13)
+ *  Version 1.7 (2022-06-10)
  *
  */
 
@@ -89,9 +89,7 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     
     // Formulas (for XHTML 1.0 strict)
     public static final int STARMATH = 0;
-    public static final int LATEX = 1;
-    public static final int IMAGE_STARMATH = 2;
-    public static final int IMAGE_LATEX = 3;
+    public static final int IMAGE_STARMATH = 1;
     
     // Page breaks
     // public static final int NONE = 0;
@@ -233,9 +231,7 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
         options[FORMULAS] = new IntegerOption("formulas","image+starmath") {
         	@Override public void setString(String sValue) {
         		super.setString(sValue);
-        		if ("latex".equals(sValue)) { nValue = LATEX; }
-        		else if ("image+latex".equals(sValue)) { nValue = IMAGE_LATEX; }
-        		else if ("starmath".equals(sValue)) { nValue = 	STARMATH; }
+        		if ("starmath".equals(sValue)) { nValue = 	STARMATH; }
         		else { nValue = IMAGE_STARMATH; }
         	}
         };

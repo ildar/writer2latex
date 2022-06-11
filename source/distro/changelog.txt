@@ -2,6 +2,10 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- The option formulas (for XHTML 1.0 and 1.1 strict only) no longer supports the values latex and image+latex
+
+- Bugfix: The configuration option formulas=image+starmath now works correctly if embed_img=true
+
 - Simplified export of column widths in tables (the old method set width on table cells rather than table columns.
   This was due to differences in browsers, and should not be relevant anymore).
 
