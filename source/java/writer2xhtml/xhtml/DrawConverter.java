@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-08)
+ *  Version 1.7 (2022-06-12)
  *
  */
  
@@ -518,11 +518,11 @@ public class DrawConverter extends ConverterHelper {
         }
         else {
         	 // In all other cases, create an img element
-        	if (bgd!=null && !bgd.isLinked() && !bgd.isRecycled() && !bEmbedImg) { converter.addDocument(bgd); }
+        	if (bgd!=null && !bgd.isLinked() && !bgd.isRecycled() && (!bEmbedImg || MIMETypes.SVG.equals(bgd.getMIMEType()))) { converter.addDocument(bgd); }
         	Element image = converter.createElement("img");
         	String sName = Misc.getAttribute(getFrame(onode),XMLString.DRAW_NAME);
         	converter.addTarget(image,sName+"|graphic");
-        	if (!bEmbedImg || bgd.isLinked()) {
+        	if (!bEmbedImg || MIMETypes.SVG.equals(bgd.getMIMEType()) || bgd.isLinked()) {
         		image.setAttribute("src",sFileName);
         	}
         	else {

@@ -3,8 +3,8 @@
   <help_section application="writer2xhtml" id="w2x01" title="Writer2xhtml">
       <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/introduction.xhp">Introduction</topic>
       <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/menu.xhp">Menu and toolbar</topic>
-      <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/export.xhp">XHTML Export (Writer)</topic>
-      <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/export_calc.xhp">XHTML Export (Calc)</topic>
+      <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/export.xhp">HTML Export (Writer)</topic>
+      <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/export_calc.xhp">HTML Export (Calc)</topic>
       <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/epub_export.xhp">EPUB Export (Writer)</topic>
       <topic id="writer2xhtml/org.openoffice.da.writer2xhtml.oxt/epub_metadata.xhp">EPUB document properties (Writer)</topic>
       <node id="w2x01_toolbar_configuration" title="Toolbar configuration">

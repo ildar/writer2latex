@@ -25,9 +25,8 @@
    </dlg:menupopup>
   </dlg:menulist>
   <dlg:checkbox dlg:id="UseNamedEntities" dlg:tab-index="6" dlg:left="10" dlg:top="74" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:UseNamedEntities" dlg:value="Use named character entities" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="Multilingual" dlg:tab-index="7" dlg:left="10" dlg:top="88" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Multilingual" dlg:value="Include detailed language information" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="PrettyPrint" dlg:tab-index="8" dlg:left="10" dlg:top="102" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:PrettyPrint" dlg:value="Use &quot;pretty printing&quot;" dlg:checked="false"/>
-  <dlg:text dlg:style-id="0" dlg:id="GeneralLabel" dlg:tab-index="9" dlg:left="6" dlg:top="4" dlg:width="185" dlg:height="12" dlg:value="General XHTML settings"/>
+  <dlg:checkbox dlg:id="PrettyPrint" dlg:tab-index="8" dlg:left="10" dlg:top="88" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:PrettyPrint" dlg:value="Use &quot;pretty printing&quot;" dlg:checked="false"/>
+  <dlg:text dlg:style-id="0" dlg:id="GeneralLabel" dlg:tab-index="9" dlg:left="6" dlg:top="4" dlg:width="185" dlg:height="12" dlg:value="General HTML settings"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="10" dlg:left="200" dlg:top="4" dlg:width="55" dlg:height="14" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:ConfigurationGeneral" dlg:value="Help" dlg:button-type="help"/>
  </dlg:bulletinboard>
 </dlg:window>

@@ -77,11 +77,7 @@
         
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsConvertToPx" id="bm_options_converttopx"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsConvertToPx" visibility="hidden">Check this if you want to convert all units to px rather than using the original units</ahelp></paragraph>
-		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#converttopx1"/>
-		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#converttopx2"/>
-        <paragraph role="paragraph" xml-lang="en-US">For EPUB it is recommended to use the unit px instead, and using this option you can require that
-       	all dimensions are converted to px.</paragraph>
-		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#converttopx4"/>
+		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#units"/>
         
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsImageSize" id="bm_options_imagesize"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Image size</paragraph>

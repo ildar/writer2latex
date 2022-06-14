@@ -17,14 +17,14 @@
         
         <paragraph role="heading" level="2" xml-lang="en-US">Custom style sheets</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The custom style sheet can either be an embedded style sheet for the EPUB
-        export or a linked style sheet for the XHTML export.</paragraph>
+        export or a linked style sheet for the HTML export.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:LinkCustomStylesheet" id="bm_configlinkstylesheet"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Insert link to custom style sheet (XHTML export)</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Insert link to custom style sheet (HTML export)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this to link to your own, external CSS style sheet.
         For more advanced solutions (eg. different style sheets for screen viewing and printing) you can use an
         <link href="org.openoffice.da.writer2xhtml.oxt/Configuration/Template.xhp"
-		name="Template">XHTML template</link>.</paragraph>
+		name="Template">HTML template</link>.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:CustomStylesheetURL" id="bm_configcustomstylesheeturl"/>
         <paragraph role="heading" level="3" xml-lang="en-US">URL</paragraph>

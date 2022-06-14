@@ -6,7 +6,7 @@
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:text dlg:style-id="0" dlg:id="IncludedCustomStylesheetLabel" dlg:tab-index="0" dlg:left="4" dlg:top="6" dlg:width="185" dlg:height="12" dlg:value="Custom style sheets"/>
-  <dlg:checkbox dlg:id="LinkCustomStylesheet" dlg:tab-index="1" dlg:left="10" dlg:top="18" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:LinkCustomStylesheet" dlg:value="Insert link to custom style sheet (XHTML export)" dlg:checked="false">
+  <dlg:checkbox dlg:id="LinkCustomStylesheet" dlg:tab-index="1" dlg:left="10" dlg:top="18" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:LinkCustomStylesheet" dlg:value="Insert link to custom style sheet (HTML export)" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:LinkCustomStylesheetChange" script:language="UNO"/>
   </dlg:checkbox>
   <dlg:text dlg:id="CustomStylesheetURLLabel" dlg:tab-index="2" dlg:left="19" dlg:top="36" dlg:width="55" dlg:height="12" dlg:value="URL"/>

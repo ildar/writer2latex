@@ -6,7 +6,7 @@
   <dlg:style dlg:style-id="1" dlg:font-weight="150"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:checkbox dlg:id="UseCustomTemplate" dlg:tab-index="0" dlg:left="10" dlg:top="18" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" dlg:value="Use custom XHTML template" dlg:checked="false">
+  <dlg:checkbox dlg:id="UseCustomTemplate" dlg:tab-index="0" dlg:left="10" dlg:top="18" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" dlg:value="Use custom HTML template" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseCustomTemplateChange" script:language="UNO"/>
   </dlg:checkbox>
   <dlg:textfield dlg:id="CustomTemplate" dlg:tab-index="1" dlg:left="18" dlg:top="32" dlg:width="232" dlg:height="74" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true">
@@ -40,7 +40,7 @@
     <dlg:menuitem dlg:value="footer"/>
    </dlg:menupopup>
   </dlg:combobox>
-  <dlg:text dlg:style-id="1" dlg:id="HTMLTemplateLabel" dlg:tab-index="12" dlg:left="4" dlg:top="6" dlg:width="185" dlg:height="11" dlg:value="XHTML Template"/>
+  <dlg:text dlg:style-id="1" dlg:id="HTMLTemplateLabel" dlg:tab-index="12" dlg:left="4" dlg:top="6" dlg:width="185" dlg:height="11" dlg:value="HTML Template"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="13" dlg:left="200" dlg:top="4" dlg:width="55" dlg:height="14" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:ConfigHTMLTemplate" dlg:value="Help" dlg:button-type="help"/>
  </dlg:bulletinboard>
 </dlg:window>

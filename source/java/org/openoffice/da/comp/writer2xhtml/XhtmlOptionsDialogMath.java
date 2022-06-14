@@ -32,7 +32,7 @@ import com.sun.star.uno.XComponentContext;
  *  Xhtml export for the XHTML+MathML and HTML export.
  *  This variant of the dialog has the MathJax setting enabled
  */
-public class XhtmlOptionsDialogMath extends XhtmlOptionsDialog {
+public class XhtmlOptionsDialogMath extends XhtmlOptionsDialogBase {
     /** The component will be registered under this name.
      */
     public static String __serviceName = "org.openoffice.da.writer2xhtml.XhtmlOptionsDialogMath";

@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 2.0 (2022-06-10)
+*  Version 2.0 (2022-06-12)
 *
 */ 
 
@@ -129,7 +129,6 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		
 
     		checkBoxFromConfig(dlg, "UseNamedEntities", "use_named_entities");
-    		checkBoxFromConfig(dlg, "Multilingual", "multilingual");
     		checkBoxFromConfig(dlg, "PrettyPrint", "pretty_print");
     		
     		encodingChange(dlg);
@@ -143,7 +142,6 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     		config.setOption("hexadecimal_entities", Boolean.toString(dlg.getListBoxSelectedItem("HexadecimalEntities")==(short)0));
     		
     		checkBoxToConfig(dlg, "UseNamedEntities", "use_named_entities");
-    		checkBoxToConfig(dlg, "Multilingual", "multilingual");
     		checkBoxToConfig(dlg, "PrettyPrint", "pretty_print");    		
     	}
     	
@@ -555,19 +553,13 @@ public class ConfigurationDialog extends ConfigurationDialogBase implements XSer
     	private final String[] sFormulaValues = { "image+starmath", "starmath" };
     	
     	@Override protected void setControls(DialogAccess dlg) {
-    		listBoxFromConfig(dlg, "Formulas", "formulas", sFormulaValues, (short) 0);
     		textFieldFromConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldFromConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxFromConfig(dlg, "EmbedSvg", "embed_svg");
-    		checkBoxFromConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
-    		listBoxToConfig(dlg, "Formulas", "formulas", sFormulaValues);
     		textFieldToConfig(dlg, "EndnotesHeading", "endnotes_heading");
     		textFieldToConfig(dlg, "FootnotesHeading", "footnotes_heading");
-    		checkBoxToConfig(dlg, "EmbedSvg", "embed_svg");
-    		checkBoxToConfig(dlg, "EmbedImg", "embed_img");
     	}
     	
     	@Override protected boolean handleEvent(DialogAccess dlg, String sMethod) {

@@ -14,13 +14,13 @@
         	Select <emph>Tools - Options - Writer2xhtml toolbar - Settings</emph>
         </section>
     
-        <paragraph role="heading" level="2" xml-lang="en-US">XHTML Export</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Use these settings to configure the behavior of the XHTML export button in the toolbar.</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">HTML Export</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Use these settings to configure the behavior of the HTML export button in the toolbar.</paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SettingsXhtmlFormat" id="bm_settingsxhtmlformat"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:SettingsXhtmlFormat" visibility="hidden">Select the XHTML format to use when clicking the XHTML export button in the toolbar</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:SettingsXhtmlFormat" visibility="hidden">Select the HTML format to use when clicking the HTML export button in the toolbar</ahelp></paragraph>
         <paragraph role="heading" level="3" xml-lang="en-US">Format</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Select an XHTML format in the list. This format will be used when you click the XHTML
+        <paragraph role="paragraph" xml-lang="en-US">Select an HTML format in the list. This format will be used when you click the HTML
         export button in the toolbar. The default format is HTML5.</paragraph>
 		
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:SettingsXhtmlView" id="bm_settingsxhtmlview"/>

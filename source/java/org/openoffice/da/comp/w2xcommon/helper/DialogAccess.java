@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-04-15)
+ *  Version 1.7 (2022-06-12)
  *
  */ 
 
@@ -30,6 +30,7 @@ import com.sun.star.awt.XControl;
 import com.sun.star.awt.XControlContainer;
 import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XDialog;
+import com.sun.star.awt.XWindow;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.util.Date;
@@ -78,6 +79,15 @@ public class DialogAccess {
         return xPropertySet;
     }
 
+    public void setControlVisible(String sControlName, boolean bVisible) {
+        XControlContainer xContainer = (XControlContainer)
+            UnoRuntime.queryInterface(XControlContainer.class, xDialog);
+        XControl xControl = xContainer.getControl(sControlName);
+        XWindow xWindow = (XWindow) UnoRuntime.queryInterface(XWindow.class, xControl);
+        if (xWindow!=null) {
+        	xWindow.setVisible(bVisible);
+        }
+    }
     
     public boolean getControlEnabled(String sControlName) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
@@ -93,7 +103,7 @@ public class DialogAccess {
     public void setControlEnabled(String sControlName, boolean bEnabled) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
-            xPropertySet.setPropertyValue("Enabled", new Boolean(bEnabled));
+            xPropertySet.setPropertyValue("Enabled", bEnabled);
         }
         catch (Exception e) {
             // Will fail if the control does not exist
@@ -118,7 +128,7 @@ public class DialogAccess {
     public void setCheckBoxState(String sControlName, short nState) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
-            xPropertySet.setPropertyValue("State",new Short(nState));
+            xPropertySet.setPropertyValue("State",nState);
         }
         catch (Exception e) {
             // will fail if the control does not exist or is not a checkbox or
@@ -191,7 +201,7 @@ public class DialogAccess {
     public void setListBoxLineCount(String sControlName, short nLineCount) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
-            xPropertySet.setPropertyValue("LineCount",new Short(nLineCount));
+            xPropertySet.setPropertyValue("LineCount",nLineCount);
         }
         catch (Exception e) {
             // Will fail if the control does not exist or is not a list box or

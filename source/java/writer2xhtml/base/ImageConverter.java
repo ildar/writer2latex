@@ -330,7 +330,7 @@ public final class ImageConverter {
         	String sFileName = sName+sExt;
             BinaryGraphicsDocument bgd = new BinaryGraphicsDocument(sFileName,sMIME);
             bgd.setData(blob,isAcceptedFormat(sMIME));
-            if (bUseBase64) { bgd.convertToBase64(); }
+            if (bUseBase64 && !MIMETypes.SVG.equals(sMIME)) { bgd.convertToBase64(); }
             if (sId!=null) {
         		recycledImages.put(sId, new BinaryGraphicsDocument(bgd));
             }

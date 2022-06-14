@@ -16,7 +16,7 @@
         </section>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Style mappings</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">For each %PRODUCTNAME Writer style you can define a corresponding XHTML element
+        <paragraph role="paragraph" xml-lang="en-US">For each %PRODUCTNAME Writer style you can define a corresponding HTML element
         and CSS style.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:StyleFamily" id="bm_configstylefamily"/>
@@ -38,8 +38,8 @@
         <paragraph role="paragraph" xml-lang="en-US">Click this to delete the current style name from the list.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Element" id="bm_configelement"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">XHTML element</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Enter the name of an XHTML element or select one from the list.</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">HTML element</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Enter the name of an HTML element or select one from the list.</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Css" id="bm_configcss"/>
         <paragraph role="heading" level="3" xml-lang="en-US">CSS class</paragraph>
@@ -57,14 +57,14 @@
         each paragraph formatted with this style.</paragraph>        
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:BlockElement" id="bm_configblockelement"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Block XHTML element</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Block HTML element</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This is only valid for paragraphs and headings.</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">For paragraphs this element is used as a container for a sequence of paragraphs
-        with the same paragraph style. As an example: For the paragraph style <emph>Quotations</emph> you can set the XHTML element to
-        <emph>p</emph> and the block XHTML element to <emph>blockquote</emph>. This will convert a sequence of paragraphs with the
+        with the same paragraph style. As an example: For the paragraph style <emph>Quotations</emph> you can set the HTML element to
+        <emph>p</emph> and the block HTML element to <emph>blockquote</emph>. This will convert a sequence of paragraphs with the
         <emph>Quotations</emph> style to a block quote. You can leave the field empty if you do not need it.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">For headings the block XHTML element is used for the entire heading, whereas the
-        XHTML element is used for the text content (without the label).</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">For headings the block HTML element is used for the entire heading, whereas the
+        HTML element is used for the text content (without the label).</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:BlockCss" id="bm_configblockcss"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Block CSS class</paragraph>

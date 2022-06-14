@@ -66,13 +66,13 @@
           name="Writer2xhtml toolbar settings">configure</link> the behavior of the toolbar.</paragraph>
 
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/export.xhp"
-          name="Export XHTML files">Publish to XHTML</link></paragraph>
+          name="Export XHTML files">Publish to HTML</link></paragraph>
 
 		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml:PublishAsXHTML" id="bm_processdocument"/>
-        <paragraph role="paragraph" xml-lang="en-US">Convert the document to a web page in XHTML format
+        <paragraph role="paragraph" xml-lang="en-US">Convert the document to a web page in HTML format
         and display the result in the default browser.</paragraph>
 
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an XHTML file</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex:PublishAsXHTML" visibility="hidden">Publish the current document as an HTML file</ahelp></paragraph>
         
         <paragraph role="heading" level="3" xml-lang="en-US"><link href="org.openoffice.da.writer2xhtml.oxt/epub_export.xhp"
           name="Export EPUB files">Publish to EPUB (Writer only)</link></paragraph>

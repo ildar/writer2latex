@@ -22,7 +22,7 @@
   <dlg:checkbox dlg:id="CustomAttribute" dlg:tab-index="3" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:CustomAttribute" dlg:value="Apply custom style" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:CustomAttributeChange" script:language="UNO"/>
   </dlg:checkbox>
-  <dlg:text dlg:id="ElementLabel" dlg:tab-index="4" dlg:left="10" dlg:top="50" dlg:width="100" dlg:height="12" dlg:value="XHTML element"/>
+  <dlg:text dlg:id="ElementLabel" dlg:tab-index="4" dlg:left="10" dlg:top="50" dlg:width="100" dlg:height="12" dlg:value="HTML element"/>
   <dlg:combobox dlg:id="Element" dlg:tab-index="5" dlg:left="120" dlg:top="48" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:AttributeElement" dlg:spin="true" dlg:linecount="10"/>
   <dlg:text dlg:id="CssLabel" dlg:tab-index="6" dlg:left="10" dlg:top="64" dlg:width="100" dlg:height="12" dlg:value="CSS class"/>
   <dlg:textfield dlg:id="Css" dlg:tab-index="7" dlg:left="120" dlg:top="62" dlg:width="130" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:AttributeCss"/>

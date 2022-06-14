@@ -9,19 +9,19 @@
     <body>
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ConfigHTMLTemplate" id="bm_confightmltemplate"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Template</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Use this page to define an XHTML template to use as a basis for the
-        generated XHTML documents.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Use this page to define an HTML template to use as a basis for the
+        generated HTML documents.</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
         	Choose <emph>Tools - Options - Writer2xhtml - Template</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">XHTML Template</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">HTML Template</paragraph>
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:UseCustomTemplate" id="bm_configusecustomtemplate"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use custom XHTML template</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define an XHTML template. Otherwise a default
+        <paragraph role="heading" level="3" xml-lang="en-US">Use custom HTML template</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Check this if you want to define an HTML template. Otherwise a default
         template will be used.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">A template should be an ordinary XHTML file (do not include a DOCTYPE declaration)
+        <paragraph role="paragraph" xml-lang="en-US">A template should be an ordinary HTML file (do not include a DOCTYPE declaration)
         with some special elements:</paragraph>
         <list type="unordered">
 			<listitem>
@@ -79,9 +79,9 @@
 &lt;div/&gt;
 </paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The <emph>div</emph>-element will be used as the content container.
-        The generated document will not be a complete XHTML document (no <emph>html</emph>, <emph>head</emph> and
+        The generated document will not be a complete HTML document (no <emph>html</emph>, <emph>head</emph> and
         <emph>body</emph> nodes). It will however still be a well-formed XML file that can be handled with standard tools.
-        The use case for this is that you can produce XHTML fragments suitable for inclusion in e.g. a CMS.</paragraph>
+        The use case for this is that you can produce HTML fragments suitable for inclusion in e.g. a CMS.</paragraph>
 		<paragraph role="note" xml-lang="en-US">Make sure to check the option <emph>Do not include DOCTYPE</emph> in this case!</paragraph>
 
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:LoadTemplate" id="bm_configloadtemplate"/>
