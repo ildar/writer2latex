@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-12)
+ *  Version 1.7 (2022-06-14)
  *
  */
  
@@ -94,7 +94,6 @@ public class DrawConverter extends ConverterHelper {
 	
     private FormReader form = null;
     private String sScale;
-    private boolean bConvertToPx;
     private int nImageSize;
     private String sImageSplit;
     private boolean bCoverImage;
@@ -125,7 +124,6 @@ public class DrawConverter extends ConverterHelper {
         bCollectFrames = ofr.isSpreadsheet();
         bCollectFullscreenFrames = true;
         sScale = config.getXhtmlScaling();
-        bConvertToPx = config.xhtmlConvertToPx();
         nImageSize = config.imageSize();
         sImageSplit = config.imageSplit();
         bCoverImage = config.coverImage();
@@ -643,7 +641,7 @@ public class DrawConverter extends ConverterHelper {
         			}
         			String sX = frame.getAttribute(XMLString.SVG_X);
         			if (sX!=null && sX.length()>0) {
-        				info.props.addValue("margin-left",scale(sX));
+        				info.props.addValue("margin-left",scale(Calc.truncateLength(sX)));
         			}
         		}
         	}
@@ -987,13 +985,13 @@ public class DrawConverter extends ConverterHelper {
 
     	String sWidth = getFrameWidth(node, style);
     	if (sWidth!=null) {
-    		props.addValue("width",scale(sWidth));
+    		props.addValue("width",scale(Calc.truncateLength(sWidth)));
     	}
 
     	if (!bOnlyWidth) {
     		String sHeight = getFrameHeight(node,style);
     		if (sHeight!=null) {
-    			props.addValue("height",scale(sHeight));
+    			props.addValue("height",scale(Calc.truncateLength(sHeight)));
     		}
     	}
     	
@@ -1041,8 +1039,8 @@ public class DrawConverter extends ConverterHelper {
     	}
     	
         props.addValue("position","absolute");
-        if (sX!=null && sX.length()>0) { props.addValue("left",scale(sX)); }
-        if (sY!=null && sY.length()>0) { props.addValue("top",scale(sY)); }
+        if (sX!=null && sX.length()>0) { props.addValue("left",scale(Calc.truncateLength(sX))); }
+        if (sY!=null && sY.length()>0) { props.addValue("top",scale(Calc.truncateLength(sY))); }
         
     }
 	
@@ -1151,17 +1149,7 @@ public class DrawConverter extends ConverterHelper {
         return "right".equals(sWrap) || "parallel".equals(sWrap) || "biggest".equals(sWrap) ||
                "dynamic".equals(sWrap) || "run-through".equals(sWrap);
     }
-	
-    // TODO: Move to ConverterHelper.java
-    private String scale(String s) {
-        if (bConvertToPx) {
-            return Calc.length2px(Calc.multiply(sScale,Calc.truncateLength(s)));
-        }
-        else {
-            return Calc.multiply(sScale,Calc.truncateLength(s));
-        }
-    }
-    
+	    
     private String borderWidth(String sBorder) {
         if (sBorder==null || sBorder.equals("none")) { return "0"; }
         SimpleInputBuffer in = new SimpleInputBuffer(sBorder);

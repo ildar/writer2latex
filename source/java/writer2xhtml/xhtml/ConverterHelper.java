@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-24)
+ *  Version 1.7 (2022-06-14)
  *
  */
 
@@ -29,6 +29,7 @@ package writer2xhtml.xhtml;
 import org.w3c.dom.Element;
 
 import writer2xhtml.office.OfficeReader;
+import writer2xhtml.util.Calc;
 
 /** A <code>ConverterHelper</code> is responsible for conversion of some specific content into XHTML. 
  */
@@ -38,6 +39,11 @@ class ConverterHelper {
 	OfficeReader ofr;
     XhtmlConfig config;
     Converter converter;
+    
+    // Scaling and unit transformation to use
+    private String sScale;
+    private String sColScale;
+    private int nUnits;
 	
     /** Construct a new converter helper based on a 
      * 
@@ -49,6 +55,10 @@ class ConverterHelper {
         this.ofr = ofr;
         this.config = config;
         this.converter = converter;
+
+        sScale = config.getXhtmlScaling();
+        sColScale = config.getXhtmlColumnScaling();
+        nUnits = config.units();
     }
     
     // Convenience accessor methods to other converter helpers (only needed to save some typing)
@@ -107,5 +117,21 @@ class ConverterHelper {
             hnode.setAttribute("dir",info.sDir);
         }
     }
+    
+    protected String scale(String s) {
+    	switch (nUnits) {
+		case XhtmlConfig.PX:
+	        return Calc.length2px(Calc.multiply(sScale,s));
+		case XhtmlConfig.REM:
+	        return Calc.length2rem(Calc.multiply(sScale,s));
+		case XhtmlConfig.ORIGINAL:
+		default:
+	        return Calc.multiply(sScale,s);
+	    }
+	}
+    		
+	protected String colScale(String s) {
+	    return scale(Calc.multiply(sColScale,s));
+	}
 
 }

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-10)
+ *  Version 1.7 (2022-06-14)
  *
  */
 
@@ -30,7 +30,6 @@ import writer2xhtml.office.OfficeReader;
 import writer2xhtml.office.OfficeStyleFamily;
 import writer2xhtml.office.StyleWithProperties;
 import writer2xhtml.office.XMLString;
-import writer2xhtml.util.Calc;
 import writer2xhtml.util.ExportNameCollection;
 
 /**
@@ -52,11 +51,6 @@ public abstract class StyleConverterHelper extends ConverterHelper {
     // The type of xhtml document
     protected int nType;
 	
-    // Scaling and unit transformation to use
-    private String sScale;
-    private String sColScale;
-    private boolean bConvertToPx;
-	
     /** Create a new <code>StyleConverterHelper</code>
      *  @param ofr an <code>OfficeReader</code> to read style information from
      *  @param config the configuration to use
@@ -66,24 +60,8 @@ public abstract class StyleConverterHelper extends ConverterHelper {
     public StyleConverterHelper(OfficeReader ofr, XhtmlConfig config, Converter converter, int nType) {
         super(ofr,config,converter);
         this.nType = nType;
-        sScale = config.getXhtmlScaling();
-        sColScale = config.getXhtmlColumnScaling();
-        bConvertToPx = config.xhtmlConvertToPx();
     }
 
-    protected String scale(String s) {
-        if (bConvertToPx) {
-            return Calc.length2px(Calc.multiply(sScale,s));
-        }
-        else {
-            return Calc.multiply(sScale,s);
-        }
-    }
-	
-    protected String colScale(String s) {
-        return scale(Calc.multiply(sColScale,s));
-    }
-	
     /** Apply the writing direction (ltr or rtl) attribute from a style
      *  @param style the OpenDocument style to use
      *  @param info the <code>StyleInfo</code> object to add information to

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- cleanxhtml.xml 2010-05-17
+<!-- cleanxhtml.xml 2022-06-14
      This is a sample configuration file for Writer2xhtml.
      The options are set to produce a clean XHTML file using
      standard XHTML elements, using a custom style sheet for
@@ -8,15 +8,13 @@
 <config>
   <!-- options -->
   <option name="no_doctype" value="false" />
-  <!-- put url to your own stylesheet here: -->
-  <option name="custom_stylesheet" value="http://www.w3.org/StyleSheets/Core/Oldstyle" />
   <option name="formatting" value="ignore_all" />
   <option name="frame_formatting" value="ignore_all" />
   <option name="section_formatting" value="ignore_all" />
   <option name="table_formatting" value="ignore_all" />
   <option name="ignore_table_dimensions" value="true" />
   <option name="use_dublin_core" value="true" />
-  <option name="convert_to_px" value="true" />
+  <option name="units" value="px" />
   <option name="scaling" value="100%" />
   <option name="column_scaling" value="100%" />
   <option name="split_level" value="0" />
@@ -56,13 +54,9 @@ block-element="blockquote" block-css="(none)" element="p" css="(none)" />
   <xhtml-style-map name="superscript" family="attribute" element="sup" css="(none)" />
   <xhtml-style-map name="subscript" family="attribute" element="sub" css="(none)" />
   
-  <!-- Notes: Writer2xhtml with the above rules support a subset of xhtml elements;
-  some remarks on other elements: 
-  * The inline elements q, abbr, acronym, big and small are not supported, but
-    you can add support for those if you define your own styles in OOo and map
-    them to these elements.
-  * del, ins, object and map are not currently supported by Writer2xhtml, but
-    might be in the future
+  <!-- Notes: Writer2xhtml with the above rules support a subset of xhtml elements.
+  You can add support for other elements if you define your own styles in LO and map
+  them to the desired HTML elements
   -->
 
 </config>

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-10)
+ *  Version 1.7 (2022-06-14)
  *
  */
 
@@ -68,6 +68,12 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
         	if (sValue.equals("true")) { sValue="none"; }
         	else { sValue="absolute"; }
         }
+        // this option has been renamed and extended
+		if (sName.equals("convert_to_px")) {
+			sName = "units";
+			if (sValue.equals("true")) { sValue="px"; }
+			else { sValue="original"; }
+		}
         super.setOption(sName, sValue);
     }
  
@@ -76,6 +82,11 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     public static final int IGNORE_STYLES = 1;
     public static final int IGNORE_HARD = 2;
     public static final int CONVERT_ALL = 3;
+    
+	// Units
+	public static final int ORIGINAL = 0;
+	public static final int PX = 1;
+	public static final int REM = 2;
     
     // List formatting
     public static final int CSS1 = 0;
@@ -124,7 +135,7 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     private static final int USE_DUBLIN_CORE = 23;
     private static final int NOTES = 24;
     private static final int DISPLAY_HIDDEN_TEXT = 25;
-    private static final int CONVERT_TO_PX = 26;
+    private static final int UNITS = 26;
     private static final int SCALING = 27;
     private static final int COLUMN_SCALING = 28;
     private static final int RELATIVE_FONT_SIZE = 29;
@@ -219,7 +230,14 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
         options[USE_DUBLIN_CORE] = new BooleanOption("use_dublin_core","true");
         options[NOTES] = new BooleanOption("notes","true");
         options[DISPLAY_HIDDEN_TEXT] = new BooleanOption("display_hidden_text", "false");
-        options[CONVERT_TO_PX] = new BooleanOption("convert_to_px","true");
+        options[UNITS] = new IntegerOption("units","rem") {
+			@Override public void setString(String sValue) {
+				super.setString(sValue);
+				if ("original".equals(sValue)) { nValue = ORIGINAL; }
+				else if ("px".equals(sValue)) { nValue = PX; }
+				else { nValue = REM; }
+			}
+        };
         options[SCALING] = new Option("scaling","100%");
         options[COLUMN_SCALING] = new Option("column_scaling","100%");
         options[RELATIVE_FONT_SIZE] = new BooleanOption("relative_font_size","false");
@@ -416,7 +434,7 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     public boolean xhtmlUseDublinCore() { return ((BooleanOption) options[USE_DUBLIN_CORE]).getValue(); }
     public boolean xhtmlNotes() { return ((BooleanOption) options[NOTES]).getValue(); }
     public boolean displayHiddenText() { return ((BooleanOption) options[DISPLAY_HIDDEN_TEXT]).getValue(); }
-    public boolean xhtmlConvertToPx() { return ((BooleanOption) options[CONVERT_TO_PX]).getValue(); }
+    public int units() { return ((IntegerOption) options[UNITS]).getValue(); }
     public String getXhtmlScaling() { return options[SCALING].getString(); }
     public String getXhtmlColumnScaling() { return options[COLUMN_SCALING].getString(); }
     public boolean relativeFontSize() { return ((BooleanOption) options[RELATIVE_FONT_SIZE]).getValue(); }

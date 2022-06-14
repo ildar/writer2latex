@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-19)
+ *  Version 1.7 (2022-06-14)
  *
  */
 package writer2xhtml.util;
@@ -105,6 +105,26 @@ public class Calc {
 	        return Float.toString(fPixels>-1 ? -1 : fPixels)+"px";
 	    }
 	}
+	
+	/** Convert a length to rem assuming that 1em=16px, which seems to be a
+		 *  suitable interpretation (the CSS spec does not prescribe anything)
+		 * 
+		 * @param sLength the length to convert
+		 * @return the converted length
+		 */
+	public static final String length2rem(String sLength) {
+	    if (sLength.equals("0")) { return "0"; }
+	    float fLength=getFloat(sLength.substring(0,sLength.length()-2),1);
+	    String sUnit=sLength.substring(sLength.length()-2);
+	    float fRems = 6.0F/getUpi(sUnit)*fLength;
+	    if (Math.abs(fRems)<0.01) {
+	        // Very small, treat as zero
+	        return "0";
+	    }
+	    else {
+	        return Float.toString(fRems)+"rem";
+	    }
+	}	
 
 	/** Divide dividend by divisor and return the quotient as an integer percentage
 	 *  (e.g. "0.5cm" divided by "2cm" returns "25%"). 
