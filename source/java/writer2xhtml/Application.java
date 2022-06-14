@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-06) 
+ *  Version 1.7 (2022-06-14) 
  *
  */
  
@@ -38,7 +38,6 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Vector;
 
-import writer2xhtml.api.BatchConverter;
 import writer2xhtml.api.Converter;
 import writer2xhtml.api.ConverterFactory;
 import writer2xhtml.api.ConverterResult;
@@ -53,7 +52,6 @@ import writer2xhtml.util.Misc;
  * <ul>
  * <li><code>-html5</code>, <code>-xhtml</code>,
        <code>-xhtml+mathml</code>, <code>-epub</code>, <code>-epub3</code>
- * <li><code>-recurse</code>
  * <li><code>-config[=]filename</code>
  * <li><code>-template[=]filename</code>
  * <li><code>-stylesheet[=]filename</code>
@@ -67,7 +65,6 @@ public final class Application {
 	
     /* Based on command-line parameters. */
     private String sTargetMIME = MIMETypes.HTML5;
-    private boolean bRecurse = false;
     private Vector<String> configFileNames = new Vector<String>();
     private String sTemplateFileName = null;
     private String sStyleSheetFileName = null;
@@ -94,7 +91,7 @@ public final class Application {
         }
     }
 	
-    // Convert the directory or file
+    // Convert file
     private void doConversion() {
         // Step 1: Say hello...
         System.out.println();
@@ -113,45 +110,28 @@ public final class Application {
             System.out.println("I'm sorry, I can't read "+sSource);
             System.exit(1);
         }
-        boolean bBatch = source.isDirectory();
+        if (!source.isFile()) {
+            System.out.println("I'm sorry, "+sSource+" is not a file");
+            System.exit(1);
+        }
 
         // Step 3: Examine target
         File target;
-        if (bBatch) {
-            if (sTarget==null) {
-                target=source;
-            }
-            else {
-                target = new File(sTarget);
-            }
+        if (sTarget==null) {
+            target = new File(source.getParent(),Misc.removeExtension(source.getName()));
         }
         else {
-            if (sTarget==null) {
-                target = new File(source.getParent(),Misc.removeExtension(source.getName()));
-            }
-            else {
-                target = new File(sTarget);
-                if (sTarget.endsWith(File.separator)) {
-                    target = new File(target,Misc.removeExtension(source.getName()));
-                }
+            target = new File(sTarget);
+            if (sTarget.endsWith(File.separator)) {
+                target = new File(target,Misc.removeExtension(source.getName()));
             }
         }
 		
-        // Step 4: Create converters
+        // Step 4: Create converter
         Converter converter = ConverterFactory.createConverter(sTargetMIME);
         if (converter==null) {
             System.out.println("Failed to create converter for "+sTargetMIME);
             System.exit(1);
-        }
-		
-        BatchConverter batchCv = null;
-        if (bBatch) {
-            batchCv = ConverterFactory.createBatchConverter(MIMETypes.XHTML);
-            if (batchCv==null) {
-                System.out.println("Failed to create batch converter");
-                System.exit(1);
-            }
-            batchCv.setConverter(converter);
         }
 		
         // Step 5a: Read template
@@ -160,10 +140,6 @@ public final class Application {
                 System.out.println("Reading template "+sTemplateFileName);
                 byte [] templateBytes = Misc.inputStreamToByteArray(new FileInputStream(sTemplateFileName));
                 converter.readTemplate(new ByteArrayInputStream(templateBytes));
-                if (batchCv!=null) {
-                    // Currently we use the same template for the directory and the files
-                    batchCv.readTemplate(new ByteArrayInputStream(templateBytes));
-                }
             }
             catch (FileNotFoundException e) {
                 System.out.println("--> This file does not exist!");
@@ -235,10 +211,6 @@ public final class Application {
                 try {
                     byte[] configBytes = Misc.inputStreamToByteArray(new FileInputStream(sConfigFileName));
                     converter.getConfig().read(new ByteArrayInputStream(configBytes));
-                    if (bBatch) {
-                        // Currently we use the same configuration for the directory and the files
-                        batchCv.getConfig().read(new ByteArrayInputStream(configBytes));
-                    }
                 }
                 catch (IOException e) {
                     System.err.println("--> Failed to read the configuration!");
@@ -253,47 +225,38 @@ public final class Application {
             String sKey = keys.nextElement();
             String sValue = (String) options.get(sKey);
             converter.getConfig().setOption(sKey,sValue);
-            if (batchCv!=null) {
-                batchCv.getConfig().setOption(sKey,sValue);
-            }
         }
 	 	
         // Step 8: Perform conversion
-        if (bBatch) {
-            batchCv.convert(source,target,bRecurse, new BatchHandlerImpl());
+        System.out.println("Converting "+source.getPath());
+        ConverterResult dataOut = null;
+
+        try {
+            dataOut = converter.convert(source,target.getName());
         }
-        else {
-            System.out.println("Converting "+source.getPath());
-            ConverterResult dataOut = null;
+        catch (FileNotFoundException e) {
+            System.out.println("--> The file "+source.getPath()+" does not exist!");
+            System.out.println("    "+e.getMessage());
+            System.exit(1);
+        }
+        catch (IOException e) {
+            System.out.println("--> Failed to convert the file "+source.getPath()+"!");
+            System.out.println("    "+e.getMessage());
+            System.out.println("    Please make sure the file is in OpenDocument format");
+            System.exit(1);
+        }
 
-            try {
-                dataOut = converter.convert(source,target.getName());
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("--> The file "+source.getPath()+" does not exist!");
-                System.out.println("    "+e.getMessage());
-                System.exit(1);
-            }
-            catch (IOException e) {
-                System.out.println("--> Failed to convert the file "+source.getPath()+"!");
-                System.out.println("    "+e.getMessage());
-                System.out.println("    Please make sure the file is in OpenDocument format");
-                System.exit(1);
-            }
-
-            // TODO: Should do some further checking on the feasability of writing
-            // the directory and the files.
-            File targetDir = target.getParentFile();
-            if (targetDir!=null && !targetDir.exists()) { targetDir.mkdirs(); }
-            try {
-                dataOut.write(targetDir);
-            }
-            catch (IOException e) {
-                System.out.println("--> Error writing out file!");
-                System.out.println("    "+e.getMessage());
-                System.exit(1);
-            }
-        
+        // TODO: Should do some further checking on the feasability of writing
+        // the directory and the files.
+        File targetDir = target.getParentFile();
+        if (targetDir!=null && !targetDir.exists()) { targetDir.mkdirs(); }
+        try {
+            dataOut.write(targetDir);
+        }
+        catch (IOException e) {
+            System.out.println("--> Error writing out file!");
+            System.out.println("    "+e.getMessage());
+            System.exit(1);
         }
 		
         // Step 9: Say goodbye!
@@ -320,7 +283,6 @@ public final class Application {
         System.out.println("   -html5");
         System.out.println("   -epub");
         System.out.println("   -epub3");
-        System.out.println("   -recurse");
         System.out.println("   -template[=]<template file>");
         System.out.println("   -stylesheet[=]<style sheet file>");
         System.out.println("   -resource[=]<resource file>[::<media type>]");
@@ -351,7 +313,6 @@ public final class Application {
                 else if ("-xhtml+mathml".equals(sArg)) { sTargetMIME = MIMETypes.XHTML_MATHML; }
                 else if ("-epub".equals(sArg)) { sTargetMIME = MIMETypes.EPUB; }
                 else if ("-epub3".equals(sArg)) { sTargetMIME = MIMETypes.EPUB3; }
-                else if ("-recurse".equals(sArg)) { bRecurse = true; }
                 else if ("-cleanxhtml".equals(sArg)) { configFileNames.add("*cleanxhtml.xml"); }
                 else { // option with argument
                     int j=sArg.indexOf("=");

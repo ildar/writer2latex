@@ -2,6 +2,10 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 ---------- version 1.7 beta ----------
 
+- The HTML filter dialog in Writer has been redesigned to a two column layout. The options multilingual, embed_svg, 
+  embed_img, table_size and formulas can now be set in the filter dialog, and are thus removed from the configuration
+  settings. Also all three values for the options table_size and image_size can now be set in the filter dialog.
+  
 - Removed localizations of export dialogs (only some strings were translated anyway)
 
 - The option formulas (for XHTML 1.0 and 1.1 strict only) no longer supports the values latex and image+latex
@@ -31,6 +35,8 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 - Bugfix: Removed the deprecated type attribute from <style> if producing HTML5.
 
 - Bugfix: The <title> must be non-empty. The file name is now used as title if the document has an empty title. 
+
+- The batch conversion feature has been removed.
 
 - Writer2xhtml has been separated from Writer2LaTeX: All LaTeX code has been removed, and packages etc. has
   been renamed to avoid conflicts if installed together with Writer2LaTeX.

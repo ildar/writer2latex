@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="C:/Program Files/LibreOffice/program/classes/jurt.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/LibreOffice/program/classes/ridl.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/LibreOffice/program/classes/unoil.jar"/>
-	<classpathentry kind="lib" path="source/idl/writer2xhtml"/>
 	<classpathentry kind="lib" path="source/lib/json-20140107.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-06)
+ *  Version 1.7 (2022-06-14)
  *
  */
  
@@ -33,7 +33,7 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.7";
-    private static final String DATE = "2022-06-06";
+    private static final String DATE = "2022-06-14";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
@@ -91,19 +91,4 @@ public class ConverterFactory {
         return null;
     }
 	
-    /** <p>Create a <code>BatchConverter</code> implementation which supports
-     *  conversion into the specified MIME type</p>
-     *  <p>The only currently supported MIME type is <code>text/html</code>
-     *  (XHTML 1.0 strict)</p>
-     *
-     *  @param sMIME the MIME type of the target format
-     *  @return the required <code>BatchConverter</code> or null if a converter
-     *  for the requested MIME type could not be created
-     */
-    public static BatchConverter createBatchConverter(String sMIME) {
-        if (MIMETypes.XHTML.equals(sMIME)) {
-            return new writer2xhtml.xhtml.BatchConverterImpl();
-        }
-        return null;
-    }
 }
