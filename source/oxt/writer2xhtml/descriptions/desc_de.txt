@@ -1,1 +1,1 @@
-Writer2Latex bietet Witer und Calc  Exportfilter für XHTML und XHTML+MathML
+Writer2Latex bietet Witer und Calc  Exportfilter für HTML und EPUB

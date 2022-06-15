@@ -84,6 +84,12 @@ public class W2XRegistration {
             multiFactory,						    
             regKey);
         }
+        else if (implName.equals(HTML5OptionsDialog.__implementationName)) {
+            xSingleServiceFactory = FactoryHelper.getServiceFactory(HTML5OptionsDialog.class,
+            HTML5OptionsDialog.__serviceName,
+            multiFactory,						    
+            regKey);
+        }
         else if (implName.equals(XhtmlOptionsDialogCalc.__implementationName)) {
             xSingleServiceFactory = FactoryHelper.getServiceFactory(XhtmlOptionsDialogCalc.class,
             XhtmlOptionsDialogCalc.__serviceName,
@@ -134,22 +140,24 @@ public class W2XRegistration {
      */
     public static boolean __writeRegistryServiceInfo(XRegistryKey regKey) {
         return
-            FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName,
-                        Writer2xhtml.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(Writer2xhtml.__implementationName, 
+                Writer2xhtml.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(W2XExportFilter.__implementationName,
                 W2XExportFilter.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialog.__implementationName,
                 XhtmlOptionsDialog.__serviceName, regKey) &
-                FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogMath.__implementationName,
-                        XhtmlOptionsDialogMath.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogMath.__implementationName,
+                XhtmlOptionsDialogMath.__serviceName, regKey) &
+            FactoryHelper.writeRegistryServiceInfo(HTML5OptionsDialog.__implementationName,
+                    HTML5OptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(XhtmlOptionsDialogCalc.__implementationName,
                 XhtmlOptionsDialogCalc.__serviceName, regKey) & 
             FactoryHelper.writeRegistryServiceInfo(EpubOptionsDialog.__implementationName,
-                        EpubOptionsDialog.__serviceName, regKey) &
+                EpubOptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(Epub3OptionsDialog.__implementationName,
-                        Epub3OptionsDialog.__serviceName, regKey) &
+                Epub3OptionsDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(EpubMetadataDialog.__implementationName,
-                        EpubMetadataDialog.__serviceName, regKey) &
+                EpubMetadataDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ConfigurationDialog.__implementationName,
                 ConfigurationDialog.__serviceName, regKey) &
             FactoryHelper.writeRegistryServiceInfo(ToolbarSettingsDialog.__implementationName,

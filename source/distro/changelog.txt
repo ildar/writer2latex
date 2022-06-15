@@ -1,37 +1,46 @@
-Changelog for Writer2xhtml version 1.6 -> 1.7 beta
+Changelog for Writer2xhtml version 1.6.1 -> 1.7 beta
+
+All changes are classified as
+- New feature: New functionality has been added to the extension
+- Improved: A feature was changed to work better than in the previous version
+- Bugfix: A bug in the previous version was fixed
+- Changed: Something has changed due to a design decision
 
 ---------- version 1.7 beta ----------
 
-- The HTML filter dialog in Writer has been redesigned to a two column layout. The options multilingual, embed_svg, 
-  embed_img, table_size and formulas can now be set in the filter dialog, and are thus removed from the configuration
-  settings. Also all three values for the options table_size and image_size can now be set in the filter dialog.
+- Changed: The configuration file cleanxhtml.xml no longer sets custom_stylesheet
+
+- Improved: The HTML filter dialog in Writer has been extended and redesigned to a two column layout. The options
+  multilingual, embed_svg (HTML5 only), embed_img, table_size and formulas (XHTML 1.0 and 1.1 only) can now be set
+  in the filter dialog, and are thus removed from the configuration settings. Also all three values for the options
+  table_size and image_size can now be set in the filter dialog.
   
-- Removed localizations of filter dialogs (only some strings were translated anyway)
+- Changed: Removed localizations of filter dialogs (only some strings were translated anyway)
 
-- New option units with values rem (default), px and original. This replaces the options convert_to_px, which
-  corresponds to the values px and original. For backwards compatibility, convert_to_px is still accepted.
+- New feature: New option units with values rem (default), px and original. This replaces the options convert_to_px,
+  which corresponds to the values px and original. For backwards compatibility, convert_to_px is still accepted.
 
-- The option formulas (for XHTML 1.0 and 1.1 strict only) no longer supports the values latex and image+latex
+- Changed: The option formulas (for XHTML 1.0 and 1.1 strict only) no longer supports the values latex and image+latex
 
 - Bugfix: The configuration option formulas=image+starmath now works correctly if embed_img=true
 
-- Simplified export of column widths in tables (the old method set width on table cells rather than table columns.
-  This was due to differences in browsers, and should not be relevant anymore).
+- Improved: Simplified export of column widths in tables (the old method set width on table cells rather than table
+  columns. This was due to differences in browsers, and should not be relevant anymore).
   
-- No longer sets absolute table width and the CSS attribute table-layout:fixed. The old behavior was too strict
-  and could lead to overfull table cells. 
+- Improved: No longer sets absolute table width and the CSS attribute table-layout:fixed. The old behavior was too
+  strict and could lead to overfull table cells. 
 
-- Added support for the ODF attribute table:border-model (collapsing or separating borders)
+- New feature: Added support for the ODF attribute table:border-model (collapsing or separating borders)
 
 - Bugfix: The toolbar settings are now also visible in Calc.
 
-- Added Help button to all configuration dialogs (because the "official" help button leads to online help).
+- Improved: Added Help button to all configuration dialogs (because the "official" help button leads to online help).
 
-- Added support for image bullets in lists.
+- New feature: Added support for image bullets in lists.
 
 - Bugfix: The converter no longer crashes if embed_img=true and the document contains two identical pictures.
 
-- Removed the redundant attribute type from <script> if producing HTML5.
+- Improved: Removed the redundant attribute type from <script> if producing HTML5.
 
 - Bugfix: Removed the deprecated profile attribute (Dublin Core) from <html> if producing HTML5.
 
@@ -39,7 +48,7 @@ Changelog for Writer2xhtml version 1.6 -> 1.7 beta
 
 - Bugfix: The <title> must be non-empty. The file name is now used as title if the document has an empty title. 
 
-- The batch conversion feature has been removed.
+- Changed: The batch conversion feature has been removed.
 
-- Writer2xhtml has been separated from Writer2LaTeX: All LaTeX code has been removed, and packages etc. has
+- Changed: Writer2xhtml has been separated from Writer2LaTeX: All LaTeX code has been removed, and packages etc. has
   been renamed to avoid conflicts if installed together with Writer2LaTeX.

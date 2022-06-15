@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  *  
- *  Version 1.6 (2018-03-06)
+ *  Version 1.7 (2022-06-14)
  *  
  */
 package org.openoffice.da.comp.w2xcommon.filter;
@@ -306,8 +306,8 @@ public class UNOPublisher {
     	switch (format) {
     	case xhtml: 
     	case xhtml11: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialog"; //$NON-NLS-1$
-    	case xhtml_mathml:
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath"; //$NON-NLS-1$
+    	case xhtml_mathml: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogMath"; //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.HTML5OptionsDialog"; //$NON-NLS-1$
     	case epub: return "org.openoffice.da.comp.writer2xhtml.EpubOptionsDialog"; //$NON-NLS-1$
     	case epub3: return "org.openoffice.da.comp.writer2xhtml.Epub3OptionsDialog"; //$NON-NLS-1$
     	case latex: return "org.openoffice.da.comp.writer2latex.LaTeXOptionsDialog"; //$NON-NLS-1$

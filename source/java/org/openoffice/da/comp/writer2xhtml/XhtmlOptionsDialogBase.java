@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-12)
+ *  Version 1.7 (2022-06-14)
  *
  */ 
  
@@ -41,14 +41,6 @@ public class XhtmlOptionsDialogBase extends OptionsDialogBase {
     // Translate list box items (image and table settings) to configuration option values 
     private static final String[] SIZE_VALUES = { "auto", "relative", "none" };
     
-    /** The component will be registered under this name.
-     */
-    public static String __serviceName = "org.openoffice.da.writer2xhtml.XhtmlOptionsDialog";
-
-    /** The component should also have an implementation name.
-     */
-    public static String __implementationName = "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogBase";
-	
     public String getDialogLibraryName() { return "W2XDialogs"; }
 	
     /** Return the name of the dialog within the library
@@ -226,12 +218,12 @@ public class XhtmlOptionsDialogBase extends OptionsDialogBase {
 
         // Figures, tables and formulas
         setControlEnabled("ImageSize",!isLocked("image_size") && !isLocked("original_image_size"));
-        setControlEnabled("EmbedSVG",!isLocked("embed_svg"));
+        setControlEnabled("EmbedSVG",this instanceof HTML5OptionsDialog && !isLocked("embed_svg"));
         setControlEnabled("EmbedImg",!isLocked("embed_img"));
         setControlEnabled("TableSize",!isLocked("table_size"));
         setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling"));
         setControlEnabled("ColumnScaling",!isLocked("column_scaling"));
-        if (this instanceof XhtmlOptionsDialogMath) {
+        if (this instanceof HTML5OptionsDialog || this instanceof XhtmlOptionsDialogMath) {
         	setControlVisible("FormulasLabel",false);
         	setControlVisible("Formulas",false);
             setControlEnabled("UseMathjax",!isLocked("use_mathjax"));        	

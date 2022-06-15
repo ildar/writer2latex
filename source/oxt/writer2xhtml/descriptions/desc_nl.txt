@@ -1,1 +1,1 @@
-Writer2xhtml verzorgt Writer en Calc met exportfilters voor XHTML en XHTML + MathML
+Writer2xhtml verzorgt Writer en Calc met exportfilters voor HTML en EPUB
