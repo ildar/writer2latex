@@ -54,7 +54,7 @@
     	An example configuration package <emph>xhtml-config-sample.oxt</emph> is provided.</paragraph>
 		</section>
 		
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:Units" id="bm_options_units"/>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsUnits" id="bm_options_units"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:Units" visibility="hidden">Select the units to use for dimensions in the HTML document, either the original units, pixels or relative units (recommended)</ahelp></paragraph>
 		<section id="units">
 	    <paragraph role="heading" level="3" xml-lang="en-US">Units</paragraph>
@@ -161,8 +161,9 @@
 
         <paragraph role="heading" level="2" xml-lang="en-US">Figures, tables and formulas</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:ImageSize" id="bm_options_imagesize"/>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsImageSize" id="bm_options_imagesize"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:ImageSize" visibility="hidden">Select how to handle the size of images, either by using the size defined in the document, define as a percentage of the screen width or by using the natural dimensions of the image</ahelp></paragraph>
+		<section id="imagesize">
 	    <paragraph role="heading" level="3" xml-lang="en-US">Image size</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Often images in a %PRODUCTNAME document are scaled up or down from their original size.
 		Using this option you can select how to handle image sizes.</paragraph>
@@ -180,20 +181,24 @@
 				image will thus have the natural, unscaled size.</paragraph>
 			</listitem>
         </list>
+        </section>
 
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EmbedSvg" id="bm_options_embedsvg"/>
-
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsEmbedSVG" id="bm_options_embedsvg"/>
+		<section id="embedsvg">
         <paragraph role="heading" level="3" xml-lang="en-US">Embed vector graphics</paragraph>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedSVG" visibility="hidden">Check this to embed vector graphics in the document rather than in a separate file</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Vector graphics is exported to SVG format. If you check this option, the
         SVG image will be embedded directly in the HTML document. Otherwise they will be included in a separate file.</paragraph>
+		</section>
 
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EmbedImg" id="bm_options_embedimg"/>
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsEmbedImg" id="bm_options_embedimg"/>
+        <section id="embedimg">
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedImg" visibility="hidden">Check this to embed raster graphics in the document rather than in a separate file</ahelp></paragraph>
         <paragraph role="heading" level="3" xml-lang="en-US">Embed raster graphics</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Raster graphics is exported to JPEG, PNG or GIF format. If you check this option, all
         raster images will be embedded directly in the HTML document (base64 encoded). Otherwise they will be included in a separate file.
         This is not recommended for documents with large images.</paragraph>
+        </section>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:TableSize" id="bm_options_tablesize"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:TableSize" visibility="hidden">Select how to handle the size of tables, either by using the size defined in the document, define as a percentage of the screen width or by leaving the layout to the browser</ahelp></paragraph>

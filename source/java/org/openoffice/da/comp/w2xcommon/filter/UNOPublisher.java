@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  *  
- *  Version 1.7 (2022-06-14)
+ *  Version 1.7 (2022-06-17)
  *  
  */
 package org.openoffice.da.comp.w2xcommon.filter;
@@ -319,8 +319,8 @@ public class UNOPublisher {
     	switch (format) {
     	case xhtml: 
     	case xhtml11: 
-    	case xhtml_mathml:
-    	case html5: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc";  //$NON-NLS-1$
+    	case xhtml_mathml: return "org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc";  //$NON-NLS-1$
+    	case html5: return "org.openoffice.da.comp.writer2xhtml.HTML5OptionsDialogCalc";  //$NON-NLS-1$
     	case epub: 
     	case epub3: 
     	case latex:

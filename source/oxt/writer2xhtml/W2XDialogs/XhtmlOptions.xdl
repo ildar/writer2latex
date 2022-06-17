@@ -71,7 +71,7 @@
   <dlg:checkbox dlg:id="EmbedSVG" dlg:tab-index="15" dlg:left="193" dlg:top="78" dlg:width="149" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedSVG" dlg:value="Embed vector graphics" dlg:checked="false"/>
   <dlg:checkbox dlg:id="EmbedImg" dlg:tab-index="16" dlg:left="193" dlg:top="92" dlg:width="149" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsEmbedImg" dlg:value="Embed raster graphics" dlg:checked="false"/>
   <dlg:text dlg:id="UnitsLabel" dlg:tab-index="35" dlg:left="12" dlg:top="36" dlg:width="60" dlg:height="12" dlg:value="Units"/>
-  <dlg:menulist dlg:id="Units" dlg:tab-index="5" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:Units" dlg:spin="true" dlg:linecount="3">
+  <dlg:menulist dlg:id="Units" dlg:tab-index="5" dlg:left="75" dlg:top="34" dlg:width="86" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsUnits" dlg:spin="true" dlg:linecount="3">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="Original"/>
     <dlg:menuitem dlg:value="Pixels (px)"/>
@@ -87,7 +87,7 @@
    </dlg:menupopup>
   </dlg:menulist>
   <dlg:text dlg:id="ImageSizeLabel" dlg:tab-index="37" dlg:left="193" dlg:top="64" dlg:width="60" dlg:height="12" dlg:value="Image size"/>
-  <dlg:menulist dlg:id="ImageSize" dlg:tab-index="14" dlg:left="256" dlg:top="62" dlg:width="86" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:ImageSize" dlg:spin="true" dlg:linecount="3">
+  <dlg:menulist dlg:id="ImageSize" dlg:tab-index="14" dlg:left="256" dlg:top="62" dlg:width="86" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsImageSize" dlg:spin="true" dlg:linecount="3">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="Automatic"/>
     <dlg:menuitem dlg:value="Relative to page width"/>

@@ -21,7 +21,7 @@
 		<prop oor:name="FileFormatVersion"><value>0</value></prop>
 		<prop oor:name="Type"><value>writer_xhtml5_File</value></prop>
 		<prop oor:name="DocumentService"><value>com.sun.star.sheet.SpreadsheetDocument</value></prop>
-        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2xhtml.XhtmlOptionsDialogCalc</value></prop>
+        <prop oor:name="UIComponent"><value>org.openoffice.da.comp.writer2xhtml.HTML5OptionsDialogCalc</value></prop>
 		<prop oor:name="UserData"><value>org.openoffice.da.comp.writer2xhtml.W2XExportFilter unused com.sun.star.comp.Calc.XMLOasisImporter com.sun.star.comp.Calc.XMLOasisExporter staroffice/sxc text/html5</value></prop>
 		<prop oor:name="FilterService"><value>com.sun.star.comp.Writer.XmlFilterAdaptor</value></prop><!-- sic! -->
 		<prop oor:name="TemplateName"/>

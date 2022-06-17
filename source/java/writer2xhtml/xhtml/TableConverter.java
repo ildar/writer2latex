@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-11)
+ *  Version 1.7 (2022-06-16)
  *
  */
 
@@ -143,18 +143,18 @@ public class TableConverter extends ConverterHelper {
                 hnode.appendChild(div);
                 int nCount = tblr.getPrintRangeCount();
                 for (int nRange=0; nRange<nCount; nRange++) {
-                    Element table = createTable(tblr);
+                    Element table = converter.createElement("table");
                     div.appendChild(table);
                     TableRange range = tblr.getPrintRange(nRange);
                     range.setIncludeHidden(config.displayHiddenRowsCols());
                     range.setIncludeFiltered(config.displayFilteredRowsCols());
-                    traverseTable(range.createTableView(),table);
+                    traverseTable(tblr, range.createTableView(), table);
                 }
             }
         }
         else {
             // Create table
-            Element table = createTable(tblr);
+            Element table = converter.createElement("table");
             if (!tblr.isSubTable()) {
                 converter.addTarget(table,tblr.getTableName()+"|table");
             }
@@ -169,26 +169,35 @@ public class TableConverter extends ConverterHelper {
             }
             range.setIncludeHidden(config.displayHiddenRowsCols());
             range.setIncludeFiltered(config.displayFilteredRowsCols());
-            traverseTable(range.createTableView(),table);
+            traverseTable(tblr, range.createTableView(),table);
         }
     }
     
-    private Element createTable(TableReader tblr) {
-        Element table = converter.createElement("table");
-        // Apply table style
+    private void traverseTable(TableReader tblr, TableView view, Element hnode) {
+        int nRowCount = view.getRowCount();
+        int nColCount = view.getColCount();
+        
+        // Style the table
+        StyleInfo info = new StyleInfo();
+        applyTableStyle(tblr.getTableStyleName(), info, tblr.isSubTable());        
+        if (ofr.isSpreadsheet()) { // For spreadsheets we need a fixed layout
+	        String sTotalWidth = "0";
+			for (int nCol=0; nCol<nColCount; nCol++) {
+				String sColWidth = view.getColumnWidth(nCol);
+				if (sColWidth!=null) {
+					sTotalWidth = Calc.add(sColWidth, sTotalWidth);
+				}
+			}
+			info.props.addValue("width", this.colScale(sTotalWidth));
+			info.props.addValue("table-layout", "fixed");
+        }
+        applyStyle(info, hnode);
         // Older versions of IE needs the cellspacing attribute, as it doesn't understand the css border-spacing attribute
         // We cannot do this with HTML5
         if (!converter.isHTML5()) {
-        	table.setAttribute("cellspacing","0");
+        	hnode.setAttribute("cellspacing","0");
         }
-        applyTableStyle(tblr.getTableStyleName(), table, tblr.isSubTable());
-        return table;
-    }
-		
-    private void traverseTable(TableView view, Element hnode) {
-        int nRowCount = view.getRowCount();
-        int nColCount = view.getColCount();
-
+        
         // Create columns
         if (config.tableSize()!=XhtmlConfig.NONE) {
     		Element colgroup = hnode;
@@ -210,7 +219,7 @@ public class TableConverter extends ConverterHelper {
     			for (int nCol=0; nCol<nColCount; nCol++) {
     				Element col = converter.createElement("col");
     				colgroup.appendChild(col);
-    				col.setAttribute("style","width:"+getTableSc().colScale(view.getColumnWidth(nCol)));
+    				col.setAttribute("style","width:"+colScale(view.getColumnWidth(nCol)));
     			}
     		}
         }
@@ -314,8 +323,7 @@ public class TableConverter extends ConverterHelper {
         return false;
     }
 	
-    private void applyTableStyle(String sStyleName, Element table, boolean bIsSubTable) {
-        StyleInfo info = new StyleInfo();
+    private void applyTableStyle(String sStyleName, StyleInfo info, boolean bIsSubTable) {
         getTableSc().applyStyle(sStyleName,info);
 
         if (config.tableSize()!=XhtmlConfig.NONE) {
@@ -333,12 +341,10 @@ public class TableConverter extends ConverterHelper {
                         info.props.addValue("width",sWidth);
                     }
                     // Do not export absolute width, which would be
-                    // info.props.addValue("width",getTableSc().colScale(sWidth));
+                    // info.props.addValue("width",colScale(sWidth));
                 }
             }
         }
-
-        // info.props.addValue("table-layout","fixed");
 
         // info.props.addValue("empty-cells","show"); use &nbsp; instead...
 
@@ -349,7 +355,6 @@ public class TableConverter extends ConverterHelper {
             info.props.addValue("width","100%");
             info.props.addValue("margin","0");
         }
-        applyStyle(info,table);
     }
 
     private void applyRowStyle(String sStyleName, Element row) {

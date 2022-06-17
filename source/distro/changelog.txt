@@ -10,10 +10,15 @@ All changes are classified as
 
 - Changed: The configuration file cleanxhtml.xml no longer sets custom_stylesheet
 
+- Improved: 
+
 - Improved: The HTML filter dialog in Writer has been extended and redesigned to a two column layout. The options
   multilingual, embed_svg (HTML5 only), embed_img, table_size and formulas (XHTML 1.0 and 1.1 only) can now be set
   in the filter dialog, and are thus removed from the configuration settings. Also all three values for the options
   table_size and image_size can now be set in the filter dialog.
+  The same applies to the HTML filter dialog in Calc, which now supports the options embed_svg (HTML5 only),
+  embed_img and image_size. (The other aforementioned options multilingual, table_size and formulas are not relevant
+  for spreadsheet documents.)
   
 - Changed: Removed localizations of filter dialogs (only some strings were translated anyway)
 
@@ -27,8 +32,9 @@ All changes are classified as
 - Improved: Simplified export of column widths in tables (the old method set width on table cells rather than table
   columns. This was due to differences in browsers, and should not be relevant anymore).
   
-- Improved: No longer sets absolute table width and the CSS attribute table-layout:fixed. The old behavior was too
-  strict and could lead to overfull table cells. 
+- Improved: No longer sets absolute table width and the CSS attribute table-layout:fixed when exporting Writer documents.
+  The old behavior was too strict and could lead to overfull table cells. On the other hand when exporting Calc
+  documents the two attributes are now both set, because overflow of table cells is o.k. in a spreadsheets document.
 
 - New feature: Added support for the ODF attribute table:border-model (collapsing or separating borders)
 
