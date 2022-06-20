@@ -34,8 +34,10 @@ import org.w3c.dom.NodeList;
 import writer2xhtml.office.FontDeclaration;
 import writer2xhtml.office.ListCounter;
 import writer2xhtml.office.ListStyle;
+import writer2xhtml.office.MasterPage;
 import writer2xhtml.office.OfficeReader;
 import writer2xhtml.office.OfficeStyle;
+import writer2xhtml.office.PageLayout;
 import writer2xhtml.office.StyleWithProperties;
 import writer2xhtml.office.XMLString;
 import writer2xhtml.util.Misc;
@@ -64,7 +66,13 @@ public class TextConverter extends ConverterHelper {
     protected Stack<Node> sections = new Stack<Node>(); // stack of nested sections
     Element[] currentHeading = new Element[7]; // Last headings (repeated when splitting)
     private int nCharacterCount = 0; // The number of text characters in the current document
-
+    
+    // Data used to handle page numbers
+    private int nPageCount = 1; // Current physical page number
+    private int nPageNumber = 1; // Current page number
+    private MasterPage masterPage = null; // Current master page (which determines the numbering style for the page number)
+    private int nSoftPageBreaksLimit; // If positive, this is the maximal number of soft page breaks to export before the value is reset
+    
     // Counters for generated numbers
     private ListCounter outlineNumbering;
     private Hashtable<String, ListCounter> listCounters = new Hashtable<String, ListCounter>();
@@ -126,6 +134,10 @@ public class TextConverter extends ConverterHelper {
     public void convertTextContent(Element onode) {
         Element hnode = converter.nextOutFile();
 
+        // Start with page 1
+        masterPage = ofr.getFirstMasterPage();
+    	insertPageNumber(hnode,"div");
+
         // Create form
         if (nSplit==0) {
             Element form = getDrawCv().createForm();
@@ -168,7 +180,168 @@ public class TextConverter extends ConverterHelper {
     protected void setAsapNode(Element node) {
     	asapNode = node;
     }
-	
+    
+    ////////////////////////////////////////////////////////////////////////
+    // PAGE NUMBERS
+    ////////////////////////////////////////////////////////////////////////
+
+    // Insert page break by style; return true if there is a page break *after*
+    boolean maybePageBreak(Node node, StyleWithProperties style) {
+        if (style!=null) {
+        	// A page break can be a simple page break before or after...
+        	if ("page".equals(style.getProperty(XMLString.FO_BREAK_BEFORE))) {
+        		if (!atTopOfPage(node)) { // A page break has no effect if we are already at the top of the page
+        			insertPageBreak(node, "div");
+        		}
+        	}
+        	else if ("page".equals(style.getProperty(XMLString.FO_BREAK_AFTER))) {
+        		return true;
+        	}
+        	else { // ...or it can be a new master page
+	        	String sMasterPage = style.getMasterPageName();
+	        	if (sMasterPage!=null && sMasterPage.length()>0) {
+	        		if (atTopOfPage(node)) {
+	        			// Page break has no effect, but page numbering is changed. Hence we need to replace the previous page break mark
+	        			node.removeChild(node.getLastChild());
+	        			nPageCount--;
+	        			nPageNumber--;
+	        		}
+	        		// The new master page determines the number format
+	        		masterPage = ofr.getMasterPage(sMasterPage);
+        			// The style may also set a new page number 
+        			String sPageNumber = style.getParProperty(XMLString.STYLE_PAGE_NUMBER,true);
+        			if (sPageNumber!=null) {
+        				try { nPageNumber = Integer.parseInt(sPageNumber); }
+        				catch (NumberFormatException ex) { }
+    				}
+	        		insertPageNumber(node, "div");
+	        	}        	
+        	}
+        }
+        return false;
+    }
+    
+    // Return true if no content has been inserted on the current page
+	// TODO: This may not work if we ignore empty paragraphs
+    private boolean atTopOfPage(Node node) {
+    	Node child = node.getLastChild();
+    	return child!=null && Misc.isElement(child, "div") && "pagebreak".equals(Misc.getAttribute(child, "epub:type"));
+    }
+    
+    // A page number can be represented like e.g. <span epub:type="pagebreak" id="page57" title="57" />
+    private void insertPageNumber(Node node, String sTagName) {
+    	Element elm = converter.createElement(sTagName);
+    	elm.setAttribute("epub:type", "pagebreak");
+    	elm.setAttribute("id", "page"+nPageCount);
+    	String sPageNumber = null;
+    	if (masterPage!=null) {
+    		elm.setAttribute("masterpage", masterPage.getDisplayName());
+    		PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
+    		if (pageLayout!=null) {
+    			String sNumFormat = pageLayout.getProperty(XMLString.STYLE_NUM_FORMAT,true);
+    			boolean bLetterSync = "true".equals(pageLayout.getProperty(XMLString.STYLE_NUM_LETTER_SYNC, true));
+    			if (sNumFormat!=null) {
+    				sPageNumber = ListCounter.formatNumber(nPageNumber, sNumFormat, bLetterSync);
+	    		}
+	    	}
+	    	if (sPageNumber==null) {
+	    		sPageNumber = Integer.toString(nPageNumber);
+	    	}
+    	}
+		elm.setAttribute("title", sPageNumber);
+    	node.appendChild(elm);
+    	nPageCount++;
+    	nPageNumber++;
+    }
+    
+    void insertPageBreak(Node node, String sTagName) {
+    	String sNewMasterPage = masterPage.getProperty(XMLString.STYLE_NEXT_STYLE_NAME);
+    	if (sNewMasterPage!=null) {
+    		masterPage = ofr.getMasterPage(sNewMasterPage);
+    	}
+    	insertPageNumber(node,sTagName);
+    }
+    
+    // Set number of soft page breaks to accept (usually -1 (no limit), 0 or 1)
+    void setSoftPageBreaksLimit(int n) {
+    	nSoftPageBreaksLimit = n;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // FILE SPLITTING
+    ////////////////////////////////////////////////////////////////////////
+
+    private Node maybeSplit(Node node, StyleWithProperties style) {
+    	return maybeSplit(node,style,-1);
+    }
+    
+    private Node maybeSplit(Node node, StyleWithProperties style, int nLevel) {
+    	if (bPendingPageBreak) {
+    		return doMaybeSplit(node, 0);
+    	}
+    	if (getPageBreak(style)) {
+    		return doMaybeSplit(node, 0);
+    	}
+    	if (converter.isOPS() && nSplitAfter>0 && nCharacterCount>nSplitAfter) {
+    		return doMaybeSplit(node, 0);
+    	}
+    	if (nLevel>=0) {
+    		return doMaybeSplit(node, nLevel);
+    	}
+    	else {
+    		return node;
+    	}
+    }
+
+    protected Element doMaybeSplit(Node node, int nLevel) {
+        if (nDontSplitLevel>1) { // we cannot split due to a nested structure
+            return (Element) node;
+        }
+        if (!converter.isOPS() && bAfterHeading && nLevel-nLastSplitLevel<=nRepeatLevels) {
+            // we cannot split because we are right after a heading and the
+            // maximum number of parent headings on the page is not reached
+        	// TODO: Something wrong here....nLastSplitLevel is never set???
+            return (Element) node;
+        }
+        if (nSplit>=nLevel && converter.outFileHasContent()) {
+            // No objections, this is a level that causes splitting
+        	nCharacterCount = 0;
+        	bPendingPageBreak = false;
+            if (converter.getOutFileIndex()>=0) { footCv.insertFootnotes(node,false); }
+            return converter.nextOutFile();
+        }
+        return (Element) node;
+    }
+    	
+    private boolean getPageBreak(StyleWithProperties style) {
+        if (style!=null && nPageBreakSplit>XhtmlConfig.NONE) {
+        	// If we don't consider manual page breaks, we may have to consider the parent style
+        	if (style.isAutomatic() && nPageBreakSplit<XhtmlConfig.EXPLICIT) {
+        		OfficeStyle parentStyle = style.getParentStyle();
+        		if (parentStyle!=null && parentStyle instanceof StyleWithProperties) {
+        			style = (StyleWithProperties) parentStyle;
+        		}
+        		else {
+        			return false;
+        		}
+        	}
+        	// A page break can be a simple page break before or after...
+        	if ("page".equals(style.getProperty(XMLString.FO_BREAK_BEFORE))) {
+        		return true;
+        	}
+        	if ("page".equals(style.getProperty(XMLString.FO_BREAK_AFTER))) {
+        		bPendingPageBreak = true;
+        		return false;
+        	}
+        	// ...or it can be a new master page
+        	String sMasterPage = style.getMasterPageName();
+        	if (sMasterPage!=null && sMasterPage.length()>0) {
+        		return true;
+        	}
+        }
+        return false;
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // NAVIGATION (fill header, footer and panel with navigation links)
     ////////////////////////////////////////////////////////////////////////
@@ -198,6 +371,7 @@ public class TextConverter extends ConverterHelper {
             Node child = nList.item(i);
             
             if (child.getNodeType() == Node.ELEMENT_NODE) {
+                boolean bPageBreakAfter = false;
                 String nodeName = child.getNodeName();
                 // Block splitting
                 nDontSplitLevel++;
@@ -208,6 +382,7 @@ public class TextConverter extends ConverterHelper {
                 else if (nodeName.equals(XMLString.TEXT_P)) {
                 	StyleWithProperties style = ofr.getParStyle(Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME));
                 	hnode = maybeSplit(hnode, style);
+                	bPageBreakAfter = maybePageBreak(hnode, style);
                 	nCharacterCount+=OfficeReader.getCharacterCount(child);
                     // is there a block element, we should use?
                     XhtmlStyleMap xpar = config.getXParStyleMap();
@@ -256,6 +431,7 @@ public class TextConverter extends ConverterHelper {
                     int nOutlineLevel = getOutlineLevel((Element)child);
                     Node rememberNode = hnode;
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
+                	bPageBreakAfter = maybePageBreak(hnode, style);
                 	nCharacterCount+=OfficeReader.getCharacterCount(child);
                     handleHeading((Element)child,(Element)hnode,rememberNode!=hnode);
                 }
@@ -276,6 +452,7 @@ public class TextConverter extends ConverterHelper {
                 else if (nodeName.equals(XMLString.TABLE_TABLE)) {
                 	StyleWithProperties style = ofr.getTableStyle(Misc.getAttribute(child,XMLString.TEXT_STYLE_NAME));
                 	hnode = maybeSplit(hnode,style);
+                	bPageBreakAfter = maybePageBreak(hnode, style);
                     getTableCv().handleTable(child,hnode);
                 }
                 else if (nodeName.equals(XMLString.TABLE_SUB_TABLE)) {
@@ -318,6 +495,7 @@ public class TextConverter extends ConverterHelper {
                 }
                 else if (nodeName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                 	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }
+                	if (nSoftPageBreaksLimit--!=0) { insertPageBreak(hnode,"div"); }
                 }
                 else if (nodeName.equals(XMLString.OFFICE_ANNOTATION)) {
                     converter.handleOfficeAnnotation(child,hnode);
@@ -332,83 +510,15 @@ public class TextConverter extends ConverterHelper {
                     bAfterHeading = nodeName.equals(XMLString.TEXT_H);
                     hnode = getDrawCv().flushFullscreenFrames((Element)hnode);
                 }
+                if (bPageBreakAfter) {
+                	insertPageBreak(hnode,"div");
+                }
             }
             i++;
         }
         return hnode;
     }
     
-    private boolean getPageBreak(StyleWithProperties style) {
-        if (style!=null && nPageBreakSplit>XhtmlConfig.NONE) {
-        	// If we don't consider manual page breaks, we may have to consider the parent style
-        	if (style.isAutomatic() && nPageBreakSplit<XhtmlConfig.EXPLICIT) {
-        		OfficeStyle parentStyle = style.getParentStyle();
-        		if (parentStyle!=null && parentStyle instanceof StyleWithProperties) {
-        			style = (StyleWithProperties) parentStyle;
-        		}
-        		else {
-        			return false;
-        		}
-        	}
-        	// A page break can be a simple page break before or after...
-        	if ("page".equals(style.getProperty(XMLString.FO_BREAK_BEFORE))) {
-        		return true;
-        	}
-        	if ("page".equals(style.getProperty(XMLString.FO_BREAK_AFTER))) {
-        		bPendingPageBreak = true;
-        		return false;
-        	}
-        	// ...or it can be a new master page
-        	String sMasterPage = style.getMasterPageName();
-        	if (sMasterPage!=null && sMasterPage.length()>0) {
-        		return true;
-        	}
-        }
-        return false;
-    }
-    
-    private Node maybeSplit(Node node, StyleWithProperties style) {
-    	return maybeSplit(node,style,-1);
-    }
-    
-    private Node maybeSplit(Node node, StyleWithProperties style, int nLevel) {
-    	if (bPendingPageBreak) {
-    		return doMaybeSplit(node, 0);
-    	}
-    	if (getPageBreak(style)) {
-    		return doMaybeSplit(node, 0);
-    	}
-    	if (converter.isOPS() && nSplitAfter>0 && nCharacterCount>nSplitAfter) {
-    		return doMaybeSplit(node, 0);
-    	}
-    	if (nLevel>=0) {
-    		return doMaybeSplit(node, nLevel);
-    	}
-    	else {
-    		return node;
-    	}
-    }
-
-    protected Element doMaybeSplit(Node node, int nLevel) {
-        if (nDontSplitLevel>1) { // we cannot split due to a nested structure
-            return (Element) node;
-        }
-        if (!converter.isOPS() && bAfterHeading && nLevel-nLastSplitLevel<=nRepeatLevels) {
-            // we cannot split because we are right after a heading and the
-            // maximum number of parent headings on the page is not reached
-        	// TODO: Something wrong here....nLastSplitLevel is never set???
-            return (Element) node;
-        }
-        if (nSplit>=nLevel && converter.outFileHasContent()) {
-            // No objections, this is a level that causes splitting
-        	nCharacterCount = 0;
-        	bPendingPageBreak = false;
-            if (converter.getOutFileIndex()>=0) { footCv.insertFootnotes(node,false); }
-            return converter.nextOutFile();
-        }
-        return (Element) node;
-    }
-
     /* Process a text:section tag (returns current html node) */
     private Node handleSection(Node onode, Node hnode) {
     	// Unlike headings, paragraphs and spans, text:display is not attached to the style:
@@ -574,7 +684,11 @@ public class TextConverter extends ConverterHelper {
      */
     private void handleParagraph(Node onode, Node hnode) {
         boolean bIsEmpty = OfficeReader.isWhitespaceContent(onode);
-        if (config.ignoreEmptyParagraphs() && bIsEmpty) { return; }
+        if (config.ignoreEmptyParagraphs() && bIsEmpty) {
+        	// We mainly need this to avoid loosing page breaks
+        	hnode.appendChild(converter.createComment("empty paragraph"));
+        	return;
+        }
         String sStyleName = Misc.getAttribute(onode,XMLString.TEXT_STYLE_NAME);
         StyleWithProperties style = ofr.getParStyle(sStyleName);
         if (!bDisplayHiddenText && style!=null && "none".equals(style.getProperty(XMLString.TEXT_DISPLAY))) { return; }
@@ -995,9 +1109,13 @@ public class TextConverter extends ConverterHelper {
                     Node rememberNode = hnode;
                     StyleWithProperties style = ofr.getParStyle(Misc.getAttribute(child, XMLString.TEXT_STYLE_NAME));
                     hnode = maybeSplit(hnode,style,nOutlineLevel);
+                	boolean bPageBreakAfter = maybePageBreak(hnode, style);
                     handleHeading((Element)child, (Element)hnode, rememberNode!=hnode,
                         ofr.getListStyle(sStyleName), nLevel,
                         bUnNumbered, bRestart, nStartValue);
+                    if (bPageBreakAfter) {
+                    	insertPageBreak((Element)hnode, "div");
+                    }
                     nDontSplitLevel--;
                     if (nDontSplitLevel==0) { bAfterHeading=true; }
                 }
@@ -1197,6 +1315,7 @@ public class TextConverter extends ConverterHelper {
                         }
                         else if (sName.equals(XMLString.TEXT_SOFT_PAGE_BREAK)) {
                         	if (nPageBreakSplit==XhtmlConfig.ALL) { bPendingPageBreak = true; }
+                        	if (nSoftPageBreaksLimit--!=0) { insertPageBreak(hnode,"span"); }
                         }
                         else if (sName.equals(XMLString.OFFICE_ANNOTATION)) {
                             converter.handleOfficeAnnotation(child,hnode);

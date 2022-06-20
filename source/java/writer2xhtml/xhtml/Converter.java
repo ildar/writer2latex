@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.io.InputStream;
 import java.io.IOException;
 
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -228,6 +229,8 @@ public class Converter extends ConverterBase {
     }
 	
     protected Element createElement(String s) { return htmlDOM.createElement(s); }
+    
+    protected Comment createComment(String s) { return htmlDOM.createComment(s); }
     
     Element createAlternativeElement(String sHTML5, String sHTML) {
 		if (isHTML5() && !(isOPS() && config.avoidHtml5())) {

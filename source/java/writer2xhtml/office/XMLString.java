@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-09)
+ *  Version 1.7 (2022-06-19)
  *
  */
 
@@ -190,6 +190,7 @@ public class XMLString {
     public static final String STYLE_NUM_PREFIX="style:num-prefix";
     public static final String STYLE_NUM_SUFFIX="style:num-suffix";
     public static final String STYLE_NUM_FORMAT="style:num-format";
+    public static final String STYLE_NUM_LETTER_SYNC="style:num-letter-sync";
     public static final String STYLE_VERTICAL_ALIGN="style:vertical-align";
     public static final String STYLE_MAY_BREAK_BETWEEN_ROWS="style:may-break-between-rows";
     public static final String STYLE_HORIZONTAL_POS="style:horizontal-pos";

@@ -182,6 +182,8 @@ class TOCConverter extends IndexConverterHelper {
      */
 	@Override
 	void generate(IndexData data) {
+		converter.getTextCv().setSoftPageBreaksLimit(0);
+		
     	Element onode = data.onode;
     	int nChapterNumber = data.nChapterNumber;
         Element ul = data.hnode;
@@ -274,7 +276,8 @@ class TOCConverter extends IndexConverterHelper {
                 }
             }
         }
-		
+        
+		converter.getTextCv().setSoftPageBreaksLimit(-1);
     }
 	
 	// Create an entry in this list with that paragraph style name

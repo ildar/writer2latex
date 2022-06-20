@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-07)
+ *  Version 1.7 (2022-06-19)
  *
  */
 package writer2xhtml.xhtml;
@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import writer2xhtml.office.OfficeReader;
+import writer2xhtml.office.StyleWithProperties;
 import writer2xhtml.office.XMLString;
 import writer2xhtml.util.Misc;
 
@@ -81,11 +82,21 @@ abstract class IndexConverterHelper extends ConverterHelper {
      * @param nChapterNumber the chapter number for this index
      */
     void handleIndex(Element onode, Element hnode, int nChapterNumber) {
+        Element body = Misc.getChildByTagName(onode, XMLString.TEXT_INDEX_BODY);
+        if (body!=null) {
+            insertHardPageBreakBefore(body,hnode);
+        }
         Element source = Misc.getChildByTagName(onode,sSourceName);
         if (source!=null) {
-            Element container = createContainer(onode, hnode); 
+            boolean bPageBreakAfter = insertPageBreakBefore(source,hnode);
+            Element container = createContainer(onode, hnode);
             convertTitle(source, container);
+            // A page break after would be peculiar, but we respect the user's choice :-)
+            if (bPageBreakAfter) { converter.getTextCv().insertPageBreak(container, "div"); }
             convertContent(source, container, nChapterNumber);
+        }
+        if (body!=null) {
+        	insertSoftPageBreaks(body, hnode);
         }
     }
     
@@ -108,13 +119,73 @@ abstract class IndexConverterHelper extends ConverterHelper {
 		return container;
     }
     
+    // If the user inserts a hard page break before the index, this will not be attached to the index itself but
+    // is buried into the first paragraph of the title of the *generated* index (text:index-body).
+    // A rather peculiar representation, but we will find it :-)
+    private void insertHardPageBreakBefore(Element body, Element hnode) {
+    	Node title = Misc.getChildByTagName(body, XMLString.TEXT_INDEX_TITLE);
+    	if (title!=null) {
+    		Node p = Misc.getChildByTagName(title, XMLString.TEXT_P);
+    		if (p!=null) {
+	    		String sStyleName = Misc.getAttribute(p, XMLString.TEXT_STYLE_NAME);
+	    		if (sStyleName!=null) {
+	    			StyleWithProperties style = ofr.getParStyle(sStyleName);
+	    			if (style!=null) { // Ignore page break after
+	    				converter.getTextCv().maybePageBreak(hnode, style);
+	    			}
+	    		}
+    		}
+    	}
+    }
+    
+    // Insert page break as given by the paragraph style used for the title. Return true if this is a fo:break-after
+    // Actually LO seems to be broken, this does not always work as expected
+    private boolean insertPageBreakBefore(Element source, Element hnode) {
+        Node title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
+        if (title!=null) {
+            String sStyleName = Misc.getAttribute(title,XMLString.TEXT_STYLE_NAME);
+            if (sStyleName!=null) {
+            	StyleWithProperties style = ofr.getParStyle(sStyleName);
+            	if (style!=null) {
+            		return converter.getTextCv().maybePageBreak(hnode, style);		
+            	}
+            }
+        }
+    	return false;
+    }
+    
+    // Insert soft page breaks as found in the generated index
+    private void insertSoftPageBreaks(Element body, Element hnode) {
+    	Node child = body.getFirstChild();
+    	while (child!=null) {
+    		if (Misc.isElement(child, XMLString.TEXT_P)) {
+    			traverseParagraph(child, hnode);
+    		}
+    		child = child.getNextSibling();
+    	}
+    }
+    
+    private void traverseParagraph(Node p, Element hnode) {
+    	Node child = p.getFirstChild();
+    	while (child!=null) {
+    		if (Misc.isElement(child, XMLString.TEXT_SOFT_PAGE_BREAK)) {
+    			converter.getTextCv().insertPageBreak(hnode, "span");
+    		}
+    		else if (Misc.isElement(child)) {
+    			traverseParagraph(child, hnode);
+    		}
+    		child = child.getNextSibling();
+    	}
+    	
+    }
+    
     // Convert the index title and add it to the container
     private void convertTitle(Element source, Element container) {
         Node title = Misc.getChildByTagName(source,XMLString.TEXT_INDEX_TITLE_TEMPLATE);
         if (title!=null) {
+            String sStyleName = Misc.getAttribute(title,XMLString.TEXT_STYLE_NAME);
             Element h1 = converter.createElement("h1");
             container.appendChild(h1);
-            String sStyleName = Misc.getAttribute(title,XMLString.TEXT_STYLE_NAME);
     		StyleInfo info = new StyleInfo();
     		info.sTagName = "h1";
     		getHeadingSc().applyStyle(1, sStyleName, info);

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-03-09)
+ *  Version 1.7 (2022-06-19)
  *
  */
 
@@ -136,13 +136,13 @@ public class ListCounter {
     }
 	
     // Utility method to generate number
-    private String formatNumber(int number,String sStyle,boolean bLetterSync) {
+    public static String formatNumber(int number,String sStyle,boolean bLetterSync) {
         if ("a".equals(sStyle)) { return Misc.int2alph(number,bLetterSync); }
         else if ("A".equals(sStyle)) { return Misc.int2Alph(number,bLetterSync); }
         else if ("i".equals(sStyle)) { return Misc.int2roman(number); }
         else if ("I".equals(sStyle)) { return Misc.int2Roman(number); }
         else if ("1".equals(sStyle)) { return Misc.int2arabic(number); }
-        else return "";
+        else { return ""; }
     }
 
 
