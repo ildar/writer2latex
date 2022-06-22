@@ -8,9 +8,13 @@ All changes are classified as
 
 ---------- version 1.7 beta ----------
 
-- New feature: Added prototype implementation of original page numbers in EPUB export
+- New feature: New boolean option original_page_numbers. If this option is set to true, the original page numbers will
+  be included in EPUB export. This feature is currently experimental.
 
-- Changed: The configuration file cleanxhtml.xml no longer sets custom_stylesheet
+- Improved: The EPUB filter dialog has been extended to support the options table_size (previously only available in
+  the custom configuration settings), units (replacing convert_to_px) and the new option original_page_numbers.
+
+- Changed: The configuration file cleanxhtml.xml no longer sets custom_stylesheet.
 
 - Improved: The HTML filter dialog in Writer has been extended and redesigned to a two column layout. The options
   multilingual, embed_svg (HTML5 only), embed_img, table_size and formulas (XHTML 1.0 and 1.1 only) can now be set
@@ -54,7 +58,8 @@ All changes are classified as
 
 - Bugfix: The <title> must be non-empty. The file name is now used as title if the document has an empty title. 
 
-- Changed: The batch conversion feature has been removed.
+- Changed: The batch conversion feature has been removed. Also removed the two associated options directory_icon and
+  document_icon (uplink is kept because it might be useful even without batch conversion).
 
 - Changed: Writer2xhtml has been separated from Writer2LaTeX: All LaTeX code has been removed, and packages etc. has
   been renamed to avoid conflicts if installed together with Writer2LaTeX.

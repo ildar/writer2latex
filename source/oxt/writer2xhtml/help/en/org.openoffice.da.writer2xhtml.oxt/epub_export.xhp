@@ -45,6 +45,10 @@
         (e.g. margins) than the original document.</paragraph>
         <embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#scaling3"/>
         
+        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsTableSize" id="bm_epuboptions_tablesize"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsTableSize" visibility="hidden">Select how to handle the size of tables, either by using the size defined in the document, define as a percentage of the screen width or by leaving the layout to the browser</ahelp></paragraph>
+        <embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#tablesize"/>        
+        
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsColumnScaling" id="bm_options_columnscaling"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsColumnScaling" visibility="hidden">Select a scaling to apply to all column dimensions in the document</ahelp></paragraph>
 		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#columnscaling"/>
@@ -75,8 +79,8 @@
         all text in the EPUB document. You can also leave the field blank: In this case no font information will be exported, and
         the EPUB reader will choose a default font.</paragraph>
         
-        <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsConvertToPx" id="bm_options_converttopx"/>
-		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsConvertToPx" visibility="hidden">Check this if you want to convert all units to px rather than using the original units</ahelp></paragraph>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsUnits" id="bm_epuboptions_units"/>
+		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:EpubOptionsUnits" visibility="hidden">Select the units to use for dimensions in the HTML document, either the original units, pixels or relative units (recommended)</ahelp></paragraph>
 		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#units"/>
         
         <bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsImageSize" id="bm_options_imagesize"/>
@@ -117,7 +121,7 @@
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsIgnoreDoubleSpaces" visibility="hidden">Check this to treat several spaces as a single space in the export</ahelp></paragraph>
         <embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#ignoredoublespaces"/>
 
-		<embed href="org.openoffice.da.writer2xhtml.oxt/export.xhp#special"/>
+        <paragraph role="heading" level="2" xml-lang="en-US">Special content</paragraph>
 
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsDisplayHiddenText" id="bm_options_displayhiddentext"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubDisplayHiddenText" visibility="hidden">Check this to export and display all hidden text</ahelp></paragraph>
@@ -230,6 +234,11 @@
         <paragraph role="paragraph" xml-lang="en-US">Your document may also include a normal table of contents.
         Check this if you want to include this table of contents in addition to the navigation table.</paragraph>
         
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsOriginalPageNumbers" id="bm_epuboptions_originalpagenumbers"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">Include original page numbers (experimental feature)</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsOriginalPageNumbers" visibility="hidden">Check this to include the original page numbers in the EPUB document</ahelp></paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">TODO</paragraph>
+
         <paragraph role="heading" level="2" xml-lang="en-US">EPUB 2 compatibility</paragraph>
 
         <paragraph role="paragraph" xml-lang="en-US">These settings are only avaliable if the export format is EPUB 3.

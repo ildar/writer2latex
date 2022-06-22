@@ -85,6 +85,7 @@
     <dlg:menuitem dlg:value="Relative to page width"/>
     <dlg:menuitem dlg:value="Do not export"/>
    </dlg:menupopup>
+   <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:TableSizeChange" script:language="UNO"/>
   </dlg:menulist>
   <dlg:text dlg:id="ImageSizeLabel" dlg:tab-index="37" dlg:left="193" dlg:top="64" dlg:width="60" dlg:height="12" dlg:value="Image size"/>
   <dlg:menulist dlg:id="ImageSize" dlg:tab-index="14" dlg:left="256" dlg:top="62" dlg:width="86" dlg:height="12" dlg:help-url="org.openoffice.da.writer2xhtml.oxt:OptionsImageSize" dlg:spin="true" dlg:linecount="3">

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-13)
+ *  Version 1.7 (2022-06-20)
  *
  */
 
@@ -43,6 +43,9 @@ import org.openoffice.da.comp.w2xcommon.helper.PropertyHelper;
  *  EPUB export
  */
 public class EpubOptionsDialog extends OptionsDialogBase {
+   
+	// Translate list box items (image and table settings) to configuration option values 
+    private static final String[] SIZE_VALUES = { "auto", "relative", "none" };
     
     /** The component will be registered under this name.
      */
@@ -78,6 +81,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         if (nScaling<=1) { // Workaround for an obscure bug in the extension manager
         	setNumericFieldValue("Scaling",100);
         }
+        loadListBoxOption(xProps, "TableSize");
         int nColumnScaling = loadNumericOption(xProps, "ColumnScaling");
         if (nColumnScaling<=1) {
         	setNumericFieldValue("ColumnScaling",100);
@@ -91,7 +95,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         loadCheckBoxOption(xProps, "RelativeFontSize");
         loadCheckBoxOption(xProps, "UseDefaultFont");
         loadComboBoxOption(xProps, "DefaultFontName");
-        loadCheckBoxOption(xProps, "ConvertToPx");
+        loadListBoxOption(xProps, "Units");
         loadListBoxOption(xProps, "ImageSize");
 
         // Fill the font name list with all installed fonts
@@ -125,6 +129,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         loadListBoxOption(xProps, "ExternalTocDepthMarks");
         loadCheckBoxOption(xProps, "IndexLinks");
         loadCheckBoxOption(xProps, "IncludeToc");
+        loadCheckBoxOption(xProps, "OriginalPageNumbers");
 
         updateLockedOptions();
         enableControls();
@@ -144,18 +149,23 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         }
 		
         saveNumericOptionAsPercentage(xProps, helper, "Scaling", "scaling");
+        saveListBoxOption(xProps, helper, "TableSize", "table_size", SIZE_VALUES);
         saveNumericOptionAsPercentage(xProps, helper, "ColumnScaling", "column_scaling");
         saveCheckBoxOption(xProps, helper, "RelativeFontSize", "relative_font_size");
         saveNumericOptionAsPercentage(xProps, helper, "FontScaling", "font_scaling");
         saveCheckBoxOption(xProps, helper, "UseDefaultFont", "use_default_font");
         saveTextFieldOption(xProps, helper, "DefaultFontName", "default_font_name");
-        saveCheckBoxOption(xProps, helper, "ConvertToPx", "convert_to_px");
-        saveListBoxOption(xProps, "ImageSize");
-        switch (getListBoxSelectedItem("ImageSize")) {
-        case 0: helper.put("image_size", "absolute"); break;
-        case 1: helper.put("image_size", "relative"); break;
-        case 2: helper.put("image_size", "none");        
+        saveListBoxOption(xProps, "Units");
+        short nUnits = saveListBoxOption(xProps, "Units");
+        if (!isLocked("units")) {
+	    	switch (nUnits) {
+	    	case 0: helper.put("units", "original"); break;
+	    	case 1: helper.put("units", "px"); break;
+	    	case 2:
+	    	default: helper.put("units", "rem");
+	    	}
         }
+        saveListBoxOption(xProps, helper, "ImageSize", "image_size", SIZE_VALUES);
 
         // AutoCorrect
         saveCheckBoxOption(xProps, helper, "IgnoreHardLineBreaks", "ignore_hard_line_breaks");
@@ -217,12 +227,13 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         helper.put("external_toc_depth_marks", Integer.toString(nExternalTocDepthMarks));
         saveCheckBoxOption(xProps, helper, "IndexLinks", "index_links");
         saveCheckBoxOption(xProps, helper, "IncludeToc", "include_toc");
+        saveCheckBoxOption(xProps, helper, "OriginalPageNumbers", "original_page_numbers");
     }
 	
 	
     // Implement XDialogEventHandler
     @Override public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
-        if (sMethod.equals("ConfigChange")) {
+        if (sMethod.equals("ConfigChange") || sMethod.equals("TableSizeChange")) {
             updateLockedOptions();
             enableControls();
         }
@@ -245,7 +256,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
     }
 
     @Override public String[] getSupportedMethodNames() {
-        String[] sNames = { "ConfigChange", "RelativeFontSizeChange", "UseDefaultFontChange", "EditMetadataClick",
+        String[] sNames = { "ConfigChange", "TableSizeChange", "RelativeFontSizeChange", "UseDefaultFontChange", "EditMetadataClick",
         		"UseImageSplitChange", "UseSplitAfterChange" };
         return sNames;
     }
@@ -254,8 +265,11 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         // Style
         setControlEnabled("ScalingLabel",!isLocked("scaling"));
         setControlEnabled("Scaling",!isLocked("scaling"));
-        setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling"));
-        setControlEnabled("ColumnScaling",!isLocked("column_scaling"));
+        setControlEnabled("TableSize",!isLocked("table_size"));
+        short nTableSize = this.getListBoxSelectedItem("TableSize");
+        setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling") && nTableSize==0);
+        setControlEnabled("ColumnScaling",!isLocked("column_scaling") && nTableSize==0);
+        setControlEnabled("ColumnScalingPercentLabel",!isLocked("column_scaling") && nTableSize==0);
         
         boolean bRelativeFontSize = getCheckBoxStateAsBoolean("RelativeFontSize");
         setControlEnabled("RelativeFontSize",!isLocked("relative_font_size"));
@@ -268,7 +282,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
 		setControlEnabled("DefaultFontNameLabel",!isLocked("default_font_name") && bUseDefaultFont);
 		setControlEnabled("DefaultFontName",!isLocked("default_font_name") && bUseDefaultFont);
         
-		setControlEnabled("ConvertToPx",!isLocked("convert_to_px"));
+		setControlEnabled("Units",!isLocked("units"));
         setControlEnabled("ImageSize",!isLocked("image_size"));
 
         // AutoCorrect
@@ -312,6 +326,7 @@ public class EpubOptionsDialog extends OptionsDialogBase {
         setControlEnabled("ExternalTocDepthMarks", !isLocked("external_toc_depth_marks"));
         setControlEnabled("IndexLinks", !isLocked("index_links"));
         setControlEnabled("IncludeToc", !isLocked("include_toc"));
+        setControlEnabled("OriginalPageNumbers", !isLocked("original_page_numbers"));
     }
 	
     private void relativeFontSizeChange() {

@@ -202,12 +202,13 @@
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:TableSize" id="bm_options_tablesize"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:TableSize" visibility="hidden">Select how to handle the size of tables, either by using the size defined in the document, define as a percentage of the screen width or by leaving the layout to the browser</ahelp></paragraph>
+		<section id="tablesize">
 	    <paragraph role="heading" level="3" xml-lang="en-US">Table size</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Using this option you can select how to handle table sizes.</paragraph>
         <list type="unordered">
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Automatic</emph> will export a size based on the size defined
-				in the Writer document. The table will thus either have a fixed size in the HTML document or occupy a fixed percentage
+				in the Writer document. The table will thus either have a fixed size in the resulting document or occupy a fixed percentage
 				of the screen width.</paragraph>
 			</listitem>
 			<listitem>
@@ -215,10 +216,11 @@
 				table relative to the page. The table will thus occupy a fixed percentage of the screen width.</paragraph>
 			</listitem>
 			<listitem>
-				<paragraph role="paragraph" xml-lang="en-US"><emph>Do not export</emph> will not export table dimensions.The browser
-				will thus layout the table according to the content.</paragraph>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>Do not export</emph> will not export table dimensions. The
+				size of the table will thus be adapted to the content.</paragraph>
 			</listitem>
         </list>
+		</section>
 
    		<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:OptionsColumnScaling" id="bm_options_columnscaling"/>
 		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:OptionsColumnScaling" visibility="hidden">Select a scaling to apply to all column dimensions in the document</ahelp></paragraph>

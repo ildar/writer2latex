@@ -141,14 +141,17 @@
         <prop oor:name="ConfigName" oor:type="xs:string">
             <value></value>
         </prop>
-        <prop oor:name="ConvertToPx" oor:type="xs:boolean">
-            <value>true</value>
+        <prop oor:name="Units" oor:type="xs:short">
+            <value>2</value> <!-- relative -->
         </prop>
         <prop oor:name="Scaling" oor:type="xs:int">
             <value>100</value>
         </prop>
         <prop oor:name="ColumnScaling" oor:type="xs:int">
             <value>100</value>
+        </prop>
+        <prop oor:name="TableSize" oor:type="xs:short">
+            <value>1</value><!-- relative -->
         </prop>
         <prop oor:name="ImageSize" oor:type="xs:short">
             <value>1</value><!-- relative -->
@@ -221,6 +224,9 @@
         </prop>
         <prop oor:name="IncludeToc" oor:type="xs:boolean">
             <value>true</value>
+        </prop>
+        <prop oor:name="OriginalImageSize" oor:type="xs:boolean">
+            <value>false</value>
         </prop>
     </node>
 </oor:component-data>

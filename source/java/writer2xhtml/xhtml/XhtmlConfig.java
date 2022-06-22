@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-14)
+ *  Version 1.7 (2022-06-22)
  *
  */
 
@@ -41,7 +41,7 @@ import writer2xhtml.util.Misc;
 
 public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     // Implement configuration methods
-    protected int getOptionCount() { return 62; }
+    protected int getOptionCount() { return 61; }
     protected String getDefaultConfigPath() { return "/writer2xhtml/xhtml/config/"; }
 	
     // Override setOption: To be backwards compatible, we must accept options
@@ -166,11 +166,10 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     private static final int USE_SHEET_NAMES_AS_HEADINGS = 54;
     private static final int SAVE_IMAGES_IN_SUBDIR = 55;
     private static final int UPLINK = 56;
-    private static final int DIRECTORY_ICON = 57;
-    private static final int DOCUMENT_ICON = 58;
-    private static final int INDEX_LINKS = 59;
-    private static final int EXTERNAL_TOC_DEPTH_MARKS = 60;
-    private static final int AVOID_HTML5 = 61;
+    private static final int INDEX_LINKS = 57;
+    private static final int EXTERNAL_TOC_DEPTH_MARKS = 58;
+    private static final int ORIGINAL_PAGE_NUMBERS = 59;
+    private static final int AVOID_HTML5 = 60;
 
     protected ComplexOption xheading = addComplexOption("heading-map");
     protected ComplexOption xpar = addComplexOption("paragraph-map");
@@ -310,8 +309,6 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
         options[USE_SHEET_NAMES_AS_HEADINGS] = new BooleanOption("use_sheet_names_as_headings","true");
         options[SAVE_IMAGES_IN_SUBDIR] = new BooleanOption("save_images_in_subdir","false");
         options[UPLINK] = new Option("uplink","");
-        options[DIRECTORY_ICON] = new Option("directory_icon","");
-        options[DOCUMENT_ICON] = new Option("document_icon","");
         options[INDEX_LINKS] = new BooleanOption("index_links","true");
         options[EXTERNAL_TOC_DEPTH_MARKS] = new IntegerOption("external_toc_depth_marks","0")  {
         	@Override public void setString(String sValue) {
@@ -324,6 +321,7 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
                 }
         	}
         };
+        options[ORIGINAL_PAGE_NUMBERS] = new BooleanOption("original_page_numbers","false");
         options[AVOID_HTML5] = new BooleanOption("avoid_html5","false");
     }
     
@@ -465,10 +463,9 @@ public class XhtmlConfig extends writer2xhtml.base.ConfigBase {
     public boolean xhtmlUseSheetNamesAsHeadings() { return ((BooleanOption) options[USE_SHEET_NAMES_AS_HEADINGS]).getValue(); }
     public boolean saveImagesInSubdir() { return ((BooleanOption) options[SAVE_IMAGES_IN_SUBDIR]).getValue(); }
     public String getXhtmlUplink() { return options[UPLINK].getString(); }
-    public String getXhtmlDirectoryIcon() { return options[DIRECTORY_ICON].getString(); }
-    public String getXhtmlDocumentIcon() { return options[DOCUMENT_ICON].getString(); }
     public boolean indexLinks() { return ((BooleanOption) options[INDEX_LINKS]).getValue(); }
     public int externalTocDepthMarks() { return ((IntegerOption) options[EXTERNAL_TOC_DEPTH_MARKS]).getValue(); }
+    public boolean originalPageNumbers() { return ((BooleanOption) options[ORIGINAL_PAGE_NUMBERS]).getValue(); }
     public boolean avoidHtml5() { return ((BooleanOption) options[AVOID_HTML5]).getValue(); }
 	
     public XhtmlStyleMap getXParStyleMap() { return getStyleMap(xpar); }

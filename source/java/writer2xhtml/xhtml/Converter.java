@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-07)
+ *  Version 1.7 (2022-06-20)
  *
  */
 
@@ -665,7 +665,7 @@ public class Converter extends ConverterBase {
         styleCv.applyDefaultLanguage(rootElement);
         addEpubNs(rootElement);
         rootElement.insertBefore(htmlDOM.createComment(
-             "This file was converted to xhtml by "
+             "This file was converted to HTML by "
              + (ofr.isText() ? "Writer" : (ofr.isSpreadsheet() ? "Calc" : "Impress"))
              + "2xhtml ver. " + ConverterFactory.getVersion() +
              ". See http://writer2xhtml.sourceforge.net for more info."),

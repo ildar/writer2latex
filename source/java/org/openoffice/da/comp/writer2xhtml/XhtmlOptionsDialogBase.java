@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-14)
+ *  Version 1.7 (2022-06-22)
  *
  */ 
  
@@ -181,7 +181,7 @@ public class XhtmlOptionsDialogBase extends OptionsDialogBase {
 	
     // Implement XDialogEventHandler
     public boolean callHandlerMethod(XDialog xDialog, Object event, String sMethod) {
-        if (sMethod.equals("ConfigChange")) {
+        if (sMethod.equals("ConfigChange") || sMethod.equals("TableSizeChange")) {
             updateLockedOptions();
             enableControls();
         }
@@ -192,7 +192,7 @@ public class XhtmlOptionsDialogBase extends OptionsDialogBase {
     }
 
     public String[] getSupportedMethodNames() {
-        String[] sNames = { "ConfigChange", "SplitChange" };
+        String[] sNames = { "ConfigChange", "SplitChange", "TableSizeChange" };
         return sNames;
     }
 	
@@ -221,8 +221,10 @@ public class XhtmlOptionsDialogBase extends OptionsDialogBase {
         setControlEnabled("EmbedSVG",this instanceof HTML5OptionsDialog && !isLocked("embed_svg"));
         setControlEnabled("EmbedImg",!isLocked("embed_img"));
         setControlEnabled("TableSize",!isLocked("table_size"));
-        setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling"));
-        setControlEnabled("ColumnScaling",!isLocked("column_scaling"));
+        short nTableSize = this.getListBoxSelectedItem("TableSize");
+        setControlEnabled("ColumnScalingLabel",!isLocked("column_scaling") && nTableSize==0);
+        setControlEnabled("ColumnScaling",!isLocked("column_scaling") && nTableSize==0);
+        setControlEnabled("ColumnScalingPercentLabel",!isLocked("column_scaling") && nTableSize==0);
         if (this instanceof HTML5OptionsDialog || this instanceof XhtmlOptionsDialogMath) {
         	setControlVisible("FormulasLabel",false);
         	setControlVisible("Formulas",false);
