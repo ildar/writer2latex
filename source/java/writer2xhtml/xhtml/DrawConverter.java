@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-14)
+ *  Version 1.7 (2022-06-23)
  *
  */
  
@@ -360,11 +360,15 @@ public class DrawConverter extends ConverterHelper {
             hnodeBlock.appendChild(div);
             hnode = div;
         }
-        
-        boolean bNoTextPar = OfficeReader.isNoTextPar(OfficeReader.getParagraph(onode));
 
-        String sHref = Misc.getAttribute(onode, XMLString.XLINK_HREF);
-        if (sHref!=null) { // Embedded object in package or linked object
+        boolean bNoTextPar = true;
+        Node par = OfficeReader.getParagraph(onode);
+        if (par!=null) {
+        	bNoTextPar = OfficeReader.isNoTextPar(par);
+        }
+
+    	String sHref = Misc.getAttribute(onode, XMLString.XLINK_HREF);
+    	if (sHref!=null) { // Embedded object in package or linked object
             if (ofr.isInPackage(sHref)) { // Embedded object in package
                 if (sHref.startsWith("#")) { sHref=sHref.substring(1); }
                 if (sHref.startsWith("./")) { sHref=sHref.substring(2); }

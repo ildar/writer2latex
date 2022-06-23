@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-10)
+ *  Version 1.7 (2022-06-23)
  *
  */
 
@@ -90,17 +90,20 @@ public class OfficeReader {
                  node.getNodeName().equals(XMLString.TEXT_ENDNOTE)  );
     }
 
-    /** Get the paragraph or heading containing a node
+    /** Get the paragraph or heading containing a node (or null if this node is not contained in a paragraph or heading)
      * 
      * @param node the node in question
-     * @return the paragraph or heading
+     * @return the paragraph or heading or null
      */
     public static Element getParagraph(Element node) {
-        Element parent = (Element) node.getParentNode();
-        if (parent.getTagName().equals(XMLString.TEXT_P) || parent.getTagName().equals(XMLString.TEXT_H)) {
-            return parent;
-        } 
-        return getParagraph(parent);
+        Node parent = node.getParentNode();
+        if (Misc.isElement(parent, XMLString.TEXT_P) || Misc.isElement(parent, XMLString.TEXT_H)) {
+            return (Element) parent;
+        }
+        else if (Misc.isElement(parent)) {
+        	return getParagraph((Element) parent);
+        }
+        return null;
     }
 
     

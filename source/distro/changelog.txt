@@ -8,6 +8,8 @@ All changes are classified as
 
 ---------- version 1.7 beta ----------
 
+- Bugfix: The converter no longer crashes on spreadsheets with diagrams.
+
 - New feature: New boolean option original_page_numbers. If this option is set to true, the original page numbers will
   be included in EPUB export. This feature is currently experimental.
 
