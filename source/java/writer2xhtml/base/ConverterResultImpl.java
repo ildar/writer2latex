@@ -16,11 +16,11 @@
 *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 *  MA  02111-1307  USA
 *
-*  Copyright: 2002-2011 by Henrik Just
+*  Copyright: 2002-2022 by Henrik Just
 *
 *  All Rights Reserved.
 * 
-*  Version 1.2 (2011-07-20)
+*  Version 1.7 (2022-06-22)
 *
 */ 
 
@@ -56,6 +56,7 @@ public class ConverterResultImpl implements ConverterResult {
 	private ContentEntry bibliographyFile;
 	private ContentEntry coverFile;
 	private ContentEntry coverImageFile;
+	private List<ContentEntry> originalPageNumbers; 
 	
 	private MetaData metaData = null;
 	
@@ -81,6 +82,7 @@ public class ConverterResultImpl implements ConverterResult {
         indexFile = null;
         bibliographyFile = null;
         coverImageFile = null;
+        originalPageNumbers = new Vector<ContentEntry>();
         metaData = null;
         nMasterCount = 0;
 	}
@@ -235,6 +237,18 @@ public class ConverterResultImpl implements ConverterResult {
     
     public ContentEntry getCoverImageFile() {
     	return coverImageFile;
+    }
+    
+    /** Add an entry to the table of original page numbers
+     * 
+     *  @param entry the entry to add
+     */
+    public void addOriginalPageNumber(ContentEntry entry) {
+    	originalPageNumbers.add(entry);
+    }
+    
+    public List<ContentEntry> getOriginalPageNumbers() {
+    	return Collections.unmodifiableList(originalPageNumbers);
     }
     
     /** Set the meta data of this <code>ConverterResult</code> 

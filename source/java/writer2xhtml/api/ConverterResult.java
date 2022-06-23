@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2011 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2011-07-20)
+ *  Version 1.7 (2022-06-23)
  *
  */
  
@@ -117,7 +117,11 @@ public interface ConverterResult {
      */
     public ContentEntry getCoverImageFile();
     
-
+    /** Get the original page numbers (if exported) for this <code>ConverterResult</code>
+     * 
+     *  @return list view of the content
+     */
+    public List<ContentEntry> getOriginalPageNumbers();    
     
     /** Write all files of the <code>ConverterResult</code> to a directory.
      *  Subdirectories are created as required by the individual

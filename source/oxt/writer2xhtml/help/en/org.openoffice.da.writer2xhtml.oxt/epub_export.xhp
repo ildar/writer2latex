@@ -237,7 +237,10 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2xhtml.oxt:EpubOptionsOriginalPageNumbers" id="bm_epuboptions_originalpagenumbers"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Include original page numbers (experimental feature)</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2xhtml.oxt:EpubOptionsOriginalPageNumbers" visibility="hidden">Check this to include the original page numbers in the EPUB document</ahelp></paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">TODO</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">An EPUB document is reflowable and hence does not have page numbers. If the EPUB document has a printed
+        counterpart, it however sometimes desirable to have access to the page numbers from the printed version. This is especially relevant in academic
+        contexts, where proper citing is important. Checking this option will insert a page-list in the EPUB document. Be aware that not all EPUB readers
+        support this feature. This feature is currently experimental and may not find all page numbers.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">EPUB 2 compatibility</paragraph>
 

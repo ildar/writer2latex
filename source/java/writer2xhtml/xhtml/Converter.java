@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-20)
+ *  Version 1.7 (2022-06-23)
  *
  */
 
@@ -228,6 +228,10 @@ public class Converter extends ConverterBase {
     	converterResult.setCoverImageFile(new ContentEntryImpl("Cover image",0,file,sTarget));
     }
 	
+    protected void addOriginalPageNumber(String sTitle, int nLevel, String sTarget) {
+    	converterResult.addOriginalPageNumber(new ContentEntryImpl(sTitle,nLevel,htmlDoc,sTarget));
+    }
+    
     protected Element createElement(String s) { return htmlDOM.createElement(s); }
     
     protected Comment createComment(String s) { return htmlDOM.createComment(s); }

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6.1 (2018-08-23)
+ *  Version 1.7 (2022-06-23)
  *
  */
 
@@ -135,6 +135,7 @@ public class TextConverter extends ConverterHelper {
         Element hnode = converter.nextOutFile();
 
         // Start with page 1
+        setSoftPageBreaksLimit(-1);
         masterPage = ofr.getFirstMasterPage();
     	insertPageNumber(hnode,"div");
 
@@ -230,28 +231,31 @@ public class TextConverter extends ConverterHelper {
     
     // A page number can be represented like e.g. <span epub:type="pagebreak" id="page57" title="57" />
     private void insertPageNumber(Node node, String sTagName) {
-    	Element elm = converter.createElement(sTagName);
-    	elm.setAttribute("epub:type", "pagebreak");
-    	elm.setAttribute("id", "page"+nPageCount);
-    	String sPageNumber = null;
-    	if (masterPage!=null) {
-    		elm.setAttribute("masterpage", masterPage.getDisplayName());
-    		PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
-    		if (pageLayout!=null) {
-    			String sNumFormat = pageLayout.getProperty(XMLString.STYLE_NUM_FORMAT,true);
-    			boolean bLetterSync = "true".equals(pageLayout.getProperty(XMLString.STYLE_NUM_LETTER_SYNC, true));
-    			if (sNumFormat!=null) {
-    				sPageNumber = ListCounter.formatNumber(nPageNumber, sNumFormat, bLetterSync);
-	    		}
+    	if (converter.isOPS() && config.originalPageNumbers()) {
+	    	Element elm = converter.createElement(sTagName);
+	    	elm.setAttribute("epub:type", "pagebreak");
+	    	elm.setAttribute("id", "page"+nPageCount);
+	    	String sPageNumber = null;
+	    	if (masterPage!=null) {
+	    		elm.setAttribute("masterpage", masterPage.getDisplayName());
+	    		PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
+	    		if (pageLayout!=null) {
+	    			String sNumFormat = pageLayout.getProperty(XMLString.STYLE_NUM_FORMAT,true);
+	    			boolean bLetterSync = "true".equals(pageLayout.getProperty(XMLString.STYLE_NUM_LETTER_SYNC, true));
+	    			if (sNumFormat!=null) {
+	    				sPageNumber = ListCounter.formatNumber(nPageNumber, sNumFormat, bLetterSync);
+		    		}
+		    	}
+		    	if (sPageNumber==null) {
+		    		sPageNumber = Integer.toString(nPageNumber);
+		    	}
 	    	}
-	    	if (sPageNumber==null) {
-	    		sPageNumber = Integer.toString(nPageNumber);
-	    	}
+			elm.setAttribute("title", sPageNumber);
+	    	node.appendChild(elm);
+	    	nPageCount++;
+	    	nPageNumber++;
+	    	converter.addOriginalPageNumber(sPageNumber, 1, elm.getAttribute("id"));
     	}
-		elm.setAttribute("title", sPageNumber);
-    	node.appendChild(elm);
-    	nPageCount++;
-    	nPageNumber++;
     }
     
     void insertPageBreak(Node node, String sTagName) {

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-06-24)
+ *  version 1.7 (2022-06-23)
  *
  */
 
@@ -114,7 +114,7 @@ public class EPUBWriter implements OutputFile {
 		
 		// And content table
 		if (nVersion==3) {
-			OutputFile navigation = new NavigationWriter(xhtmlResult);
+			OutputFile navigation = new NavigationWriter(xhtmlResult, config.originalPageNumbers());
 			ZipEntry navigationEntry = new ZipEntry("OEBPS/nav.xhtml");
 			zos.putNextEntry(navigationEntry);
 			writeZipEntry(navigation,zos);

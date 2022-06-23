@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2001-2015 by Henrik Just
+ *  Copyright: 2001-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  version 1.6 (2015-04-21)
+ *  version 1.7 (2022-06-23)
  *
  */
 package writer2xhtml.epub;
@@ -44,8 +44,8 @@ import writer2xhtml.util.Misc;
 /** This class writes the EPUB Navigation Document as defined in EPUB 3
  */
 public class NavigationWriter extends DOMDocument {
-
-	public NavigationWriter(ConverterResult cr) {
+	
+	public NavigationWriter(ConverterResult cr, boolean bCreatePageList) {
 		super("nav", "xhtml");
 		
         // create DOM
@@ -125,7 +125,35 @@ public class NavigationWriter extends DOMDocument {
         	a.appendChild(contentDOM.createTextNode(entry.getTitle()));
         }
         
+        if (bCreatePageList && !cr.getOriginalPageNumbers().isEmpty()) {
+	        // Create nav element
+	        Element navPage = contentDOM.createElement("nav");
+	        navPage.setAttribute("epub:type", "page-list");
+	        navPage.setAttribute("hidden", "hidden");
+	        body.appendChild(navPage);
+	        
+	        // Create ol in the nav
+	        Element ol = contentDOM.createElement("ol");
+	        navPage.appendChild(ol);
+	        
+	        // Populate the nav element from the content table in the converter result
+	        Iterator<ContentEntry> pages = cr.getOriginalPageNumbers().iterator();
+	        while (pages.hasNext()) {
+	        	ContentEntry entry = pages.next();
+	        	// Create the entry
+	        	Element li = contentDOM.createElement("li");
+	        	ol.appendChild(li);
+	        	Element a = contentDOM.createElement("a");
+	        	li.appendChild(a);
+	        	String sHref = Misc.makeHref(entry.getFile().getFileName());
+	        	if (entry.getTarget()!=null) { sHref+="#"+entry.getTarget(); }
+	        	a.setAttribute("href", sHref);
+	        	a.appendChild(contentDOM.createTextNode(entry.getTitle()));
+	        }
+        }
+        
         setContentDOM(contentDOM);
+        
 	}
 
 }
