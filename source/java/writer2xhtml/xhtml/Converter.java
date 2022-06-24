@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-23)
+ *  Version 1.7 (2022-06-24)
  *
  */
 
@@ -230,6 +230,10 @@ public class Converter extends ConverterBase {
 	
     protected void addOriginalPageNumber(String sTitle, int nLevel, String sTarget) {
     	converterResult.addOriginalPageNumber(new ContentEntryImpl(sTitle,nLevel,htmlDoc,sTarget));
+    }
+    
+    protected void removeOriginalPageNumber() {
+    	converterResult.removeOriginalPageNumber();
     }
     
     protected Element createElement(String s) { return htmlDOM.createElement(s); }
@@ -640,7 +644,15 @@ public class Converter extends ConverterBase {
 	
     // Return true if the current outfile has a non-empty body
     public boolean outFileHasContent() {
-        return htmlDoc.getContentNode().hasChildNodes();
+        if (htmlDoc.getContentNode().hasChildNodes()) {
+        	Node child = htmlDoc.getContentNode().getFirstChild();
+        	if (Misc.isElement(child, "div") && "pagebreak".equals(Misc.getAttribute(child, "epub:type"))) {
+        		// We start with an EPUB page break, this does not count as content unless there is more
+        		return child.getNextSibling()!=null;
+        	}
+        	return true;
+        }
+        return false;
     }
     
     // Use another document. TODO: This is very ugly; clean it up!!!

@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-23)
+ *  Version 1.7 (2022-06-24)
  *
  */
 
@@ -204,6 +204,7 @@ public class TextConverter extends ConverterHelper {
 	        		if (atTopOfPage(node)) {
 	        			// Page break has no effect, but page numbering is changed. Hence we need to replace the previous page break mark
 	        			node.removeChild(node.getLastChild());
+	        	    	converter.removeOriginalPageNumber();
 	        			nPageCount--;
 	        			nPageNumber--;
 	        		}

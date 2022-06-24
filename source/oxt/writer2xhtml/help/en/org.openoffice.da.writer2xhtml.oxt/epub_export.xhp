@@ -240,7 +240,7 @@
         <paragraph role="paragraph" xml-lang="en-US">An EPUB document is reflowable and hence does not have page numbers. If the EPUB document has a printed
         counterpart, it however sometimes desirable to have access to the page numbers from the printed version. This is especially relevant in academic
         contexts, where proper citing is important. Checking this option will insert a page-list in the EPUB document. Be aware that not all EPUB readers
-        support this feature. This feature is currently experimental and may not find all page numbers.</paragraph>
+        supports the display of original page numbers. This feature is currently experimental and may not find all page numbers.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">EPUB 2 compatibility</paragraph>
 

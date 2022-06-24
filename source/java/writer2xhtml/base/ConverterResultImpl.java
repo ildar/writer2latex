@@ -20,7 +20,7 @@
 *
 *  All Rights Reserved.
 * 
-*  Version 1.7 (2022-06-22)
+*  Version 1.7 (2022-06-24)
 *
 */ 
 
@@ -72,8 +72,8 @@ public class ConverterResultImpl implements ConverterResult {
      *  objects from this class.  This allows reuse of a <code>ConvertResult</code> object.
      */
     public void reset() {
-        files = new Vector<OutputFile>();
-        content = new Vector<ContentEntry>();
+        files = new Vector<>();
+        content = new Vector<>();
         titlePageFile = null;
         textFile = null;
         tocFile = null;
@@ -245,6 +245,14 @@ public class ConverterResultImpl implements ConverterResult {
      */
     public void addOriginalPageNumber(ContentEntry entry) {
     	originalPageNumbers.add(entry);
+    }
+    
+    /** Remove the last entry from the table of original page numbers, if any
+     */
+    public void removeOriginalPageNumber() {
+    	if (!originalPageNumbers.isEmpty()) {
+    		originalPageNumbers.remove(originalPageNumbers.size()-1);
+    	}
     }
     
     public List<ContentEntry> getOriginalPageNumbers() {
