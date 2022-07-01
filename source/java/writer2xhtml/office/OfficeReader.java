@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-23)
+ *  Version 1.7 (2022-06-30)
  *
  */
 
@@ -1344,7 +1344,6 @@ public class OfficeReader {
     				Node next = child.getNextSibling();
     				if (next!=null && sStyleName.equals(Misc.getAttribute(next, XMLString.TEXT_STYLE_NAME))) {
     					// Found two adjacent text spans with the same style name
-    					System.out.println("Merging to nodes with style "+sStyleName);
     					child = mergeSpan(node, child, next);
     				}
     				else {

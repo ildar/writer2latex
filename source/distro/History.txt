@@ -2,6 +2,18 @@ Version history for Writer2LaTeX
 ================================
 
 Version 1.7 beta (June 2022)
+ - Writer2xhtml has now been completely separated from Writer2LaTeX
+ - Writer2xhtml extension:
+       - Reworked export dialogs supporting additional options
+       - Added help button to configuration dialogs (workaround to avoid the online help)
+ - Writer2xhtml core:
+       - New option original_page_numbers to export original page numbers to EPUB
+       - New option units, which adds support for rem units
+       - Added support for image bullets
+       - Improved table support (borders, column widths)
+       - Fix some minor issues to ensure valid HTML5 documents
+       - Fix bug with charts in spreadsheets
+       - Fix bug with documents containing two identical images
 
 Version 1.6.1 (October 2018)
   - Writer2LaTeX:

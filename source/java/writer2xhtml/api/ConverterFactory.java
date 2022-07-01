@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-24)
+ *  Version 1.7 (2022-06-30)
  *
  */
  
@@ -32,8 +32,8 @@ package writer2xhtml.api;
 public class ConverterFactory {
 
     // Version information
-    private static final String VERSION = "1.7";
-    private static final String DATE = "2022-06-24";
+    private static final String VERSION = "1.7 beta";
+    private static final String DATE = "2022-06-30";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
