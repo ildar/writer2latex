@@ -219,7 +219,12 @@
              nodeprecatedlist="false"
              nodeprecated="false">
             <classpath refid="main.class.path"/>
-            <packageset dir="${src}" defaultexcludes="yes" />
+            <!--<packageset dir="${src}" defaultexcludes="yes">
+            	<patternset id="javadoc-packages">
+            	    <include name="writer2latex/api/*" />
+            	</patternset>
+            </packageset>-->
+        	<fileset dir="${src}/writer2latex/api" />
         </javadoc>
         <copy todir="${javadoc}">
             <fileset dir="${src}">

@@ -53,14 +53,6 @@
      manifest:full-path="W2LDialogs2/"
      manifest:media-type="application/vnd.sun.star.basic-library"/>
      
-   <manifest:file-entry
-     manifest:full-path="W2HDialogs/"
-     manifest:media-type="application/vnd.sun.star.basic-library"/>
-
-   <manifest:file-entry
-     manifest:full-path="W2HDialogs2/"
-     manifest:media-type="application/vnd.sun.star.basic-library"/>
-	 	 
     <manifest:file-entry
      manifest:full-path="writer2latex.rdb"
      manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/>

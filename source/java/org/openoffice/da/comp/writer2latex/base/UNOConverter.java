@@ -2,7 +2,7 @@
  *
  *  UNOConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  Version 2.0 (2018-07-14)
+ *  Version 2.0 (2022-07-01)
  *  
  */
 package org.openoffice.da.comp.writer2latex.base;
@@ -75,7 +75,6 @@ public class UNOConverter {
 		HashMap<String,String> filterNames = new HashMap<String,String>();
 		filterNames.put("org.openoffice.da.writer2latex","application/x-latex");
 		filterNames.put("org.openoffice.da.writer2bibtex","application/x-bibtex");
-		filterNames.put("org.openoffice.da.writer2html5","text/html");
 
 		// Get the arguments
 		Object filterData = null;

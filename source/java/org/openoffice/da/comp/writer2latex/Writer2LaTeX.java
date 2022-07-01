@@ -2,7 +2,7 @@
  *
  *  Writer2LaTeX.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-11)
+ *  Version 2.0 (2022-07-01)
  *
  */ 
  
@@ -35,7 +35,6 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 
 import org.openoffice.da.comp.writer2latex.bibtex.BibliographyDialog;
-import org.openoffice.da.comp.writer2latex.html5.Html5UNOPublisher;
 import org.openoffice.da.comp.writer2latex.latex.LaTeXUNOPublisher;
 import org.openoffice.da.comp.writer2latex.util.MessageBox;
 import org.openoffice.da.comp.writer2latex.util.RegistryHelper;
@@ -57,7 +56,6 @@ public final class Writer2LaTeX extends WeakBase
     private final XComponentContext m_xContext;
     private XFrame m_xFrame;
     private LaTeXUNOPublisher unoPublisher = null;
-    private Html5UNOPublisher xhtmlUnoPublisher = null;
 	
     public static final String __implementationName = Writer2LaTeX.class.getName();
     public static final String __serviceName = "com.sun.star.frame.ProtocolHandler";  //$NON-NLS-1$
@@ -106,8 +104,6 @@ public final class Writer2LaTeX extends WeakBase
                 return this;
             else if ( aURL.Path.compareTo("InsertBibTeX") == 0 ) //$NON-NLS-1$
                 return this;
-            else if ( aURL.Path.compareTo("PublishAsHTML5") == 0 ) //$NON-NLS-1$
-                return this;
         }
         return null;
     }
@@ -143,10 +139,6 @@ public final class Writer2LaTeX extends WeakBase
                 insertBibTeX();
                 return;
             }
-            else if ( aURL.Path.compareTo("PublishAsHTML5") == 0 ) { //$NON-NLS-1$
-                processHTML5();
-                return;
-            }
         }
     }
 
@@ -159,11 +151,6 @@ public final class Writer2LaTeX extends WeakBase
     }
 	
     // The actual commands...
-    
-    private void processHTML5() {
-    	createXhtmlUNOPublisher();
-    	xhtmlUnoPublisher.publish();
-    }
     
     private void process() {
     	createUNOPublisher();
@@ -234,12 +221,6 @@ public final class Writer2LaTeX extends WeakBase
 		return XPropertySetHelper.getPropertyValueAsBoolean(xProps, "UseExternalBibTeXFiles"); //$NON-NLS-1$
     }
         
-	private void createXhtmlUNOPublisher() {
-    	if (xhtmlUnoPublisher==null) { 
-    		xhtmlUnoPublisher = new Html5UNOPublisher(m_xContext,m_xFrame);
-    	}		
-	}
-	
 	private void createUNOPublisher() {
     	if (unoPublisher==null) { 
     		unoPublisher = new LaTeXUNOPublisher(m_xContext,m_xFrame);

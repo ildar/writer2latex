@@ -69,43 +69,6 @@ bib<?xml version='1.0' encoding='UTF-8'?>
             <set oor:name="Templates" oor:node-type="Template" />
             <set oor:name="ParameterStrings" oor:node-type="Parameter" />		
         </group>
-        <group oor:name="XhtmlOptions">
-            <!-- General -->
-            <prop oor:name="Config" oor:type="xs:short" />
-            <prop oor:name="ConfigName" oor:type="xs:string" />
-            <prop oor:name="Parameters" oor:type="xs:string" />
-            <prop oor:name="Units" oor:type="xs:short" />
-            <prop oor:name="Scaling" oor:type="xs:int" />
-            <prop oor:name="Multilingual" oor:type="xs:boolean" />
-            
-            <!-- Files -->
-            <prop oor:name="Split" oor:type="xs:boolean" />
-            <prop oor:name="SplitLevel" oor:type="xs:short" />
-            <prop oor:name="RepeatLevels" oor:type="xs:short" />
-            <prop oor:name="SaveImagesInSubdir" oor:type="xs:boolean" />
-            
-            <!-- Special content -->
-            <prop oor:name="Notes" oor:type="xs:boolean" />
-            <prop oor:name="UseDublinCore" oor:type="xs:boolean" />
-
-            <!-- Figures, tables and formulas -->
-            <prop oor:name="ImageSize" oor:type="xs:short"/>
-            <prop oor:name="EmbedSVG" oor:type="xs:boolean"/>
-            <prop oor:name="EmbedImg" oor:type="xs:boolean"/>
-            <prop oor:name="TableSize" oor:type="xs:short"/>
-            <prop oor:name="ColumnScaling" oor:type="xs:int" />
-            <prop oor:name="UseMathjax" oor:type="xs:boolean" />
-
-            <!-- AutoCorrect -->
-            <prop oor:name="IgnoreEmptyParagraphs" oor:type="xs:boolean" />
-            <prop oor:name="IgnoreHardLineBreaks" oor:type="xs:boolean" />
-            <prop oor:name="IgnoreDoubleSpaces" oor:type="xs:boolean" />
-
-            <!-- Configurations -->
-            <set oor:name="Configurations" oor:node-type="Configuration" />
-            <set oor:name="Templates" oor:node-type="Template" />			
-            <set oor:name="ParameterStrings" oor:node-type="Parameter" />		
-        </group>
         
         <!-- toolbar configuration -->
         <group oor:name="Applications">
@@ -131,11 +94,6 @@ bib<?xml version='1.0' encoding='UTF-8'?>
             <prop oor:name="BibTeXDir" oor:type="xs:string" />
             <prop oor:name="BibTeXEncoding" oor:type="xs:short" />
             <prop oor:name="BibLaTeXOptions" oor:type="xs:string" />
-        </group>
-        
-        <group oor:name="Html5Settings">
-            <prop oor:name="XhtmlView" oor:type="xs:short" />
-            <prop oor:name="XhtmlExecutable" oor:type="xs:string" />
         </group>
         
     </component>

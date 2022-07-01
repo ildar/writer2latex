@@ -4,15 +4,12 @@
   <node oor:name="Modules">
     <!-- These nodes should appear in the Writer module -->
     <node oor:name="com.sun.star.text.TextDocument" oor:op="fuse">
-      <!-- We define 3 nodes: Toolbar configuration, LaTeX custom config
-      and HTML5 custom config -->
+      <!-- We define 2 nodes: Toolbar configuration and LaTeX custom config -->
       <node oor:name="Nodes">
         <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration" oor:op="fuse">
         </node>
         <node oor:name="org.openoffice.da.writer2latex.configuration" oor:op="fuse">
         </node>
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration" oor:op="fuse">
-        </node>  
       </node>
     </node>
   </node>
@@ -78,27 +75,6 @@
             <value>org.openoffice.da.writer2latex.ApplicationsDialog</value>
           </prop>
         </node>
-        <node oor:name="org.openoffice.da.writer2latex.toolbar.configuration.html5" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2latex.toolbar.html5</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2latex.toolbar.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>2</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">HTML5 settings</value>
-            <value xml:lang="da-DK">HTML5-indstillinger</value>
-          <value xml:lang="de-DE">HTML5 settings</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Html5Settings.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-            <value>org.openoffice.da.writer2latex.Html5SettingsDialog</value>
-          </prop>
-        </node>        
       </node>
     </node>
 
@@ -383,181 +359,6 @@
           </prop>
         </node>
 
-	  </node>
-    </node>
-    
-    <!-- Last root node is HTML5 custom config -->
-    <node oor:name="org.openoffice.da.writer2xhtml.configuration" oor:op="fuse"> 
-      <prop oor:name="Id">
-        <value>org.openoffice.da.writer2xhtml.configuration</value>
-      </prop>
-      <prop oor:localized="true" oor:name="Label">
-        <value xml:lang="en-US">Writer2LaTeX - HTML5</value>
-        <value xml:lang="da-DK">Writer2LaTeX - HTML5</value>
-      <value xml:lang="de-DE">Writer2LaTeX - HTML5</value></prop>
-      <prop oor:name="OptionsPage">
-        <value>%origin%/W2HDialogs2/ConfigurationRoot.xdl</value>
-      </prop>
-      <prop oor:name="EventHandlerService">
-        <value />
-      </prop>
-
-      <node oor:name="Leaves">
-      	<!-- the root node has several leaves -->
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.general" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.general</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>0</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">General</value>
-            <value xml:lang="da-DK">Generelt</value>
-          <value xml:lang="de-DE">Allgemein</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/General.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.template" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.template</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>1</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Template</value>
-            <value xml:lang="da-DK">Skabelon</value>
-          <value xml:lang="de-DE">Template</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Template.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.stylesheets" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.stylesheets</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>2</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Style sheets</value>
-            <value xml:lang="da-DK">Typografiark</value>
-          <value xml:lang="de-DE">Style sheets</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Stylesheets.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles1" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.styles1</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>3</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Master styles</value>
-            <value xml:lang="da-DK">Hovedtypografier</value>
-          <value xml:lang="de-DE">Master styles</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Styles1.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.styles2" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.styles2</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>4</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Other styles</value>
-            <value xml:lang="da-DK">Andre typografier</value>
-          <value xml:lang="de-DE">Other styles</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Styles2.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.formatting" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.formatting</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>5</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Formatting</value>
-            <value xml:lang="da-DK">Formatering</value>
-          <value xml:lang="de-DE">Formatting</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Formatting.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
-
-        <node oor:name="org.openoffice.da.writer2xhtml.configuration.content" oor:op="fuse">
-          <prop oor:name="Id">
-            <value>org.openoffice.da.writer2xhtml.configuration.content</value>
-          </prop>
-          <prop oor:name="GroupId">
-            <value>org.openoffice.da.writer2xhtml.configuration</value>
-          </prop>
-          <prop oor:name="GroupIndex">
-            <value>6</value>
-          </prop>
-          <prop oor:localized="true" oor:name="Label">
-            <value xml:lang="en-US">Content</value>
-            <value xml:lang="da-DK">Indhold</value>
-          <value xml:lang="de-DE">Content</value></prop>
-          <prop oor:name="OptionsPage">
-            <value>%origin%/W2HDialogs2/Content.xdl</value>
-          </prop>
-          <prop oor:name="EventHandlerService">
-             <value>org.openoffice.da.writer2latex.Html5ConfigurationDialog</value>
-          </prop>
-        </node>
 	  </node>
     </node>
     
