@@ -50,13 +50,13 @@
         	</listitem>
         	<listitem>
         		<paragraph role="paragraph" xml-lang="en-US"><emph>Ignore most</emph>: Convert basic character
-        		formatting.</paragraph>
+        		formatting, but not font information.</paragraph>
         	</listitem>
         	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert basic</emph>: Convert basic character formatting.</paragraph>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert basic</emph>: Convert basic character formatting, but not font size.</paragraph>
         	</listitem>
         	<listitem>
-        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert most</emph>: Convert all supported character formatting.</paragraph>
+        		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert most</emph>: Convert all supported character formatting, but font size only if set by a style.</paragraph>
         	</listitem>
         	<listitem>
         		<paragraph role="paragraph" xml-lang="en-US"><emph>Convert all</emph>: Convert all supported character formatting.</paragraph>

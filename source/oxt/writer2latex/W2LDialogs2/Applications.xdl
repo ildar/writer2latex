@@ -22,7 +22,7 @@
     <dlg:menuitem dlg:value="PdfLaTeX"/>
     <dlg:menuitem dlg:value="XeLaTeX"/>
     <dlg:menuitem dlg:value="Dvips"/>
-    <dlg:menuitem dlg:value="BibTeX"/>
+    <dlg:menuitem dlg:value="Biber"/>
     <dlg:menuitem dlg:value="MakeIndex"/>
     <dlg:menuitem dlg:value="DVI Viewer"/>
     <dlg:menuitem dlg:value="PDF Viewer"/>
@@ -37,7 +37,7 @@
   <dlg:textfield dlg:id="Executable" dlg:tab-index="7" dlg:left="72" dlg:top="72" dlg:width="120" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationExecutable">
    <script:event script:event-name="on-blur" script:macro-name="vnd.sun.star.UNO:ExecutableUnfocus" script:language="UNO"/>
   </dlg:textfield>
-  <dlg:button dlg:id="BrowseButton" dlg:tab-index="8" dlg:left="200" dlg:top="70" dlg:width="50" dlg:height="16" dlg:value="Browse...">
+  <dlg:button dlg:id="BrowseButton" dlg:tab-index="8" dlg:left="200" dlg:top="70" dlg:width="50" dlg:height="16" dlg:value="Browse..." dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigurationBrowse">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:BrowseClick" script:language="UNO"/>
   </dlg:button>
   <dlg:text dlg:id="OptionsLabel" dlg:tab-index="9" dlg:left="12" dlg:top="94" dlg:width="55" dlg:height="12" dlg:value="Options"/>

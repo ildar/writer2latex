@@ -8,12 +8,12 @@
   <dlg:checkbox dlg:id="NoTables" dlg:tab-index="0" dlg:left="10" dlg:top="22" dlg:width="180" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigNoTables" dlg:value="Do not export tables" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:NoTablesChange" script:language="UNO"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="UseTabulary" dlg:tab-index="2" dlg:left="10" dlg:top="48" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTabulary" dlg:value="Use tabulary.sty (automatic column width)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseMultirow" dlg:tab-index="3" dlg:visible="false" dlg:left="10" dlg:top="61" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseMultirow" dlg:value="Use multirow.sty (support for rowspan)" dlg:checked="false"/>
-  <dlg:checkbox dlg:id="UseSupertabular" dlg:tab-index="4" dlg:left="10" dlg:top="74" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseSupertabular" dlg:value="Use supertabular.sty (multipage tables)" dlg:checked="false">
+  <dlg:checkbox dlg:id="UseTabulary" dlg:tab-index="2" dlg:left="10" dlg:top="48" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseTabulary" dlg:value="Support automatic column width (using tabulary.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseMultirow" dlg:tab-index="3" dlg:visible="false" dlg:left="10" dlg:top="61" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseMultirow" dlg:value="Support cells spanning multiple rows (using multirow.sty)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseSupertabular" dlg:tab-index="4" dlg:left="10" dlg:top="74" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseSupertabular" dlg:value="Support multipage tables (using supertabular.sty)" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseSupertabularChange" script:language="UNO"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="UseLongtable" dlg:tab-index="5" dlg:left="10" dlg:top="87" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLongtable" dlg:value="Use longtable.sty (multipage tables)" dlg:checked="false">
+  <dlg:checkbox dlg:id="UseLongtable" dlg:tab-index="5" dlg:left="10" dlg:top="87" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseLongtable" dlg:value="Support multipage tables (using longtable.sty)" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:UseLongtableChange" script:language="UNO"/>
   </dlg:checkbox>
   <dlg:text dlg:id="TableFirstHeadLabel" dlg:tab-index="6" dlg:left="20" dlg:top="103" dlg:width="60" dlg:height="12" dlg:value="First head"/>
@@ -24,7 +24,7 @@
   <dlg:combobox dlg:id="TableLastFootStyle" dlg:tab-index="11" dlg:left="200" dlg:top="118" dlg:width="55" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigTableLastFootStyle" dlg:spin="true" dlg:linecount="15"/>
   <dlg:text dlg:id="TableSequenceLabel" dlg:tab-index="12" dlg:left="10" dlg:top="140" dlg:width="90" dlg:height="12" dlg:value="Table sequence name"/>
   <dlg:combobox dlg:id="TableSequenceName" dlg:tab-index="13" dlg:left="110" dlg:top="138" dlg:width="145" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigTableSequenceName" dlg:spin="true" dlg:linecount="10"/>
-  <dlg:checkbox dlg:id="UseColortbl" dlg:tab-index="1" dlg:left="10" dlg:top="35" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseColortbl" dlg:value="Use colortbl.sty (background color in cells)" dlg:checked="false"/>
+  <dlg:checkbox dlg:id="UseColortbl" dlg:tab-index="1" dlg:left="10" dlg:top="35" dlg:width="240" dlg:height="12" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigUseColortbl" dlg:value="Support background color in cells (using colortbl.sty)" dlg:checked="false"/>
   <dlg:text dlg:id="TableHeadLabel" dlg:tab-index="14" dlg:left="80" dlg:top="103" dlg:width="60" dlg:height="12" dlg:value="Head"/>
   <dlg:text dlg:id="TableLastFootLabel" dlg:tab-index="15" dlg:left="200" dlg:top="103" dlg:width="55" dlg:height="12" dlg:value="Last foot"/>
   <dlg:text dlg:style-id="0" dlg:id="TablesLabel" dlg:tab-index="16" dlg:left="5" dlg:top="8" dlg:width="185" dlg:height="12" dlg:value="Tables"/>

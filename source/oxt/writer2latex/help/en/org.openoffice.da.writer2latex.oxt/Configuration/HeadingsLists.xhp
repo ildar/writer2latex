@@ -21,24 +21,24 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigOutlineNumbering" id="bm_configoutlinenumbering"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export outline numbering</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the outline numbering.
-        Otherwise the default numbering defined by the LaTeX document class will be used for all headings.</paragraph>
+        Otherwise the default numbering defined by the LaTeX documentclass will be used for all headings.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseTitlesec" id="bm_configusetitlesec"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export formatting of headings (using titlesec.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the formatting of headings using
-        the LaTeX package titlesec.sty. Otherwise you will get the default formatting of the LaTeX document class.</paragraph>
+        the LaTeX package titlesec.sty. Otherwise you will get the default formatting of the LaTeX documentclass.</paragraph>
         
         <paragraph role="heading" level="2" xml-lang="en-US">Lists</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseEnumitem" id="bm_configuseenumitem"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export list labels (using enumitem.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export the labels of numbered and unnumbered lists.
-        Otherwise all labels will be the standard labels defined in the LaTeX document class.</paragraph>
+        Otherwise all labels will be the standard labels defined in the LaTeX documentclass.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigListLayout" id="bm_configlistlayout"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export list layout</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export layout of lists, that is indentations of
-        text and label and alignment of labels. Otherwise the default layout defined by the LaTeX document class will be used</paragraph>
+        text and label and alignment of labels. Otherwise the default layout defined by the LaTeX documentclass will be used</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigListStyles" id="bm_configliststyles"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export list styles</paragraph>

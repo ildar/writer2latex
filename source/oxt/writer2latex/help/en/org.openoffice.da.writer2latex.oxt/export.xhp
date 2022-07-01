@@ -61,7 +61,7 @@
 			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Custom</emph> is a user defined format. To configure the custom format,
 				choose <emph><link href="org.openoffice.da.writer2latex.oxt/Configuration/Introduction.xhp"
-				name="Custom configuration">Tools - Options - Writer2LaTeX</link></emph>.
+				name="Custom configuration">Tools - Options - Writer2LaTeX - LaTeX</link></emph>.
 				</paragraph>
 		        <paragraph role="paragraph" xml-lang="en-US">Note that expert users can extend the list with further formats using
 		        <emph>configuration packages</emph>. See the documentation on the
@@ -195,6 +195,10 @@
 				Graphics will be converted to Encapsulated postscript format.</paragraph>
 			</listitem>
 			<listitem>
+				<paragraph role="paragraph" xml-lang="en-US"><emph>XeTeX</emph> will create a LaTeX document that is
+				suitable for processing with XeTeX. Graphics are converted to a format that can be included in pdf files.</paragraph>
+			</listitem>
+			<listitem>
 				<paragraph role="paragraph" xml-lang="en-US"><emph>Unspecified</emph> will create a LaTeX document with no
 				particular backend in mind. All graphics will be exported in the original format,
 				and it is up to the user to handle them.</paragraph>
@@ -233,13 +237,13 @@
         <paragraph role="heading" level="3" xml-lang="en-US">Enable multilingual support</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsMultilingual" visibility="hidden">Check this if your document contains text in more than one language</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">If you check this option, all the language settings in the %PRODUCTNAME Writer
-        document will be exported to LaTeX. Sometimes the language settings in a %PRODUCTNAME Writer document are not correct,
-        so if you have a document that is written in one language only you may want to uncheck this option.
+        document will be exported to LaTeX. Sometimes the language settings in a %PRODUCTNAME Writer document are not correct or unprecise.
+        If you have a document that is written in one language only, you may want to uncheck this option.
         This will produce a cleaner LaTeX file because you may avoid a large number of language selections.</paragraph>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsFont" id="bm_options_font"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Font</paragraph>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:Font" visibility="hidden">Select a font scheme to use in the LaTeX document</ahelp></paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsFont" visibility="hidden">Select a font scheme to use in the LaTeX document</ahelp></paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Use this option to select a font scheme to use in the LaTeX document.
         The possible values depends on the backend.
         </paragraph>
@@ -259,7 +263,8 @@
 			</listitem>
 		</list>        
         </paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">For other backends, you can choose from a fixed set of fonts:
+        <paragraph role="paragraph" xml-lang="en-US">For other backends, you can choose from a fixed set of fonts, which all supports
+        mathematical formulas:
         </paragraph>
         <list type="unordered">
 			<listitem>
@@ -328,25 +333,23 @@
        	greek text fonts are available in the LaTeX installation. This option has no effect on greek text (provided the language
        	is set correctly in the %PRODUCTNAME Writer document).</paragraph>
        
-        <paragraph role="heading" level="2" xml-lang="en-US">Bibliography</paragraph>
-
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsUseBiblatex" id="bm_options_usebiblatex"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use BibLaTeX for bibliography</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Use BibLaTeX for the bibliography</paragraph>
    		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsUseBiblatex" visibility="hidden">Check this to use BibLaTeX to format the bibliography</ahelp></paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">The recommended way to format bibliographic content in a LaTeX document is the LaTeX
-		package BibLaTeX. If you check this option, all citations and the bibliography will be handled by BibLaTeX.
+		package BibLaTeX. If you check this option, all references and the bibliography will be handled by BibLaTeX.
 		If you use the standard bibliographic system in %PRODUCTNAME Writer this implies that all references will be exported to a
 		file in the BibTeX format. If on the other hand you have configured Writer2LaTeX to use BibTeX as bibliographic database
 		all data will be taken directly from your BibTeX files.</paragraph>
 
-    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsBibtexStyle" id="bm_options_bibtexstyle"/>
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsBiblatexStyle" id="bm_options_bibtexstyle"/>
         <paragraph role="heading" level="3" xml-lang="en-US">BibLaTeX style</paragraph>
-   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsBiblatexStyle" visibility="hidden">Enter the name of a BibLaTeX style to format the citations and the bibliography</ahelp></paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsBiblatexStyle" visibility="hidden">Enter the name of a BibLaTeX style to format the references and the bibliography</ahelp></paragraph>
 		<paragraph role="paragraph" xml-lang="en-US">If you use BibLaTeX, you should also select a BibLaTeX style to be used when
-		generating the citations and the bibliography. Select one of the predefined styles or choose <emph>Custom</emph> which you can define in
-		the configuration. There are three basic forms of citations: Numeric and alphabetic uses a key in square brackets like [17]
-		or [Knu96]. Author-year and Author-title combines the name of the author with either the year or a title like (Knuth 1996).
-		Finally verbose styles puts citations in footnotes.</paragraph>
+		generating the references and the bibliography. Select one of the predefined styles or choose <emph>Custom</emph> which you can define in
+		the configuration. There are three basic forms of references: Numeric and alphabetic uses a key in square brackets like [17]
+		or [Knu96]. Author-year and Author-title combines the name of the author with either the year or a title like (Knuth, 1996).
+		Finally verbose styles puts references in footnotes.</paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Files</paragraph>
 
@@ -569,5 +572,14 @@
 		<paragraph role="paragraph" xml-lang="en-US">For similar reasons you can choose to ignore two or more spaces in a row using
 		this option.</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsCancel" id="bm_options_cancel"/>
+		<paragraph role="heading" level="3" xml-lang="en-US">Cancel</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsCancel" visibility="hidden">Click this button to close the dialog without exporting the document</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Click this button to close the dialog without exporting the document.</paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:OptionsExport" id="bm_options_export"/>
+		<paragraph role="heading" level="3" xml-lang="en-US">Export</paragraph>
+   		<paragraph role="paragraph" xml-lang="en-US"><ahelp hid="org.openoffice.da.writer2latex.oxt:OptionsExport" visibility="hidden">Click this button the export the document to LaTeX and view the result</ahelp></paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">Click this button the export the document to LaTeX and view the result.</paragraph>
 	</body>
 </helpdocument>

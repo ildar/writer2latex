@@ -38,7 +38,7 @@
         <paragraph role="heading" level="2" xml-lang="en-US">Hyperlinks</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseHyperref" id="bm_configusehyperref"/>
-        <paragraph role="heading" level="3" xml-lang="en-US">Use hyperref.sty (support for hyperlinks)</paragraph>
+        <paragraph role="heading" level="3" xml-lang="en-US">Export hyperlinks (using hyperref.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Check this if you want to export hyperlinks using the LaTeX package
         hyperref.sty. As a side effect this package will create links for cross references etc.</paragraph>
         

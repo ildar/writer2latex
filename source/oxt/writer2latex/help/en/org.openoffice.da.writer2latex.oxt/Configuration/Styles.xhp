@@ -16,6 +16,8 @@
         	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX - Styles</emph>
         </section>
 
+        <paragraph role="heading" level="2" xml-lang="en-US">Style maps</paragraph>
+
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigStyleFamily" id="bm_configstylefamily"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Style family</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Select a style family:</paragraph>

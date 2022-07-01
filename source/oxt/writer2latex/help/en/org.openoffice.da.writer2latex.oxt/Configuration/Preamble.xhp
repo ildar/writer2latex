@@ -27,6 +27,9 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigCustomPreamble" id="bm_configcustompreamble"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Custom preamble</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">The text you type here will be copied verbatim into the LaTeX preamble.
-        For example <emph>\usepackage{palatino}</emph> to typeset your document using the postscript font Palatino.</paragraph>        
+        For example to add a DRAFT watermark to all pages you could type:</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">\usepackage{draftwatermark}</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">\SetWatermarkText{DRAFT}</paragraph>
+		<paragraph role="paragraph" xml-lang="en-US">\SetWatermarkScale{4}</paragraph>
     </body>
 </helpdocument>

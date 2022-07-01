@@ -2,6 +2,8 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] Changed default BibTeX encoding to UTF-8
+
 [w2l] Extended recognition of display equations; now a punctuation character after the equation is accepted.
 
 [w2l] Bugfix: Always leave room for header/footer if use_geometry=true and use_fancyhdr=false. Otherwise

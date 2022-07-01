@@ -40,8 +40,8 @@
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDeleteText" id="bm_configdeletetext"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Delete...</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">Click this button to the delete the current text string. Writer2LaTeX has
-        a few predefined strings that cannot be deleted.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">Click this button to the delete the current text string. Writer2LaTeX has a few predefined strings
+        (for French typographical rules) that cannot be deleted.</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigTextLaTeX" id="bm_configtextlatex"/>
         <paragraph role="heading" level="3" xml-lang="en-US">LaTeX code</paragraph>

@@ -32,7 +32,7 @@
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigFigureSequenceName" id="bm_configfiguresequencename"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Figure sequence names</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">This option can be set to a sequence name in the source document.
-        OpenDocument has a very weak sense of figure captions: A figure caption is a paragraph containing a sequence number.
+        %PRODUCTNAME Writer has a very weak sense of figure captions: A figure caption is a paragraph containing a sequence number.
         If you use %PRODUCTNAME's defaults, Writer2LaTeX can guess which sequence name to use.
         If it fails, you can type the name here, or select the name from the list. (Note that %PRODUCTNAME Writer has four
         basic sequence names which always will be displayed in English here. These are Drawing, Illustration, Table, Text.)

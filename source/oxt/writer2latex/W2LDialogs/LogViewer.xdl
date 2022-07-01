@@ -14,7 +14,7 @@
   <dlg:checkbox dlg:id="ErrorFilter" dlg:tab-index="3" dlg:left="10" dlg:top="24" dlg:width="200" dlg:height="12" dlg:help-text="&amp;207..ErrorFilter.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ErrorFilter" dlg:value="&amp;208..ErrorFilter.Label" dlg:checked="false">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.UNO:ErrorFilterChange" script:language="UNO"/>
   </dlg:checkbox>
-  <dlg:button dlg:id="CloseButton" dlg:tab-index="6" dlg:left="280" dlg:top="250" dlg:width="70" dlg:height="12" dlg:help-text="&amp;209..CloseButton.HelpText"  dlg:help-url="org.openoffice.da.writer2latex.oxt:LogViewer" dlg:value="&amp;210..CloseButton.Label" dlg:button-type="ok"/>
+  <dlg:button dlg:id="CloseButton" dlg:tab-index="6" dlg:left="280" dlg:top="250" dlg:width="70" dlg:height="12" dlg:help-text="&amp;209..CloseButton.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:LogViewer" dlg:value="&amp;210..CloseButton.Label" dlg:button-type="ok"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="5" dlg:left="10" dlg:top="250" dlg:width="70" dlg:height="12" dlg:help-text="&amp;211..HelpButton.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:LogViewer" dlg:value="&amp;212..HelpButton.Label" dlg:button-type="help"/>
   <dlg:radiogroup>
    <dlg:radio dlg:id="BiberOption" dlg:tab-index="1" dlg:left="120" dlg:top="10" dlg:width="100" dlg:height="12" dlg:help-text="&amp;443.LogViewer.BiberOption.HelpText" dlg:help-url="org.openoffice.da.writer2latex.oxt:ViewBiberLog" dlg:value="&amp;444.LogViewer.BiberOption.Label">

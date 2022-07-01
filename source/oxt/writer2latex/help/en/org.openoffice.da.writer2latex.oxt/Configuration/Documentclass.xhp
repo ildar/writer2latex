@@ -7,7 +7,7 @@
         </topic>
     </meta>
     <body>
-     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Documentclass" id="bm_configdocumentclass"/>
+     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:Documentclass" id="bm_documentclass"/>
         <paragraph role="heading" level="1" xml-lang="en-US">Documentclass</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">Define the documentclass for the LaTeX document, including
         the heading hierarchy.</paragraph>
@@ -18,6 +18,7 @@
         
         <paragraph role="heading" level="2" xml-lang="en-US">Documentclass</paragraph>
 
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDocumentclassSelection" id="bm_configdocumentclassselection"/>
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigDocumentclass" id="bm_configdocumentclass"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Documentclass</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">A LaTeX document is based on a certain "documentclass", which determines the general

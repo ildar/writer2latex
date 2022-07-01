@@ -10,7 +10,7 @@
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.UNO:NoPreambleChange" script:language="UNO"/>
   </dlg:checkbox>
   <dlg:text dlg:id="CustomPreambleLabel" dlg:tab-index="2" dlg:left="10" dlg:top="36" dlg:width="240" dlg:height="12" dlg:value="Custom preamble"/>
-  <dlg:textfield dlg:id="CustomPreamble" dlg:tab-index="1" dlg:left="15" dlg:top="50" dlg:width="230" dlg:height="120" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigCustomPreamble" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true"/>
+  <dlg:textfield dlg:id="CustomPreamble" dlg:tab-index="1" dlg:left="15" dlg:top="50" dlg:width="230" dlg:height="110" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigCustomPreamble" dlg:hscroll="true" dlg:vscroll="true" dlg:multiline="true"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="4" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Preamble" dlg:value="Help" dlg:button-type="help"/>
  </dlg:bulletinboard>
 </dlg:window>

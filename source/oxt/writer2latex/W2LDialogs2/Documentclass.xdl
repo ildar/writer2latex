@@ -69,7 +69,7 @@
   <dlg:text dlg:style-id="0" dlg:id="DocumentClassLabel" dlg:tab-index="13" dlg:left="5" dlg:top="8" dlg:width="190" dlg:height="12" dlg:value="Documentclass"/>
   <dlg:text dlg:style-id="0" dlg:id="HeadingsLabel" dlg:tab-index="15" dlg:left="5" dlg:top="74" dlg:width="240" dlg:height="12" dlg:value="Headings"/>
   <dlg:button dlg:id="HelpButton" dlg:tab-index="14" dlg:left="200" dlg:top="10" dlg:width="50" dlg:height="16" dlg:help-url="org.openoffice.da.writer2latex.oxt:Documentclass" dlg:value="Help" dlg:button-type="help"/>
-  <dlg:menulist dlg:id="DocumentclassSelection" dlg:tab-index="1" dlg:left="100" dlg:top="20" dlg:width="80" dlg:height="12" dlg:spin="true">
+  <dlg:menulist dlg:id="DocumentclassSelection" dlg:tab-index="1" dlg:left="100" dlg:top="20" dlg:width="80" dlg:height="12" dlg:spin="true" dlg:help-url="org.openoffice.da.writer2latex.oxt:ConfigDocumentclassSelection">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="Article"/>
     <dlg:menuitem dlg:value="Report"/>
