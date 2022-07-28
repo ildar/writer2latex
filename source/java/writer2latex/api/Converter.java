@@ -2,7 +2,7 @@
  *
  *  Converter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-14)
+ *  Version 2.0 (2022-07-28)
  *
  */
  
@@ -50,25 +50,6 @@ public interface Converter {
      *  @param gc the <code>GraphicConverter</code> to use
      */
     public void setGraphicConverter(GraphicConverter gc);
-
-    /** Read a template to use as a base for the converted document.
-     *  The format of the template depends on the <code>Converter</code>
-     *  implementation.
-     *
-     *  @param is an <code>InputStream</code> from which to read the template
-     *  @throws IOException if some exception occurs while reading the template
-     */
-    public void readTemplate(InputStream is) throws IOException;
-
-    /** Read a template to use as a base for the converted document.
-     *  The format of the template depends on the <code>Converter</code>
-     *  implementation.
-     *
-     *  @param file a file from which to read the template
-     *  @throws IOException if the file does not exist or some exception occurs
-     *  while reading the template
-     */
-    public void readTemplate(File file) throws IOException;
 
     /** Convert a document
      *

@@ -2,7 +2,7 @@
  *
  *  ConverterHelper.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-17)
+ *  Version 2.0 (2022-07-28)
  *
  */
 
@@ -32,7 +32,6 @@ import java.io.OutputStream;
 import org.openoffice.da.comp.writer2latex.util.MacroExpander;
 
 import writer2latex.api.Config;
-import writer2latex.api.Converter;
 
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
@@ -55,7 +54,7 @@ public class ConverterHelper {
     private XStringSubstitution xPathSub;
     
     // Macro expander to expand macros like %origin%
-	MacroExpander expander;
+	private MacroExpander expander;
 
 	
     /** Construct a new <code>ConverterHelper</code> with a given context.
@@ -159,31 +158,6 @@ public class ConverterHelper {
 	    }
 	}
 
-    /**Read a configuration from an URL. Macros in the URL will be expanded
-     *  and variables in the URL will be substituted.
-     * 
-     * @param sURL the URL
-     * @param converter the Writer2LaTeX converter to read the template from the URL
-     */
-    public void readTemplate(String sURL, Converter converter) {
-        if (sURL!=null && sfa2!=null) {
-	    	// First get the real URL by expanding macros and substituting variables
-	        String sRealURL = expander.expandMacros(substituteVariables(sURL));
-	        try {
-	            XInputStream xIs = sfa2.openFileRead(sRealURL);
-	            if (xIs!=null) {
-	                InputStream is = new XInputStreamToInputStreamAdapter(xIs);
-	                converter.readTemplate(is);
-	                is.close();
-	                xIs.closeInput();
-	            }
-	        }
-	        catch (IOException | com.sun.star.uno.Exception e) {
-	            // ignore
-	        }
-        }
-    }
-    
     private String substituteVariables(String sURL) {
         if (xPathSub!=null) {
             try {

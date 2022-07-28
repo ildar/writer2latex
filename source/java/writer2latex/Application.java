@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-07) 
+ *  Version 1.9.4 (2022-07-28) 
  *
  */
  
@@ -42,16 +42,14 @@ import writer2latex.api.MIMETypes;
 import writer2latex.util.Misc;
 
 /**
- * <p>Command line utility to convert an OpenOffice.org Writer XML file into XHTML/LaTeX/BibTeX</p>
+ * <p>Command line utility to convert an OpenOffice.org Writer XML file into LaTeX/BibTeX</p>
  * <p>The utility is invoked with the following command line:</p>
  * <pre>java -jar writer2latex.jar [options] source [target]</pre>
  * <p>Where the available options are
  * <ul>
- * <li><code>-latex</code>, <code>-bibtex</code>, <code>-html5</code>,
- * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-formatted</code>,
- * <code>-cleanxhtml</code>
+ * <li><code>-latex</code>, <code>-bibtex</code>
+ * <li><code>-ultraclean</code>, <code>-clean</code>, <code>-formatted</code>
  * <li><code>-config[=]filename</code>
- * <li><code>-template[=]filename</code>
  * <li><code>-option[=]value</code>
  * </ul>
  * <p>where <code>option</code> can be any simple option known to Writer2LaTeX
@@ -62,7 +60,6 @@ public final class Application {
     /* Based on command-line parameters. */
     private String sTargetMIME = MIMETypes.LATEX;
     private Vector<String> configFileNames = new Vector<String>();
-    private String sTemplateFileName = null;
     private Hashtable<String,String> options = new Hashtable<String,String>();
     private String sSource = null;
     private String sTarget = null;
@@ -90,7 +87,6 @@ public final class Application {
         File source = getSource();
         File target = getTarget(source);
         Converter converter = getConverter();
-        readTemplate(converter);
         readConfig(converter);
         setOptions(converter);
         performConversion(converter,source,target);
@@ -144,24 +140,6 @@ public final class Application {
             System.exit(1);
         }
 		return converter;
-    }
-    
-    private void readTemplate(Converter converter) {
-        if (sTemplateFileName!=null) {
-            try {
-                System.out.println("Reading template "+sTemplateFileName);
-                byte [] templateBytes = Misc.inputStreamToByteArray(new FileInputStream(sTemplateFileName));
-                converter.readTemplate(new ByteArrayInputStream(templateBytes));
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("--> This file does not exist!");
-                System.out.println("    "+e.getMessage());
-            }
-            catch (IOException e) {
-                System.out.println("--> Failed to read the template file!");
-                System.out.println("    "+e.getMessage());
-            }
-        }
     }
     
     private void readConfig(Converter converter) {
@@ -244,11 +222,9 @@ public final class Application {
             if (sArg.startsWith("-")) { // found an option
                 if ("-latex".equals(sArg)) { sTargetMIME = MIMETypes.LATEX; }
                 else if ("-bibtex".equals(sArg)) { sTargetMIME = MIMETypes.BIBTEX; }
-                else if ("-html5".equals(sArg)) { sTargetMIME = MIMETypes.HTML; }
                 else if ("-ultraclean".equals(sArg)) { configFileNames.add("*ultraclean.xml"); }
                 else if ("-clean".equals(sArg)) { configFileNames.add("*clean.xml"); }
                 else if ("-formatted".equals(sArg)) { configFileNames.add("*formatted.xml"); }
-                else if ("-cleanxhtml".equals(sArg)) { configFileNames.add("*cleanxhtml.xml"); }
                 else { // option with argument
                     int j=sArg.indexOf("=");
                     String sArg2;
@@ -260,7 +236,6 @@ public final class Application {
                         sArg2 = getArg(i++,sArgs);
                     }
                     if ("-config".equals(sArg)) { configFileNames.add(sArg2); }
-                    else if ("-template".equals(sArg)) { sTemplateFileName = sArg2; }
                     else { // configuration option
                         options.put(sArg.substring(1),sArg2);
                     }
@@ -323,12 +298,9 @@ public final class Application {
         System.out.println("where the available options are:");
         System.out.println("   -latex");
         System.out.println("   -bibtex");
-        System.out.println("   -html5");
-        System.out.println("   -template[=]<template file>");
         System.out.println("   -ultraclean");
         System.out.println("   -clean");
         System.out.println("   -formatted");
-        System.out.println("   -cleanxhtml");
         System.out.println("   -config[=]<configuration file>");
         System.out.println("   -<configuration option>[=]<value>");
         System.out.println("See the documentation for the available configuration options");

@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2latex
   # Original: Sep 2004 (mgn)
-  # version 1.9.4 (2018-10-11)
+  # version 1.9.4 (2022-07-28)
   ############################################################################
 -->
 <project name="w2l" default="help" basedir=".">
@@ -180,7 +180,6 @@
 		
             <!-- Add default configurations (copied from source tree) -->
             <zipfileset dir="${src}/writer2latex/latex/config"  prefix="${basename}/config" />
-            <zipfileset dir="${src}/writer2latex/xhtml/config"  prefix="${basename}/config" />
 		
             <!-- Add jar and oxt's -->
             <zipfileset dir="${target.lib}" prefix="${basename}"

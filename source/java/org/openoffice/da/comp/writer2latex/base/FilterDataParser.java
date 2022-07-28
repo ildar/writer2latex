@@ -2,7 +2,7 @@
  *
  *  FilterDataParser.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-04-17)
+ *  Version 2.0 (2022-07-28)
  *
  */ 
  
@@ -99,13 +99,8 @@ public class FilterDataParser {
     private void applyParsedFilterData(PropertyValue[] filterData, Converter converter) {
         PropertyHelper props = new PropertyHelper(filterData);
         
-        // Get the special properties TemplateURL and ConfigURL
+        // Get the special property ConfigURL
         ConverterHelper converterHelper = new ConverterHelper(xComponentContext);
-        Object tpl = props.get("TemplateURL");
-        if (tpl!=null && AnyConverter.isString(tpl)) {
-        	converterHelper.readTemplate(AnyConverter.toString(tpl), converter);
-        }
-        
         Object cfg = props.get("ConfigURL");
         if (cfg!=null && AnyConverter.isString(cfg)) {
             converterHelper.readConfig(AnyConverter.toString(cfg), converter.getConfig());

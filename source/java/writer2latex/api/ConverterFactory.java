@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-05)
+ *  Version 2.0 (2022-07-28)
  *
  */
  
@@ -32,11 +32,9 @@ public class ConverterFactory {
 
     // Version information
     private static final String VERSION = "1.9.4";
-    private static final String DATE = "2022-05-05";
+    private static final String DATE = "2022-07-28";
 
-    /** Return the Writer2LaTeX version in the form
-     *  (major version).(minor version).(patch level)<br/>
-     *  Development versions have an odd minor version number
+    /** Return the Writer2LaTeX version in the form (major version).(minor version).(patch level)
      *  @return the version number
      */
     public static String getVersion() { return VERSION; }
@@ -52,8 +50,6 @@ public class ConverterFactory {
      *  <ul>
      *    <li><code>application/x-latex</code> for LaTeX format</li>
      *    <li><code>application/x-bibtex</code> for BibTeX format</li>
-     *    <li><code>text/html</code> or <code>text/html5</code> for HTML5 documents
-     *    (the latter for backwards compatibility with w2l 1.4 and 1.6)</li>
      *  </ul>
      *  
      *  @param sMIME the MIME type of the target format
@@ -61,17 +57,13 @@ public class ConverterFactory {
      *  the requested MIME type could not be created
      */
     public static Converter createConverter(String sMIME) {
-        Object converter = null;
         if (MIMETypes.LATEX.equals(sMIME)) {
-            converter = createInstance("writer2latex.latex.ConverterPalette");
+            return new writer2latex.latex.ConverterPalette();
         }
         else if (MIMETypes.BIBTEX.equals(sMIME)) {
-            converter = createInstance("writer2latex.bibtex.Converter");
+            return new writer2latex.bibtex.Converter();
         }
-        else if (MIMETypes.HTML.equals(sMIME) || MIMETypes.HTML5.equals(sMIME)) {
-            converter = createInstance("writer2latex.xhtml.Converter");
-        }
-        return converter instanceof Converter ? (Converter) converter : null;
+        return null;
     }
 	
     /** Create a <code>Config</code> implementation which supports
@@ -81,8 +73,6 @@ public class ConverterFactory {
      *  <ul>
      *    <li><code>application/x-latex</code> for LaTeX format</li>
      *    <li><code>application/x-bibtex</code> for BibTeX format</li>
-     *    <li><code>text/html</code> or <code>text/html5</code> for HTML5 documents
-     *    (the latter for backwards compatibility with w2l 1.4 and 1.6)</li>
      *  </ul>
      *  
      *  @param sMIME the MIME type of the target format
@@ -90,14 +80,10 @@ public class ConverterFactory {
      *  the requested MIME type could not be created
      */
     public static Config createConfig(String sMIME) {
-        Object config = null;
         if (MIMETypes.LATEX.equals(sMIME) || MIMETypes.BIBTEX.equals(sMIME)) {
-            config = createInstance("writer2latex.latex.LaTeXConfig");
+            return new writer2latex.latex.LaTeXConfig();
         }
-        else if (MIMETypes.HTML.equals(sMIME) || MIMETypes.HTML5.equals(sMIME)) {
-            config = createInstance("writer2latex.xhtml.XhtmlConfig");
-        }
-        return config instanceof Config ? (Config) config : null;
+        return null;
     }
     
     /** Create a <code>StarMathConverter</code> implementation
@@ -105,23 +91,6 @@ public class ConverterFactory {
      *  @return the converter
      */
     public static StarMathConverter createStarMathConverter() {
-        Object converter = createInstance("writer2latex.latex.StarMathConverter");
-        return converter instanceof StarMathConverter ? (StarMathConverter) converter : null;
+        return new writer2latex.latex.StarMathConverter();
     }
-	
-    private static Object createInstance(String sClassName) {
-        try {
-		    return Class.forName(sClassName).newInstance();
-        }
-        catch (java.lang.ClassNotFoundException e) {
-            return null;
-        } 
-        catch (java.lang.InstantiationException e) {
-            return null;
-        }
-        catch (java.lang.IllegalAccessException e) {
-            return null;
-        } 
-    }
-
 }
