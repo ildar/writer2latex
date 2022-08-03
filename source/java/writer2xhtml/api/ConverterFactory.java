@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-30)
+ *  Version 1.7 (2022-08-03)
  *
  */
  
@@ -32,8 +32,8 @@ package writer2xhtml.api;
 public class ConverterFactory {
 
     // Version information
-    private static final String VERSION = "1.7 beta";
-    private static final String DATE = "2022-06-30";
+    private static final String VERSION = "1.7";
+    private static final String DATE = "2022-08-03";
 	
     /** Return the Writer2LaTeX version in the form
      *  (major version).(minor version).(patch level)<br/>
@@ -61,7 +61,7 @@ public class ConverterFactory {
      *    Note that this is <em>not</em> the recommended media type for HTML5
      *    (see http://wiki.whatwg.org/), but it is used internally
      *    by Writer2xhtml to distinguish XHTML from HTML5</li>
-     *    <li><code>application/epub+zip</code></li> for EPUB format</li>
+     *    <li><code>application/epub+zip</code> for EPUB format</li>
      *    <li><code>epub3</code> for EPUB 3 format</li>
      *  </ul>
      *  

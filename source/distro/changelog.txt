@@ -6,6 +6,10 @@ All changes are classified as
 - Bugfix: A bug in the previous version was fixed
 - Changed: Something has changed due to a design decision
 
+---------- version 1.7 ----------
+
+
+
 ---------- version 1.7 beta ----------
 
 - Bugfix: The converter no longer crashes on spreadsheets with diagrams.

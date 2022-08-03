@@ -1,7 +1,7 @@
-Writer2xhtml version 1.7 beta
-=============================
+Writer2xhtml version 1.7
+========================
 
-This is the distribution of Writer2xhtml version 1.7 beta
+This is the distribution of Writer2xhtml version 1.7
 
 Latest version can be found at the web site
   http://writer2latex.sourceforge.net/writer2xhtml.html
@@ -14,5 +14,5 @@ Bugs and feature requests should be reported to
   writer2latex (at) gmail.com
   
 
-June 2022
+August 2022
 Henrik Just

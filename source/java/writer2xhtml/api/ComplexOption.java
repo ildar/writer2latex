@@ -1,6 +1,6 @@
 /************************************************************************
  *
- *  Config.java
+ *  ComplexOption.java
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2009 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.2 (2009-11-19)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
@@ -56,7 +56,7 @@ public class ComplexOption {
 	/** Define a key. If the key already exists, the old value will be replaced
 	 * 
 	 * @param sName the name of the key. The name must be non-empty, otherwise the request will be ignored.
-	 * @param attributes
+	 * @param attributes the named attributes associated with the option as map from names to values
 	 */
 	public void put(String sName, Map<String,String> attributes) {
     	if (sName!=null && sName.length()>0) {
@@ -68,7 +68,7 @@ public class ComplexOption {
 	 *  If the key already exists, the old value will be replaced
 	 * 
 	 * @param sName the name of the key. The name must be non-empty, otherwise the request will be ignored.
-	 * @param attributes
+	 * @param attributes the named attributes associated with the option as map from names to values
 	 */
 	public void copy(String sName, Map<String,String> attributes) {
     	if (sName!=null && sName.length()>0) {

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-05)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
@@ -138,8 +138,6 @@ public final class MIMETypes extends writer2xhtml.api.MIMETypes {
         if (SVG.equals(sMIME)) { return SVG_EXT; }
         if (SVM.equals(sMIME)) { return SVM_EXT; }
         if (PDF.equals(sMIME)) { return PDF_EXT; }
-        if (LATEX.equals(sMIME)) { return LATEX_EXT; }
-        if (BIBTEX.equals(sMIME)) { return BIBTEX_EXT; }
         if (XHTML.equals(sMIME)) { return XHTML_EXT; }
         if (XHTML_MATHML.equals(sMIME)) { return XHTML_MATHML_EXT; }
         if (HTML5.equals(sMIME)) { return XHTML_EXT; }

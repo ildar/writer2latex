@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for writer2xhtml
   # Original: Sep 2004 (mgn)
-  # version 1.7 beta (2022-06-14)
+  # version 1.7 (2022-08-03)
   ############################################################################
 -->
 <project name="writer2xhtml" default="help" basedir=".">
@@ -213,7 +213,7 @@
              nodeprecatedlist="false"
              nodeprecated="false">
             <classpath refid="main.class.path"/>
-            <packageset dir="${src}" defaultexcludes="yes" />
+        	<fileset dir="${src}/writer2xhtml/api" />
         </javadoc>
         <copy todir="${javadoc}">
             <fileset dir="${src}">

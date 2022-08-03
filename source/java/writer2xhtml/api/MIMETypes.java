@@ -16,48 +16,91 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-01-09)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
 package writer2xhtml.api;
 
-/* Some helpers to handle the MIME types used by OOo and Writer2LaTeX
+/** This class provides definitions of MIME types used by LibreOffice and Writer2xhtml (some are not genuine MIME types, but are used internally in Writer2xhtml)
  */
-
 public class MIMETypes {
     // Various graphics formats, see
     // http://api.openoffice.org/docs/common/ref/com/sun/star/graphic/MediaProperties.html#MimeType
+	
+	/** Constant defining the MIME type for PNG-files
+	 */
     public static final String PNG="image/png";
+	
+	/** Constant defining the MIME type for JPEG-files
+	 */
     public static final String JPEG="image/jpeg";
+	
+	/** Constant defining the MIME type for GIF-files
+	 */
     public static final String GIF="image/gif";
+	
+	/** Constant defining the MIME type for TIFF-files
+	 */
     public static final String TIFF="image/tiff";
+	
+	/** Constant defining the MIME type for BMP-files
+	 */
     public static final String BMP="image/bmp";
+	
+	/** Constant defining the MIME type for EMF-files
+	 */
     public static final String EMF="image/x-emf";
+	
+	/** Constant defining the MIME type for WMF-files
+	 */
     public static final String WMF="image/x-wmf";
+	
+	/** Constant defining the MIME type for EPS-files
+	 */
     public static final String EPS="image/x-eps";
+	
+	/** Constant defining the MIME type for SVG-files
+	 */
     public static final String SVG="image/svg+xml";
+	
+	/** Constant defining the MIME type for SVM-files
+	 */
     // MIME type for SVM has changed
     //public static final String SVM="image/x-svm";
     public static final String SVM="application/x-openoffice-gdimetafile;windows_formatname=\"GDIMetaFile\"";
+	
+	/** Constant defining the MIME type for PDF-files
+	 */
     public static final String PDF="application/pdf";
 	
     // Destination formats
+	
+	/** Constant defining the MIME type for XHTML-files
+	 */    
     public static final String XHTML="text/html";
-    /** This is a fake MIME type, for internal use only */
+	
+	/** Constant defining the MIME type for XHTML 1.1-files (This is a fake MIME type, for internal use only)
+    */
     public static final String XHTML11="application/xhtml11";
+
+	/** Constant defining the MIME type for XHTML+MathML-files
+	 */    
     public static final String XHTML_MATHML="application/xhtml+xml";
-    /** This is a fake MIME type, for internal use only */
+	/** Constant defining the MIME type for HTML5-files (This is a fake MIME type, for internal use only)
+     */
     public static final String HTML5="text/html5";
+
+    /** Constant defining the MIME type for EPUB-files
+	 */    
     public static final String EPUB="application/epub+zip";
-    /** This is not a MIME type either */
+
+    /** Constant defining the MIME type for EPUB 3-files (This is a fake MIME type, for internal use only)
+     */
     public static final String EPUB3="epub3";
-    public static final String LATEX="application/x-latex";
-    public static final String BIBTEX="application/x-bibtex";
-    public static final String TEXT="text";
 	
 }
