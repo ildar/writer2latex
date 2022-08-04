@@ -598,19 +598,16 @@ public class XhtmlDocument extends DOMDocument {
     			}
     			child = child.getNextSibling();
     		}
-    		return false;
     	}
-    	else {
-    		// Other elements block pretty printing if they contain text nodes
-    		Node child = node.getFirstChild();
-    		while (child!=null) {
-    			if (child.getNodeType()==Node.TEXT_NODE) {
-    				return true;
-    			}
-    			child = child.getNextSibling();
-    		}
-    		return false;
-    	}
+		// Other elements block pretty printing if they contain text nodes
+		Node child = node.getFirstChild();
+		while (child!=null) {
+			if (child.getNodeType()==Node.TEXT_NODE) {
+				return true;
+			}
+			child = child.getNextSibling();
+		}
+		return false;
     }
 
     private boolean isEmpty(String sTagName) {
