@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-24)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
@@ -53,6 +53,7 @@ import writer2xhtml.api.OutputFile;
 import writer2xhtml.base.ContentEntryImpl;
 import writer2xhtml.base.ConverterBase;
 import writer2xhtml.office.MIMETypes;
+import writer2xhtml.office.MasterPage;
 import writer2xhtml.office.OfficeReader;
 import writer2xhtml.office.StyleWithProperties;
 import writer2xhtml.office.XMLString;
@@ -112,6 +113,8 @@ public class Converter extends ConverterBase {
     
     // The current context (currently we only track the content width, but this might be expanded with formatting
     // attributes - at least background color and font size later)
+    // The page content width serves as a base, and may possibly change even if the stack is non-empty
+    private String pageContentWidth = null;
     private Stack<String> contentWidth = new Stack<String>();
     
     // Constructor setting the DOCTYPE
@@ -167,7 +170,16 @@ public class Converter extends ConverterBase {
     }    
     
     protected String getContentWidth() {
-    	return contentWidth.peek();
+    	if (!contentWidth.isEmpty()) {
+    		return contentWidth.peek();
+    	}
+    	else {
+    		return pageContentWidth;
+    	}
+    }
+    
+    protected void setPageContentWidth(String sWidth) {
+    	pageContentWidth = sWidth;
     }
     
     protected String pushContentWidth(String sWidth) {
@@ -312,7 +324,7 @@ public class Converter extends ConverterBase {
         }
         
         // Set the main content width
-        pushContentWidth(getStyleCv().getPageSc().getTextWidth());
+        setPageContentWidth(getStyleCv().getPageSc().getTextWidth(ofr.getFirstMasterPage()));
 
         // Traverse the body
         Element body = ofr.getContent();

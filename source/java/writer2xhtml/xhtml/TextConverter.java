@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-24)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
@@ -559,6 +559,8 @@ public class TextConverter extends ConverterHelper {
         ListStyle listStyle, int nListLevel, boolean bUnNumbered,
         boolean bRestart, int nStartValue) {
 
+    	handlePageWidth(onode);
+
         // Note: nListLevel may in theory be different from the outline level,
         // though the ui in OOo does not allow this
 
@@ -688,6 +690,7 @@ public class TextConverter extends ConverterHelper {
      * Process a text:p tag
      */
     private void handleParagraph(Node onode, Node hnode) {
+    	handlePageWidth(onode);
         boolean bIsEmpty = OfficeReader.isWhitespaceContent(onode);
         if (config.ignoreEmptyParagraphs() && bIsEmpty) {
         	// We mainly need this to avoid loosing page breaks
@@ -750,6 +753,17 @@ public class TextConverter extends ConverterHelper {
             }
             node.appendChild(asapNode); asapNode = null;
         }
+    }
+    
+    private void handlePageWidth(Node onode) {
+    	String sStyleName = Misc.getAttribute(onode, XMLString.TEXT_STYLE_NAME);
+    	if (sStyleName!=null) {
+	    	StyleWithProperties style = ofr.getParStyle(sStyleName);
+	    	String sMasterPageName = style.getMasterPageName();
+	    	if (sMasterPageName!=null) {
+	    		converter.setPageContentWidth(converter.getStyleCv().getPageSc().getTextWidth(ofr.getMasterPage(sMasterPageName)));
+	    	}
+    	}
     }
 	
 	

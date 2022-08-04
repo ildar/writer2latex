@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-09-16)
+ *  Version 1.7 (2022-08-03)
  *
  */
 
@@ -65,8 +65,7 @@ public class PageStyleConverter extends StyleConverterHelper {
      * 
      *  @return the text width
      */
-    public String getTextWidth() {
-        MasterPage masterPage = ofr.getFirstMasterPage();
+    public String getTextWidth(MasterPage masterPage) {
         if (masterPage!=null) {
             PageLayout pageLayout = ofr.getPageLayout(masterPage.getPageLayoutName());
             if (pageLayout!=null) {
