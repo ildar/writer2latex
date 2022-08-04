@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-08-03)
+ *  Version 1.7 (2022-08-04)
  *
  */
 
@@ -53,7 +53,6 @@ import writer2xhtml.api.OutputFile;
 import writer2xhtml.base.ContentEntryImpl;
 import writer2xhtml.base.ConverterBase;
 import writer2xhtml.office.MIMETypes;
-import writer2xhtml.office.MasterPage;
 import writer2xhtml.office.OfficeReader;
 import writer2xhtml.office.StyleWithProperties;
 import writer2xhtml.office.XMLString;
@@ -263,10 +262,13 @@ public class Converter extends ConverterBase {
 
     }
 
-	
     protected Text createTextNode(String s) { return htmlDOM.createTextNode(s); }
 	
     protected Node importNode(Node node, boolean bDeep) { return htmlDOM.importNode(node,bDeep); }
+    
+    protected void setContainsMath() {
+    	outFiles.get(nOutFileIndex).setContainsMath();
+    }
 	
     protected L10n getL10n() { return l10n; }
     
@@ -392,7 +394,7 @@ public class Converter extends ConverterBase {
         // TODO: Should we support different configurations of MathJax?
         if ((isHTML5() || nType==XhtmlDocument.XHTML_MATHML) && config.useMathJax()) {
         	for (int i=0; i<=nOutFileIndex; i++) {
-        		if (outFiles.get(i).hasMath()) {
+        		if (outFiles.get(i).containsMath()) {
         			XhtmlDocument doc = outFiles.get(i);
         			Element head = doc.getHeadNode();
         			if (head!=null) {

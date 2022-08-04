@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2018-05-23)
+ *  Version 1.7 (2022-08-04)
  *
  */
 
@@ -32,8 +32,6 @@ package writer2xhtml.xhtml;
 import org.w3c.dom.NodeList;
 
 import writer2xhtml.base.DOMDocument;
-import writer2xhtml.office.XMLString;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
@@ -105,6 +103,7 @@ public class XhtmlDocument extends DOMDocument {
     private Element panelNode = null;
     private Element headerNode = null;
     private Element footerNode = null;
+    private boolean bContainsMath = false;
     
     // Initialize static data
     static {
@@ -307,7 +306,11 @@ public class XhtmlDocument extends DOMDocument {
     }
     
     @Override public boolean containsMath() {
-    	return bodyNode!=null ? containsMath(bodyNode) : false;
+    	return bContainsMath;
+    }
+    
+    public void setContainsMath() {
+    	bContainsMath = true;
     }
     
     public Element getHeadNode() { return headNode; }
@@ -361,31 +364,6 @@ public class XhtmlDocument extends DOMDocument {
         collectNodes();
     }
     
-    /** Does this document contain any math nodes?
-     * 
-     * @return true if so
-     */
-    public boolean hasMath() {
-    	return hasMath(getContentDOM().getDocumentElement()); 
-    }
-    
-    private boolean hasMath(Element node) {
-    	// Check this element
-    	if (node.getTagName().equals(XMLString.MATH)) {
-    		return true;
-    	}
-    	// Check children
-    	Node child = node.getFirstChild();
-    	while (child!=null) {
-    		if (child.getNodeType()==Node.ELEMENT_NODE && hasMath((Element)child)) {
-    			return true;
-    		}
-    		child = child.getNextSibling();
-    	}
-    	// Found nothing
-    	return false;
-    }
-	
     public void read(InputStream is) throws IOException {
         super.read(is);
         collectNodes();
@@ -969,25 +947,6 @@ public class XhtmlDocument extends DOMDocument {
     	}
     }
     
-    private boolean containsMath(Element node) {
-    	// First check the node itself
-    	if (node.getTagName().equals("math")) {
-    		return true;
-    	}
-    	// The check the children
-    	Node child = node.getFirstChild();
-    	while (child!=null) {
-    		if (child.getNodeType()==Node.ELEMENT_NODE) {
-    			if (containsMath((Element)child)) {
-    				return true;
-    			}
-    		}
-    		child = child.getNextSibling();
-    	}
-    	// And then look no further
-    	return false;
-    }
-
 
 }
 

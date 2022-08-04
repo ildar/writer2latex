@@ -107,7 +107,9 @@ public class MathConverter extends ConverterHelper {
     				sMathJax = "\\("+converter.getTexMathsEquation(sLaTeX)+"\\)";
     				break;
     			case display:
-    				sMathJax = "\\["+converter.getTexMathsEquation(sLaTeX)+"\\]";
+    				// TODO: For non-text paragraphs display would be OK
+    				//sMathJax = "\\["+converter.getTexMathsEquation(sLaTeX)+"\\]";
+    				sMathJax = "\\("+converter.getTexMathsEquation(sLaTeX)+"\\)";
     				break;
     			case latex:
     			default: // Arbitrary LaTeX; this is the tricky bit	
@@ -118,6 +120,7 @@ public class MathConverter extends ConverterHelper {
     			sMathJax = " "+converter.getTexMathsEquation(sLaTeX)+" ";
     		}
     		hnode.appendChild(converter.createTextNode(sMathJax));
+    		converter.setContainsMath();
     		return true;
     	}
     	return false;
@@ -208,6 +211,7 @@ public class MathConverter extends ConverterHelper {
     		}
     	}
     	convertMathMLNodeList(onode.getChildNodes(), math);
+		converter.setContainsMath();
     }
     
     private void convertElementAsMathML(Node onode, Node hnode) {

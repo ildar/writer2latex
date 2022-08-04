@@ -8,6 +8,9 @@ All changes are classified as
 
 ---------- version 1.7 ----------
 
+- Bugfix: The option use_mathjax now works correctly with TeXMaths equations. Also TeXMaths equations are now always
+  typeset in inline mode.
+
 - Bugfix: The converter now always uses the current page layout when calculating relative widths. Previously the first
   page layout in the document was used, which caused miscalculations if page layout changes in the document.
 
