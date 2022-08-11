@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-30)
+ *  Version 2.0 (2022-08-11)
  *
  */ 
  
@@ -80,13 +80,13 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	super(xContext);
     	
     	pageHandlers.put("Documentclass", new DocumentclassHandler());
-    	pageHandlers.put("Formatting", new GeneralHandler());
+    	pageHandlers.put("General", new GeneralHandler());
     	pageHandlers.put("Characters", new CharactersHandler());
-    	pageHandlers.put("Formatting2", new ParagraphsAndSectionsHandler());
+    	pageHandlers.put("ParagraphsAndSections", new ParagraphsAndSectionsHandler());
     	pageHandlers.put("HeadingsLists", new HeadingsListsHandler());
+    	pageHandlers.put("Pages", new PagesHandler());
     	pageHandlers.put("Styles", new StylesHandler());
     	pageHandlers.put("Fonts", new FontsHandler());
-    	pageHandlers.put("Pages", new PagesHandler());
     	pageHandlers.put("Tables", new TablesHandler());
     	pageHandlers.put("Figures", new FiguresHandler());
     	pageHandlers.put("TextAndMath", new TextAndMathHandler());
@@ -393,6 +393,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     private class ParagraphsAndSectionsHandler extends PageHandler {
         
     	@Override protected void setControls(DialogAccess dlg) {
+    		// Paragraphs
+    		checkBoxFromConfig(dlg,"UseParskip","use_parskip");
     		// Sections
     		checkBoxFromConfig(dlg,"UseMulticol","use_multicol");
     		checkBoxFromConfig(dlg,"MulticolsFormat","multicols_format");
@@ -402,6 +404,8 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	}
     	
     	@Override protected void getControls(DialogAccess dlg) {
+    		// Paragraphs
+    		checkBoxToConfig(dlg,"UseParskip","use_parskip");
     		// Sections
     		checkBoxToConfig(dlg,"UseMulticol","use_multicol");
     		checkBoxToConfig(dlg,"MulticolsFormat","multicols_format");

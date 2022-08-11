@@ -2,6 +2,9 @@ Changelog for Writer2LaTeX version 1.6 -> 2.0
 
 ---------- version 1.9.4 ---------
 
+[w2l] New option use_parskip which export some basic paragraph formatting (paragraph distance and first
+  line indentation) using parskip.sty.
+
 [all] API change: Converter no longer supports readTemplate (which was only used by HTML export)
 
 [all] Removed HTML5 support from the code (Writer2xhtml is now a separate project)

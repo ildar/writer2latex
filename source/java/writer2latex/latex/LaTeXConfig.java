@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-09)
+ *  Version 2.0 (2022-08-10)
  *
  */
 
@@ -186,6 +186,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
         addOption(new BooleanOption("use_tikz","true"));
         addOption(new BooleanOption("use_longfbox","true"));
         addOption(new BooleanOption("use_titlesec","false"));
+        addOption(new BooleanOption("use_parskip","false"));
         addOption(new BooleanOption("use_enumitem","true"));
         addOption(new BooleanOption("list_layout","false"));
         addOption(new BooleanOption("list_styles","false"));
@@ -705,6 +706,7 @@ public class LaTeXConfig extends writer2latex.base.ConfigBase {
     public boolean useTikz() { return ((BooleanOption) options.get("use_tikz")).getValue(); }
     public boolean useLongfbox() { return ((BooleanOption) options.get("use_longfbox")).getValue(); }
     public boolean useTitlesec() { return ((BooleanOption) options.get("use_titlesec")).getValue(); }
+    public boolean useParskip() { return ((BooleanOption) options.get("use_parskip")).getValue(); }
     public boolean useEnumitem() { return ((BooleanOption) options.get("use_enumitem")).getValue(); }
     public boolean listLayout() { return ((BooleanOption) options.get("list_layout")).getValue(); }
     public boolean listStyles() { return ((BooleanOption) options.get("list_styles")).getValue(); }

@@ -11,7 +11,7 @@
         <paragraph role="paragraph" xml-lang="en-US">Define a custom format for the LaTeX export</paragraph>
 
         <section id="howtoget" xml-lang="en-US">
-        	Choose <emph>Tools - Options - Writer2LaTeX - LaTeX</emph>
+        	Choose <emph>Tools - Options - Writer2LaTeX - Custom</emph>
         </section>
         
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigIntroduction" id="bm_configintroduction"/>
@@ -19,6 +19,7 @@
         A format defines the kind of LaTeX document to generate (the document class to use and the packages to load).
         It also defines a set of rules defining how content and formatting should be exported to LaTeX. Advanced users can define
         their own format on these pages. This requires some knowledge of LaTeX.</paragraph>
-        <paragraph role="paragraph" xml-lang="en-US">To use the custom format, choose <emph>Custom</emph> in the export dialog.</paragraph>
+        <paragraph role="paragraph" xml-lang="en-US">To use the custom format, choose <emph>Custom</emph> in the export dialog.
+        Otherwise the settings has no effect.</paragraph>
     </body>
 </helpdocument>

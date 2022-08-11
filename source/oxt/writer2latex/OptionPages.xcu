@@ -84,9 +84,9 @@
         <value>org.openoffice.da.writer2latex.configuration</value>
       </prop>
       <prop oor:localized="true" oor:name="Label">
-        <value xml:lang="en-US">Writer2LaTeX - LaTeX</value>
-        <value xml:lang="da-DK">Writer2LaTeX - LaTeX</value>
-      <value xml:lang="de-DE">Writer2LaTeX - LaTeX</value></prop>
+        <value xml:lang="en-US">Writer2LaTeX - Custom</value>
+        <value xml:lang="da-DK">Writer2LaTeX - Brugerdefineret</value>
+      <value xml:lang="de-DE">Writer2LaTeX - Custom</value></prop>
       <prop oor:name="OptionsPage">
         <value>%origin%/W2LDialogs2/ConfigurationRoot.xdl</value>
       </prop>

@@ -2,7 +2,7 @@
  *
  *  OfficeReader.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,14 +19,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-10-02)
+ *  Version 2.0 (2022-08-11)
  *
  */
 
 package writer2latex.office;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.HashSet;
@@ -40,7 +39,9 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Text;
 
+import writer2latex.util.Calc;
 import writer2latex.util.Misc;
+import writer2latex.util.StringVote;
 
 /** <p> This class reads and collects global information about an OOo document.
   * This includes styles, forms, information about indexes and references etc.
@@ -174,7 +175,7 @@ public class OfficeReader {
      *  @param s the String to check
      *  @return true if the String contains whitespace only
      */
-    public static boolean isWhitespace(String s) {
+    private static boolean isWhitespace(String s) {
         int nLen = s.length();
         for (int i=0; i<nLen; i++) {
             if (!Character.isWhitespace(s.charAt(i))) { return false; }
@@ -356,6 +357,10 @@ public class OfficeReader {
     
     // The first image in the document
     private Element firstImage = null;
+    
+    // The most popular values for paragraph spacing and first line indent
+    private StringVote parskip = new StringVote();
+    private StringVote parindent = new StringVote();
 	
     // Identify individual genres
     private boolean bText = false;
@@ -522,53 +527,23 @@ public class OfficeReader {
      *  @return a <code>MasterPage</code> object representing the master page
      */
     public MasterPage getFirstMasterPage() { return firstMasterPage; }
-	
-    /** Return the iso language used in most paragaph styles (in a well-structured
-     * document this will be the default language)
-     * TODO: Base on content rather than style 
-     * @return the iso language
-     */ 
-    public String getMajorityLanguage() {
-        Hashtable<String, Integer> langs = new Hashtable<String, Integer>();
-
-        // Read the default language from the default paragraph style
-        String sDefaultLang = null;
-        StyleWithProperties style = getDefaultParStyle();
-        if (style!=null) { 
-            sDefaultLang = style.getProperty(XMLString.FO_LANGUAGE);
-        }
-
-        // Collect languages from paragraph styles
-        Enumeration<OfficeStyle> enumeration = getParStyles().getStylesEnumeration();
-        while (enumeration.hasMoreElements()) {
-            style = (StyleWithProperties) enumeration.nextElement();
-            String sLang = style.getProperty(XMLString.FO_LANGUAGE);
-            if (sLang==null) { sLang = sDefaultLang; }
-            if (sLang!=null) {
-                int nCount = 1;
-                if (langs.containsKey(sLang)) {
-                    nCount = langs.get(sLang).intValue()+1;
-                }
-                langs.put(sLang,new Integer(nCount));
-            }
-        }
-		
-        // Find the most common language
-        int nMaxCount = 0;
-        String sMajorityLanguage = null;
-        Enumeration<String> langenum = langs.keys();
-        while (langenum.hasMoreElements()) {
-            String sLang = langenum.nextElement();
-            int nCount = langs.get(sLang).intValue();
-            if (nCount>nMaxCount) {
-                nMaxCount = nCount;
-                sMajorityLanguage = sLang;
-            }
-        }
-        return sMajorityLanguage;        
+    
+    /** Get the most common indentation for the first line of paragraphs (a lenght or "auto")
+     * 
+     * @return the indentation
+     */
+    public String getTextIndent() {
+    	return parindent.getWinner();
     }
-
-	
+    
+    /** Get the most common vertical margin of paragraphs (top+bottom)
+     * 
+     * @return the margin
+     */
+    public String getVerticalMargin() {
+    	return parskip.getWinner();
+    }
+		
     /** <p>Returns a reader for a specific toc
      *  @param onode the <code>text:table-of-content-node</code>
      *  @return the reader, or null
@@ -1053,7 +1028,7 @@ public class OfficeReader {
                 }
             }                
 
-            traverseContent(body,null,0,-1);
+            traverseContent(body,null,0,-1,0);
 
             if (sAutoFigureSequenceName!=null) {
                 addFigureSequenceName(sAutoFigureSequenceName);
@@ -1066,13 +1041,41 @@ public class OfficeReader {
         /*if (firstMasterPage==null) {
             firstMasterPage = getMasterPage(sFirstMasterPageName);
         }*/
+        
     }
 	
-    private void traverseContent(Element node, String sListStyleName, int nListLevel, int nParLevel) {
+    private void traverseContent(Element node, String sListStyleName, int nListLevel, int nParLevel, int nNestingLevel) {
         // Handle this node first
+    	
         String sName = node.getTagName();
+        
         if (sName.equals(XMLString.TEXT_P)) {
-        	nParLevel=0;
+        	// Cast votes for parskip and parindent if not inside tables, lists, frames or footnotes
+        	if (nNestingLevel==0) {
+	        	StyleWithProperties style = getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
+	        	String sMarginTop = style.getAbsoluteLength(XMLString.FO_MARGIN_TOP);
+	            String sMarginBottom = style.getAbsoluteLength(XMLString.FO_MARGIN_BOTTOM);
+	            if (sMarginTop!=null && sMarginBottom!=null) {
+	            	parskip.castVote(Calc.round(Calc.add(sMarginTop, sMarginBottom)));
+	            }
+	            else if (sMarginTop!=null) {
+	            	parskip.castVote(sMarginTop);
+	            }
+	            else if (sMarginBottom!=null) {
+	            	parskip.castVote(sMarginBottom);
+	            }
+	            if ("true".equals(style.getProperty(XMLString.STYLE_AUTO_TEXT_INDENT))) {
+	                parindent.castVote("auto");
+	            }
+	            else {
+	            	String sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
+	            	if (sTextIndent!=null) {
+	            		parindent.castVote(sTextIndent);
+	            	}
+	            }
+        	}
+
+            nParLevel=0;
         	optimize(node);
             //collectMasterPage(getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME)));
         }
@@ -1092,6 +1095,7 @@ public class OfficeReader {
             optimize(node);
         }
         else if (sName.equals(XMLString.TEXT_LIST)) {
+        	nNestingLevel++;
         	nListLevel++;
         	String sStyleName = Misc.getAttribute(node, XMLString.TEXT_STYLE_NAME);
         	if (sStyleName!=null) sListStyleName = sStyleName;
@@ -1101,6 +1105,7 @@ public class OfficeReader {
         	sListStyleName=null;
         	nListLevel=0;
         	nParLevel=-1;
+        	nNestingLevel++;
         }
         else if (sName.equals(XMLString.TEXT_SEQUENCE)) {
             String sSeqName = Misc.getAttribute(node,XMLString.TEXT_NAME);
@@ -1175,13 +1180,14 @@ public class OfficeReader {
         	// This may be an image (note that a replacement image for an object is OK by this definition)
         	Element image = Misc.getChildByTagName(node, XMLString.DRAW_IMAGE);
         	if (image!=null) { firstImage=image; }
+        	nNestingLevel++;
         }
 		
         // Traverse the children (except body of indexes, which is always regenerated)
         Node child = node.getFirstChild();
         while (child!=null) {
             if (child.getNodeType()==Node.ELEMENT_NODE && !child.getNodeName().equals(XMLString.TEXT_INDEX_BODY)) {
-                traverseContent((Element) child, sListStyleName, nListLevel, nParLevel);
+                traverseContent((Element) child, sListStyleName, nListLevel, nParLevel, nNestingLevel);
             }
             child = child.getNextSibling();
         }

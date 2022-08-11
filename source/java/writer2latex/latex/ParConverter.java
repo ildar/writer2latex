@@ -2,7 +2,7 @@
  *
  *  ParConverter.java
  *
- *  Copyright: 2002-2018 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  This file is part of Writer2LaTeX.
  *  
@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2018-07-30)
+ *  Version 2.0 (2022-08-10)
  *
  */
 
@@ -35,6 +35,7 @@ import writer2latex.latex.util.StyleMapItem;
 import writer2latex.office.OfficeReader;
 import writer2latex.office.StyleWithProperties;
 import writer2latex.office.XMLString;
+import writer2latex.util.CSVList;
 import writer2latex.util.Calc;
 
 /* <p>This class converts OpenDocument paragraphs (<code>text:p</code>) and
@@ -83,7 +84,29 @@ public class ParConverter extends StyleConverter {
         if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
             decl.append("% Paragraph styles").nl();
             super.appendDeclarations(pacman,decl);
-        }         
+        }
+        
+        if (config.useParskip()) {
+        	CSVList options = new CSVList(",","=");
+        	String sSkip = ofr.getVerticalMargin();
+        	if (sSkip!=null) {
+        		options.addValue("skip",sSkip+" plus "+Calc.round(Calc.multiply(0.2F, sSkip))); // Add 20% rubber length
+        	}
+        	else {
+        		options.addValue("skip"); // Use a standard value of .5\baselineskip plus 2pt
+        	}
+        	String sIndent = ofr.getTextIndent();
+    		if ("auto".equals(sIndent)) {
+    			options.addValue("indent","1.5em");
+    		}
+    		else if (sIndent!=null) {
+    			options.addValue("indent",sIndent);
+    		}
+    		else {
+    			options.addValue("indent"); // Keep indentation from document class
+    		}
+    		pacman.usepackage(options.toString(), "parskip");
+        }
     }
 	
     /**
