@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-12)
+ *  Version 1.7 (2022-08-16)
  *
  */ 
 
@@ -353,7 +353,7 @@ public class DialogAccess {
     public void setNumericFieldValue(String sControlName, int nValue) {
         XPropertySet xPropertySet = getControlProperties(sControlName);
         try {
-            xPropertySet.setPropertyValue("Value",new Double(nValue));
+            xPropertySet.setPropertyValue("Value",Double.valueOf(nValue));
         }
         catch (Exception e) {
             // Will fail if the control does not exist or is not a numeric field

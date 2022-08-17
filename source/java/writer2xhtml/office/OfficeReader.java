@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-06-30)
+ *  Version 1.7 (2022-08-17)
  *
  */
 
@@ -557,7 +557,7 @@ public class OfficeReader {
                 if (langs.containsKey(sLang)) {
                     nCount = langs.get(sLang).intValue()+1;
                 }
-                langs.put(sLang,new Integer(nCount));
+                langs.put(sLang,Integer.valueOf(nCount));
             }
         }
 		

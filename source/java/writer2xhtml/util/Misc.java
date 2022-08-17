@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-02-16)
+ *  Version 1.7 (2022-08-16)
  *
  */
 
@@ -111,7 +111,7 @@ public class Misc{
     }
 	
     public static final String int2arabic(int number) {
-        return new Integer(number).toString();
+        return Integer.toString(number);
     }
 	
     public static final String int2alph(int number, boolean bLetterSync) {

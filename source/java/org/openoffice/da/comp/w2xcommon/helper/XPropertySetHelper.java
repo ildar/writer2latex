@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2008 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.0 (2008-07-21)
+ *  Version 1.7 (2022-08-16)
  *
  */
 package org.openoffice.da.comp.w2xcommon.helper;
@@ -74,7 +74,7 @@ public class XPropertySetHelper {
     }
 	
     public static void setPropertyValue(XPropertySet xProps, String sName, int nValue) {
-        setPropertyValue(xProps,sName,new Integer(nValue));
+        setPropertyValue(xProps,sName,Integer.valueOf(nValue));
     }
 
     public static short getPropertyValueAsShort(XPropertySet xProps, String sName) {
@@ -83,7 +83,7 @@ public class XPropertySetHelper {
     }
 	
     public static void setPropertyValue(XPropertySet xProps, String sName, short nValue) {
-        setPropertyValue(xProps,sName,new Short(nValue));
+        setPropertyValue(xProps,sName,Short.valueOf(nValue));
     }
 
     public static boolean getPropertyValueAsBoolean(XPropertySet xProps, String sName) {
@@ -92,7 +92,7 @@ public class XPropertySetHelper {
     }
 	
     public static void setPropertyValue(XPropertySet xProps, String sName, boolean bValue) {
-        setPropertyValue(xProps,sName,new Boolean(bValue));
+        setPropertyValue(xProps,sName,Boolean.valueOf(bValue));
     }
 
 

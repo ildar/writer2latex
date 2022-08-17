@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2014 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.4 (2014-08-27)
+ *  Version 1.7 (2022-08-17)
  *
  */
 
@@ -97,7 +97,7 @@ public class TocReader {
                                     if (XMLString.TEXT_INDEX_SOURCE_STYLE.equals(elm1.getTagName())) {
                                         String sIndexSourceStyle = Misc.getAttribute(elm1,XMLString.TEXT_STYLE_NAME);
                                         if (sIndexSourceStyle!=null) {
-                                            indexSourceStyles.put(sIndexSourceStyle,new Integer(nLevel));
+                                            indexSourceStyles.put(sIndexSourceStyle,Integer.valueOf(nLevel));
                                         } 
                                     }
                                 }

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *  MA  02111-1307  USA
  *
- *  Copyright: 2002-2015 by Henrik Just
+ *  Copyright: 2002-2022 by Henrik Just
  *
  *  All Rights Reserved.
  * 
- *  Version 1.6 (2015-07-30)
+ *  Version 1.7 (2022-08-16)
  *
  */
  
@@ -131,7 +131,7 @@ public class GraphicConverterImpl2 implements GraphicConverter {
             fileProps[1].Value = new ByteArrayToXInputStreamAdapter(source);
             fileProps[2] = new PropertyValue();
             fileProps[2].Name = "Hidden";
-            fileProps[2].Value = new Boolean(true);
+            fileProps[2].Value = true;
 
             XComponent xDocument = xComponentLoader.loadComponentFromURL(
                 "private:stream", "_blank", 0, fileProps);
@@ -159,12 +159,13 @@ public class GraphicConverterImpl2 implements GraphicConverter {
             XPropertySet xPageProps = (XPropertySet)  UnoRuntime.queryInterface(
                 XPropertySet.class, xDrawPage);
             Size size = xShape.getSize();
-            xPageProps.setPropertyValue("Width", new Integer(size.Width));
-            xPageProps.setPropertyValue("Height", new Integer(size.Height));
-            xPageProps.setPropertyValue("BorderTop", new Integer(0));
-            xPageProps.setPropertyValue("BorderBottom", new Integer(0));
-            xPageProps.setPropertyValue("BorderLeft", new Integer(0));
-            xPageProps.setPropertyValue("BorderRight", new Integer(0));
+            
+            xPageProps.setPropertyValue("Width", size.Width);
+            xPageProps.setPropertyValue("Height", size.Height);
+            xPageProps.setPropertyValue("BorderTop", 0);
+            xPageProps.setPropertyValue("BorderBottom", 0);
+            xPageProps.setPropertyValue("BorderLeft", 0);
+            xPageProps.setPropertyValue("BorderRight", 0);
             
             // Export the draw document (xDocument)
             refreshDocument(xDocument);
@@ -180,7 +181,7 @@ public class GraphicConverterImpl2 implements GraphicConverter {
             exportProps[1].Value = outputStream;
             exportProps[2] = new PropertyValue();
             exportProps[2].Name = "Overwrite";
-            exportProps[2].Value = new Boolean(true);
+            exportProps[2].Value = true;
 			
             XStorable xStore = (XStorable) UnoRuntime.queryInterface (
                 XStorable.class, xDocument);

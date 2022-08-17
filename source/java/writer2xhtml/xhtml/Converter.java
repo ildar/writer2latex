@@ -20,7 +20,7 @@
  *
  *  All Rights Reserved.
  * 
- *  Version 1.7 (2022-08-04)
+ *  Version 1.7 (2022-08-17)
  *
  */
 
@@ -846,14 +846,14 @@ public class Converter extends ConverterBase {
     public Element createTarget(String sId) {
         Element a = htmlDOM.createElement("a");
         a.setAttribute("id",targetNames.getExportName(sId));
-        targets.put(sId, new Integer(nOutFileIndex));
+        targets.put(sId, Integer.valueOf(nOutFileIndex));
         return a;
     }
 	
     // put a target id on an existing element
     public void addTarget(Element node,String sId) {
         node.setAttribute("id",targetNames.getExportName(sId));
-        targets.put(sId, new Integer(nOutFileIndex));
+        targets.put(sId, Integer.valueOf(nOutFileIndex));
     }
     
     // get at target id

@@ -8,6 +8,8 @@ All changes are classified as
 
 ---------- version 1.7 ----------
 
+- Improvement: No longer uses deprecated Java constructions
+
 - Improvement: Pretty printing now works better with spreadsheets.
 
 - Bugfix: The option use_mathjax now works correctly with TeXMaths equations. Also TeXMaths equations are now always
