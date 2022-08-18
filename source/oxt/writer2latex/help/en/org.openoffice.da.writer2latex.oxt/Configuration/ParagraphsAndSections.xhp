@@ -15,13 +15,17 @@
         	Choose <emph>Tools - Options - Writer2LaTeX - Paragraphs and Sections</emph>
         </section>
         
-        <paragraph role="heading" level="2" xml-lang="en-US">Sections</paragraph>
+        <paragraph role="heading" level="2" xml-lang="en-US">Paragraphs</paragraph>
 
     	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigUseParskip" id="bm_configuseparskip"/>
         <paragraph role="heading" level="3" xml-lang="en-US">Export paragraph distance &amp; indentation (using parskip.sty)</paragraph>
         <paragraph role="paragraph" xml-lang="en-US">If you check this option, Writer2LaTeX will export the distance between paragraphs and
         the indentation of the first line of paragraphs using the LaTeX package multicol.sty. The same setting will be applied to all
         paragraphs, and Writer2LaTeX will use the most common values found in the document (outside special areas like tables, lists and footnotes).
+        </paragraph>
+
+    	<bookmark xml-lang="en-US" branch="hid/org.openoffice.da.writer2latex.oxt:ConfigParAlign" id="bm_configparalign"/>
+        <paragraph role="heading" level="3" xml-lang="en-US">TODO
         </paragraph>
 
         <paragraph role="heading" level="2" xml-lang="en-US">Sections</paragraph>

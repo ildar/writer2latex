@@ -395,6 +395,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	@Override protected void setControls(DialogAccess dlg) {
     		// Paragraphs
     		checkBoxFromConfig(dlg,"UseParskip","use_parskip");
+    		checkBoxFromConfig(dlg,"ParAlign","par_align");
     		// Sections
     		checkBoxFromConfig(dlg,"UseMulticol","use_multicol");
     		checkBoxFromConfig(dlg,"MulticolsFormat","multicols_format");
@@ -406,6 +407,7 @@ public final class ConfigurationDialog extends ConfigurationDialogBase implement
     	@Override protected void getControls(DialogAccess dlg) {
     		// Paragraphs
     		checkBoxToConfig(dlg,"UseParskip","use_parskip");
+    		checkBoxToConfig(dlg,"ParAlign","par_align");
     		// Sections
     		checkBoxToConfig(dlg,"UseMulticol","use_multicol");
     		checkBoxToConfig(dlg,"MulticolsFormat","multicols_format");

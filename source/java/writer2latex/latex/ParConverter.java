@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-08-10)
+ *  Version 2.0 (2022-08-18)
  *
  */
 
@@ -38,30 +38,28 @@ import writer2latex.office.XMLString;
 import writer2latex.util.CSVList;
 import writer2latex.util.Calc;
 
-/* <p>This class converts OpenDocument paragraphs (<code>text:p</code>) and
- * paragraph styles/formatting into LaTeX</p>
- * <p>Export of formatting depends on the option "formatting":</p>
- * <ul>
- * <li><code>ignore_all</code>
- * <li><code>ignore_most</code>
- * <li><code>convert_basic</code>
- * <li><code>convert_most</code>
- * <li><code>convert_all</code>
- * </ul> 
- * <p>TODO: Captions and {foot|end}notes should also use this class
+/* This class converts OpenDocument paragraphs (<code>text:p</code>) and
+ * paragraph styles/formatting into LaTeX.
+ * Export of formatting depends on the options useParskip (export global setting of paragraph
+ * distance and first line indentation), parAlign (export paragraph alignment) 
+ * and indirectly on the option formatting (which controls export of character formatting).
  */
-public class ParConverter extends StyleConverter {
+// TODO: Captions and {foot|end}notes should (probably?) also use this class
+class ParConverter extends StyleConverter {
 
+	// Do we need to fix redefinition of \\?
     private boolean bNeedArrayBslash = false;
     
-    // Display hidden text?
+    // Configuration options
     private boolean bDisplayHiddenText = false;
-
+    private boolean bParAlign = false;
+    
     /** <p>Constructs a new <code>ParConverter</code>.</p>
      */
     public ParConverter(OfficeReader ofr, LaTeXConfig config, ConverterPalette palette) {
         super(ofr,config,palette);
         this.bDisplayHiddenText = config.displayHiddenText();
+        this.bParAlign = config.parAlign();
     }
 	
     public void appendDeclarations(LaTeXPacman pacman, LaTeXDocumentPortion decl) {
@@ -72,18 +70,6 @@ public class ParConverter extends StyleConverter {
             decl.append("\\makeatletter").nl()
                 .append("\\newcommand\\arraybslash{\\let\\\\\\@arraycr}").nl()
                 .append("\\makeatother").nl();
-        }
-	
-
-        if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
-            // We typeset with \raggedbottom since OOo doesn't use rubber lengths
-            // TODO: Maybe turn vertical spacing from OOo into rubber lengths?
-            decl.append("\\raggedbottom").nl();
-        }
-
-        if (config.formatting()>=LaTeXConfig.CONVERT_MOST) {
-            decl.append("% Paragraph styles").nl();
-            super.appendDeclarations(pacman,decl);
         }
         
         if (config.useParskip()) {
@@ -107,6 +93,8 @@ public class ParConverter extends StyleConverter {
     		}
     		pacman.usepackage(options.toString(), "parskip");
         }
+
+        super.appendDeclarations(pacman,decl);
     }
 	
     /**
@@ -120,7 +108,9 @@ public class ParConverter extends StyleConverter {
      */
     public void handleParagraph(Element node, LaTeXDocumentPortion ldp, Context oc, boolean bLastInBlock) {
     	// Check for display equation (except in table cells)
-        if ((!oc.isInTable()) && palette.getMathCv().handleDisplayEquation(node,ldp)) { return; }
+        if ((!oc.isInTable()) && palette.getMathCv().handleDisplayEquation(node,ldp)) {
+        	return;
+        }
 		
         // Get the style for this paragraph
         String sStyleName = node.getAttribute(XMLString.TEXT_STYLE_NAME);
@@ -169,6 +159,8 @@ public class ParConverter extends StyleConverter {
             if (!oc.isInTable()) { ldp.append(baPage.getAfter()); }
             return;
         }
+        
+        // Finished treating special cases, now for normal conversion of paragraph
 		
         Context ic = (Context) oc.clone();
 
@@ -203,10 +195,9 @@ public class ParConverter extends StyleConverter {
         palette.getI18n().popSpecialTable();
     }
 
+    // Paragraphs formatting in table cells need a special treatment for several reasons
+    // TODO: This methods would benefit from some refactoring
     private int applyCellParStyle(String sName, BeforeAfter ba, Context context, boolean bNoTextPar, boolean bLastInBlock) {
-        // Paragraph formatting for paragraphs within table cells
-        // We always use simple par styles here
-		
         context.setVerbatim(false);
         
         int nBreakAfter = bLastInBlock ? StyleMapItem.NONE : StyleMapItem.PAR;
@@ -238,27 +229,29 @@ public class ParConverter extends StyleConverter {
             nBreakAfter = getBreakAfter(sm,sDisplayName);
             if (sm.get(sDisplayName).getVerbatim()) { context.setVerbatim(true); }
         }
-        else if (bNoTextPar && (config.formatting()==LaTeXConfig.CONVERT_BASIC || config.formatting()==LaTeXConfig.IGNORE_MOST) ) {
+        else if (bNoTextPar) {
             // only alignment!
             StyleWithProperties style = ofr.getParStyle(sName);
             if (style!=null) {
                 // Apply hard formatting attributes
                 // Note: Left justified text is exported as full justified text!
                 palette.getPageSc().applyPageBreak(style,false,ba);
-                String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
-                if (bLastInBlock && context.isInLastTableColumn()) { // no grouping needed, but need to fix problem with \\
-                    if ("center".equals(sTextAlign)) { ba.add("\\centering\\arraybslash ",""); }
-                    else if ("end".equals(sTextAlign)) { ba.add("\\raggedleft\\arraybslash ",""); }
-                    bNeedArrayBslash = true;
-                }
-                else if (bLastInBlock) { // no grouping needed
-                    if ("center".equals(sTextAlign)) { ba.add("\\centering ",""); }
-                    else if ("end".equals(sTextAlign)) { ba.add("\\raggedleft ",""); }
-                }
-                else {
-                    if ("center".equals(sTextAlign)) { ba.add("{\\centering ","\\par}"); }
-                    else if ("end".equals(sTextAlign)) { ba.add("{\\raggedleft ","\\par}"); }
-                    nBreakAfter = StyleMapItem.LINE;
+                if (bParAlign) {
+	                String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
+	                if (bLastInBlock && context.isInLastTableColumn()) { // no grouping needed, but need to fix problem with \\
+	                    if ("center".equals(sTextAlign)) { ba.add("\\centering\\arraybslash ",""); }
+	                    else if ("end".equals(sTextAlign)) { ba.add("\\raggedleft\\arraybslash ",""); }
+	                    bNeedArrayBslash = true;
+	                }
+	                else if (bLastInBlock) { // no grouping needed
+	                    if ("center".equals(sTextAlign)) { ba.add("\\centering ",""); }
+	                    else if ("end".equals(sTextAlign)) { ba.add("\\raggedleft ",""); }
+	                }
+	                else {
+	                    if ("center".equals(sTextAlign)) { ba.add("{\\centering ","\\par}"); }
+	                    else if ("end".equals(sTextAlign)) { ba.add("{\\raggedleft ","\\par}"); }
+	                    nBreakAfter = StyleMapItem.LINE;
+	                }
                 }
             }
         }
@@ -271,20 +264,22 @@ public class ParConverter extends StyleConverter {
             // Note: Left justified text is exported as full justified text!
             StyleWithProperties style = ofr.getParStyle(sName);
             if (style!=null) {
-                String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
-                if (bLastInBlock && context.isInLastTableColumn()) { // no grouping needed, but need to fix problem with \\
-                    if ("center".equals(sTextAlign)) { baPar.add("\\centering\\arraybslash",""); }
-                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft\\arraybslash",""); }
-                    bNeedArrayBslash = true;
-                }
-                else if (bLastInBlock) { // no \par needed
-                    if ("center".equals(sTextAlign)) { baPar.add("\\centering",""); }
-                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft",""); }
-                }
-                else {
-                    if ("center".equals(sTextAlign)) { baPar.add("\\centering","\\par"); }
-                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft","\\par"); }
-                }
+            	if (bParAlign) {
+	                String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
+	                if (bLastInBlock && context.isInLastTableColumn()) { // no grouping needed, but need to fix problem with \\
+	                    if ("center".equals(sTextAlign)) { baPar.add("\\centering\\arraybslash",""); }
+	                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft\\arraybslash",""); }
+	                    bNeedArrayBslash = true;
+	                }
+	                else if (bLastInBlock) { // no \par needed
+	                    if ("center".equals(sTextAlign)) { baPar.add("\\centering",""); }
+	                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft",""); }
+	                }
+	                else {
+	                    if ("center".equals(sTextAlign)) { baPar.add("\\centering","\\par"); }
+	                    else if ("end".equals(sTextAlign)) { baPar.add("\\raggedleft","\\par"); }
+	                }
+	            }
                 palette.getI18n().applyLanguage(style,true,true,baText);
                 palette.getCharSc().applyFont(style,true,true,baText,context);
             }
@@ -311,7 +306,6 @@ public class ParConverter extends StyleConverter {
         }
         return nBreakAfter;
     }
-
 	
     /** <p>Use a paragraph style in LaTeX.</p>
      *  @param <code>sName</code> the name of the text style
@@ -320,48 +314,25 @@ public class ParConverter extends StyleConverter {
      *  @param <code>bNoTextPar</code> true if this paragraph has no text content (hence character formatting is not needed)  
      */
     private int applyParStyle(String sName, BeforeAfter ba, Context context, boolean bNoTextPar) {
-        return applyParStyle(sName,ba,context,bNoTextPar,true);
-    }
-	
-    private int applyParStyle(String sName, BeforeAfter ba, Context context, boolean bNoTextPar, boolean bBreakInside) {
         // No style specified?
         if (sName==null) { return StyleMapItem.PAR; }
         
-        /*if (context.isInSimpleTable()) {
-            if (config.formatting()!=LaTeXConfig.IGNORE_ALL) {
-                // only character formatting!
-                StyleWithProperties style = ofr.getParStyle(sName);
-                if (style!=null) {
-                    palette.getI18n().applyLanguage(style,true,true,ba);
-                    palette.getCharSc().applyFont(style,true,true,ba,context);
-                    if (ba.getBefore().length()>0) { ba.add(" ",""); }
-                }
-            }
-        }
-        else*/
         int nBreakAfter = StyleMapItem.PAR;
         
-        if (bNoTextPar && (config.formatting()==LaTeXConfig.CONVERT_BASIC || config.formatting()==LaTeXConfig.IGNORE_MOST) ) {
-        	//TODO: If there is a style map, we should respect that despite the fact that the paragraph is empty
-            // only alignment!
+        if (bNoTextPar) { // Export page break and alignment only
             StyleWithProperties style = ofr.getParStyle(sName);
-            if (style!=null) {
-                // Apply hard formatting attributes
-                // Note: Left justified text is exported as full justified text!
-                palette.getPageSc().applyPageBreak(style,false,ba);
-                String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
-                if ("center".equals(sTextAlign)) { ba.add("{\\centering ","\\par}"); nBreakAfter = StyleMapItem.LINE; }
-                else if ("end".equals(sTextAlign)) { ba.add("{\\raggedleft ","\\par}"); nBreakAfter = StyleMapItem.LINE; }
+            palette.getPageSc().applyPageBreak(style,false,ba);
+            if (applyAlignment(style, ba)) {
+            	nBreakAfter = StyleMapItem.LINE;
             }
         }
-        else {
-            // Apply the style
+        else { // Apply the style
             if (!styleMap.containsKey(sName)) { createParStyle(sName); }
             String sBefore = styleMap.get(sName).getBefore(); 
             String sAfter = styleMap.get(sName).getAfter();
             ba.add(sBefore,sAfter);
             // Add line breaks inside?
-            if (bBreakInside && styleMap.get(sName).getLineBreak()) {
+            if (styleMap.get(sName).getLineBreak()) {
                 if (sBefore.length()>0) { ba.add("\n",""); }
                 if (sAfter.length()>0 && !"}".equals(sAfter)) { ba.add("","\n"); }
             }
@@ -378,105 +349,34 @@ public class ParConverter extends StyleConverter {
         return nBreakAfter;
     }
 	
-    /** <p>Convert a paragraph style to LaTeX. </p> 
-     *  <p>A soft style is declared in <code>styleDeclarations</code> as
-     *  <code>\newenvironment...</code></p>
-     *  <p>A hard style is used by applying LaTeX code directly</p>
-     *  @param <code>sName</code> the OOo name of the style
+    /** Convert a paragraph style to LaTeX, using paragraph maps from the configuration if available.
+     *  @param sName the ODF name of the style
      */
-    private void createParStyle(String sName) {
-        // A paragraph style should always be created relative to main context
-        Context context = (Context) palette.getMainContext().clone();
-        // The style may already be declared in the configuration:
-        String sDisplayName = ofr.getParStyles().getDisplayName(sName);
-        Map<String,StyleMapItem> sm = config.getParStyleMap();
-        if (sm.containsKey(sDisplayName)) {
-            styleMap.put(sName,new StyleMapItem(sName,sm.get(sDisplayName).getBefore(),sm.get(sDisplayName).getAfter(),
-                               sm.get(sDisplayName).getLineBreak(),getBreakAfter(sm,sDisplayName),sm.get(sDisplayName).getVerbatim()));
-            return;
-        }
-        // Does the style exist?
-        StyleWithProperties style = ofr.getParStyle(sName);
-        if (style==null) {
-            styleMap.put(sName,new StyleMapItem(sName,"",""));
-            return;
-        }
-        // Convert the style!
-        switch (config.formatting()) {
-            case LaTeXConfig.CONVERT_MOST:
-                if (style.isAutomatic()) {
-                    createAutomaticParStyle(style,context);
-                    return;
-                }
-            case LaTeXConfig.CONVERT_ALL:
-                createSoftParStyle(style,context);
-                return;
-            case LaTeXConfig.CONVERT_BASIC:
-            case LaTeXConfig.IGNORE_MOST:
-                createSimpleParStyle(style,context);
-                return;
-            case LaTeXConfig.IGNORE_ALL:
-            default:
-                styleMap.put(sName,new StyleMapItem(sName,"",""));
-        }
-    }
-
-    private void createAutomaticParStyle(StyleWithProperties style, Context context) {
-        // Hard paragraph formatting from this style should be ignored
-        // (because the user wants to ignore hard paragraph formatting
-        // or there is a style map for the parent.)
-        BeforeAfter ba = new BeforeAfter();
-        BeforeAfter baPar = new BeforeAfter();
-        BeforeAfter baText = new BeforeAfter();
-
-        // Apply paragraph formatting from parent
-        // If parent is verbatim, this is all
-        String sParentName = style.getParentName();
-        if (styleMap.containsKey(sParentName) && styleMap.get(sParentName).getVerbatim()) {
-            styleMap.put(style.getName(),new StyleMapItem(style.getName(),styleMap.get(sParentName).getBefore(),styleMap.get(sParentName).getAfter(),
-                         styleMap.get(sParentName).getLineBreak(),getBreakAfter(styleMap,sParentName),styleMap.get(sParentName).getVerbatim()));
-            return;
-        }
-        applyParStyle(sParentName,baPar,context,false,false);
-		
-        // Apply hard formatting properties:
-        palette.getPageSc().applyPageBreak(style,false,ba);
-        palette.getI18n().applyLanguage(style,true,false,baText);
-        palette.getCharSc().applyFont(style,true,false,baText,context);
-
-        // Assemble the bits. If there is any hard character formatting
-        // we must group the contents.
-        if (baPar.isEmpty() && !baText.isEmpty()) { ba.add("{","}"); }
-        else { ba.add(baPar.getBefore(),baPar.getAfter()); }
-        ba.add(baText.getBefore(),baText.getAfter());
-        boolean bLineBreak = styleMap.containsKey(sParentName) && styleMap.get(sParentName).getLineBreak();
-        if (!bLineBreak && !baText.isEmpty()) { ba.add(" ",""); }
-        styleMap.put(style.getName(),new StyleMapItem(style.getName(),ba.getBefore(),ba.getAfter(),bLineBreak,getBreakAfter(styleMap,sParentName), false));
-    }
+	private void createParStyle(String sName) {
+		// A paragraph style should always be created relative to main context
+		Context context = (Context) palette.getMainContext().clone();
+		String sDisplayName = ofr.getParStyles().getDisplayName(sName);
+		if (config.getParStyleMap().containsKey(sDisplayName)) {
+			createMappedParStyle(sName, config.getParStyleMap().get(sDisplayName), context);
+		}
+		else {
+			createNormalParStyle(sName, context);
+		}
+	}
     
-    public int getBreakAfter(Map<String,StyleMapItem> sm, String sName) {
-    	return sm.containsKey(sName) ? sm.get(sName).getBreakAfter() : StyleMapItem.PAR;
-    }
-	
-    private void createSimpleParStyle(StyleWithProperties style, Context context) {
-        // Export character formatting + alignment only
-        if (style.isAutomatic() && config.getParStyleMap().containsKey(ofr.getParStyles().getDisplayName(style.getParentName()))) {
-            createAutomaticParStyle(style,context);
-            return;
-        }
-
+    private void createNormalParStyle(String sName, Context context) {
         BeforeAfter ba = new BeforeAfter();
         BeforeAfter baText = new BeforeAfter();
-
-        // Apply hard formatting attributes
-        // Note: Left justified text is exported as full justified text!
-        palette.getPageSc().applyPageBreak(style,false,ba);
-        String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
-        if ("center".equals(sTextAlign)) { baText.add("\\centering","\\par"); }
-        else if ("end".equals(sTextAlign)) { baText.add("\\raggedleft","\\par"); }
-        palette.getI18n().applyLanguage(style,true,true,baText);
-        palette.getCharSc().applyFont(style,true,true,baText,context);
-
+        
+        // Apply formatting attributes
+    	StyleWithProperties style = ofr.getParStyle(sName);
+    	if (style!=null) {
+	        palette.getPageSc().applyPageBreak(style,true,ba);
+	        applyAlignment(style, baText);
+	        palette.getI18n().applyLanguage(style,true,true,baText);
+	        palette.getCharSc().applyFont(style,true,true,baText,context);
+    	}
+    	
         // Assemble the bits. If there is any hard character formatting
         // or alignment we must group the contents.
         if (!baText.isEmpty()) { ba.add("{","}"); }
@@ -484,129 +384,52 @@ public class ParConverter extends StyleConverter {
         styleMap.put(style.getName(),new StyleMapItem(style.getName(),ba.getBefore(),ba.getAfter()));
     }
 
-    private void createSoftParStyle(StyleWithProperties style, Context context) {
-        // This style should be converted to an enviroment, except if
-        // it's automatic and there is a config style map for the parent
-        if (style.isAutomatic() && config.getParStyleMap().containsKey(ofr.getParStyles().getDisplayName(style.getParentName()))) {
-            createAutomaticParStyle(style,context);
-        }
-
+    private void createMappedParStyle(String sName, StyleMapItem smi, Context context) {
+        // Apply hard formatting properties if this is an automatic style
         BeforeAfter ba = new BeforeAfter();
-        applyParProperties(style,ba);
-        ba.add("\\writerlistparindent\\writerlistleftskip","");
-        palette.getI18n().applyLanguage(style,true,true,ba);
-        ba.add("\\leavevmode","");
-        palette.getCharSc().applyNormalFont(ba);
-        palette.getCharSc().applyFont(style,true,true,ba,context);
-        ba.add("\\writerlistlabel","");
-        ba.add("\\ignorespaces","");
-        // Declare the paragraph style (\newenvironment)
-        String sTeXName = "style" + styleNames.getExportName(style.getDisplayName());
-        styleMap.put(style.getName(),new StyleMapItem(style.getName(),"\\begin{"+sTeXName+"}","\\end{"+sTeXName+"}"));
-        declarations.append("\\newenvironment{").append(sTeXName)
-                    .append("}{").append(ba.getBefore()).append("}{")
-                    .append(ba.getAfter()).append("}").nl();
+        BeforeAfter baText = new BeforeAfter();
+        StyleWithProperties style = ofr.getParStyle(sName);
+        if (style!=null && style.isAutomatic()) {
+	        palette.getPageSc().applyPageBreak(style,false,ba);
+	        if (!smi.getVerbatim()) {
+	        	// We cannot use character formatting if the content is treated as verbatim
+		        palette.getI18n().applyLanguage(style,true,false,baText);
+		        palette.getCharSc().applyFont(style,true,false,baText,context);
+	        }
+        }
+        
+    	// Get the content from the style map
+    	BeforeAfter baMap = new BeforeAfter(smi.getBefore(), smi.getAfter());
+    	
+        // Assemble the bits.
+        if (baMap.isEmpty() && !baText.isEmpty()) { // Group the contents because we have hard character formatting
+        	ba.add("{","}");
+        }
+        else { // The map takes care of the grouping
+        	ba.add(baMap.getBefore(),baMap.getAfter());
+        }
+        ba.add(baText.getBefore(),baText.getAfter());
+        if (!smi.getLineBreak() && !baText.isEmpty()) { ba.add(" ",""); }
+        styleMap.put(style.getName(),new StyleMapItem(sName,ba.getBefore(),ba.getAfter(),smi.getLineBreak(),smi.getBreakAfter(), smi.getVerbatim()));
     }
-
-    // Remaining methods are private helpers
-
-    /** <p>Apply line spacing from a style.</p>
-     *  @param <code>style</code> the paragraph style to use
-     *  @param <code>ba</code> a <code>BeforeAfter</code> to put code into
-     */
-    private void applyLineSpacing(StyleWithProperties style, BeforeAfter ba) {
-        if (style==null) { return; }
-        String sLineHeight = style.getProperty(XMLString.FO_LINE_HEIGHT);
-        if (sLineHeight==null || !sLineHeight.endsWith("%")) { return; }
-        float fPercent=Calc.getFloat(sLineHeight.substring(0,sLineHeight.length()-1),100);
-        // Do not allow less that 120% (LaTeX default)
-        if (fPercent<120) { fPercent = 120; }
-        ba.add("\\renewcommand\\baselinestretch{"+fPercent/120+"}","");
+    
+    private boolean applyAlignment(StyleWithProperties style, BeforeAfter ba) {
+    	if (bParAlign && style!=null) {
+	        String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,true);
+	        if ("center".equals(sTextAlign)) {
+	        	ba.add("\\centering","\\par");
+	        	return true;
+	        }
+	        else if ("end".equals(sTextAlign)) {
+	        	ba.add("\\raggedleft","\\par");
+	        	return true;
+	        }
+	        // Note: Left justified is exported as fully justified
+    	}
+    	return false;
     }
-
-    /** <p>Helper: Create a horizontal border. Currently unused</p>
-     */
-    /*private String createBorder(String sLeft, String sRight, String sTop,
-                                String sHeight, String sColor) {
-        BeforeAfter baColor = new BeforeAfter();
-        palette.getColorCv().applyColor(sColor,false,baColor, new Context());
-        return "{\\setlength\\parindent{0pt}\\setlength\\leftskip{" + sLeft + "}"
-               + "\\setlength\\baselineskip{0pt}\\setlength\\parskip{" + sHeight + "}"
-               + baColor.getBefore()
-               + "\\rule{\\textwidth-" + sLeft + "-" + sRight + "}{" + sHeight + "}"
-               + baColor.getAfter()
-               + "\\par}";
-    }*/	
-
-    /** <p>Apply margin+alignment properties from a style.</p>
-     *  @param <code>style</code> the paragraph style to use
-     *  @param <code>ba</code> a <code>BeforeAfter</code> to put code into
-     */
-    private void applyMargins(StyleWithProperties style, BeforeAfter ba) {
-        // Read padding/margin/indentation properties:
-        //String sPaddingTop = style.getAbsoluteLength(XMLString.FO_PADDING_TOP);
-        //String sPaddingBottom = style.getAbsoluteLength(XMLString.FO_PADDING_BOTTOM);
-        //String sPaddingLeft = style.getAbsoluteLength(XMLString.FO_PADDING_LEFT);
-        //String sPaddingRight = style.getAbsoluteLength(XMLString.FO_PADDING_RIGHT);
-        String sMarginTop = style.getAbsoluteLength(XMLString.FO_MARGIN_TOP);
-        String sMarginBottom = style.getAbsoluteLength(XMLString.FO_MARGIN_BOTTOM);
-        String sMarginLeft = style.getAbsoluteLength(XMLString.FO_MARGIN_LEFT);
-        String sMarginRight = style.getAbsoluteLength(XMLString.FO_MARGIN_RIGHT);
-        String sTextIndent;
-        if ("true".equals(style.getProperty(XMLString.STYLE_AUTO_TEXT_INDENT))) {
-            sTextIndent = "2em";
-        }
-        else {
-            sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
-        }
-        // Read alignment properties:
-        boolean bRaggedLeft = false; // add 1fil to \leftskip
-        boolean bRaggedRight = false; // add 1fil to \rightskip
-        boolean bParFill = false; // add 1fil to \parfillskip
-        String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN);
-        if ("center".equals(sTextAlign)) {
-            bRaggedLeft = true; bRaggedRight = true; // centered paragraph
-        }
-        else if ("start".equals(sTextAlign)) {
-            bRaggedRight = true; bParFill = true; // left aligned paragraph
-        }
-        else if ("end".equals(sTextAlign)) {
-            bRaggedLeft = true; // right aligned paragraph
-        }
-        else if (!"justify".equals(style.getProperty(XMLString.FO_TEXT_ALIGN_LAST))) {
-            bParFill = true; // justified paragraph with ragged last line
-        }
-        // Create formatting:
-        String sRubberMarginTop = Calc.multiply("10%",sMarginTop);
-        if (Calc.length2px(sRubberMarginTop).equals("0")) { sRubberMarginTop="1pt"; }
-        String sRubberMarginBottom = Calc.multiply("10%",sMarginBottom);
-        if (Calc.length2px(sRubberMarginBottom).equals("0")) { sRubberMarginBottom="1pt"; }
-        ba.add("\\setlength\\leftskip{"+sMarginLeft+(bRaggedLeft?" plus 1fil":"")+"}","");
-        ba.add("\\setlength\\rightskip{"+sMarginRight+(bRaggedRight?" plus 1fil":"")+"}","");
-        ba.add("\\setlength\\parindent{"+sTextIndent+"}","");
-        ba.add("\\setlength\\parfillskip{"+(bParFill?"0pt plus 1fil":"0pt")+"}","");
-        ba.add("\\setlength\\parskip{"+sMarginTop+" plus "+sRubberMarginTop+"}",
-               "\\unskip\\vspace{"+sMarginBottom+" plus "+sRubberMarginBottom+"}");
+    
+    private int getBreakAfter(Map<String,StyleMapItem> sm, String sName) {
+    	return sm.containsKey(sName) ? sm.get(sName).getBreakAfter() : StyleMapItem.PAR;
     }
-	
-    public void applyAlignment(StyleWithProperties style, boolean bIsSimple, boolean bInherit, BeforeAfter ba) {
-        if (bIsSimple || style==null) { return; }
-        String sTextAlign = style.getProperty(XMLString.FO_TEXT_ALIGN,bInherit);
-        if ("center".equals(sTextAlign)) { ba.add("\\centering",""); }
-        else if ("start".equals(sTextAlign)) { ba.add("\\raggedright",""); }
-        else if ("end".equals(sTextAlign)) { ba.add("\\raggedleft",""); }
-    }
-
-
-    /** <p>Apply all paragraph properties.</p>
-     *  @param <code>style</code> the paragraph style to use
-     *  @param <code>ba</code> a <code>BeforeAfter</code> to put code into
-     */
-    private void applyParProperties(StyleWithProperties style, BeforeAfter ba) {
-        palette.getPageSc().applyPageBreak(style,true,ba);
-        ba.add("","\\par");
-        applyLineSpacing(style,ba);
-        applyMargins(style,ba);
-    }
-
 }

@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-08-11)
+ *  Version 2.0 (2022-08-17)
  *
  */
 
@@ -1053,26 +1053,28 @@ public class OfficeReader {
         	// Cast votes for parskip and parindent if not inside tables, lists, frames or footnotes
         	if (nNestingLevel==0) {
 	        	StyleWithProperties style = getParStyle(node.getAttribute(XMLString.TEXT_STYLE_NAME));
-	        	String sMarginTop = style.getAbsoluteLength(XMLString.FO_MARGIN_TOP);
-	            String sMarginBottom = style.getAbsoluteLength(XMLString.FO_MARGIN_BOTTOM);
-	            if (sMarginTop!=null && sMarginBottom!=null) {
-	            	parskip.castVote(Calc.round(Calc.add(sMarginTop, sMarginBottom)));
-	            }
-	            else if (sMarginTop!=null) {
-	            	parskip.castVote(sMarginTop);
-	            }
-	            else if (sMarginBottom!=null) {
-	            	parskip.castVote(sMarginBottom);
-	            }
-	            if ("true".equals(style.getProperty(XMLString.STYLE_AUTO_TEXT_INDENT))) {
-	                parindent.castVote("auto");
-	            }
-	            else {
-	            	String sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
-	            	if (sTextIndent!=null) {
-	            		parindent.castVote(sTextIndent);
-	            	}
-	            }
+	        	if (style!=null) {
+		        	String sMarginTop = style.getAbsoluteLength(XMLString.FO_MARGIN_TOP);
+		            String sMarginBottom = style.getAbsoluteLength(XMLString.FO_MARGIN_BOTTOM);
+		            if (sMarginTop!=null && sMarginBottom!=null) {
+		            	parskip.castVote(Calc.round(Calc.add(sMarginTop, sMarginBottom)));
+		            }
+		            else if (sMarginTop!=null) {
+		            	parskip.castVote(sMarginTop);
+		            }
+		            else if (sMarginBottom!=null) {
+		            	parskip.castVote(sMarginBottom);
+		            }
+		            if ("true".equals(style.getProperty(XMLString.STYLE_AUTO_TEXT_INDENT))) {
+		                parindent.castVote("auto");
+		            }
+		            else {
+		            	String sTextIndent = style.getAbsoluteLength(XMLString.FO_TEXT_INDENT);
+		            	if (sTextIndent!=null) {
+		            		parindent.castVote(sTextIndent);
+		            	}
+		            }
+		        }
         	}
 
             nParLevel=0;
