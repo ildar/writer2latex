@@ -399,17 +399,22 @@ class ParConverter extends StyleConverter {
         }
         
     	// Get the content from the style map
-    	BeforeAfter baMap = new BeforeAfter(smi.getBefore(), smi.getAfter());
+    	ba.add(smi.getBefore(), smi.getAfter());
     	
-        // Assemble the bits.
-        if (baMap.isEmpty() && !baText.isEmpty()) { // Group the contents because we have hard character formatting
+    	if (!baText.isEmpty() && (smi.getBefore().indexOf("{")<0 || smi.getBefore().indexOf("}")<0)) {
+    		// The map does not seem to group the contents
         	ba.add("{","}");
         }
-        else { // The map takes care of the grouping
-        	ba.add(baMap.getBefore(),baMap.getAfter());
+    	if (baText.getBefore().length()>0 && smi.getLineBreak()) {
+    		// Add an extra line break if we have character formatting
+        	ba.addBefore("\n");
         }
         ba.add(baText.getBefore(),baText.getAfter());
-        if (!smi.getLineBreak() && !baText.isEmpty()) { ba.add(" ",""); }
+        if (baText.getBefore().length()>0 && !smi.getLineBreak()) {
+        	// Protect character formatting with space
+        	ba.add(" ","");
+        }
+        
         styleMap.put(style.getName(),new StyleMapItem(sName,ba.getBefore(),ba.getAfter(),smi.getLineBreak(),smi.getBreakAfter(), smi.getVerbatim()));
     }
     

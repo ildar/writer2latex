@@ -22,6 +22,7 @@
   <option name="use_ulem" value="true" />
   <option name="use_titlesec" value="true" />
   <option name="outline_numbering" value="true" />
+  <option name="use_parskip" value="true" />  
   <option name="use_enumitem" value="true" />
   <option name="list_layout" value="true" />
   <option name="list_styles" value="true" />

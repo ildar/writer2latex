@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Writer2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  * 
- *  Version 2.0 (2022-05-06)
+ *  Version 2.0 (2022-08-25)
  *
  */
 package writer2latex.latex;
@@ -438,9 +438,12 @@ public class ListConverter extends StyleConverter {
 					config.getListItemStyleMap().get(sDisplayName).getAfter()); 
 			return;
 		}
-		else if (oc.getListLevel()<=maxLevel.get(oc.getListStyleName())) { // Otherwise create a standard \item
-			if (bHeader) { ba.addBefore("\\item[] "); }
-			else { ba.addBefore("\\item "); }
+		else { // Otherwise create a standard \item
+			int nMaxLevel = maxLevel.containsKey(oc.getListStyleName()) ? maxLevel.get(oc.getListStyleName()) : 4;
+			if (oc.getListLevel()<=nMaxLevel) {
+				if (bHeader) { ba.addBefore("\\item[] "); }
+				else { ba.addBefore("\\item "); }
+			}
 		}
 	}
 
