@@ -8,6 +8,8 @@ All changes are classified as
 
 ---------- version 1.7 ----------
 
+- Bugfix: Fix crash in Calc export when last row/column in view is hidden
+
 - Improvement: No longer uses deprecated Java constructions
 
 - Improvement: Pretty printing now works better with spreadsheets.
